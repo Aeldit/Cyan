@@ -1,0 +1,28 @@
+{
+  "parent": "cyan:golden_apple",
+  "display": {
+    "icon": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "title": {
+      "translate": "cyan.advancements.enchanted_golden_apple.title"
+    },
+    "description": {
+      "translate": "cyan.advancements.enchanted_golden_apple.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "example": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "minecraft:enchanted_golden_apple"
+        }
+      }
+    }
+  }
+}
