@@ -22,7 +22,7 @@ public class CyanConfig {
     }
 
     /**
-     * Initializes the configuration, loading it if it is present and creating a default config otherwise.
+     * Initializes the configuration, loading it if it exists and creating a default config otherwise.
      * @throws IOException file exceptions
      */
     public void initialize() throws IOException {
@@ -33,10 +33,9 @@ public class CyanConfig {
     }
 
     /**
-     * Loads the config file and then populates the string, int, and boolean entries with the parsed entries
-     * @throws IOException if the file cannot be loaded
+     * Loads the configuration file and do nothing if it does not exists
+     * @throws IOException
      */
-
     public void load() throws IOException {
         if (!Files.exists(configPath)) {
             return;
@@ -45,8 +44,8 @@ public class CyanConfig {
     }
 
     /**
-     * Save the config into the file. Should be called when a value is modified
-     * @throws IOException file exceptions
+     * Save the config into the file
+     * @throws IOException
      */
     public void save() throws IOException {
         properties.store(Files.newOutputStream(configPath), CONFIG_HEADER);

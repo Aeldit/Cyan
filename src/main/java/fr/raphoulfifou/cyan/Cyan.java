@@ -2,6 +2,7 @@ package fr.raphoulfifou.cyan;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import fr.raphoulfifou.cyan.commands.BedCommand;
+import fr.raphoulfifou.cyan.commands.KgiCommand;
 import fr.raphoulfifou.cyan.commands.SurfaceCommand;
 import fr.raphoulfifou.cyan.config.CyanConfig;
 import net.fabricmc.api.ModInitializer;
@@ -39,17 +40,18 @@ public class Cyan implements ModInitializer {
                     .literal("bed")
                     .executes(new BedCommand())
                     .build();
+
             /*
             LiteralCommandNode<ServerCommandSource> enderchestNode = CommandManager
                     .literal("enderchest")
                     .executes(new EnderchestCommand())
                     .build();
-
+            */
             LiteralCommandNode<ServerCommandSource> kgiNode = CommandManager
                     .literal("kgi")
                     .executes(new KgiCommand())
                     .build();
-             */
+
             LiteralCommandNode<ServerCommandSource> surfaceNode = CommandManager
                     .literal("surface")
                     .executes(new SurfaceCommand())
@@ -62,7 +64,7 @@ public class Cyan implements ModInitializer {
             //dispatcher.getRoot().addChild(enderchestNode);
 
             //usage: /kgi
-            //dispatcher.getRoot().addChild(kgiNode);
+            dispatcher.getRoot().addChild(kgiNode);
 
             //usage: /surface
             dispatcher.getRoot().addChild(surfaceNode);
