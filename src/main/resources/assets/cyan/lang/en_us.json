@@ -5,7 +5,7 @@
   "cyan.message.bed": "§6You have been teleported to your bed",
   "cyan.message.bed.notfound": "§cYou don't have an attributed bed",
   "cyan.message.surface": "§6You have been teleported to the surface",
-  "cyan.message.kgi": "Ground items have been removed",
+  "cyan.message.kgi": "§cGround items have been removed",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "A few more advancements",
   "cyan.advancements.get_cd.title": "Vinyls",

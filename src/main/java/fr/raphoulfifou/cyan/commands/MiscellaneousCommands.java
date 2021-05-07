@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 
 public class MiscellaneousCommands  {
@@ -18,12 +19,17 @@ public class MiscellaneousCommands  {
 
     public static int kgi(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
 
-        source.getMinecraftServer().getCommandManager().execute(source,"/kill @e[type=item]");
-        // If OP
-        source.getPlayer().sendMessage(new TranslatableText("cyan.message.kgi"), true);
-        //If not OP
-        //source.sendFeedback(new TranslatableText("cyan.message.kgi"), true);
+        // If OP with max level (4)
+        if(player.hasPermissionLevel(4)) {
+            source.getMinecraftServer().getCommandManager().execute(source,"/kill @e[type=item]");
+            source.getPlayer().sendMessage(new TranslatableText("cyan.message.kgi"), true);
+        }
+        // If not OP
+        else {
+            source.sendFeedback(new TranslatableText("cyan.message.kgi"), true);
+        }
         return Command.SINGLE_SUCCESS;
     }
 }
