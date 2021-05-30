@@ -12,6 +12,9 @@ import net.minecraft.text.TranslatableText;
 public class MiscellaneousCommands  {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+        dispatcher.register(CommandManager.literal("killgrounditems")
+                .executes(MiscellaneousCommands::kgi)
+        );
         dispatcher.register(CommandManager.literal("kgi")
                 .executes(MiscellaneousCommands::kgi)
         );

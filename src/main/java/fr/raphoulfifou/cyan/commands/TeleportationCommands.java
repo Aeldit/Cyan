@@ -15,6 +15,9 @@ import java.util.Objects;
 
 public class TeleportationCommands {
 
+    private static CommandDispatcher<ServerCommandSource> dispatcher;
+    private static CommandContext<ServerCommandSource> context;
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("bed")
                 .executes(TeleportationCommands::bed)

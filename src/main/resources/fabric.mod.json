@@ -18,8 +18,11 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "fr.raphoulfifou.cyan.Cyan"
+    "client": [
+      "fr.raphoulfifou.cyan.CyanClientCore"
+    ],
+    "server": [
+      "fr.raphoulfifou.cyan.CyanServerCore"
     ]
   },
   "mixins": [
