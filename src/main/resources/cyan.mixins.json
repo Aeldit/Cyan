@@ -1,0 +1,17 @@
+{
+  "package": "fr.raphoulfifou.cyan",
+  "required": false,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+
+  "injectors": {
+    "defaultRequire": 1
+  },
+
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "server": [
+  ]
+}
