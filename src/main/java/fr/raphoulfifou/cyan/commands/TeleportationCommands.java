@@ -10,13 +10,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.World;
 
 import java.util.Objects;
 
 public class TeleportationCommands {
-
-    private static CommandDispatcher<ServerCommandSource> dispatcher;
-    private static CommandContext<ServerCommandSource> context;
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("bed")
@@ -36,14 +34,25 @@ public class TeleportationCommands {
 
     public static int bed(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
-        ServerWorld world = Objects.requireNonNull(player.getServer()).getOverworld();
+        ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
+        ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-        if(player.getSpawnPointPosition() != null) {
+        if(player.getSpawnPointDimension() == World.OVERWORLD && player.getSpawnPointPosition() != null) {
             int x = player.getSpawnPointPosition().getX();
             int y = player.getSpawnPointPosition().getY();
             int z = player.getSpawnPointPosition().getZ();
-            player.teleport(world, x, y, z, 0, 0);
+            player.teleport(overworld, x, y, z, 0, 0);
             player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+            return Command.SINGLE_SUCCESS;
+        }
+
+        if(player.getSpawnPointDimension() == World.NETHER && player.getSpawnPointPosition() != null) {
+            int x = player.getSpawnPointPosition().getX();
+            int y = player.getSpawnPointPosition().getY();
+            int z = player.getSpawnPointPosition().getZ();
+            player.teleport(nether, x, y, z, 0, 0);
+            player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+            return Command.SINGLE_SUCCESS;
         }
         else {
             player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
