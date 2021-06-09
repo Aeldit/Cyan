@@ -1,8 +1,8 @@
 {
-  "required": false,
+  "required": true,
   "minVersion": "0.8",
   "package": "net.fabricmc.example.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
   "client": [

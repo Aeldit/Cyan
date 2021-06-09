@@ -5,7 +5,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.inventory.EnderChestInventory;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,9 +25,8 @@ public class InventoryCommands {
     public static int craft(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
-        NamedScreenHandlerFactory inv = source.getPlayer().getBlockState().createScreenHandlerFactory(source.getWorld(), player.getBlockPos());
 
-        source.getPlayer().openHandledScreen(inv);
+        //source.getPlayer().openHandledScreen(inv);
         return Command.SINGLE_SUCCESS;
     }
 
