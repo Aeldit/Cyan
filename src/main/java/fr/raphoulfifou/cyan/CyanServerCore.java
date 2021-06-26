@@ -20,7 +20,6 @@ public class CyanServerCore implements DedicatedServerModInitializer {
     public void onInitializeServer(){
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-            //InventoryCommands.register(dispatcher);
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
         });

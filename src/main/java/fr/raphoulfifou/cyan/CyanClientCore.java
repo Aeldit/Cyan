@@ -19,7 +19,6 @@ public class CyanClientCore implements ClientModInitializer {
     public void onInitializeClient() {
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-            //InventoryCommands.register(dispatcher);
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
         });

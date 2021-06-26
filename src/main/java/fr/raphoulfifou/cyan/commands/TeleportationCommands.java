@@ -38,19 +38,25 @@ public class TeleportationCommands {
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
         if(player.getSpawnPointDimension() == World.OVERWORLD && player.getSpawnPointPosition() != null) {
-            int x = player.getSpawnPointPosition().getX();
-            int y = player.getSpawnPointPosition().getY();
-            int z = player.getSpawnPointPosition().getZ();
-            player.teleport(overworld, x, y, z, 0, 0);
+            double x = player.getSpawnPointPosition().getX();
+            double y = player.getSpawnPointPosition().getY();
+            double z = player.getSpawnPointPosition().getZ();
+            float yaw = player.getYaw();
+            float pitch = player.getPitch();
+
+            player.teleport(overworld, x, y, z, yaw, pitch);
             player.sendMessage(new TranslatableText("cyan.message.bed"), true);
             return Command.SINGLE_SUCCESS;
         }
 
         if(player.getSpawnPointDimension() == World.NETHER && player.getSpawnPointPosition() != null) {
-            int x = player.getSpawnPointPosition().getX();
-            int y = player.getSpawnPointPosition().getY();
-            int z = player.getSpawnPointPosition().getZ();
-            player.teleport(nether, x, y, z, 0, 0);
+            double x = player.getSpawnPointPosition().getX();
+            double y = player.getSpawnPointPosition().getY();
+            double z = player.getSpawnPointPosition().getZ();
+            float yaw = player.getYaw();
+            float pitch = player.getPitch();
+
+            player.teleport(nether, x, y, z, yaw, pitch);
             player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
             return Command.SINGLE_SUCCESS;
         }
@@ -67,7 +73,10 @@ public class TeleportationCommands {
         int x = player.getBlockPos().getX();
         int z = player.getBlockPos().getZ();
         int y = player.world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
-        player.teleport(world, x, y, z, 0, 0);
+        float yaw = player.getYaw();
+        float pitch = player.getPitch();
+
+        player.teleport(world, x, y, z, yaw, pitch);
         player.sendMessage(new TranslatableText("cyan.message.surface"), true);
         return Command.SINGLE_SUCCESS;
     }

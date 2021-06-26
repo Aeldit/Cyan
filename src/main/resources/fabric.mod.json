@@ -5,9 +5,7 @@
 
   "name": "Cyan",
   "description": "This mod adds a few commands to minecraft",
-  "authors": [
-    "Raphoulfifou"
-  ],
+  "authors": ["Raphoulfifou"],
   "contact": {
     "homepage": "https://github.com/Raphoulfifou/Cyan",
     "sources": "https://github.com/Raphoulfifou/Cyan"
@@ -18,16 +16,13 @@
 
   "environment": "*",
   "entrypoints": {
-    "server": [
-      "fr.raphoulfifou.cyan.CyanServerCore"
-    ],
-    "client": [
-      "fr.raphoulfifou.cyan.CyanClientCore"
-    ]
+    "server": ["fr.raphoulfifou.cyan.CyanServerCore"],
+    "client": ["fr.raphoulfifou.cyan.CyanClientCore"]
   },
 
   "depends": {
     "fabricloader": ">=0.11.3",
+    "fabric": "*",
     "minecraft": "1.17.x",
     "java": ">=16"
   }
