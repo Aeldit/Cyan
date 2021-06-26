@@ -16,11 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "example": {
+    "enchanted_golden_apple": {
       "trigger": "minecraft:consume_item",
       "conditions": {
         "item": {
-          "item": "minecraft:enchanted_golden_apple"
+          "items": [
+            "minecraft:enchanted_golden_apple"
+          ]
         }
       }
     }

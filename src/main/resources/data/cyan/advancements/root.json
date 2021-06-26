@@ -1,22 +1,36 @@
 {
   "display": {
+    "icon": {
+      "item": "minecraft:player_head",
+      "nbt": "{SkullOwner: 'Raphoulfifou'}"
+    },
     "title": {
       "translate": "cyan.advancements.root.title"
     },
     "description": {
       "translate": "cyan.advancements.root.description"
     },
-    "icon": {
-      "item": "minecraft:player_head",
-      "nbt": "{SkullOwner: 'Raphoulfifou'}"
-    },
-    "announce_to_chat": false,
+    "announce_to_chat": true,
     "show_toast": false,
-    "background": "minecraft:textures/block/blackstone.png"
+    "background": "minecraft:textures/block/deepslate_tiles.png"
   },
   "criteria": {
-    "trigger": {
-      "trigger": "minecraft:tick"
+    "crafting_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      }
     }
-  }
+  },
+  "requirements": [
+    [
+      "crafting_table"
+    ]
+  ]
 }

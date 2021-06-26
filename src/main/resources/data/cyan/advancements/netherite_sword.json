@@ -15,13 +15,18 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "experience": 100
+  },
   "criteria": {
-    "netherite_sword": {
+    "sword": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:netherite_sword"
+            "items": [
+              "minecraft:netherite_sword"
+            ]
           }
         ]
       }
@@ -29,7 +34,7 @@
   },
   "requirements": [
     [
-      "netherite_sword"
+      "sword"
     ]
   ]
 }

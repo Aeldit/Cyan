@@ -15,13 +15,18 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "experience": 1000
+  },
   "criteria": {
-    "netherite_block": {
+    "block": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:netherite_block"
+            "items": [
+              "minecraft:netherite_block"
+            ]
           }
         ]
       }
@@ -29,7 +34,7 @@
   },
   "requirements": [
     [
-      "netherite_block"
+      "block"
     ]
   ]
 }

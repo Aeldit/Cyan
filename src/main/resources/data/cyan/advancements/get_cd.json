@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_13"
+            "items": ["minecraft:music_disc_13"]
           }
         ]
       }
@@ -31,7 +31,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_cat"
+            "items": ["minecraft:music_disc_cat"]
           }
         ]
       }
@@ -41,7 +41,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_blocks"
+            "items": ["minecraft:music_disc_blocks"]
           }
         ]
       }
@@ -51,7 +51,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_chirp"
+            "items": ["minecraft:music_disc_chirp"]
           }
         ]
       }
@@ -61,7 +61,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_far"
+            "items": ["minecraft:music_disc_far"]
           }
         ]
       }
@@ -71,7 +71,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_mall"
+            "items": ["minecraft:music_disc_mall"]
           }
         ]
       }
@@ -81,7 +81,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_mellohi"
+            "items": ["minecraft:music_disc_mellohi"]
           }
         ]
       }
@@ -91,7 +91,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_stal"
+            "items": ["minecraft:music_disc_stal"]
           }
         ]
       }
@@ -101,7 +101,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_strad"
+            "items": ["minecraft:music_disc_strad"]
           }
         ]
       }
@@ -111,7 +111,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_ward"
+            "items": ["minecraft:music_disc_ward"]
           }
         ]
       }
@@ -121,7 +121,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_11"
+            "items": ["minecraft:music_disc_11"]
           }
         ]
       }
@@ -131,7 +131,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_wait"
+            "items": ["minecraft:music_disc_wait"]
           }
         ]
       }
@@ -141,7 +141,7 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:music_disc_pigstep"
+            "items": ["minecraft:music_disc_pigstep"]
           }
         ]
       }
