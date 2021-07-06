@@ -1,17 +1,18 @@
 {
+  "parent": "rd:root",
   "display": {
     "icon": {
       "item": "minecraft:red_bed"
     },
     "title": {
-      "translate": "cyan.advancements.root.title"
+      "translate": "Cyan"
     },
     "description": {
-      "translate": "cyan.advancements.root.description"
+      "translate": "Adds some more challenges"
     },
-    "announce_to_chat": false,
     "show_toast": false,
-    "background": "minecraft:textures/block/deepslate_tiles.png"
+    "announce_to_chat": false,
+    "hidden": false
   },
   "criteria": {
     "tick": {
