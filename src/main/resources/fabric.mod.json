@@ -7,8 +7,9 @@
   "description": "This mod adds a few commands to minecraft",
   "authors": ["Raphoulfifou"],
   "contact": {
-    "homepage": "https://github.com/Raphoulfifou/Cyan",
-    "sources": "https://github.com/Raphoulfifou/Cyan"
+    "homepage": "https://modrinth.com/user/lRyDhyWM",
+    "sources": "https://github.com/Raphoulfifou/Cyan",
+    "issues": "https://github.com/Raphoulfifou/Cyan/issues"
   },
 
   "license": "CC0-1.0",
@@ -21,9 +22,9 @@
   },
 
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": "1.17.x",
+    "minecraft": "1.17.1",
     "java": ">=16"
   }
 }

@@ -20,13 +20,25 @@ public class MiscellaneousCommands  {
         );
     }
 
+    /**
+     * Called when a player execute the command "/killgrounditems" or "/kgi"
+     *      -> If the player has a permission level equal to 4
+     *          The ground items are killed and the player is notified by a message that the entities where killed
+     *
+     *      -> Else, the ground items are killed and a message is send to the console and to the OPs
+     *
+     * Teleport the player to the highest block that was found on the player's coordinates before being teleported
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct (ex: "/sethome ba se" will throw
+     *                                an exception because there is two arguments instead of one)
+     */
     public static int kgi(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
         // If OP with max level (4)
         if(player.hasPermissionLevel(4)) {
-            source.getMinecraftServer().getCommandManager().execute(source,"/kill @e[type=item]");
+            source.getServer().getCommandManager().execute(source,"/kill @e[type=item]");
             source.getPlayer().sendMessage(new TranslatableText("cyan.message.kgi"), true);
         }
         // If not OP

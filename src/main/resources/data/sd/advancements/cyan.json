@@ -1,0 +1,22 @@
+{
+  "parent": "sd:rd",
+  "display": {
+    "icon": {
+      "item": "minecraft:red_bed"
+    },
+    "title": {
+      "translate": "Cyan"
+    },
+    "description": {
+      "translate": "Adds some more challenges"
+    },
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

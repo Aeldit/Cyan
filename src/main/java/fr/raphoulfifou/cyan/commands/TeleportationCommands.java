@@ -34,6 +34,23 @@ public class TeleportationCommands {
         );
     }
 
+    /**
+     * Called when a player execute the commands "/bed" or "/b"
+     *      -> If the dimension of the player's spawnpoint is in the Overworld, get:
+     *          - the x, y, z coordinates of the player's spawnpoint (x, y, z)
+     *          - the yaw and pitch of the player -> his eyes position (yaw, pitch)
+     *         Teleport the player to the coordinates, yaw and pitch in the Overworld
+     *
+     *      -> If the dimension of the player's spawnpoint is in the Nether, same as above but the player is
+     *         teleported in the nether
+     *
+     *      -> Else, send a message to the player saying the no bed or respawn anchor was found
+     *
+     * Call the "createHome" function located in 'SetHomeJSONConfig' and take as parameters the elements listed above
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct (ex: "/sethome ba se" will throw
+     *                                an exception because there is two arguments instead of one)
+     */
     public static int bed(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
@@ -70,6 +87,17 @@ public class TeleportationCommands {
         return Command.SINGLE_SUCCESS;
     }
 
+    /**
+     * Called when a player execute the command "/surface" or "/s"
+     * Gets: - the x and z coordinates of the player (x, z)
+     *       - the higher block at the y position of the player (y)
+     *       - the yaw and pitch of the player -> his eyes position (yaw, pitch)
+     *
+     * Teleport the player to the highest block that was found on the player's coordinates before being teleported
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct (ex: "/sethome ba se" will throw
+     *                                an exception because there is two arguments instead of one)
+     */
     public static int surface(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld world = context.getSource().getWorld();
