@@ -13,13 +13,22 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * @since 0.0.1
+ * @author Raphoulfifou
+ */
 public class TeleportationCommands {
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("bed")
+                        //.then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
+                                //.suggests(ArgumentSuggestion::getAllPlayerNames)
+                                //.executes(TeleportationCommands::playerBed)
+                        //)
                 .executes(TeleportationCommands::bed)
         );
         dispatcher.register(CommandManager.literal("b")
@@ -35,23 +44,25 @@ public class TeleportationCommands {
     }
 
     /**
-     * Called when a player execute the commands "/bed" or "/b"
-     *      -> If the dimension of the player's spawnpoint is in the Overworld, get:
-     *          - the x, y, z coordinates of the player's spawnpoint (x, y, z)
-     *          - the yaw and pitch of the player -> his eyes position (yaw, pitch)
-     *         Teleport the player to the coordinates, yaw and pitch in the Overworld
+     * <p>Called when a player execute the commands "/bed" or "/b"</p>
      *
-     *      -> If the dimension of the player's spawnpoint is in the Nether, same as above but the player is
-     *         teleported in the nether
+     * <ul>If the dimension of the player's spawnpoint is in the Overworld, get:
+     *     <li>-> the x, y, z coordinates of the player's spawnpoint (x, y, z)</li>
+     *     <li>-> the yaw and pitch of the player -> his eyes position (yaw, pitch)</li>
+     *     <li>-> Teleport the player to the coordinates, yaw and pitch in the Overworld</li>
+     * </ul>
+     * <ul>If the dimension of the player's spawnpoint is in the Nether, get:
+     *     <li>-> the x, y, z coordinates of the player's spawnpoint (x, y, z)</li>
+     *     <li>-> the yaw and pitch of the player -> his eyes position (yaw, pitch)</li>
+     *     <li>-> Teleport the player to the coordinates, yaw and pitch in the Nether</li>
+     * </ul>
+     * <ul>Else:
+     *     <li>-> send a message to the player saying that no bed or respawn anchor was found</li>
+     * </ul>
      *
-     *      -> Else, send a message to the player saying the no bed or respawn anchor was found
-     *
-     * Call the "createHome" function located in 'SetHomeJSONConfig' and take as parameters the elements listed above
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct (ex: "/sethome ba se" will throw
-     *                                an exception because there is two arguments instead of one)
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int bed(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int bed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
@@ -88,17 +99,113 @@ public class TeleportationCommands {
     }
 
     /**
-     * Called when a player execute the command "/surface" or "/s"
-     * Gets: - the x and z coordinates of the player (x, z)
-     *       - the higher block at the y position of the player (y)
-     *       - the yaw and pitch of the player -> his eyes position (yaw, pitch)
+     * Called when a player execute the commands "/bed playerName" or "/b playerName"
+     *      -> If the dimension of the target player's spawnpoint is in the Overworld, get:
+     *          - the x, y, z coordinates of the player's spawnpoint (x, y, z)
+     *          - the yaw and pitch of the player -> his eyes position (yaw, pitch)
+     *         Teleport the player to the coordinates, yaw and pitch in the Overworld
      *
-     * Teleport the player to the highest block that was found on the player's coordinates before being teleported
+     *      -> If the dimension of the target player's spawnpoint is in the Nether, same as above but the player is
+     *         teleported in the nether
      *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct (ex: "/sethome ba se" will throw
-     *                                an exception because there is two arguments instead of one)
+     *      -> Else, send a message to the player saying that no bed or respawn anchor was found
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int surface(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    /*
+    public static int playerBed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
+        ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
+
+        Collection<GameProfile> argumentType = GameProfileArgumentType.getProfileArgument(context, "playerName");
+        GameProfile target = argumentType.stream().findAny().orElseThrow(GameProfileArgumentType.UNKNOWN_PLAYER_EXCEPTION::create);
+        ServerPlayerEntity targetPlayer = context.getSource().getServer().getPlayerManager().getPlayer(target.getId());
+
+        List<ServerPlayerEntity> whitelistedPlayers = context.getSource().getServer().getPlayerManager().getPlayerList();
+        int indexOfTargetName = whitelistedPlayers.indexOf(targetPlayer);
+        ServerPlayerEntity targetName = whitelistedPlayers.get(indexOfTargetName);
+        ServerPlayerEntity targetInWhitelist = whitelistedPlayers.get(indexOfTargetName);
+
+        if (targetPlayer != null) {
+            if(targetPlayer.getSpawnPointDimension() == World.OVERWORLD && targetPlayer.getSpawnPointPosition() != null) {
+                double x = targetPlayer.getSpawnPointPosition().getX();
+                double y = targetPlayer.getSpawnPointPosition().getY();
+                double z = targetPlayer.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+
+                player.teleport(overworld, x, y, z, yaw, pitch);
+                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                return Command.SINGLE_SUCCESS;
+            }
+
+            if(targetPlayer.getSpawnPointDimension() == World.NETHER && targetPlayer.getSpawnPointPosition() != null) {
+                double x = targetPlayer.getSpawnPointPosition().getX();
+                double y = targetPlayer.getSpawnPointPosition().getY();
+                double z = targetPlayer.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+
+                player.teleport(nether, x, y, z, yaw, pitch);
+                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                return Command.SINGLE_SUCCESS;
+            }
+            else {
+                player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
+            }
+        }
+
+        if (whitelistedPlayers.contains(targetName) && targetPlayer == null) {
+
+            if(targetInWhitelist.getSpawnPointDimension() == World.OVERWORLD && targetInWhitelist.getSpawnPointPosition() != null) {
+                double x = targetInWhitelist.getSpawnPointPosition().getX();
+                double y = targetInWhitelist.getSpawnPointPosition().getY();
+                double z = targetInWhitelist.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+
+                player.teleport(overworld, x, y, z, yaw, pitch);
+                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                player.sendMessage(new TranslatableText("cyan.message.bedOf"), true);
+                return Command.SINGLE_SUCCESS;
+            }
+
+            if(targetInWhitelist.getSpawnPointDimension() == World.NETHER && targetInWhitelist.getSpawnPointPosition() != null) {
+                double x = targetInWhitelist.getSpawnPointPosition().getX();
+                double y = targetInWhitelist.getSpawnPointPosition().getY();
+                double z = targetInWhitelist.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+
+                player.teleport(nether, x, y, z, yaw, pitch);
+                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                player.sendMessage(new TranslatableText("cyan.message.respawnanchorOf"), true);
+                return Command.SINGLE_SUCCESS;
+            }
+            else {
+                player.sendMessage(new TranslatableText("cyan.message.bed.notfoundOf"), false);
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+     */
+
+    /**
+     * <p>Called when a player execute the commands "/surface" or "/s"</p>
+     *
+     * <ul>Get:
+     *     <li>-> the x and z coordinates of the player (x, z)</li>
+     *     <li>-> the higher block at the y position of the player (y)</li>
+     *     <li>-> the yaw and pitch of the player -> his eyes position (yaw, pitch)</li>
+     * </ul>
+     * <p>Teleport the player to the highest block that was found on the player's coordinates before being teleported</p>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
+     */
+    public static int surface(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld world = context.getSource().getWorld();
 

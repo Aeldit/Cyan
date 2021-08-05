@@ -8,10 +8,15 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * @since 0.0.2
+ * @author Raphoulfifou
+ */
 public class MiscellaneousCommands  {
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("killgrounditems")
                 .executes(MiscellaneousCommands::kgi)
         );
@@ -21,18 +26,18 @@ public class MiscellaneousCommands  {
     }
 
     /**
-     * Called when a player execute the command "/killgrounditems" or "/kgi"
-     *      -> If the player has a permission level equal to 4
-     *          The ground items are killed and the player is notified by a message that the entities where killed
+     * <p>Called when a player execute the command "/killgrounditems" or "/kgi"</p>
      *
-     *      -> Else, the ground items are killed and a message is send to the console and to the OPs
+     * <ul>If the player has a permission level equal to 4
+     *      <li>-> The ground items are killed and the player is notified by a message that the entities where killed</li>
+     * </ul>
+     * <ul>Else:
+     *      <li>-> The ground items are killed and a message is send to the console and to the OPs</li>
+     * </ul>
      *
-     * Teleport the player to the highest block that was found on the player's coordinates before being teleported
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct (ex: "/sethome ba se" will throw
-     *                                an exception because there is two arguments instead of one)
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int kgi(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int kgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
@@ -41,8 +46,9 @@ public class MiscellaneousCommands  {
             source.getServer().getCommandManager().execute(source,"/kill @e[type=item]");
             source.getPlayer().sendMessage(new TranslatableText("cyan.message.kgi"), true);
         }
-        // If not OP
+        // If not OP or not OP with max level
         else {
+            source.getServer().getCommandManager().execute(source,"/kill @e[type=item]");
             source.sendFeedback(new TranslatableText("cyan.message.kgi"), true);
         }
         return Command.SINGLE_SUCCESS;
