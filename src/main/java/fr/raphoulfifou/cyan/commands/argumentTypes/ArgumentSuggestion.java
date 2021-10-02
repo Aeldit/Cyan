@@ -39,4 +39,12 @@ public final class ArgumentSuggestion {
         PlayerManager playerManager = server.getPlayerManager();
         return Arrays.asList(playerManager.getWhitelistedNames());
     }
+
+    /*public static CompletableFuture<Suggestions> getMods(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) {
+
+        List<ModContainer> mods = FabricLoader.getInstance().getAllMods().stream().toList();
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(mods, builder);
+    }*/
 }

@@ -20,5 +20,9 @@
   "cyan.advancements.netherite_block.title": "The strongest block ?",
   "cyan.advancements.netherite_block.description": "Obtain a Netherite Block",
   "cyan.advancements.netherite_sword.title": "Best sword ?",
-  "cyan.advancements.netherite_sword.description": "Obtain a Netherite Sword"
+  "cyan.advancements.netherite_sword.description": "Obtain a Netherite Sword",
+  "cyan.message.help.1": "\n| Help for Cyan mod :",
+  "cyan.message.help.2": "| - /bed : teleports the player to its bed or respawn anchor",
+  "cyan.message.help.3": "| - /surface : teleports the player to the surface",
+  "cyan.message.help.4": "| - /kgi : kills all the ground items"
 }

@@ -23,6 +23,10 @@ public class MiscellaneousCommands  {
         dispatcher.register(CommandManager.literal("kgi")
                 .executes(MiscellaneousCommands::kgi)
         );
+
+        dispatcher.register(CommandManager.literal("Chelp")
+                .executes(MiscellaneousCommands::helpCyan)
+        );
     }
 
     /**
@@ -51,6 +55,32 @@ public class MiscellaneousCommands  {
             source.getServer().getCommandManager().execute(source,"/kill @e[type=item]");
             source.sendFeedback(new TranslatableText("cyan.message.kgi"), true);
         }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/help Cyan" or "/help cyan"</p>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
+     */
+    public static int helpCyan(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+
+        //String mod = StringArgumentType.getString(context, "mod");
+
+        /*if (mod != null)
+        {
+            if (mod.equals("Cyan"))
+            {
+                player.sendMessage(new TranslatableText("cyan.message.help"), false);
+            }
+        }*/
+        player.sendMessage(new TranslatableText("cyan.message.help.1"), false);
+        player.sendMessage(new TranslatableText("cyan.message.help.2"), false);
+        player.sendMessage(new TranslatableText("cyan.message.help.3"), false);
+        player.sendMessage(new TranslatableText("cyan.message.help.4"), false);
+
         return Command.SINGLE_SUCCESS;
     }
 }

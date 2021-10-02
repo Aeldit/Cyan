@@ -64,35 +64,45 @@ public class TeleportationCommands {
      */
     public static int bed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
+        ServerCommandSource source = context.getSource();
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-        if(player.getSpawnPointDimension() == World.OVERWORLD && player.getSpawnPointPosition() != null) {
-            double x = player.getSpawnPointPosition().getX();
-            double y = player.getSpawnPointPosition().getY();
-            double z = player.getSpawnPointPosition().getZ();
-            float yaw = player.getYaw();
-            float pitch = player.getPitch();
-
-            player.teleport(overworld, x, y, z, yaw, pitch);
-            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-            player.sendMessage(new TranslatableText("cyan.message.bed"), true);
-            return Command.SINGLE_SUCCESS;
+        if (player.getSpawnPointPosition() != null)
+        {
+            if(player.getSpawnPointDimension() == World.OVERWORLD)
+            {
+                double x = player.getSpawnPointPosition().getX();
+                double y = player.getSpawnPointPosition().getY();
+                double z = player.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+    
+                player.teleport(overworld, x, y, z, yaw, pitch);
+                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
+                source.getServer().getCommandManager().execute(source,"/xp add @a 0");
+                return Command.SINGLE_SUCCESS;
+            }
+    
+            if(player.getSpawnPointDimension() == World.NETHER)
+            {
+                double x = player.getSpawnPointPosition().getX();
+                double y = player.getSpawnPointPosition().getY();
+                double z = player.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+    
+                player.teleport(nether, x, y, z, yaw, pitch);
+                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                return Command.SINGLE_SUCCESS;
+            }
         }
 
-        if(player.getSpawnPointDimension() == World.NETHER && player.getSpawnPointPosition() != null) {
-            double x = player.getSpawnPointPosition().getX();
-            double y = player.getSpawnPointPosition().getY();
-            double z = player.getSpawnPointPosition().getZ();
-            float yaw = player.getYaw();
-            float pitch = player.getPitch();
-
-            player.teleport(nether, x, y, z, yaw, pitch);
-            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-            player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
-            return Command.SINGLE_SUCCESS;
-        }
-        else {
+        else
+        {
             player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
         }
         return Command.SINGLE_SUCCESS;
