@@ -77,15 +77,25 @@ public class TeleportationCommands {
                 double z = player.getSpawnPointPosition().getZ();
                 float yaw = player.getYaw();
                 float pitch = player.getPitch();
-    
-                player.teleport(overworld, x, y, z, yaw, pitch);
-                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                player.sendMessage(new TranslatableText("cyan.message.bed"), true);
-                // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                source.getServer().getCommandManager().execute(source,"/xp add @a 0");
+
+                if (player.getServerWorld().getRegistryKey() != World.OVERWORLD)
+                {
+                    player.teleport(overworld, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                    // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
+                    source.getServer().getCommandManager().execute(source,"/xp add @a 0");
+                }
+                else
+                {
+                    player.teleport(overworld, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                }
+
                 return Command.SINGLE_SUCCESS;
             }
-    
+
             if(player.getSpawnPointDimension() == World.NETHER)
             {
                 double x = player.getSpawnPointPosition().getX();
@@ -93,10 +103,23 @@ public class TeleportationCommands {
                 double z = player.getSpawnPointPosition().getZ();
                 float yaw = player.getYaw();
                 float pitch = player.getPitch();
+
+                if (player.getServerWorld().getRegistryKey() != World.NETHER)
+                {
+                    player.teleport(nether, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                    // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
+                    source.getServer().getCommandManager().execute(source,"/xp add @a 0");
+                }
     
-                player.teleport(nether, x, y, z, yaw, pitch);
-                player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                else
+                {
+                    player.teleport(nether, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                }
+
                 return Command.SINGLE_SUCCESS;
             }
         }
