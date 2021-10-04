@@ -20,5 +20,9 @@
   "cyan.advancements.netherite_block.title": "Le block le plus solide ?",
   "cyan.advancements.netherite_block.description": "Obtenez un block de netherite",
   "cyan.advancements.netherite_sword.title": "La meilleure épée ?",
-  "cyan.advancements.netherite_sword.description": "Obtenez une épée en netherite"
+  "cyan.advancements.netherite_sword.description": "Obtenez une épée en netherite",
+  "cyan.message.help.1": "\n| Aide pour le mod Cyan :",
+  "cyan.message.help.2": "| - /bed : téléporte le joueur à son lit ou son ancre de réapparition",
+  "cyan.message.help.3": "| - /surface : téléporte le joueur à la surface",
+  "cyan.message.help.4": "| - /kgi : tue tous les items au sol"
 }

@@ -1,9 +1,14 @@
 package fr.raphoulfifou.cyan.commands;
 
+import java.util.Objects;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,9 +18,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * @since 0.0.1
@@ -84,7 +86,7 @@ public class TeleportationCommands {
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     player.sendMessage(new TranslatableText("cyan.message.bed"), true);
                     // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                    source.getServer().getCommandManager().execute(source,"/xp add @a 0");
+                    source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
                 }
                 else
                 {
@@ -110,7 +112,7 @@ public class TeleportationCommands {
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
                     // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                    source.getServer().getCommandManager().execute(source,"/xp add @a 0");
+                    source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
                 }
     
                 else
