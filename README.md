@@ -6,6 +6,7 @@ This mods adds 3 commands :
     /bed -> teleport the player to his bed or respawn anchor, depending one which one is the respawn point
     /surface -> teleport the player to the surface
     /killgrounditems (kill ground items) -> kill the items that are floating on the ground
+    /Chelp (Cyan help) -> Displays help for this mod
 
 The current alliases are :
 
