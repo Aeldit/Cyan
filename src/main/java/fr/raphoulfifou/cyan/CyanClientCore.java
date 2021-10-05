@@ -20,9 +20,11 @@ public class CyanClientCore implements ClientModInitializer {
 
     @Override
     // Initialize the differents instances (here commands) when lauched on client (used when in singleplayer)
-    public void onInitializeClient() {
+    public void onInitializeClient()
+    {
         // Register all the commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
+        {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
         });

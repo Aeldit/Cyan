@@ -25,7 +25,8 @@ import net.minecraft.world.World;
  */
 public class TeleportationCommands {
 
-    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
+    {
         dispatcher.register(CommandManager.literal("bed")
                         //.then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
                                 //.suggests(ArgumentSuggestion::getAllPlayerNames)
@@ -64,7 +65,8 @@ public class TeleportationCommands {
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int bed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int bed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerCommandSource source = context.getSource();
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
@@ -72,13 +74,14 @@ public class TeleportationCommands {
 
         if (player.getSpawnPointPosition() != null)
         {
+            double x = player.getSpawnPointPosition().getX();
+            double y = player.getSpawnPointPosition().getY();
+            double z = player.getSpawnPointPosition().getZ();
+            float yaw = player.getYaw();
+            float pitch = player.getPitch();
+
             if(player.getSpawnPointDimension() == World.OVERWORLD)
             {
-                double x = player.getSpawnPointPosition().getX();
-                double y = player.getSpawnPointPosition().getY();
-                double z = player.getSpawnPointPosition().getZ();
-                float yaw = player.getYaw();
-                float pitch = player.getPitch();
 
                 if (player.getServerWorld().getRegistryKey() != World.OVERWORLD)
                 {
@@ -94,18 +97,10 @@ public class TeleportationCommands {
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     player.sendMessage(new TranslatableText("cyan.message.bed"), true);
                 }
-
-                return Command.SINGLE_SUCCESS;
             }
 
             if(player.getSpawnPointDimension() == World.NETHER)
             {
-                double x = player.getSpawnPointPosition().getX();
-                double y = player.getSpawnPointPosition().getY();
-                double z = player.getSpawnPointPosition().getZ();
-                float yaw = player.getYaw();
-                float pitch = player.getPitch();
-
                 if (player.getServerWorld().getRegistryKey() != World.NETHER)
                 {
                     player.teleport(nether, x, y, z, yaw, pitch);
@@ -121,8 +116,6 @@ public class TeleportationCommands {
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
                 }
-
-                return Command.SINGLE_SUCCESS;
             }
         }
 
@@ -240,7 +233,8 @@ public class TeleportationCommands {
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int surface(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int surface(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld world = context.getSource().getWorld();
 

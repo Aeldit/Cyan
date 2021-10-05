@@ -16,7 +16,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MiscellaneousCommands  {
 
-    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
+    {
         dispatcher.register(CommandManager.literal("killgrounditems")
                 .executes(MiscellaneousCommands::kgi)
         );
@@ -41,7 +42,8 @@ public class MiscellaneousCommands  {
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int kgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int kgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
@@ -59,7 +61,7 @@ public class MiscellaneousCommands  {
     }
 
     /**
-     * <p>Called when a player execute the command "/help Cyan" or "/help cyan"</p>
+     * <p>Called when a player execute the command "/Chelp"</p>
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */

@@ -17,12 +17,14 @@ import java.util.concurrent.CompletableFuture;
 
 public final class ArgumentSuggestion {
 
-    public static CompletableFuture<Suggestions> getAllPlayerNames(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) {
+    public static CompletableFuture<Suggestions> getAllPlayerNames(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
+    {
         MinecraftServer server = context.getSource().getServer();
 
         Set<String> userNames = new HashSet<>(ArgumentSuggestion.getOnlinePlayerNames(server));
 
-        if (!builder.getRemaining().isEmpty()) {
+        if (!builder.getRemaining().isEmpty())
+        {
             userNames.addAll(ArgumentSuggestion.getWhitelistedNames(server));
         }
 
@@ -30,17 +32,20 @@ public final class ArgumentSuggestion {
         return CommandSource.suggestMatching(userNames, builder);
     }
 
-    public static @NotNull List<String> getOnlinePlayerNames(final @NotNull MinecraftServer server) {
+    public static @NotNull List<String> getOnlinePlayerNames(final @NotNull MinecraftServer server)
+    {
         PlayerManager playerManager = server.getPlayerManager();
         return Arrays.asList(playerManager.getPlayerNames());
     }
 
-    public static @NotNull List<String> getWhitelistedNames(final @NotNull MinecraftServer server) {
+    public static @NotNull List<String> getWhitelistedNames(final @NotNull MinecraftServer server)
+    {
         PlayerManager playerManager = server.getPlayerManager();
         return Arrays.asList(playerManager.getWhitelistedNames());
     }
 
-    /*public static CompletableFuture<Suggestions> getMods(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) {
+    /*public static CompletableFuture<Suggestions> getMods(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
+    {
 
         List<ModContainer> mods = FabricLoader.getInstance().getAllMods().stream().toList();
 

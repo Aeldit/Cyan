@@ -21,9 +21,11 @@ public class CyanServerCore implements DedicatedServerModInitializer {
 
     @Override
     // Initialize the differents instances (here commands) when lauched on server
-    public void onInitializeServer(){
+    public void onInitializeServer()
+    {
         // Register all the commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
+        {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
         });
