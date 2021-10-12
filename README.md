@@ -7,6 +7,7 @@ This mods adds 3 commands :
     /surface -> teleport the player to the surface
     /killgrounditems (kill ground items) -> kill the items that are floating on the ground
     /Chelp (Cyan help) -> Displays help for this mod
+    /ops -> displays a list of all op players
 
 The current alliases are :
 
