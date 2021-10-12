@@ -7,6 +7,13 @@
   "cyan.message.bed.notfound": "§cVous n'avez pas de lit ou ancre de réaparition d'attribué",
   "cyan.message.surface": "§6Vous avez été téléporté à la surface",
   "cyan.message.kgi": "§cLes items au sol ont été supprimés",
+  "cyan.message.help.1": "\n§6| Aide pour le mod Cyan :",
+  "cyan.message.help.2": "| - /bed : téléporte le joueur à son lit ou son ancre de réapparition",
+  "cyan.message.help.3": "| - /surface : téléporte le joueur à la surface",
+  "cyan.message.help.4": "| - /kgi : tue tous les items au sol",
+  "cyan.message.help.5": "| - /ops : affiche dans une liste le nom des joueurs op",
+  "cyan.message.ops": "Les joueurs op sont :\n%s",
+  "cyan.message.notOp": "§cVous n'avez pas la permission requise pour effectuer cette action",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "Quelques défis supplémentaires",
   "cyan.advancements.get_cd.title": "Vinyls",
@@ -20,9 +27,5 @@
   "cyan.advancements.netherite_block.title": "Le block le plus solide ?",
   "cyan.advancements.netherite_block.description": "Obtenez un block de netherite",
   "cyan.advancements.netherite_sword.title": "La meilleure épée ?",
-  "cyan.advancements.netherite_sword.description": "Obtenez une épée en netherite",
-  "cyan.message.help.1": "\n| Aide pour le mod Cyan :",
-  "cyan.message.help.2": "| - /bed : téléporte le joueur à son lit ou son ancre de réapparition",
-  "cyan.message.help.3": "| - /surface : téléporte le joueur à la surface",
-  "cyan.message.help.4": "| - /kgi : tue tous les items au sol"
+  "cyan.advancements.netherite_sword.description": "Obtenez une épée en netherite"
 }

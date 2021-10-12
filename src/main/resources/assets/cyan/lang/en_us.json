@@ -7,6 +7,13 @@
   "cyan.message.bed.notfound": "§cYou don't have an attributed bed or respawn anchor",
   "cyan.message.surface": "§6You have been teleported to the surface",
   "cyan.message.kgi": "§cGround items have been removed",
+  "cyan.message.help.1": "\n§6| Help for Cyan mod :",
+  "cyan.message.help.2": "| - /bed : teleports the player to its bed or respawn anchor",
+  "cyan.message.help.3": "| - /surface : teleports the player to the surface",
+  "cyan.message.help.4": "| - /kgi : kills all the ground items",
+  "cyan.message.help.5": "| - /ops : displays a list with the name of all op players",
+  "cyan.message.ops": "The op players are :\n%s",
+  "cyan.message.notOp": "§cYou don't have the required permission to do that",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "A few more advancements",
   "cyan.advancements.get_cd.title": "Vinyls",
@@ -20,9 +27,5 @@
   "cyan.advancements.netherite_block.title": "The strongest block ?",
   "cyan.advancements.netherite_block.description": "Obtain a Netherite Block",
   "cyan.advancements.netherite_sword.title": "Best sword ?",
-  "cyan.advancements.netherite_sword.description": "Obtain a Netherite Sword",
-  "cyan.message.help.1": "\n| Help for Cyan mod :",
-  "cyan.message.help.2": "| - /bed : teleports the player to its bed or respawn anchor",
-  "cyan.message.help.3": "| - /surface : teleports the player to the surface",
-  "cyan.message.help.4": "| - /kgi : kills all the ground items"
+  "cyan.advancements.netherite_sword.description": "Obtain a Netherite Sword"
 }

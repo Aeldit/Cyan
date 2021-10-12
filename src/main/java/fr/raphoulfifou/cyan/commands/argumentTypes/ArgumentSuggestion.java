@@ -22,11 +22,11 @@ public final class ArgumentSuggestion {
         MinecraftServer server = context.getSource().getServer();
 
         Set<String> userNames = new HashSet<>(ArgumentSuggestion.getOnlinePlayerNames(server));
-
-        if (!builder.getRemaining().isEmpty())
+        userNames.addAll(ArgumentSuggestion.getWhitelistedNames(server));
+        /*if (!builder.getRemaining().isEmpty())
         {
-            userNames.addAll(ArgumentSuggestion.getWhitelistedNames(server));
-        }
+            
+        }*/
 
         // Return the suggestion handler
         return CommandSource.suggestMatching(userNames, builder);

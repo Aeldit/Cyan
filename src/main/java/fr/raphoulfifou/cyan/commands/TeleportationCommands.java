@@ -1,7 +1,10 @@
 package fr.raphoulfifou.cyan.commands;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,6 +12,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import org.jetbrains.annotations.NotNull;
 
+import fr.raphoulfifou.cyan.commands.argumentTypes.ArgumentSuggestion;
+import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -28,21 +33,30 @@ public class TeleportationCommands {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("bed")
-                        //.then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
-                                //.suggests(ArgumentSuggestion::getAllPlayerNames)
-                                //.executes(TeleportationCommands::playerBed)
-                        //)
-                .executes(TeleportationCommands::bed)
+            .executes(TeleportationCommands::bed)
         );
         dispatcher.register(CommandManager.literal("b")
                 .executes(TeleportationCommands::bed)
         );
 
+        dispatcher.register(CommandManager.literal("bedof")
+            .then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
+                    .suggests(ArgumentSuggestion::getAllPlayerNames)
+                    .executes(TeleportationCommands::playerBed)
+            )
+        );
+        dispatcher.register(CommandManager.literal("bo")
+            .then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
+                    .suggests(ArgumentSuggestion::getAllPlayerNames)
+                    .executes(TeleportationCommands::playerBed)
+            )
+        );
+
         dispatcher.register(CommandManager.literal("surface")
-                .executes(TeleportationCommands::surface)
+            .executes(TeleportationCommands::surface)
         );
         dispatcher.register(CommandManager.literal("s")
-                .executes(TeleportationCommands::surface)
+            .executes(TeleportationCommands::surface)
         );
     }
 
@@ -127,7 +141,7 @@ public class TeleportationCommands {
     }
 
     /**
-     * Called when a player execute the commands "/bed playerName" or "/b playerName"
+     * Called when a player execute the commands "/bedof playerName" or "/bo playerName"
      *      -> If the dimension of the target player's spawnpoint is in the Overworld, get:
      *          - the x, y, z coordinates of the player's spawnpoint (x, y, z)
      *          - the yaw and pitch of the player -> his eyes position (yaw, pitch)
@@ -140,8 +154,8 @@ public class TeleportationCommands {
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    /*
-    public static int playerBed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int playerBed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
@@ -155,6 +169,7 @@ public class TeleportationCommands {
         ServerPlayerEntity targetName = whitelistedPlayers.get(indexOfTargetName);
         ServerPlayerEntity targetInWhitelist = whitelistedPlayers.get(indexOfTargetName);
 
+        //if (context.getSource().getServer().getPlayerManager().)
         if (targetPlayer != null) {
             if(targetPlayer.getSpawnPointDimension() == World.OVERWORLD && targetPlayer.getSpawnPointPosition() != null) {
                 double x = targetPlayer.getSpawnPointPosition().getX();
@@ -219,7 +234,7 @@ public class TeleportationCommands {
         }
         return Command.SINGLE_SUCCESS;
     }
-     */
+
 
     /**
      * <p>Called when a player execute the commands "/surface" or "/s"</p>

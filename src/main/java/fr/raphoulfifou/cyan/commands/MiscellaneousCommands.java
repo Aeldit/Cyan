@@ -1,5 +1,7 @@
 package fr.raphoulfifou.cyan.commands;
 
+import java.util.Arrays;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -19,14 +21,18 @@ public class MiscellaneousCommands  {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("killgrounditems")
-                .executes(MiscellaneousCommands::kgi)
+            .executes(MiscellaneousCommands::kgi)
         );
         dispatcher.register(CommandManager.literal("kgi")
-                .executes(MiscellaneousCommands::kgi)
+            .executes(MiscellaneousCommands::kgi)
         );
 
         dispatcher.register(CommandManager.literal("Chelp")
-                .executes(MiscellaneousCommands::helpCyan)
+            .executes(MiscellaneousCommands::helpCyan)
+        );
+
+        dispatcher.register(CommandManager.literal("ops")
+            .executes(MiscellaneousCommands::ops)
         );
     }
 
@@ -66,23 +72,42 @@ public class MiscellaneousCommands  {
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
     public static int helpCyan(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
+        ServerPlayerEntity player = context.getSource().getPlayer();
 
-        //String mod = StringArgumentType.getString(context, "mod");
-
-        /*if (mod != null)
-        {
-            if (mod.equals("Cyan"))
-            {
-                player.sendMessage(new TranslatableText("cyan.message.help"), false);
-            }
-        }*/
         player.sendMessage(new TranslatableText("cyan.message.help.1"), false);
         player.sendMessage(new TranslatableText("cyan.message.help.2"), false);
         player.sendMessage(new TranslatableText("cyan.message.help.3"), false);
         player.sendMessage(new TranslatableText("cyan.message.help.4"), false);
+        player.sendMessage(new TranslatableText("cyan.message.help.5"), false);
 
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/ops"</p>
+     *
+     * <ul>If the player has a permission level equal to 4
+     *      <li>-> A list with all the op players is displayed</li>
+     * </ul>
+     * <ul>Else:
+     *      <li>-> A message tells the player taht he/she don't have the required permission</li>
+     * </ul>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
+     */
+    public static int ops(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+
+        // If OP with max level (4)
+        if(player.hasPermissionLevel(4)) {
+            source.getPlayer().sendMessage(new TranslatableText("cyan.message.ops", Arrays.toString(source.getServer().getPlayerManager().getOpNames())), false);
+        }
+        // If not OP or not OP with max level
+        else {
+            player.sendMessage(new TranslatableText("cyan.message.notOp"), true);
+        }
         return Command.SINGLE_SUCCESS;
     }
 }
