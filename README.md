@@ -1,4 +1,4 @@
-# REQUIRES FABRIC API 📝 REQUIRES FABRIC API
+# 📝 REQUIRES FABRIC API
 
 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side, it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
 
