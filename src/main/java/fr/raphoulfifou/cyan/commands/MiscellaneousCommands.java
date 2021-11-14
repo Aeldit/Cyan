@@ -6,11 +6,14 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
+import org.jetbrains.annotations.NotNull;
+
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @since 0.0.2
@@ -33,6 +36,10 @@ public class MiscellaneousCommands  {
 
         dispatcher.register(CommandManager.literal("ops")
             .executes(MiscellaneousCommands::ops)
+        );
+
+        dispatcher.register(CommandManager.literal("mods")
+            .executes(MiscellaneousCommands::mods)
         );
     }
 
@@ -108,6 +115,22 @@ public class MiscellaneousCommands  {
         else {
             player.sendMessage(new TranslatableText("cyan.message.notOp"), true);
         }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/mods"</p>
+     *
+     * A list of all mods installed on the server
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
+     */
+    public static int mods(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
+        ServerCommandSource source = context.getSource();
+
+        source.getPlayer().sendMessage(new TranslatableText("cyan.message.mods", Arrays.toString(FabricLoader.getInstance().getAllMods().toArray())), false);
+        
         return Command.SINGLE_SUCCESS;
     }
 }
