@@ -97,7 +97,7 @@ public class TeleportationCommands {
             if(player.getSpawnPointDimension() == World.OVERWORLD)
             {
 
-                if (player.getServerWorld().getRegistryKey() != World.OVERWORLD)
+                if (player.getWorld().getRegistryKey() != World.OVERWORLD)
                 {
                     player.teleport(overworld, x, y, z, yaw, pitch);
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
@@ -115,7 +115,7 @@ public class TeleportationCommands {
 
             if(player.getSpawnPointDimension() == World.NETHER)
             {
-                if (player.getServerWorld().getRegistryKey() != World.NETHER)
+                if (player.getWorld().getRegistryKey() != World.NETHER)
                 {
                     player.teleport(nether, x, y, z, yaw, pitch);
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);

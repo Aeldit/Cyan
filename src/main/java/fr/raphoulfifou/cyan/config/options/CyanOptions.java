@@ -42,6 +42,7 @@ public class CyanOptions
             this.requiredOpLevelKgi = 4;
         }
 
+        // Sets
         public boolean setAllowBed(boolean value)
         {
             return this.allowBed = value;
@@ -60,6 +61,27 @@ public class CyanOptions
         public int setRequiredOpLevelKgi(int value)
         {
             return this.requiredOpLevelKgi = value;
+        }
+
+        // Gets
+        public boolean getAllowBed()
+        {
+            return this.allowBed;
+        }
+
+        public boolean getAllowKgi()
+        {
+            return this.allowKgi;
+        }
+
+        public boolean getAllowSurface()
+        {
+            return this.allowSurface;
+        }
+
+        public int getRequiredOpLevelKgi()
+        {
+            return this.requiredOpLevelKgi;
         }
     }
 

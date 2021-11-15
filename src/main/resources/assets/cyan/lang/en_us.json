@@ -15,7 +15,7 @@
   "cyan.message.ops": "The op players are :\n%s",
   "cyan.message.mods": "The mods installed on this server are :\n%s",
   "cyan.message.notOp": "§cYou don't have the required permission to do that",
-  "cyan.message.setAllowBed": "allowBed option have been set to %b",
+  "cyan.message.setAllowBed": "AllowBed option have been set to %s",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "A few more advancements",
   "cyan.advancements.get_cd.title": "Vinyls",
@@ -34,5 +34,6 @@
   "category.cyan.general": "General",
   "options.cyan.allowBed": "Allow /bed",
   "option.cyan.required_op_level_kgi": "Required Op level to use the /kgi",
-  "mm.msg.allowBed": "Allow the use of the /bed command"
+  "mm.msg.allowBed": "Allow the use of the /bed command",
+  "mm.msg.required_op_level_kgi": "Set the minimum required OP level\nto execute the /kgi command"
 }

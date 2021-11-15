@@ -1,11 +1,8 @@
 package fr.raphoulfifou.cyan.config;
 
-import java.util.Locale;
-
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 
 import fr.raphoulfifou.cyan.config.options.CyanOptions;
-import fr.raphoulfifou.cyan.util.OpLevels;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -19,7 +16,7 @@ import net.minecraft.text.TranslatableText;
 public class ClothConfigScreenFactory implements ConfigScreenFactory<Screen>
 {
 	private CyanOptions config;
-	//private CyanOptions.GeneralSettings generalSettings;
+	private CyanOptions.GeneralSettings generalSettings;
 
 	public ClothConfigScreenFactory(CyanOptions config)
 	{
@@ -38,29 +35,26 @@ public class ClothConfigScreenFactory implements ConfigScreenFactory<Screen>
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
 		ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("category.cyan.general"));
-		/*general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("options.cyan.allowBed"), generalSettings.allowBed)
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("options.cyan.allowBed"), generalSettings.getAllowBed())
 				.setTooltip(new TranslatableText("mm.msg.allowBed"))
-				.setDefaultValue(generalSettings.allowBed)
+				.setDefaultValue(generalSettings.getAllowBed())
 				.setSaveConsumer((value) -> {
-					if (generalSettings.allowBed != value) {
+					if (generalSettings.getAllowBed() != value) {
 						savingRunnable.reloadResources = true;
 					}
-					generalSettings.allowBed = value;
+					generalSettings.setAllowBed(value);
 				})
-				.build());*/
+				.build());
 
-		general.addEntry(entryBuilder.startEnumSelector(new TranslatableText("options.cyan.required_op_level_kgi"), OpLevels.class, config.getOptions().opLevels)
-				//.setTooltip(new TranslatableText("mm.msg.required_op_level_kgi"))
+		general.addEntry(entryBuilder.startIntSlider(new TranslatableText("options.cyan.required_op_level_kgi"), 0, 4, generalSettings.getRequiredOpLevelKgi())
+				.setTooltip(new TranslatableText("mm.msg.required_op_level_kgi"))
+				.setDefaultValue(generalSettings.getRequiredOpLevelKgi())
 				.setSaveConsumer((value) -> {
-					if (config.getOptions().opLevels != value) {
+					if (generalSettings.getRequiredOpLevelKgi() != value) {
 						savingRunnable.reloadResources = true;
 					}
-					config.getOptions().opLevels = value;
+					generalSettings.setRequiredOpLevelKgi(value);
 				})
-				.setEnumNameProvider((value) -> {
-					return new TranslatableText("option.cyan.opLevels." + value.name().toLowerCase(Locale.ROOT));
-				})
-				.setDefaultValue(CyanOptions.Options.DEFAULT.opLevels)
 				.build());
 
 		return builder.build();

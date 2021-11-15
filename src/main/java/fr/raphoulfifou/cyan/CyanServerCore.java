@@ -17,10 +17,11 @@ import org.apache.logging.log4j.Logger;
  * @author Raphoulfifou
  */
 @Environment(EnvType.SERVER)
-public class CyanServerCore implements DedicatedServerModInitializer {
+public class CyanServerCore implements DedicatedServerModInitializer
+{
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
-    public static final String SERVERMODNAME = "[CyanServer]";
+    public static final String SERVER_MOD_NAME = "[CyanServer]";
 
     private static CyanOptions CONFIG;
 
@@ -28,7 +29,7 @@ public class CyanServerCore implements DedicatedServerModInitializer {
     // Initialize the differents instances (here commands) when lauched on server
     public void onInitializeServer()
     {
-        loadConfig();
+        //loadConfig();
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
@@ -37,19 +38,22 @@ public class CyanServerCore implements DedicatedServerModInitializer {
             MiscellaneousCommands.register(dispatcher);
             SetCommands.register(dispatcher);
         });
-        CyanServerCore.LOGGER.info("{} Successfully initialized commands", SERVERMODNAME);
-        CyanServerCore.LOGGER.info("{} Successfully completed initialization", SERVERMODNAME);
+        CyanServerCore.LOGGER.info("{} Successfully initialized commands", SERVER_MOD_NAME);
+        CyanServerCore.LOGGER.info("{} Successfully completed initialization", SERVER_MOD_NAME);
     }
 
-    public static CyanOptions getOptions() {
-        if (CONFIG == null) {
+    public static CyanOptions getOptions()
+    {
+        if (CONFIG == null)
+        {
             CONFIG = loadConfig();
         }
 
         return CONFIG;
     }
 
-    private static CyanOptions loadConfig() {
+    private static CyanOptions loadConfig()
+    {
         return CyanOptions.load(CyanOptions.DEFAULT_FILE_NAME);
     }
 }
