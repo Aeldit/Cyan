@@ -1,18 +1,12 @@
 package fr.raphoulfifou.cyan.commands;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
-import org.jetbrains.annotations.NotNull;
-
 import fr.raphoulfifou.cyan.commands.argumentTypes.ArgumentSuggestion;
+import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -23,6 +17,11 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @since 0.0.1
@@ -86,56 +85,63 @@ public class TeleportationCommands {
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-        if (player.getSpawnPointPosition() != null)
+        if (CyanMidnightConfig.allowBed)
         {
-            double x = player.getSpawnPointPosition().getX();
-            double y = player.getSpawnPointPosition().getY();
-            double z = player.getSpawnPointPosition().getZ();
-            float yaw = player.getYaw();
-            float pitch = player.getPitch();
-
-            if(player.getSpawnPointDimension() == World.OVERWORLD)
+            if (player.getSpawnPointPosition() != null)
             {
+                double x = player.getSpawnPointPosition().getX();
+                double y = player.getSpawnPointPosition().getY();
+                double z = player.getSpawnPointPosition().getZ();
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
 
-                if (player.getWorld().getRegistryKey() != World.OVERWORLD)
+                if(player.getSpawnPointDimension() == World.OVERWORLD)
                 {
-                    player.teleport(overworld, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                    player.sendMessage(new TranslatableText("cyan.message.bed"), true);
-                    // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                    source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
+
+                    if (player.getWorld().getRegistryKey() != World.OVERWORLD)
+                    {
+                        player.teleport(overworld, x, y, z, yaw, pitch);
+                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                        player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                        // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
+                        source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
+                    }
+                    else
+                    {
+                        player.teleport(overworld, x, y, z, yaw, pitch);
+                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                        player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                    }
                 }
-                else
+
+                if(player.getSpawnPointDimension() == World.NETHER)
                 {
-                    player.teleport(overworld, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                    player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                    if (player.getWorld().getRegistryKey() != World.NETHER)
+                    {
+                        player.teleport(nether, x, y, z, yaw, pitch);
+                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                        player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                        // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
+                        source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
+                    }
+
+                    else
+                    {
+                        player.teleport(nether, x, y, z, yaw, pitch);
+                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                        player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                    }
                 }
             }
 
-            if(player.getSpawnPointDimension() == World.NETHER)
+            else
             {
-                if (player.getWorld().getRegistryKey() != World.NETHER)
-                {
-                    player.teleport(nether, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                    player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
-                    // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                    source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
-                }
-    
-                else
-                {
-                    player.teleport(nether, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                    player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
-                }
+                player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
             }
         }
-
         else
         {
-            player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
+            player.sendMessage(new TranslatableText("cyan.message.disabled.bed"), true);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -259,9 +265,16 @@ public class TeleportationCommands {
         float yaw = player.getYaw();
         float pitch = player.getPitch();
 
-        player.teleport(world, x, y, z, yaw, pitch);
-        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-        player.sendMessage(new TranslatableText("cyan.message.surface"), true);
+        if (CyanMidnightConfig.allowSurface)
+        {
+            player.teleport(world, x, y, z, yaw, pitch);
+            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+            player.sendMessage(new TranslatableText("cyan.message.surface"), true);
+        }
+        else
+        {
+            player.sendMessage(new TranslatableText("cyan.message.disabled.surface"), true);
+        }
         return Command.SINGLE_SUCCESS;
     }
 }

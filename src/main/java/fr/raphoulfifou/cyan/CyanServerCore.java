@@ -1,14 +1,14 @@
 package fr.raphoulfifou.cyan;
 
+import eu.midnightdust.lib.config.MidnightConfig;
 import fr.raphoulfifou.cyan.commands.MiscellaneousCommands;
 import fr.raphoulfifou.cyan.commands.SetCommands;
 import fr.raphoulfifou.cyan.commands.TeleportationCommands;
-import fr.raphoulfifou.cyan.config.options.CyanOptions;
+import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,19 +17,17 @@ import org.apache.logging.log4j.Logger;
  * @author Raphoulfifou
  */
 @Environment(EnvType.SERVER)
-public class CyanServerCore implements DedicatedServerModInitializer
-{
+public class CyanServerCore implements DedicatedServerModInitializer {
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
-    public static final String SERVER_MOD_NAME = "[CyanServer]";
-
-    private static CyanOptions CONFIG;
+    public static final String SERVERMODNAME = "[CyanServer]";
 
     @Override
-    // Initialize the differents instances (here commands) when lauched on server
+    // Initialize the differents parts of the mod when lauched on server
     public void onInitializeServer()
     {
-        //loadConfig();
+        MidnightConfig.init("cyan", CyanMidnightConfig.class);
+        CyanServerCore.LOGGER.info("{} Successfully initialized config", SERVERMODNAME);
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) ->
@@ -38,22 +36,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
             MiscellaneousCommands.register(dispatcher);
             SetCommands.register(dispatcher);
         });
-        CyanServerCore.LOGGER.info("{} Successfully initialized commands", SERVER_MOD_NAME);
-        CyanServerCore.LOGGER.info("{} Successfully completed initialization", SERVER_MOD_NAME);
-    }
-
-    public static CyanOptions getOptions()
-    {
-        if (CONFIG == null)
-        {
-            CONFIG = loadConfig();
-        }
-
-        return CONFIG;
-    }
-
-    private static CyanOptions loadConfig()
-    {
-        return CyanOptions.load(CyanOptions.DEFAULT_FILE_NAME);
+        CyanServerCore.LOGGER.info("{} Successfully initialized commands", SERVERMODNAME);
+        CyanServerCore.LOGGER.info("{} Successfully completed initialization", SERVERMODNAME);
     }
 }

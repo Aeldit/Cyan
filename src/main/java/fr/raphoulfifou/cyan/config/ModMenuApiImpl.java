@@ -1,19 +1,26 @@
 package fr.raphoulfifou.cyan.config;
 
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
-public class ModMenuApiImpl implements ModMenuApi {
-    
-    /*@Override
-	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		if (FabricLoader.getInstance().isModLoaded("cloth-config2")) {
-			return new ClothConfigScreenFactory(CyanClientCore.getOptions());
-		}
-		return (screen) -> null;
-	}*/
+import java.util.HashMap;
+import java.util.Map;
 
+@Environment(EnvType.CLIENT)
+public class ModMenuApiImpl implements ModMenuApi
+{
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return parent -> MidnightConfig.getScreen(parent,"cyan");
+    }
+
+    @Override
+    public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
+        HashMap<String, ConfigScreenFactory<?>> map = new HashMap<>();
+        MidnightConfig.configClass.forEach((modid, cClass) -> map.put(modid, parent -> MidnightConfig.getScreen(parent, modid)));
+        return map;
+    }
 }
