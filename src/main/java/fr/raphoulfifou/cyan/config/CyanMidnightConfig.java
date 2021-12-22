@@ -35,7 +35,7 @@ public class CyanMidnightConfig extends MidnightConfig
         write("cyan");
     }
 
-    // Ints
+    // Integers
     public static void setDistanceToEntitiesKgi(int value)
     {
         distanceToEntitiesKgi = value;

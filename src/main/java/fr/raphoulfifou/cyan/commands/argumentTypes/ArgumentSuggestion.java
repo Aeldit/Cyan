@@ -15,14 +15,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public final class ArgumentSuggestion {
-
+public final class ArgumentSuggestion
+{
+    /**
+     * @param context the command context
+     * @param builder the suggestion builder
+     * @return a suggestion with all players names (online <s>and whitelisted</s> player)
+     */
     public static CompletableFuture<Suggestions> getAllPlayerNames(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
     {
         MinecraftServer server = context.getSource().getServer();
 
         Set<String> userNames = new HashSet<>(ArgumentSuggestion.getOnlinePlayerNames(server));
-        userNames.addAll(ArgumentSuggestion.getWhitelistedNames(server));
+        //userNames.addAll(ArgumentSuggestion.getWhitelistedNames(server));
         /*if (!builder.getRemaining().isEmpty())
         {
             
@@ -32,24 +37,23 @@ public final class ArgumentSuggestion {
         return CommandSource.suggestMatching(userNames, builder);
     }
 
+    /**
+     * @param server the Minecraft server
+     * @return an array with the name of all online players names
+     */
     public static @NotNull List<String> getOnlinePlayerNames(final @NotNull MinecraftServer server)
     {
         PlayerManager playerManager = server.getPlayerManager();
         return Arrays.asList(playerManager.getPlayerNames());
     }
 
+    /**
+     * @param server server the Minecraft server
+     * @return an array with the name of all whitelisted players names
+     */
     public static @NotNull List<String> getWhitelistedNames(final @NotNull MinecraftServer server)
     {
         PlayerManager playerManager = server.getPlayerManager();
         return Arrays.asList(playerManager.getWhitelistedNames());
     }
-
-    /*public static CompletableFuture<Suggestions> getMods(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
-    {
-
-        List<ModContainer> mods = FabricLoader.getInstance().getAllMods().stream().toList();
-
-        // Return the suggestion handler
-        return CommandSource.suggestMatching(mods, builder);
-    }*/
 }
