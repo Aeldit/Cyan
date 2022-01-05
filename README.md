@@ -5,7 +5,7 @@
 #### ✅ List of commands :
 
     /bed -> teleport the player to his bed or respawn anchor, depending one which one is the respawn point
-    /bedof -> teleport the player to the bed or respawn anchor of the specified player
+    /bedof [player_name] -> teleport the player to the bed or respawn anchor of the specified player
         (only works if the player is online)
     /surface -> teleport the player to the surface
 
@@ -27,6 +27,8 @@
     /setRequiredOpLevelKgi [integer between 0 and 4 (both included)] -> change the value of the minimum required OP
         level used for the /kgi
 
+    /getCyanConfigOptions -> display the values of the different options of the mod in the player's chat
+![example_image](https://github.com/Raphoulfifou/Cyan/images/getCyanConfigOptions_example.png)
 #### ✔️ List of current aliases:
 
     /bed -> b
