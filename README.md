@@ -28,7 +28,7 @@
         level used for the /kgi
 
     /getCyanConfigOptions -> display the values of the different options of the mod in the player's chat
-![example_image](https://github.com/Raphoulfifou/Cyan/images/getCyanConfigOptions_example.png)
+![example_image](images/getCyanConfigOptions_example.png)
 #### ✔️ List of current aliases:
 
     /bed -> b
