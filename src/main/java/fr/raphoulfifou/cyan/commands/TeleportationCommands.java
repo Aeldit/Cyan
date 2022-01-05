@@ -1,13 +1,12 @@
 package fr.raphoulfifou.cyan.commands;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.commands.argumentTypes.ArgumentSuggestion;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
-import net.minecraft.command.argument.GameProfileArgumentType;
+import net.minecraft.command.argument.UuidArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,8 +18,8 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author Raphoulfifou
@@ -39,17 +38,17 @@ public class TeleportationCommands
         );
 
         dispatcher.register(CommandManager.literal("bedof")
+                .then(CommandManager.argument("playerName", UuidArgumentType.uuid())
+                        .suggests(ArgumentSuggestion::getAllPlayersUUID)
+                        .executes(TeleportationCommands::playerBed)
+                )
+        );
+        /*dispatcher.register(CommandManager.literal("bo")
                 .then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
                         .suggests(ArgumentSuggestion::getAllPlayerNames)
                         .executes(TeleportationCommands::playerBed)
                 )
-        );
-        dispatcher.register(CommandManager.literal("bo")
-                .then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
-                        .suggests(ArgumentSuggestion::getAllPlayerNames)
-                        .executes(TeleportationCommands::playerBed)
-                )
-        );
+        );*/
 
         dispatcher.register(CommandManager.literal("surface")
                 .executes(TeleportationCommands::surface)
@@ -172,15 +171,22 @@ public class TeleportationCommands
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-        Collection<GameProfile> argumentType = GameProfileArgumentType.getProfileArgument(context, "playerName");
+        /*Collection<GameProfile> argumentType = GameProfileArgumentType.getProfileArgument(context, "playerName");
         GameProfile target = argumentType.stream().findAny().orElseThrow(GameProfileArgumentType.UNKNOWN_PLAYER_EXCEPTION::create);
         ServerPlayerEntity targetPlayer = context.getSource().getServer().getPlayerManager().getPlayer(target.getId());
 
-        /*List<ServerPlayerEntity> whitelistedPlayers = context.getSource().getServer().getPlayerManager().getPlayerList();
+        List<ServerPlayerEntity> whitelistedPlayers = context.getSource().getServer().getPlayerManager().getPlayerList();
         int indexOfTargetName = whitelistedPlayers.indexOf(targetPlayer);
         ServerPlayerEntity targetInWhitelist = whitelistedPlayers.get(indexOfTargetName);*/
 
-        if (targetPlayer != null)
+        UUID argumentType = UuidArgumentType.getUuid(context, "playerName");
+        UUID targetUUID = Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(argumentType)).getUuid();
+        ServerPlayerEntity targetPlayer = context.getSource().getServer().getPlayerManager().getPlayer(targetUUID);
+
+        /*GameProfile targetWhitelist = Arrays.stream(context.getSource().getServer().getPlayerManager().getWhitelist().getNames()).
+                findAny().orElseThrow(GameProfileArgumentType.UNKNOWN_PLAYER_EXCEPTION::create);*/
+
+        if (targetUUID != null && targetPlayer != null)
         {
             if (targetPlayer.getSpawnPointDimension() == World.OVERWORLD && targetPlayer.getSpawnPointPosition() != null)
             {
@@ -210,7 +216,7 @@ public class TeleportationCommands
                 return Command.SINGLE_SUCCESS;
             } else
             {
-                player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
+                player.sendMessage(new TranslatableText("cyan.message.bedOf.notfound"), false);
             }
         } /*else if (whitelistedPlayers.contains(targetInWhitelist))
         {
@@ -240,10 +246,10 @@ public class TeleportationCommands
                 player.sendMessage(new TranslatableText("cyan.message.respawnanchorOf"), true);
                 return Command.SINGLE_SUCCESS;
             } else
-        {
-            player.sendMessage(new TranslatableText("cyan.message.bed.notfoundOf"), false);
-        }
-    }*/ else
+            {
+                player.sendMessage(new TranslatableText("cyan.message.bedOf.notfoundOf"), false);
+            }
+        }*/ else
 
         {
             player.sendMessage(new TranslatableText("cyan.message.playerNotFound"), false);

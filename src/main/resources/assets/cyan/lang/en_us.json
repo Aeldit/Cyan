@@ -8,6 +8,7 @@
   "cyan.message.bed": "§6You have been teleported to your bed",
   "cyan.message.respawnanchor": "§6You have been teleported to your respawn anchor",
   "cyan.message.bed.notfound": "§cYou don't have an attributed bed or respawn anchor",
+  "cyan.message.bedOf.notfound": "§cThat player doesn't have a bed or a respawn anchor",
   "cyan.message.surface": "§6You have been teleported to the surface",
   "cyan.message.kgi": "§cGround items have been removed",
   "cyan.message.kgir": "§cGround items have been removed in a radius of §c%d §cchunks",
