@@ -14,11 +14,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @since 0.0.1
  * @author Raphoulfifou
+ * @since 0.0.1
  */
 @Environment(EnvType.SERVER)
-public class CyanServerCore implements DedicatedServerModInitializer {
+public class CyanServerCore implements DedicatedServerModInitializer
+{
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final String SERVERMODNAME = "[CyanServer]";
