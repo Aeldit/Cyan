@@ -47,5 +47,5 @@
     - /killgrounditems -> kgi
 
 >### ❗ Important :
-
+>
 >If you are not using this mod on client but only on server side, download the resource pack for messages translations (Cyan 1.1X.x located in this mod's github repository)
