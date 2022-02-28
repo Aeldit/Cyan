@@ -14,11 +14,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @since 0.0.1
  * @author Raphoulfifou
+ * @since 0.0.1
  */
 @Environment(EnvType.CLIENT)
-public class CyanClientCore implements ClientModInitializer {
+public class CyanClientCore implements ClientModInitializer
+{
+
     public static final Logger LOGGER = LogManager.getLogger(CyanServerCore.MODID);
     public static final String CLIENTMODNAME = "[CyanClient]";
 
@@ -40,4 +42,5 @@ public class CyanClientCore implements ClientModInitializer {
         CyanClientCore.LOGGER.info("{} Successfully initialized commands", CLIENTMODNAME);
         CyanClientCore.LOGGER.info("{} Successfully completed initialization", CLIENTMODNAME);
     }
+
 }

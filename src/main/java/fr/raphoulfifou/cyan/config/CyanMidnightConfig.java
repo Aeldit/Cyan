@@ -4,18 +4,20 @@ import eu.midnightdust.lib.config.MidnightConfig;
 
 public class CyanMidnightConfig extends MidnightConfig
 {
-    @Comment public static Comment allowOptions;
+
+    @Comment
+    public static Comment allowOptions;
     @Entry
     public static boolean allowBed = true;
     @Entry
     public static boolean allowKgi = true;
     @Entry
     public static boolean allowSurface = true;
-
-    @Comment public static Comment intOptions;
-    @Entry(min=1,max=64)
+    @Comment
+    public static Comment intOptions;
+    @Entry(min = 1, max = 64)
     public static int distanceToEntitiesKgi = 14;
-    @Entry(min=0,max=4)
+    @Entry(min = 0, max = 4)
     public static int minOpLevelExeKgi = 4;
 
     // Booleans
@@ -24,11 +26,13 @@ public class CyanMidnightConfig extends MidnightConfig
         allowBed = value;
         write("cyan");
     }
+
     public static void setAllowKgi(boolean value)
     {
         allowKgi = value;
         write("cyan");
     }
+
     public static void setAllowSurface(boolean value)
     {
         allowSurface = value;
@@ -41,9 +45,11 @@ public class CyanMidnightConfig extends MidnightConfig
         distanceToEntitiesKgi = value;
         write("cyan");
     }
+
     public static void setMinOpLevelExeKgi(int value)
     {
         minOpLevelExeKgi = value;
         write("cyan");
     }
+
 }

@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 @Environment(EnvType.SERVER)
 public class CyanServerCore implements DedicatedServerModInitializer
 {
+
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final String SERVERMODNAME = "[CyanServer]";
@@ -42,4 +43,5 @@ public class CyanServerCore implements DedicatedServerModInitializer
         CyanServerCore.LOGGER.info("{} Successfully initialized commands", SERVERMODNAME);
         CyanServerCore.LOGGER.info("{} Successfully completed initialization", SERVERMODNAME);
     }
+
 }

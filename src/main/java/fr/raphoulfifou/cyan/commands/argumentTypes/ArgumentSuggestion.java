@@ -15,9 +15,11 @@ import java.util.concurrent.CompletableFuture;
 
 public final class ArgumentSuggestion
 {
+
     /**
      * @param context the command context
      * @param builder the suggestion builder
+     *
      * @return a suggestion with all players names (online <s>and whitelisted</s> player)
      */
     public static CompletableFuture<Suggestions> getAllPlayersNames(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
@@ -38,6 +40,7 @@ public final class ArgumentSuggestion
     /**
      * @param context the command context
      * @param builder the suggestion builder
+     *
      * @return a suggestion with all players UUIDs (online and whitelisted player)
      */
     public static CompletableFuture<Suggestions> getAllPlayersUUID(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
@@ -57,6 +60,7 @@ public final class ArgumentSuggestion
 
     /**
      * @param server the Minecraft server
+     *
      * @return an array with the name of all online players names
      */
     public static @NotNull List<String> getOnlinePlayerNames(final @NotNull MinecraftServer server)
@@ -67,6 +71,7 @@ public final class ArgumentSuggestion
 
     /**
      * @param server server the Minecraft server
+     *
      * @return an array with the name of all whitelisted players names
      */
     public static @NotNull List<String> getWhitelistedNames(final @NotNull MinecraftServer server)
@@ -77,6 +82,7 @@ public final class ArgumentSuggestion
 
     /**
      * @param server the Minecraft server
+     *
      * @return an array with the name of all online players UUIDs
      */
     public static @NotNull List<String> getOnlinePlayersUUID(final @NotNull MinecraftServer server)
@@ -94,6 +100,7 @@ public final class ArgumentSuggestion
 
     /**
      * @param server server the Minecraft server
+     *
      * @return an array with the name of all whitelisted players names
      */
     public static @NotNull List<String> getWhitelistedUUIDs(final @NotNull MinecraftServer server)
@@ -108,4 +115,5 @@ public final class ArgumentSuggestion
         }
         return newL;
     }
+
 }

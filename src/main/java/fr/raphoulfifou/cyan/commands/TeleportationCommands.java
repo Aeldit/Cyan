@@ -285,4 +285,5 @@ public class TeleportationCommands
         }
         return Command.SINGLE_SUCCESS;
     }
+
 }

@@ -14,16 +14,17 @@ import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @since 0.2.6
  * @author Raphoulfifou
+ * @since 0.2.6
  */
 public class SetCommands
 {
+
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("setAllowBed")
                 .then(CommandManager.argument("bool", BoolArgumentType.bool())
-                    .executes(SetCommands::setAllowBed)
+                        .executes(SetCommands::setAllowBed)
                 )
         );
         dispatcher.register(CommandManager.literal("setAllowKgi")
@@ -68,12 +69,14 @@ public class SetCommands
         boolean arg = BoolArgumentType.getBool(context, "bool");
 
         // If OP with minimum defined level
-        if(player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
             CyanMidnightConfig.setAllowBed(arg);
             player.sendMessage(new TranslatableText("cyan.message.setAllowBed", Boolean.toString(arg)), true);
         }
         // If not OP or not OP with max level
-        else {
+        else
+        {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
         }
         return Command.SINGLE_SUCCESS;
@@ -98,12 +101,14 @@ public class SetCommands
         boolean arg = BoolArgumentType.getBool(context, "bool");
 
         // If OP with minimum defined level
-        if(player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
             CyanMidnightConfig.setAllowKgi(arg);
             player.sendMessage(new TranslatableText("cyan.message.setAllowKgi", Boolean.toString(arg)), true);
         }
         // If not OP or not OP with max level
-        else {
+        else
+        {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
         }
         return Command.SINGLE_SUCCESS;
@@ -128,12 +133,14 @@ public class SetCommands
         boolean arg = BoolArgumentType.getBool(context, "bool");
 
         // If OP with minimum defined level
-        if(player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
             CyanMidnightConfig.setAllowSurface(arg);
             player.sendMessage(new TranslatableText("cyan.message.setAllowSurface", Boolean.toString(arg)), true);
         }
         // If not OP or not OP with max level
-        else {
+        else
+        {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
         }
         return Command.SINGLE_SUCCESS;
@@ -163,12 +170,14 @@ public class SetCommands
             return 0;
         }
         // If OP with minimum defined level
-        if(player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
             CyanMidnightConfig.setDistanceToEntitiesKgi(arg);
             player.sendMessage(new TranslatableText("cyan.message.setDistanceToEntitiesKgi", arg), true);
         }
         // If not OP or not OP with max level
-        else {
+        else
+        {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
         }
         return Command.SINGLE_SUCCESS;
@@ -186,7 +195,8 @@ public class SetCommands
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setRequiredOpLevelKgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int setRequiredOpLevelKgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         int arg = IntegerArgumentType.getInteger(context, "int");
@@ -200,14 +210,17 @@ public class SetCommands
         }
 
         // If OP with minimum defined level
-        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
             CyanMidnightConfig.setMinOpLevelExeKgi(arg);
             player.sendMessage(new TranslatableText("cyan.message.setRequiredOpLevelKgi", arg), true);
         }
         // If not OP or not OP with defined level
-        else {
+        else
+        {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
         }
         return Command.SINGLE_SUCCESS;
     }
+
 }

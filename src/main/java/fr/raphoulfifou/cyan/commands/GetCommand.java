@@ -11,12 +11,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 
+
 /**
- * @since 0.4.1
  * @author Raphoulfifou
+ * @since 0.4.1
  */
 public class GetCommand
 {
+
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("getCyanConfigOptions")
@@ -36,6 +38,7 @@ public class GetCommand
         ServerPlayerEntity player = source.getPlayer();
 
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.header"), false);
+
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowBed",
                 Boolean.toString(CyanMidnightConfig.allowBed)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowKgi",
@@ -50,4 +53,5 @@ public class GetCommand
 
         return Command.SINGLE_SUCCESS;
     }
+
 }
