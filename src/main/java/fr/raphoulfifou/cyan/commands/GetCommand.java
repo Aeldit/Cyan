@@ -9,6 +9,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -18,6 +19,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GetCommand
 {
+
+    static Formatting a_c = Formatting.GREEN;
+    static Formatting b_c = Formatting.GREEN;
+    static Formatting c_c = Formatting.GREEN;
 
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
@@ -37,19 +42,27 @@ public class GetCommand
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
+        if (! CyanMidnightConfig.allowBed)
+        {
+            a_c = Formatting.RED;
+        }
+        if (! CyanMidnightConfig.allowKgi)
+        {
+            b_c = Formatting.RED;
+        }
+        if (! CyanMidnightConfig.allowSurface)
+        {
+            c_c = Formatting.RED;
+        }
+
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.header"), false);
 
-        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowBed",
-                Boolean.toString(CyanMidnightConfig.allowBed)), false);
-        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowKgi",
-                Boolean.toString(CyanMidnightConfig.allowKgi)), false);
-        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowSurface",
-                Boolean.toString(CyanMidnightConfig.allowSurface)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowBed", a_c + Boolean.toString(CyanMidnightConfig.allowBed)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowKgi", b_c + Boolean.toString(CyanMidnightConfig.allowKgi)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowSurface", c_c + Boolean.toString(CyanMidnightConfig.allowSurface)), false);
 
-        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.distanceToEntitiesKgi",
-                Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi)), false);
-        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.minOpLevelExeKgi",
-                Integer.toString(CyanMidnightConfig.minOpLevelExeKgi)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.distanceToEntitiesKgi", Formatting.GREEN + Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.minOpLevelExeKgi", Formatting.GREEN + Integer.toString(CyanMidnightConfig.minOpLevelExeKgi)), false);
 
         return Command.SINGLE_SUCCESS;
     }

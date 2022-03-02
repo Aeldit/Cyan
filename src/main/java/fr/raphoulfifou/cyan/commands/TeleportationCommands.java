@@ -106,9 +106,7 @@ public class TeleportationCommands
                         player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                         player.sendMessage(new TranslatableText("cyan.message.bed"), true);
                     }
-                }
-
-                if (player.getSpawnPointDimension() == World.NETHER)
+                } else if (player.getSpawnPointDimension() == World.NETHER)
                 {
                     if (player.getWorld().getRegistryKey() != World.NETHER)
                     {
@@ -127,10 +125,12 @@ public class TeleportationCommands
             } else
             {
                 player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
+                return 0;
             }
         } else
         {
             player.sendMessage(new TranslatableText("cyan.message.disabled.bed"), true);
+            return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -253,6 +253,7 @@ public class TeleportationCommands
 
         {
             player.sendMessage(new TranslatableText("cyan.message.playerNotFound"), false);
+            return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -282,6 +283,7 @@ public class TeleportationCommands
         } else
         {
             player.sendMessage(new TranslatableText("cyan.message.disabled.surface"), true);
+            return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
