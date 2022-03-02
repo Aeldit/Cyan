@@ -28,6 +28,7 @@
   "cyan.message.setAllowSurface": "AllowSurface option have been set to %s",
   "cyan.message.setDistanceToEntitiesKgi": "DistanceToEntitiesKgi option have been set to %d",
   "cyan.message.setRequiredOpLevelKgi": "RequiredOpLevelKgi option have been set to %d",
+  "cyan.message.setUseOneLanguage": "UseOneLanguage option have been set to %s",
   "cyan.message.getCfgOptions.header": "\n§6| Options defined for the Cyan mod :",
   "cyan.message.getCfgOptions.allowBed": "\n§6|§r /bed allowed : %s",
   "cyan.message.getCfgOptions.allowKgi": "\n§6|§r /kgi allowed : %s",
@@ -58,5 +59,8 @@
   "cyan.midnightconfig.allowSurface.tooltip": "Allow the use of /surface",
   "cyan.midnightconfig.intOptions": "--- Defines integer option ---",
   "cyan.midnightconfig.distanceToEntitiesKgi": "Distance to entities used by /kgi",
-  "cyan.midnightconfig.distanceToEntitiesKgi.tooltip": "Defines the distance in chunks in which entities will be removed"
+  "cyan.midnightconfig.distanceToEntitiesKgi.tooltip": "Defines the distance in chunks in which entities will be removed",
+  "cyan.midnightconfig.otherOptions": "--- Other Options ---",
+  "cyan.midnightconfig.useOneLanguage": "Uses one language and not the languages files",
+  "cyan.midnightconfig.useOneLanguage.tooltip": "Defines wether the language files will be use, or if only one will be"
 }

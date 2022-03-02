@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "cyan",
   "version": "${version}",
-
   "name": "Cyan",
   "description": "This mod adds a few commands to minecraft",
   "authors": [
@@ -13,10 +12,8 @@
     "sources": "https://github.com/Raphoulfifou/Cyan",
     "issues": "https://github.com/Raphoulfifou/Cyan/issues"
   },
-
   "license": "CC0-1.0",
   "icon": "assets/cyan/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "server": [
@@ -29,9 +26,8 @@
       "fr.raphoulfifou.cyan.config.ModMenuApiImpl"
     ]
   },
-
   "depends": {
-    "fabricloader": ">=0.12.10",
+    "fabricloader": ">=0.13.3",
     "fabric": "*",
     "minecraft": "1.18.x",
     "java": ">=17"

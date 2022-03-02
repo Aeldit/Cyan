@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
+import fr.raphoulfifou.cyan.util.ChatUtil;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,6 +36,11 @@ public class SetCommands
         dispatcher.register(CommandManager.literal("setAllowSurface")
                 .then(CommandManager.argument("bool", BoolArgumentType.bool())
                         .executes(SetCommands::setAllowSurface)
+                )
+        );
+        dispatcher.register(CommandManager.literal("setUseOneLanguage")
+                .then(CommandManager.argument("bool", BoolArgumentType.bool())
+                        .executes(SetCommands::setUseOneLanguage)
                 )
         );
 
@@ -78,6 +84,7 @@ public class SetCommands
         else
         {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
+            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -110,6 +117,7 @@ public class SetCommands
         else
         {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
+            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -142,6 +150,7 @@ public class SetCommands
         else
         {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
+            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -179,6 +188,7 @@ public class SetCommands
         else
         {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
+            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -219,6 +229,38 @@ public class SetCommands
         else
         {
             source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
+            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/setRequiredOpLevelKgi (int)"</p>
+     *
+     * <ul>If the player has a permission level equal to 4
+     *      <li>-> Set the minimum OP level required to execute the /kgi command</li>
+     * </ul>
+     * <ul>Else:
+     *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
+     * </ul>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
+     */
+    public static int setUseOneLanguage(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+        boolean arg = BoolArgumentType.getBool(context, "bool");
+
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
+            CyanMidnightConfig.setUseOneLanguage(arg);
+            ChatUtil.sendPlayerMessage(player, "UseOneLanguage option have been set to %s", arg, "cyan.message.setUseOneLanguage", true);
+            //player.sendMessage(new TranslatableText("cyan.message.setUseOneLanguage", arg), true);
+        } else
+        {
+            source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
+            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
         }
         return Command.SINGLE_SUCCESS;
     }

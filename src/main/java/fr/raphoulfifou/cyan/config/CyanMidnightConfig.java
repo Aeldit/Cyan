@@ -20,6 +20,11 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry(min = 0, max = 4)
     public static int minOpLevelExeKgi = 4;
 
+    @Comment
+    public static Comment otherOptions;
+    @Entry
+    public static boolean useOneLanguage = true;
+
     // Booleans
     public static void setAllowBed(boolean value)
     {
@@ -36,6 +41,12 @@ public class CyanMidnightConfig extends MidnightConfig
     public static void setAllowSurface(boolean value)
     {
         allowSurface = value;
+        write("cyan");
+    }
+
+    public static void setUseOneLanguage(boolean value)
+    {
+        useOneLanguage = value;
         write("cyan");
     }
 
