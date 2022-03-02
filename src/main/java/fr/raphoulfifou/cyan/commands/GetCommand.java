@@ -23,6 +23,9 @@ public class GetCommand
     static Formatting a_c = Formatting.GREEN;
     static Formatting b_c = Formatting.GREEN;
     static Formatting c_c = Formatting.GREEN;
+    static Formatting d_c = Formatting.GREEN;
+    static Formatting green = Formatting.GREEN;
+    static Formatting red = Formatting.RED;
 
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
@@ -44,15 +47,31 @@ public class GetCommand
 
         if (! CyanMidnightConfig.allowBed)
         {
-            a_c = Formatting.RED;
+            a_c = red;
+        } else
+        {
+            a_c = green;
         }
         if (! CyanMidnightConfig.allowKgi)
         {
-            b_c = Formatting.RED;
+            b_c = red;
+        } else
+        {
+            b_c = green;
         }
         if (! CyanMidnightConfig.allowSurface)
         {
-            c_c = Formatting.RED;
+            c_c = red;
+        } else
+        {
+            c_c = green;
+        }
+        if (! CyanMidnightConfig.useOneLanguage)
+        {
+            d_c = red;
+        } else
+        {
+            d_c = green;
         }
 
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.header"), false);
@@ -60,6 +79,7 @@ public class GetCommand
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowBed", a_c + Boolean.toString(CyanMidnightConfig.allowBed)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowKgi", b_c + Boolean.toString(CyanMidnightConfig.allowKgi)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowSurface", c_c + Boolean.toString(CyanMidnightConfig.allowSurface)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.getUseOneLanguage", d_c + Boolean.toString(CyanMidnightConfig.useOneLanguage)), false);
 
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.distanceToEntitiesKgi", Formatting.GREEN + Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.minOpLevelExeKgi", Formatting.GREEN + Integer.toString(CyanMidnightConfig.minOpLevelExeKgi)), false);
