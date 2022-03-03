@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.UUID;
 
+import static fr.raphoulfifou.cyan.util.ChatUtil.*;
+
 /**
  * @author Raphoulfifou
  * @since 0.0.1
@@ -97,14 +99,22 @@ public class TeleportationCommands
                     {
                         player.teleport(overworld, x, y, z, yaw, pitch);
                         player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                        sendPlayerMessage(player,
+                                line_start + "§6You have been teleported to your bed",
+                                null,
+                                "cyan.message.bed",
+                                true);
                         // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
                         source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
                     } else
                     {
                         player.teleport(overworld, x, y, z, yaw, pitch);
                         player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                        sendPlayerMessage(player,
+                                line_start + "§6You have been teleported to your bed",
+                                null,
+                                "cyan.message.bed",
+                                true);
                     }
                 } else if (player.getSpawnPointDimension() == World.NETHER)
                 {
@@ -112,24 +122,39 @@ public class TeleportationCommands
                     {
                         player.teleport(nether, x, y, z, yaw, pitch);
                         player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
-                        // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
+                        sendPlayerMessage(player,
+                                line_start + "§6You have been teleported to your respawn anchor",
+                                null,
+                                "cyan.message.respawnanchor",
+                                true);
                         source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
                     } else
                     {
                         player.teleport(nether, x, y, z, yaw, pitch);
                         player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                        sendPlayerMessage(player,
+                                line_start + "§6You have been teleported to your respawn anchor",
+                                null,
+                                "cyan.message.respawnanchor",
+                                true);
                     }
                 }
             } else
             {
-                player.sendMessage(new TranslatableText("cyan.message.bed.notfound"), false);
+                sendPlayerMessage(player,
+                        line_start_error + "§cYou don't have an attributed bed or respawn anchor",
+                        null,
+                        "cyan.message.bed.notfound",
+                        false);
                 return 0;
             }
         } else
         {
-            player.sendMessage(new TranslatableText("cyan.message.disabled.bed"), true);
+            sendPlayerMessage(player,
+                    line_start_error + "The /bed command is disabled. To enable it, enter '/setAllowBed true' in chat",
+                    null,
+                    "cyan.message.disabled.bed",
+                    false);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -279,10 +304,18 @@ public class TeleportationCommands
         {
             player.teleport(world, x, y, z, yaw, pitch);
             player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-            player.sendMessage(new TranslatableText("cyan.message.surface"), true);
+            sendPlayerMessage(player,
+                    line_start + "§6You have been teleported to the surface",
+                    null,
+                    "cyan.message.surface",
+                    true);
         } else
         {
-            player.sendMessage(new TranslatableText("cyan.message.disabled.surface"), true);
+            sendPlayerMessage(player,
+                    line_start_error + "The /surface command is disabled. To enable it, enter '/setAllowSurface true' in chat",
+                    null,
+                    "cyan.message.disabled.surface",
+                    false);
             return 0;
         }
         return Command.SINGLE_SUCCESS;

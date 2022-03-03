@@ -5,6 +5,7 @@
   "cyan.message.disabled.bed": "La commande /bed est désactivée.\nPour l'activer, entrez '/setAllowBed true' dans le chat",
   "cyan.message.disabled.kgi": "La commande /kgi est désactivée.\nPour l'activer, entrez '/setAllowKgi true' dans le chat",
   "cyan.message.disabled.surface": "La commande /surface est désactivée.\nPour l'activer, entrez '/setAllowSurface true' dans le chat",
+  "cyan.message.only_serv": "§cCette commande ne peut être utilisée que sur un server",
   "cyan.message.bed": "§6Vous avez été téléporté à votre lit",
   "cyan.message.respawnanchor": "§6Vous avez été téléporté à votre ancre de réaparition",
   "cyan.message.bed.notfound": "§cVous n'avez pas de lit ou d'ancre de réaparition attribué",
@@ -61,6 +62,8 @@
   "cyan.midnightconfig.intOptions": "--- Définit les options des nombres ---",
   "cyan.midnightconfig.distanceToEntitiesKgi": "Distances des entitées utilisé par le /kgi",
   "cyan.midnightconfig.distanceToEntitiesKgi.tooltip": "Définit en chunks la distance dans laquelle les entités seront supprimées",
+  "cyan.midnightconfig.minOpLevelExeKgi": "Niveau OP minimum pour /kgi",
+  "cyan.midnightconfig.minOpLevelExeKgi.tooltip": "Le niveau OP minimum requis pour exécuter la commande /kgi",
   "cyan.midnightconfig.otherOptions": "--- Autre Options ---",
   "cyan.midnightconfig.useOneLanguage": "Utiliser seulement une langue et pas les fichiers de traduction",
   "cyan.midnightconfig.useOneLanguage.tooltip": "Définit si les fichiers de traduction seront utilisés ou pas"

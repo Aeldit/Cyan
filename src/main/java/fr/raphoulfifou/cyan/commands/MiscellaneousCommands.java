@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+import static fr.raphoulfifou.cyan.util.ChatUtil.*;
+
 /**
  * @author Raphoulfifou
  * @since 0.0.2
@@ -71,18 +73,30 @@ public class MiscellaneousCommands
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
             {
-                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]",
-                        CyanMidnightConfig.distanceToEntitiesKgi * 16)); // Default distance is 14 chunks, but can be changed in settings
-                source.getPlayer().sendMessage(new TranslatableText("cyan.message.kgi"), true);
+                // Default distance is 14 chunks, but can be changed in settings
+                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]", CyanMidnightConfig.distanceToEntitiesKgi * 16));
+                sendPlayerMessage(player,
+                        "§cGround items have been removed",
+                        null,
+                        "cyan.message.kgi",
+                        true);
             } else
             {
-                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]",
-                        CyanMidnightConfig.distanceToEntitiesKgi * 16));
-                source.sendFeedback(new TranslatableText("cyan.message.kgi"), true);
+                sendPlayerMessage(player,
+                        notOP,
+                        null,
+                        "cyan.message.notOp",
+                        true);
+                return 0;
             }
         } else
         {
-            player.sendMessage(new TranslatableText("cyan.message.disabled.kgi"), true);
+            sendPlayerMessage(player,
+                    "§cThe /kgi command is disabled. To enable it, enter '/setAllowKgi true' in chat",
+                    Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
+                    "cyan.message.disabled.kgi",
+                    false);
+            return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -107,20 +121,31 @@ public class MiscellaneousCommands
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+            if (CyanMidnightConfig.allowKgi)
             {
-                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]",
-                        arg * 16));   // Default distance is 14 chunks, but can be changed in settings or with commands
-                source.getPlayer().sendMessage(new TranslatableText("cyan.message.kgir", arg), true);
+                // The default distance is 14 chunks, but it can be changed in the config file or with commands
+                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]", arg * 16));
+                sendPlayerMessage(player,
+                        "§cGround items have been removed in a radius of %s §cchunks",
+                        green + Integer.toString(arg),
+                        "cyan.message.kgir",
+                        true);
             } else
             {
-                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]",
-                        arg * 16));
-                source.sendFeedback(new TranslatableText("cyan.message.kgir", arg), true);
+                sendPlayerMessage(player,
+                        "§cThe /kgi command is disabled. To enable it, enter '/setAllowKgi true' in chat",
+                        Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
+                        "cyan.message.disabled.kgi",
+                        false);
+                return 0;
             }
         } else
         {
-            player.sendMessage(new TranslatableText("cyan.message.disabled.kgi"), true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -163,12 +188,20 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player.hasPermissionLevel(4))
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
-            source.getPlayer().sendMessage(new TranslatableText("cyan.message.ops", Arrays.toString(source.getServer().getPlayerManager().getOpNames())), false);
+            sendPlayerMessage(player,
+                    line_start + "The op players are :\n%s",
+                    Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
+                    "cyan.message.ops",
+                    false);
         } else
         {
-            player.sendMessage(new TranslatableText("cyan.message.notOp"), true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -178,6 +211,7 @@ public class MiscellaneousCommands
      * <p>Called when a player execute the command "/mods"</p>
      * <p>
      * A list of all mods installed on the server
+     * TODO -> make work
      *
      * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */

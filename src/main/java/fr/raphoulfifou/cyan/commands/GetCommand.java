@@ -12,6 +12,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.raphoulfifou.cyan.util.ChatUtil.green;
+import static fr.raphoulfifou.cyan.util.ChatUtil.red;
 
 /**
  * @author Raphoulfifou
@@ -24,8 +26,6 @@ public class GetCommand
     static Formatting b_c = Formatting.GREEN;
     static Formatting c_c = Formatting.GREEN;
     static Formatting d_c = Formatting.GREEN;
-    static Formatting green = Formatting.GREEN;
-    static Formatting red = Formatting.RED;
 
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
@@ -66,7 +66,7 @@ public class GetCommand
         {
             c_c = green;
         }
-        if (! CyanMidnightConfig.useOneLanguage)
+        if (CyanMidnightConfig.useOneLanguage)
         {
             d_c = red;
         } else
@@ -79,7 +79,7 @@ public class GetCommand
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowBed", a_c + Boolean.toString(CyanMidnightConfig.allowBed)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowKgi", b_c + Boolean.toString(CyanMidnightConfig.allowKgi)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.allowSurface", c_c + Boolean.toString(CyanMidnightConfig.allowSurface)), false);
-        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.getUseOneLanguage", d_c + Boolean.toString(CyanMidnightConfig.useOneLanguage)), false);
+        player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.getUseOneLanguage", d_c + Boolean.toString(! CyanMidnightConfig.useOneLanguage)), false);
 
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.distanceToEntitiesKgi", Formatting.GREEN + Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi)), false);
         player.sendMessage(new TranslatableText("cyan.message.getCfgOptions.minOpLevelExeKgi", Formatting.GREEN + Integer.toString(CyanMidnightConfig.minOpLevelExeKgi)), false);

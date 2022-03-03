@@ -7,13 +7,14 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
-import fr.raphoulfifou.cyan.util.ChatUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
+
+import static fr.raphoulfifou.cyan.util.ChatUtil.*;
 
 /**
  * @author Raphoulfifou
@@ -21,8 +22,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SetCommands
 {
-
-    static Formatting color = Formatting.GREEN;
 
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
@@ -60,7 +59,7 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/setAllowBed (true|false)"</p>
+     * <p>Called when a player execute the command "/setAllowBed [true | false]"</p>
      *
      * <ul>If the player has a permission level equal to 4
      *      <li>-> Enables/disables the use of the /bed command</li>
@@ -79,29 +78,37 @@ public class SetCommands
 
         if (arg)
         {
-            color = Formatting.GREEN;
+            color = green;
         } else
         {
-            color = Formatting.RED;
+            color = red;
         }
 
         // If OP with minimum defined level
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             CyanMidnightConfig.setAllowBed(arg);
-            player.sendMessage(new TranslatableText("cyan.message.setAllowBed", color + Boolean.toString(arg)), false);
+            sendPlayerMessage(player,
+                    line_start + "§3setAllowBed option have been set to %s",
+                    color + Boolean.toString(arg),
+                    "cyan.message.setAllowBed",
+                    false);
         }
         // If not OP or not OP with max level
         else
         {
-            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
 
     /**
-     * <p>Called when a player execute the command "/setAllowKgi (true|false)"</p>
+     * <p>Called when a player execute the command "/setAllowKgi [true | false]"</p>
      *
      * <ul>If the player has a permission level equal to 4
      *      <li>-> Enables/disables the use of the /kgi command</li>
@@ -120,26 +127,34 @@ public class SetCommands
 
         if (arg)
         {
-            color = Formatting.GREEN;
+            color = green;
         } else
         {
-            color = Formatting.RED;
+            color = red;
         }
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             CyanMidnightConfig.setAllowKgi(arg);
-            player.sendMessage(new TranslatableText("cyan.message.setAllowKgi", color + Boolean.toString(arg)), false);
+            sendPlayerMessage(player,
+                    line_start + "§3setAllowKgi option have been set to %s",
+                    color + Boolean.toString(arg),
+                    "cyan.message.setAllowKgi",
+                    false);
         } else
         {
-            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
 
     /**
-     * <p>Called when a player execute the command "/setAllowSurface (true|false)"</p>
+     * <p>Called when a player execute the command "/setAllowSurface [true | false]"</p>
      *
      * <ul>If the player has a permission level equal to 4
      *      <li>-> Enables/disables the use of the /surface command</li>
@@ -158,19 +173,27 @@ public class SetCommands
 
         if (arg)
         {
-            color = Formatting.GREEN;
+            color = green;
         } else
         {
-            color = Formatting.RED;
+            color = red;
         }
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             CyanMidnightConfig.setAllowSurface(arg);
-            player.sendMessage(new TranslatableText("cyan.message.setAllowSurface", color + Boolean.toString(arg)), false);
+            sendPlayerMessage(player,
+                    line_start + "§3AllowSurface option have been set to %s",
+                    color + Boolean.toString(arg),
+                    "cyan.message.setAllowSurface",
+                    false);
         } else
         {
-            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -196,18 +219,29 @@ public class SetCommands
 
         if (arg < 1 || arg > 64)
         {
-            player.sendMessage(new TranslatableText("cyan.message.incorrectIntKgi"), false);
+            sendPlayerMessage(player,
+                    line_start_error + "The distance must be in [1;64]",
+                    null,
+                    "cyan.message.incorrectIntKgi",
+                    false);
             return 0;
         }
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             CyanMidnightConfig.setDistanceToEntitiesKgi(arg);
-            player.sendMessage(new TranslatableText("cyan.message.setDistanceToEntitiesKgi", Formatting.GREEN + Integer.toString(arg)), false);
+            sendPlayerMessage(player,
+                    line_start + "§3DistanceToEntitiesKgi option have been set to %s",
+                    green + Integer.toString(arg),
+                    "cyan.message.setDistanceToEntitiesKgi",
+                    false);
         } else
         {
-            source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
-            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -235,17 +269,29 @@ public class SetCommands
         // stops here
         if (arg < 0 || arg > 4)
         {
-            player.sendMessage(new TranslatableText("cyan.message.incorrectIntOp"), false);
+            sendPlayerMessage(player,
+                    line_start_error + "The OP level must be [0;1;2;3 or 4]",
+                    null,
+                    "cyan.message.incorrectIntOp",
+                    false);
             return 0;
         }
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             CyanMidnightConfig.setMinOpLevelExeKgi(arg);
-            player.sendMessage(new TranslatableText("cyan.message.setRequiredOpLevelKgi", Formatting.GREEN + Integer.toString(arg)), false);
+            sendPlayerMessage(player,
+                    line_start + "§3RequiredOpLevelKgi option have been set to %s",
+                    green + Integer.toString(arg),
+                    "cyan.message.setRequiredOpLevelKgi",
+                    false);
         } else
         {
-            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -269,14 +315,40 @@ public class SetCommands
         ServerPlayerEntity player = source.getPlayer();
         boolean arg = BoolArgumentType.getBool(context, "bool");
 
-        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        if (arg)
         {
-            CyanMidnightConfig.setUseOneLanguage(arg);
-            ChatUtil.sendPlayerMessage(player, "UseOneLanguage option have been set to %s", Formatting.GREEN + String.valueOf(arg), "cyan.message.setUseOneLanguage", false);
+            color = green;
         } else
         {
-            source.sendFeedback(new TranslatableText("cyan.message.notOp"), true);
-            ChatUtil.sendPlayerMessage(player, "§cYou don't have the required permission to do that", null, "cyan.message.notOp", true);
+            color = red;
+        }
+
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
+        {
+            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+            {
+                CyanMidnightConfig.setUseOneLanguage(arg);
+                sendPlayerMessage(player,
+                        line_start + "§3UseOneLanguage option have been set to %s",
+                        color + String.valueOf(arg),
+                        "cyan.message.setUseOneLanguage",
+                        false);
+            } else
+            {
+                sendPlayerMessage(player,
+                        notOP,
+                        null,
+                        "cyan.message.notOp",
+                        true);
+                return 0;
+            }
+        } else
+        {
+            sendPlayerMessage(player,
+                    "§cThis command can only be used on servers",
+                    null,
+                    "cyan.message.only_serv",
+                    true);
             return 0;
         }
         return Command.SINGLE_SUCCESS;

@@ -1,6 +1,8 @@
 package fr.raphoulfifou.cyan.config;
 
 import eu.midnightdust.lib.config.MidnightConfig;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class CyanMidnightConfig extends MidnightConfig
 {
@@ -44,6 +46,7 @@ public class CyanMidnightConfig extends MidnightConfig
         write("cyan");
     }
 
+    @Environment(EnvType.SERVER)
     public static void setUseOneLanguage(boolean value)
     {
         useOneLanguage = value;
