@@ -15,10 +15,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-import static fr.raphoulfifou.cyan.util.ChatUtil.*;
+import static fr.raphoulfifou.cyan.util.ChatConstants.*;
+import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
- * @author Raphoulfifou
  * @since 0.0.2
  */
 public class MiscellaneousCommands
@@ -79,14 +79,16 @@ public class MiscellaneousCommands
                         "§cGround items have been removed",
                         null,
                         "cyan.message.kgi",
-                        true);
+                        true,
+                        CyanMidnightConfig.useOneLanguage);
             } else
             {
                 sendPlayerMessage(player,
                         notOP,
                         null,
                         "cyan.message.notOp",
-                        true);
+                        true,
+                        CyanMidnightConfig.useOneLanguage);
                 return 0;
             }
         } else
@@ -95,7 +97,8 @@ public class MiscellaneousCommands
                     "§cThe /kgi command is disabled. To enable it, enter '/setAllowKgi true' in chat",
                     Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
                     "cyan.message.disabled.kgi",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -129,14 +132,16 @@ public class MiscellaneousCommands
                         "§cGround items have been removed in a radius of %s §cchunks",
                         green + Integer.toString(arg),
                         "cyan.message.kgir",
-                        true);
+                        true,
+                        CyanMidnightConfig.useOneLanguage);
             } else
             {
                 sendPlayerMessage(player,
                         "§cThe /kgi command is disabled. To enable it, enter '/setAllowKgi true' in chat",
                         Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
                         "cyan.message.disabled.kgi",
-                        false);
+                        false,
+                        CyanMidnightConfig.useOneLanguage);
                 return 0;
             }
         } else
@@ -145,7 +150,8 @@ public class MiscellaneousCommands
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -194,14 +200,16 @@ public class MiscellaneousCommands
                     line_start + "The op players are :\n%s",
                     Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
                     "cyan.message.ops",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
         } else
         {
             sendPlayerMessage(player,
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;

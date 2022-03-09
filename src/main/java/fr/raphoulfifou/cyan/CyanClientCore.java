@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @author Raphoulfifou
  * @since 0.0.1
  */
 @Environment(EnvType.CLIENT)

@@ -30,6 +30,9 @@ dependencies {
     // MidNightLib
     modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
     include "maven.modrinth:midnightlib:${project.midnightlib_version}"
+
+    modImplementation "maven.modrinth:cyanlib:${project.cyanlib_version}"
+    include "maven.modrinth:cyanlib:${project.cyanlib_version}"
 }
 
 processResources {

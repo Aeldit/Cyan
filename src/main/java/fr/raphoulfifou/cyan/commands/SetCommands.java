@@ -14,10 +14,10 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.raphoulfifou.cyan.util.ChatUtil.*;
+import static fr.raphoulfifou.cyan.util.ChatConstants.*;
+import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
- * @author Raphoulfifou
  * @since 0.2.6
  */
 public class SetCommands
@@ -92,7 +92,8 @@ public class SetCommands
                     line_start + "§3setAllowBed option have been set to %s",
                     color + Boolean.toString(arg),
                     "cyan.message.setAllowBed",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
         }
         // If not OP or not OP with max level
         else
@@ -101,7 +102,8 @@ public class SetCommands
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -140,14 +142,16 @@ public class SetCommands
                     line_start + "§3setAllowKgi option have been set to %s",
                     color + Boolean.toString(arg),
                     "cyan.message.setAllowKgi",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
         } else
         {
             sendPlayerMessage(player,
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -186,14 +190,16 @@ public class SetCommands
                     line_start + "§3AllowSurface option have been set to %s",
                     color + Boolean.toString(arg),
                     "cyan.message.setAllowSurface",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
         } else
         {
             sendPlayerMessage(player,
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -223,7 +229,8 @@ public class SetCommands
                     line_start_error + "The distance must be in [1;64]",
                     null,
                     "cyan.message.incorrectIntKgi",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
 
@@ -234,14 +241,16 @@ public class SetCommands
                     line_start + "§3DistanceToEntitiesKgi option have been set to %s",
                     green + Integer.toString(arg),
                     "cyan.message.setDistanceToEntitiesKgi",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
         } else
         {
             sendPlayerMessage(player,
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -273,7 +282,8 @@ public class SetCommands
                     line_start_error + "The OP level must be [0;1;2;3 or 4]",
                     null,
                     "cyan.message.incorrectIntOp",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
 
@@ -284,14 +294,16 @@ public class SetCommands
                     line_start + "§3RequiredOpLevelKgi option have been set to %s",
                     green + Integer.toString(arg),
                     "cyan.message.setRequiredOpLevelKgi",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
         } else
         {
             sendPlayerMessage(player,
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -332,14 +344,16 @@ public class SetCommands
                         line_start + "§3UseOneLanguage option have been set to %s",
                         color + String.valueOf(arg),
                         "cyan.message.setUseOneLanguage",
-                        false);
+                        false,
+                        CyanMidnightConfig.useOneLanguage);
             } else
             {
                 sendPlayerMessage(player,
                         notOP,
                         null,
                         "cyan.message.notOp",
-                        true);
+                        true,
+                        CyanMidnightConfig.useOneLanguage);
                 return 0;
             }
         } else
@@ -348,7 +362,8 @@ public class SetCommands
                     "§cThis command can only be used on servers",
                     null,
                     "cyan.message.only_serv",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;

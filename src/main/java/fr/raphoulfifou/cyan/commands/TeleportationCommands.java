@@ -21,10 +21,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.UUID;
 
-import static fr.raphoulfifou.cyan.util.ChatUtil.*;
+import static fr.raphoulfifou.cyan.util.ChatConstants.*;
+import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
- * @author Raphoulfifou
  * @since 0.0.1
  */
 public class TeleportationCommands
@@ -45,12 +45,12 @@ public class TeleportationCommands
                         .executes(TeleportationCommands::playerBed)
                 )
         );
-        /*dispatcher.register(CommandManager.literal("bo")
-                .then(CommandManager.argument("playerName", GameProfileArgumentType.gameProfile())
-                        .suggests(ArgumentSuggestion::getAllPlayerNames)
+        dispatcher.register(CommandManager.literal("bo")
+                .then(CommandManager.argument("playerName", UuidArgumentType.uuid())
+                        .suggests(ArgumentSuggestion::getAllPlayersUUID)
                         .executes(TeleportationCommands::playerBed)
                 )
-        );*/
+        );
 
         dispatcher.register(CommandManager.literal("surface")
                 .executes(TeleportationCommands::surface)
@@ -103,7 +103,8 @@ public class TeleportationCommands
                                 line_start + "§6You have been teleported to your bed",
                                 null,
                                 "cyan.message.bed",
-                                true);
+                                true,
+                                CyanMidnightConfig.useOneLanguage);
                         // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
                         source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
                     } else
@@ -114,7 +115,8 @@ public class TeleportationCommands
                                 line_start + "§6You have been teleported to your bed",
                                 null,
                                 "cyan.message.bed",
-                                true);
+                                true,
+                                CyanMidnightConfig.useOneLanguage);
                     }
                 } else if (player.getSpawnPointDimension() == World.NETHER)
                 {
@@ -126,7 +128,8 @@ public class TeleportationCommands
                                 line_start + "§6You have been teleported to your respawn anchor",
                                 null,
                                 "cyan.message.respawnanchor",
-                                true);
+                                true,
+                                CyanMidnightConfig.useOneLanguage);
                         source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
                     } else
                     {
@@ -136,7 +139,8 @@ public class TeleportationCommands
                                 line_start + "§6You have been teleported to your respawn anchor",
                                 null,
                                 "cyan.message.respawnanchor",
-                                true);
+                                true,
+                                CyanMidnightConfig.useOneLanguage);
                     }
                 }
             } else
@@ -145,7 +149,8 @@ public class TeleportationCommands
                         line_start_error + "§cYou don't have an attributed bed or respawn anchor",
                         null,
                         "cyan.message.bed.notfound",
-                        false);
+                        false,
+                        CyanMidnightConfig.useOneLanguage);
                 return 0;
             }
         } else
@@ -154,7 +159,8 @@ public class TeleportationCommands
                     line_start_error + "The /bed command is disabled. To enable it, enter '/setAllowBed true' in chat",
                     null,
                     "cyan.message.disabled.bed",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -308,14 +314,16 @@ public class TeleportationCommands
                     line_start + "§6You have been teleported to the surface",
                     null,
                     "cyan.message.surface",
-                    true);
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
         } else
         {
             sendPlayerMessage(player,
                     line_start_error + "The /surface command is disabled. To enable it, enter '/setAllowSurface true' in chat",
                     null,
                     "cyan.message.disabled.surface",
-                    false);
+                    false,
+                    CyanMidnightConfig.useOneLanguage);
             return 0;
         }
         return Command.SINGLE_SUCCESS;

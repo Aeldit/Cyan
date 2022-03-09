@@ -12,11 +12,10 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.raphoulfifou.cyan.util.ChatUtil.green;
-import static fr.raphoulfifou.cyan.util.ChatUtil.red;
+import static fr.raphoulfifou.cyan.util.ChatConstants.green;
+import static fr.raphoulfifou.cyan.util.ChatConstants.red;
 
 /**
- * @author Raphoulfifou
  * @since 0.4.1
  */
 public class GetCommand
