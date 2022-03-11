@@ -12,6 +12,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.raphoulfifou.cyan.util.ChatConstants.*;
@@ -22,6 +23,8 @@ import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
  */
 public class SetCommands
 {
+
+    public static Formatting color = Formatting.GREEN;
 
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
