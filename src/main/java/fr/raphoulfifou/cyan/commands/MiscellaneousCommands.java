@@ -3,6 +3,7 @@ package fr.raphoulfifou.cyan.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 import static fr.raphoulfifou.cyan.util.ChatConstants.*;
+import static fr.raphoulfifou.cyanlib.util.LanguageFilesUtils.setupLangFile;
 import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
@@ -49,6 +51,12 @@ public class MiscellaneousCommands
 
         dispatcher.register(CommandManager.literal("mods")
                 .executes(MiscellaneousCommands::mods)
+        );
+
+        dispatcher.register(CommandManager.literal("createLangFile")
+                .then(CommandManager.argument("lang_name", StringArgumentType.string())
+                        .executes(MiscellaneousCommands::createLangFile)
+                )
         );
     }
 
@@ -230,6 +238,35 @@ public class MiscellaneousCommands
         source.getPlayer().sendMessage(new TranslatableText("cyan.message.mods",
                 Arrays.toString(FabricLoader.getInstance().getAllMods().toArray())), false);
 
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/mods"</p>
+     * <p>
+     * A list of all mods installed on the server
+     * TODO -> make work
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
+     */
+    public static int createLangFile(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        String arg = StringArgumentType.getString(context, "lang_name");
+
+        if (player.hasPermissionLevel(4))
+        {
+            setupLangFile(player, "cyan", arg, CyanMidnightConfig.useOneLanguage);
+        } else
+        {
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true,
+                    CyanMidnightConfig.useOneLanguage);
+            return 0;
+        }
         return Command.SINGLE_SUCCESS;
     }
 
