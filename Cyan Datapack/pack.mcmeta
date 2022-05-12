@@ -1,13 +1,13 @@
 {
     "pack": {
-        "pack_format": 8,
+        "pack_format": 9,
         "description": [
             {
                 "text": "Cyan",
                 "color": "gold"
             },
             {
-                "text": " MC 1.18.x",
+                "text": " MC 1.18.2",
                 "color": "dark_aqua"
             },
             {

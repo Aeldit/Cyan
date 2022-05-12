@@ -5,10 +5,10 @@
       "item": "minecraft:red_bed"
     },
     "title": {
-      "translate": "Cyan"
+      "translate": "sd.advancements.cyan.title"
     },
     "description": {
-      "translate": "Adds some more challenges"
+      "translate": "sd.advancements.cyan.description"
     },
     "show_toast": false,
     "announce_to_chat": false,

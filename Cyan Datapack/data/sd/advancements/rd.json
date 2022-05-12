@@ -5,11 +5,9 @@
       "item": "minecraft:player_head",
       "nbt": "{SkullOwner: 'Raphoulfifou'}"
     },
-    "title": {
-      "translate": "Raphoulfifou"
-    },
+    "title": "Raphoulfifou",
     "description": {
-      "translate": "[Author]"
+      "translate": "sd.advancements.rd.description"
     },
     "show_toast": false,
     "announce_to_chat": false,
