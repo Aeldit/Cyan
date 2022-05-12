@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:red_bed"
+    },
+    "title": "Cyan",
+    "description": "Quelques défis supplémentaires",
+    "announce_to_chat": false,
+    "show_toast": false,
+    "background": "minecraft:textures/block/deepslate_tiles.png"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "parent": "cyan:root",
+  "display": {
+    "icon": {
+      "item": "minecraft:globe_banner_pattern"
+    },
+    "title": "Patterns",
+    "description": "Collectez tous les patterns de bannière",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "flower_banner_pattern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:flower_banner_pattern"
+            ]
+          }
+        ]
+      }
+    },
+    "creeper_banner_pattern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:creeper_banner_pattern"
+            ]
+          }
+        ]
+      }
+    },
+    "skull_banner_pattern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:skull_banner_pattern"
+            ]
+          }
+        ]
+      }
+    },
+    "mojang_banner_pattern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:mojang_banner_pattern"
+            ]
+          }
+        ]
+      }
+    },
+    "globe_banner_pattern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:globe_banner_pattern"
+            ]
+          }
+        ]
+      }
+    },
+    "piglin_banner_pattern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:piglin_banner_pattern"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "flower_banner_pattern"
+    ],
+    [
+      "creeper_banner_pattern"
+    ],
+    [
+      "skull_banner_pattern"
+    ],
+    [
+      "mojang_banner_pattern"
+    ],
+    [
+      "globe_banner_pattern"
+    ],
+    [
+      "piglin_banner_pattern"
+    ]
+  ]
+}
