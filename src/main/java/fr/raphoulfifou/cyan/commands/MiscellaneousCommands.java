@@ -3,7 +3,6 @@ package fr.raphoulfifou.cyan.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
@@ -14,14 +13,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.Properties;
 
 import static fr.raphoulfifou.cyan.util.ChatConstants.*;
 import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
-import static fr.raphoulfifou.cyan.CyanServerCore.MODID;
 
 /**
  * @since 0.0.2
@@ -54,16 +49,6 @@ public class MiscellaneousCommands
 
         dispatcher.register(CommandManager.literal("mods")
                 .executes(MiscellaneousCommands::mods)
-        );
-
-        dispatcher.register(CommandManager.literal("addTranslation")
-                .then(CommandManager.argument("lang_name", StringArgumentType.string())
-                        .then(CommandManager.argument("translation_name", StringArgumentType.string())
-                                .then(CommandManager.argument("translation", StringArgumentType.string())
-                                        .executes(MiscellaneousCommands::addTranslation)
-                                )
-                        )
-                )
         );
     }
 
@@ -242,98 +227,14 @@ public class MiscellaneousCommands
     {
         ServerCommandSource source = context.getSource();
 
-        source.getPlayer().sendMessage(new TranslatableText("cyan.message.mods",
-                Arrays.toString(FabricLoader.getInstance().getAllMods().toArray())), false);
+        sendPlayerMessage(source.getPlayer(),
+                "The mods installed on this server are : \n%s",
+                Arrays.toString(FabricLoader.getInstance().getAllMods().toArray()),
+                "cyan.message.mods",
+                false,
+                CyanMidnightConfig.useOneLanguage);
 
         return Command.SINGLE_SUCCESS;
-    }
-
-
-    public static int addTranslation(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
-    {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-        String langName = StringArgumentType.getString(context, "lang_name");
-        String translationName = StringArgumentType.getString(context, "translation_name");
-        String translation = StringArgumentType.getString(context, "translation");
-
-        if (player.hasPermissionLevel(4))
-        {
-            setupTranslations(player, MODID, langName, CyanMidnightConfig.useOneLanguage, translationName, translation);
-        } else
-        {
-            player.sendMessage(new TranslatableText(String.valueOf(getProperty("error.notOp", MODID, langName))), false);
-            /*sendPlayerMessage(player,
-                    getProperty("notOP", MODID, langName),
-                    null,
-                    "cyan.message.notOp",
-                    true,
-                    CyanMidnightConfig.useOneLanguage);*/
-            return 0;
-        }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    public static void setupTranslations(@NotNull ServerPlayerEntity player, String folderName, String langName, boolean useOneLanguage, String translationName, String translation)
-    {
-        String dir = String.valueOf(FabricLoader.getInstance().getConfigDir().resolve(folderName + "\\" + langName + ".properties"));
-
-        if (player.hasPermissionLevel(4))
-        {
-            if (! Files.exists(FabricLoader.getInstance().getConfigDir().resolve(folderName + "\\" + langName + ".properties")))
-            {
-                try (OutputStream output = new FileOutputStream(dir))
-                {
-                    Properties prop = new Properties();
-
-                    prop.setProperty(translationName, translation);
-                    prop.store(output, null);
-
-                    sendPlayerMessage(player,
-                            "File created : %s",
-                            langName + ".properties",
-                            "cyan.message.fileCreated",
-                            false,
-                            useOneLanguage);
-                } catch (IOException e)
-                {
-                    sendPlayerMessage(player,
-                            "Could not create the file",
-                            null,
-                            "cyan.message.error.fileCreate",
-                            false,
-                            useOneLanguage);
-                    e.printStackTrace();
-                }
-            } else
-            {
-                try (InputStream inputStream = new FileInputStream(dir))
-                {
-                    Properties prop = new Properties();
-                    prop.load(inputStream);
-
-                    prop.setProperty(translationName, translation);
-                    prop.store(new FileOutputStream(dir), null);
-
-                    inputStream.close();
-
-                    sendPlayerMessage(player,
-                            "Added translation : %s",
-                            translationName,
-                            "cyan.message.translationAdded",
-                            false,
-                            useOneLanguage);
-                } catch (IOException e)
-                {
-                    sendPlayerMessage(player,
-                            "Could not write to the file",
-                            null,
-                            "cyan.message.error.fileWrite",
-                            false,
-                            useOneLanguage);
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
 }
