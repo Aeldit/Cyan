@@ -5,7 +5,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -70,14 +69,13 @@ public class SetCommands
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setAllowBed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int setAllowBed(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         boolean arg = BoolArgumentType.getBool(context, "bool");
+        assert player != null;
 
         if (arg)
         {
@@ -121,14 +119,13 @@ public class SetCommands
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setAllowKgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int setAllowKgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         boolean arg = BoolArgumentType.getBool(context, "bool");
+        assert player != null;
 
         if (arg)
         {
@@ -169,14 +166,13 @@ public class SetCommands
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setAllowSurface(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int setAllowSurface(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         boolean arg = BoolArgumentType.getBool(context, "bool");
+        assert player != null;
 
         if (arg)
         {
@@ -217,14 +213,13 @@ public class SetCommands
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setDistanceToEntitiesKgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int setDistanceToEntitiesKgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         int arg = IntegerArgumentType.getInteger(context, "int");
+        assert player != null;
 
         if (arg < 1 || arg > 64)
         {
@@ -268,14 +263,13 @@ public class SetCommands
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setRequiredOpLevelKgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int setRequiredOpLevelKgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         int arg = IntegerArgumentType.getInteger(context, "int");
+        assert player != null;
 
         // If the argument passed to the command isn't in [0;4], the config file will not be modified and the function
         // stops here
@@ -321,14 +315,13 @@ public class SetCommands
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int setUseOneLanguage(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int setUseOneLanguage(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         boolean arg = BoolArgumentType.getBool(context, "bool");
+        assert player != null;
 
         if (arg)
         {

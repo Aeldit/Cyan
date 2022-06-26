@@ -3,7 +3,6 @@ package fr.raphoulfifou.cyan.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -36,13 +35,12 @@ public class GetCommand
     /**
      * <p>Called when a player execute the command "/getCyanConfigOptions"</p>
      * <p>Send a player in the player's chat with all options and their values</p>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int getConfigOptions(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int getConfigOptions(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
+        assert player != null;
 
         if (! CyanMidnightConfig.allowBed)
         {

@@ -3,7 +3,6 @@ package fr.raphoulfifou.cyan.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.commands.argumentTypes.ArgumentSuggestion;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.minecraft.command.argument.UuidArgumentType;
@@ -13,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.UUID;
 
-import static fr.raphoulfifou.cyan.util.ChatConstants.*;
+import static fr.raphoulfifou.cyan.util.ChatConstants.line_start;
+import static fr.raphoulfifou.cyan.util.ChatConstants.line_start_error;
 import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
@@ -72,13 +72,12 @@ public class TeleportationCommands
      * <ul>Else:
      *     <li>- send a message to the player saying that no bed or respawn anchor was found</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int bed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int bed(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerCommandSource source = context.getSource();
+        assert player != null;
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
@@ -193,12 +192,11 @@ public class TeleportationCommands
      * <ul>Else
      *      <li>- Send a message to player saying that the player isn't online or whitelisted</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int playerBed(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int playerBed(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
+        assert player != null;
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
@@ -215,7 +213,7 @@ public class TeleportationCommands
         ServerPlayerEntity targetPlayer = context.getSource().getServer().getPlayerManager().getPlayer(targetUUID);
 
         /*GameProfile targetWhitelist = Arrays.stream(context.getSource().getServer().getPlayerManager().getWhitelist().getNames()).
-                findAny().orElseThrow(GameProfileArgumentType.UNKNOWN_PLAYER_EXCEPTION::create);*/
+            findAny().orElseThrow(GameProfileArgumentType.UNKNOWN_PLAYER_EXCEPTION::create);*/
 
         if (targetUUID != null && targetPlayer != null)
         {
@@ -229,7 +227,7 @@ public class TeleportationCommands
 
                 player.teleport(overworld, x, y, z, yaw, pitch);
                 player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                player.sendMessage(new TranslatableText("cyan.message.bed"), true);
+                player.sendMessage(Text.translatable("cyan.message.bed"), true);
                 return Command.SINGLE_SUCCESS;
             }
 
@@ -243,11 +241,11 @@ public class TeleportationCommands
 
                 player.teleport(nether, x, y, z, yaw, pitch);
                 player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                player.sendMessage(new TranslatableText("cyan.message.respawnanchor"), true);
+                player.sendMessage(Text.translatable("cyan.message.respawnanchor"), true);
                 return Command.SINGLE_SUCCESS;
             } else
             {
-                player.sendMessage(new TranslatableText("cyan.message.bedOf.notfound"), false);
+                player.sendMessage(Text.translatable("cyan.message.bedOf.notfound"), false);
             }
         } /*else if (whitelistedPlayers.contains(targetInWhitelist))
         {
@@ -283,22 +281,23 @@ public class TeleportationCommands
         }*/ else
 
         {
-            player.sendMessage(new TranslatableText("cyan.message.playerNotFound"), false);
+            player.sendMessage(Text.translatable("cyan.message.playerNotFound"), false);
             return 0;
         }
+
         return Command.SINGLE_SUCCESS;
     }
 
     /**
      * <p>Called when a player execute the commands "/surface" or "/s"</p>
      * <p>Teleport the player to the highest block that was found on the player's coordinates</p>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int surface(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int surface(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld world = context.getSource().getWorld();
+
+        assert player != null;
 
         int x = player.getBlockPos().getX();
         int z = player.getBlockPos().getZ();
@@ -326,6 +325,7 @@ public class TeleportationCommands
                     CyanMidnightConfig.useOneLanguage);
             return 0;
         }
+
         return Command.SINGLE_SUCCESS;
     }
 

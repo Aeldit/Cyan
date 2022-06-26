@@ -4,13 +4,12 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -61,20 +60,19 @@ public class MiscellaneousCommands
      * <ul>Else:
      *      <li>-> The ground items are killed and a message is send to the console and to the OPs</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int kgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
+        assert player != null;
 
         if (CyanMidnightConfig.allowKgi)
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
             {
                 // Default distance is 14 chunks, but can be changed in settings
-                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]", CyanMidnightConfig.distanceToEntitiesKgi * 16));
+                source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                 sendPlayerMessage(player,
                         "§cGround items have been removed",
                         null,
@@ -113,14 +111,13 @@ public class MiscellaneousCommands
      * <ul>Else:
      *      <li>-> The ground items are killed and a message is send to the console and to the OPs</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int kgir(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         int arg = IntegerArgumentType.getInteger(context, "distance_in_chunks");
+        assert player != null;
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
@@ -161,19 +158,19 @@ public class MiscellaneousCommands
      * <p>Called when a player execute the command "/Chelp"</p>
      *
      * <ul>Displays Help for the mod in the chat</ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int helpCyan(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int helpCyan(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
 
-        player.sendMessage(new TranslatableText("cyan.message.help.1"), false);
-        player.sendMessage(new TranslatableText("cyan.message.help.2"), false);
-        player.sendMessage(new TranslatableText("cyan.message.help.3"), false);
-        player.sendMessage(new TranslatableText("cyan.message.help.4"), false);
-        player.sendMessage(new TranslatableText("cyan.message.help.5"), false);
-
+        if (player != null)
+        {
+            player.sendMessage(Text.translatable("cyan.message.help.1"), false);
+            player.sendMessage(Text.translatable("cyan.message.help.2"), false);
+            player.sendMessage(Text.translatable("cyan.message.help.3"), false);
+            player.sendMessage(Text.translatable("cyan.message.help.4"), false);
+            player.sendMessage(Text.translatable("cyan.message.help.5"), false);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -186,13 +183,12 @@ public class MiscellaneousCommands
      * <ul>Else:
      *      <li>-> A message tells the player taht he/she don't have the required permission</li>
      * </ul>
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int ops(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int ops(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
+        assert player != null;
 
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
@@ -220,14 +216,14 @@ public class MiscellaneousCommands
      * <p>
      * A list of all mods installed on the server
      * TODO -> make work
-     *
-     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int mods(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+    public static int mods(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+        assert player != null;
 
-        sendPlayerMessage(source.getPlayer(),
+        sendPlayerMessage(player,
                 "The mods installed on this server are : \n%s",
                 Arrays.toString(FabricLoader.getInstance().getAllMods().toArray()),
                 "cyan.message.mods",
