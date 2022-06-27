@@ -9,7 +9,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -36,10 +35,6 @@ public class MiscellaneousCommands
                         .executes(MiscellaneousCommands::kgir)
                 )
                 .executes(MiscellaneousCommands::kgi)
-        );
-
-        dispatcher.register(CommandManager.literal("chelp")
-                .executes(MiscellaneousCommands::helpCyan)
         );
 
         dispatcher.register(CommandManager.literal("ops")
@@ -150,26 +145,6 @@ public class MiscellaneousCommands
                     true,
                     CyanMidnightConfig.useOneLanguage);
             return 0;
-        }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * <p>Called when a player execute the command "/Chelp"</p>
-     *
-     * <ul>Displays Help for the mod in the chat</ul>
-     */
-    public static int helpCyan(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
-        if (player != null)
-        {
-            player.sendMessage(Text.translatable("cyan.message.help.1"), false);
-            player.sendMessage(Text.translatable("cyan.message.help.2"), false);
-            player.sendMessage(Text.translatable("cyan.message.help.3"), false);
-            player.sendMessage(Text.translatable("cyan.message.help.4"), false);
-            player.sendMessage(Text.translatable("cyan.message.help.5"), false);
         }
         return Command.SINGLE_SUCCESS;
     }

@@ -31,14 +31,14 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
          If no radius is specified, the default value defined in the config will be used.
             This value can be changed with /setDistanceToEntitiesKgi)
 
-    -  /Chelp (Cyan help) -> Displays help for this mod
     - /ops -> displays a list of all op players
 
 
-    - /setAllowBed [true|false] -> allows or not the use of /bed
-    - /setAllowKgi [true|false] -> allows or not the use of /kgi
-    - /setAllowSurface [true|false] -> allows or not the use of /surface
-
+    If the following commands have no argument, the value of the option will be displayed :
+    - /allowBed [true|false] -> allows or not the use of /bed
+    - /allowKgi [true|false] -> allows or not the use of /kgi
+    - /allowSurface [true|false] -> allows or not the use of /surface
+    - /useOneLanguage [true|false] (server-side) -> If the we use translation files
 
     - /setDistanceToEntitiesKgi [distance in chunks] -> change the value that is used by default by the /kgi
     -  /setRequiredOpLevelKgi [integer between 0 and 4 (both included)] -> change the value of the minimum required OP
