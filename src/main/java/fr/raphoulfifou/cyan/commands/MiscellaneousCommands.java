@@ -124,7 +124,7 @@ public class MiscellaneousCommands
             if (CyanMidnightConfig.allowKgi)
             {
                 // The default distance is 14 chunks, but it can be changed in the config file or with commands
-                source.getServer().getCommandManager().execute(source, String.format("/kill @e[type=item,distance=..%d]", arg * 16));
+                source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                 sendPlayerMessage(player,
                         "§cGround items have been removed in a radius of %s §cchunks",
                         green + Integer.toString(arg),

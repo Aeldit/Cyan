@@ -105,7 +105,7 @@ public class TeleportationCommands
                                 true,
                                 CyanMidnightConfig.useOneLanguage);
                         // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                        source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
+                        source.getServer().getCommandManager().executeWithPrefix(source, "/xp add %s 0".formatted(player.getEntityName()));
                     } else
                     {
                         player.teleport(overworld, x, y, z, yaw, pitch);
@@ -129,7 +129,7 @@ public class TeleportationCommands
                                 "cyan.message.respawnanchor",
                                 true,
                                 CyanMidnightConfig.useOneLanguage);
-                        source.getServer().getCommandManager().execute(source, "/xp add %s 0".formatted(player.getEntityName()));
+                        source.getServer().getCommandManager().executeWithPrefix(source, "/xp add %s 0".formatted(player.getEntityName()));
                     } else
                     {
                         player.teleport(nether, x, y, z, yaw, pitch);
