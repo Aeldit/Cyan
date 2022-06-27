@@ -76,7 +76,6 @@ public class TeleportationCommands
     public static int bed(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
-        ServerCommandSource source = context.getSource();
         assert player != null;
         ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
         ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
@@ -103,9 +102,8 @@ public class TeleportationCommands
                                 null,
                                 "cyan.message.bed",
                                 true,
-                                CyanMidnightConfig.useOneLanguage);
-                        // The add of 0 xp levels is here to update the levels, so that they appear when teleporting to the bed from an other dimension
-                        source.getServer().getCommandManager().executeWithPrefix(source, "/xp add %s 0".formatted(player.getEntityName()));
+                                CyanMidnightConfig.useOneLanguage
+                        );
                     } else
                     {
                         player.teleport(overworld, x, y, z, yaw, pitch);
@@ -115,7 +113,8 @@ public class TeleportationCommands
                                 null,
                                 "cyan.message.bed",
                                 true,
-                                CyanMidnightConfig.useOneLanguage);
+                                CyanMidnightConfig.useOneLanguage
+                        );
                     }
                 } else if (player.getSpawnPointDimension() == World.NETHER)
                 {
@@ -128,8 +127,8 @@ public class TeleportationCommands
                                 null,
                                 "cyan.message.respawnanchor",
                                 true,
-                                CyanMidnightConfig.useOneLanguage);
-                        source.getServer().getCommandManager().executeWithPrefix(source, "/xp add %s 0".formatted(player.getEntityName()));
+                                CyanMidnightConfig.useOneLanguage
+                        );
                     } else
                     {
                         player.teleport(nether, x, y, z, yaw, pitch);
@@ -139,7 +138,8 @@ public class TeleportationCommands
                                 null,
                                 "cyan.message.respawnanchor",
                                 true,
-                                CyanMidnightConfig.useOneLanguage);
+                                CyanMidnightConfig.useOneLanguage
+                        );
                     }
                 }
             } else
@@ -149,17 +149,19 @@ public class TeleportationCommands
                         null,
                         "cyan.message.bed.notfound",
                         false,
-                        CyanMidnightConfig.useOneLanguage);
+                        CyanMidnightConfig.useOneLanguage
+                );
                 return 0;
             }
         } else
         {
             sendPlayerMessage(player,
-                    line_start_error + "The /bed command is disabled. To enable it, enter '/setAllowBed true' in chat",
+                    line_start_error + "The /bed command is disabled. To enable it, enter '/allowBed true' in chat",
                     null,
                     "cyan.message.disabled.bed",
                     false,
-                    CyanMidnightConfig.useOneLanguage);
+                    CyanMidnightConfig.useOneLanguage
+            );
             return 0;
         }
         return Command.SINGLE_SUCCESS;
@@ -314,15 +316,17 @@ public class TeleportationCommands
                     null,
                     "cyan.message.surface",
                     true,
-                    CyanMidnightConfig.useOneLanguage);
+                    CyanMidnightConfig.useOneLanguage
+            );
         } else
         {
             sendPlayerMessage(player,
-                    line_start_error + "The /surface command is disabled. To enable it, enter '/setAllowSurface true' in chat",
+                    line_start_error + "The /surface command is disabled. To enable it, enter '/allowSurface true' in chat",
                     null,
                     "cyan.message.disabled.surface",
                     false,
-                    CyanMidnightConfig.useOneLanguage);
+                    CyanMidnightConfig.useOneLanguage
+            );
             return 0;
         }
 
