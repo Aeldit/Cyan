@@ -110,14 +110,14 @@ public class GetCommand
 
         sendPlayerMessage(player,
                 "§6>> §3Distance in which ground items will be removed (in chunks): %s",
-                green + Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi),
+                Formatting.GOLD + Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi),
                 "cyan.message.getCfgOptions.distanceToEntitiesKgi",
                 false,
                 CyanMidnightConfig.useOneLanguage
         );
         sendPlayerMessage(player,
                 "§6>> §3Minimu OP level for /kgi : %s",
-                green + Integer.toString(CyanMidnightConfig.minOpLevelExeKgi),
+                Formatting.GOLD + Integer.toString(CyanMidnightConfig.minOpLevelExeKgi),
                 "cyan.message.getCfgOptions.minOpLevelExeKgi",
                 false,
                 CyanMidnightConfig.useOneLanguage
