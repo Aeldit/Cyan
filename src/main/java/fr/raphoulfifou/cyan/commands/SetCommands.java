@@ -66,6 +66,8 @@ public class SetCommands
         );
     }
 
+    // Set
+
     /**
      * <p>Called when a player execute the command "/allowBed [true | false]"</p>
      *
@@ -114,37 +116,6 @@ public class SetCommands
                     CyanMidnightConfig.useOneLanguage);
             return 0;
         }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * <p>Called when a player execute the command "/allowBed"</p>
-     *
-     * <li>-> Gives the status of the options 'allowBed'</li>
-     */
-    public static int getAllowBed(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-        assert player != null;
-        boolean arg = CyanMidnightConfig.allowBed;
-
-        if (arg)
-        {
-            color = green;
-        } else
-        {
-            color = red;
-        }
-
-        sendPlayerMessage(player,
-                line_start + "§3allowBed option is set to %s",
-                color + Boolean.toString(arg),
-                "cyan.message.getAllowBed",
-                false,
-                CyanMidnightConfig.useOneLanguage
-        );
-
-
         return Command.SINGLE_SUCCESS;
     }
 
@@ -198,37 +169,6 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/allowKgi"</p>
-     *
-     * <li>-> Gives the status of the options 'allowKgi'</li>
-     */
-    public static int getAllowKgi(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-        assert player != null;
-        boolean arg = CyanMidnightConfig.allowKgi;
-
-        if (arg)
-        {
-            color = green;
-        } else
-        {
-            color = red;
-        }
-
-        sendPlayerMessage(player,
-                line_start + "§3allowKgi option is set to %s",
-                color + Boolean.toString(arg),
-                "cyan.message.getAllowKgi",
-                false,
-                CyanMidnightConfig.useOneLanguage
-        );
-
-
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
      * <p>Called when a player execute the command "/allowSurface [true | false]"</p>
      *
      * <ul>If the player has a permission level equal to 4
@@ -274,37 +214,6 @@ public class SetCommands
             );
             return 0;
         }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * <p>Called when a player execute the command "/allowSurface"</p>
-     *
-     * <li>-> Gives the status of the options 'allowSurface'</li>
-     */
-    public static int getAllowSurface(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-        assert player != null;
-        boolean arg = CyanMidnightConfig.allowSurface;
-
-        if (arg)
-        {
-            color = green;
-        } else
-        {
-            color = red;
-        }
-
-        sendPlayerMessage(player,
-                line_start + "§3allowSurface option is set to %s",
-                color + Boolean.toString(arg),
-                "cyan.message.getAllowSurface",
-                false,
-                CyanMidnightConfig.useOneLanguage
-        );
-
-
         return Command.SINGLE_SUCCESS;
     }
 
@@ -371,33 +280,57 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/useOneLanguage"</p>
+     * <p>Called when a player execute the command "/requiredOpLevelKgi [int]"</p>
      *
-     * <li>-> Gives the status of the options 'useOneLanguage'</li>
+     * <ul>If the player has a permission level equal to 4
+     *      <li>-> Set the minimum OP level required to execute the /kgi command</li>
+     * </ul>
+     * <ul>Else:
+     *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
+     * </ul>
      */
-    public static int getUseOneLanguage(@NotNull CommandContext<ServerCommandSource> context)
+    public static int setRequiredOpLevelKgi(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = source.getPlayer();
+        int arg = IntegerArgumentType.getInteger(context, "int");
         assert player != null;
-        boolean arg = CyanMidnightConfig.useOneLanguage;
 
-        if (arg)
+        // If the argument passed to the command isn't in [0;4], the config file will not be modified and the function
+        // stops here
+        if (arg < 0 || arg > 4)
         {
-            color = green;
-        } else
-        {
-            color = red;
+            sendPlayerMessage(player,
+                    line_start_error + "The OP level must be [0;1;2;3 or 4]",
+                    null,
+                    "cyan.message.incorrectIntOp",
+                    false,
+                    CyanMidnightConfig.useOneLanguage
+            );
+            return 0;
         }
 
-        sendPlayerMessage(player,
-                line_start + "§3useOneLanguage option is set to %s",
-                color + Boolean.toString(arg),
-                "cyan.message.getUseOneLanguage",
-                false,
-                CyanMidnightConfig.useOneLanguage
-        );
-
-
+        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        {
+            CyanMidnightConfig.setMinOpLevelExeKgi(arg);
+            sendPlayerMessage(player,
+                    line_start + "§3RequiredOpLevelKgi option have been set to %s",
+                    Formatting.GOLD + Integer.toString(arg),
+                    "cyan.message.setRequiredOpLevelKgi",
+                    false,
+                    CyanMidnightConfig.useOneLanguage
+            );
+        } else
+        {
+            sendPlayerMessage(player,
+                    notOP,
+                    null,
+                    "cyan.message.notOp",
+                    true,
+                    CyanMidnightConfig.useOneLanguage
+            );
+            return 0;
+        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -455,6 +388,132 @@ public class SetCommands
     }
 
     /**
+     * <p>Called when a player execute the command "/allowBed"</p>
+     *
+     * <li>-> Gives the status of the options 'allowBed'</li>
+     */
+    public static int getAllowBed(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        assert player != null;
+        boolean arg = CyanMidnightConfig.allowBed;
+
+        if (arg)
+        {
+            color = green;
+        } else
+        {
+            color = red;
+        }
+
+        sendPlayerMessage(player,
+                line_start + "§3allowBed option is set to %s",
+                color + Boolean.toString(arg),
+                "cyan.message.getAllowBed",
+                false,
+                CyanMidnightConfig.useOneLanguage
+        );
+
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    // Get
+
+    /**
+     * <p>Called when a player execute the command "/allowKgi"</p>
+     *
+     * <li>-> Gives the status of the options 'allowKgi'</li>
+     */
+    public static int getAllowKgi(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        assert player != null;
+        boolean arg = CyanMidnightConfig.allowKgi;
+
+        if (arg)
+        {
+            color = green;
+        } else
+        {
+            color = red;
+        }
+
+        sendPlayerMessage(player,
+                line_start + "§3allowKgi option is set to %s",
+                color + Boolean.toString(arg),
+                "cyan.message.getAllowKgi",
+                false,
+                CyanMidnightConfig.useOneLanguage
+        );
+
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/allowSurface"</p>
+     *
+     * <li>-> Gives the status of the options 'allowSurface'</li>
+     */
+    public static int getAllowSurface(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        assert player != null;
+        boolean arg = CyanMidnightConfig.allowSurface;
+
+        if (arg)
+        {
+            color = green;
+        } else
+        {
+            color = red;
+        }
+
+        sendPlayerMessage(player,
+                line_start + "§3allowSurface option is set to %s",
+                color + Boolean.toString(arg),
+                "cyan.message.getAllowSurface",
+                false,
+                CyanMidnightConfig.useOneLanguage
+        );
+
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * <p>Called when a player execute the command "/useOneLanguage"</p>
+     *
+     * <li>-> Gives the status of the options 'useOneLanguage'</li>
+     */
+    public static int getUseOneLanguage(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        assert player != null;
+        boolean arg = CyanMidnightConfig.useOneLanguage;
+
+        if (arg)
+        {
+            color = green;
+        } else
+        {
+            color = red;
+        }
+
+        sendPlayerMessage(player,
+                line_start + "§3useOneLanguage option is set to %s",
+                color + Boolean.toString(arg),
+                "cyan.message.getUseOneLanguage",
+                false,
+                CyanMidnightConfig.useOneLanguage
+        );
+
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
      * <p>Called when a player execute the command "/distanceToEntitiesKgi"</p>
      *
      * <li>-> Gives the status of the options 'distanceToEntitiesKgi'</li>
@@ -474,61 +533,6 @@ public class SetCommands
         );
 
 
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * <p>Called when a player execute the command "/requiredOpLevelKgi [int]"</p>
-     *
-     * <ul>If the player has a permission level equal to 4
-     *      <li>-> Set the minimum OP level required to execute the /kgi command</li>
-     * </ul>
-     * <ul>Else:
-     *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
-     * </ul>
-     */
-    public static int setRequiredOpLevelKgi(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-        int arg = IntegerArgumentType.getInteger(context, "int");
-        assert player != null;
-
-        // If the argument passed to the command isn't in [0;4], the config file will not be modified and the function
-        // stops here
-        if (arg < 0 || arg > 4)
-        {
-            sendPlayerMessage(player,
-                    line_start_error + "The OP level must be [0;1;2;3 or 4]",
-                    null,
-                    "cyan.message.incorrectIntOp",
-                    false,
-                    CyanMidnightConfig.useOneLanguage
-            );
-            return 0;
-        }
-
-        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
-        {
-            CyanMidnightConfig.setMinOpLevelExeKgi(arg);
-            sendPlayerMessage(player,
-                    line_start + "§3RequiredOpLevelKgi option have been set to %s",
-                    Formatting.GOLD + Integer.toString(arg),
-                    "cyan.message.setRequiredOpLevelKgi",
-                    false,
-                    CyanMidnightConfig.useOneLanguage
-            );
-        } else
-        {
-            sendPlayerMessage(player,
-                    notOP,
-                    null,
-                    "cyan.message.notOp",
-                    true,
-                    CyanMidnightConfig.useOneLanguage
-            );
-            return 0;
-        }
         return Command.SINGLE_SUCCESS;
     }
 
