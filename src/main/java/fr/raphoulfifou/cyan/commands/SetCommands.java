@@ -102,7 +102,8 @@ public class SetCommands
                     color + Boolean.toString(arg),
                     "cyan.message.setAllowBed",
                     false,
-                    CyanMidnightConfig.useOneLanguage);
+                    CyanMidnightConfig.useOneLanguage
+            );
 
         }
         // If not OP or not OP with max level
@@ -113,7 +114,8 @@ public class SetCommands
                     null,
                     "cyan.message.notOp",
                     true,
-                    CyanMidnightConfig.useOneLanguage);
+                    CyanMidnightConfig.useOneLanguage
+            );
             return 0;
         }
         return Command.SINGLE_SUCCESS;

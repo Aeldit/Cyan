@@ -41,7 +41,7 @@
   "cyan.message.getCfgOptions.allowKgi": "§6>> §3/kgi allowed : %s",
   "cyan.message.getCfgOptions.allowSurface": "§6>>§3 /surface allowed : %s",
   "cyan.message.getCfgOptions.getUseOneLanguage": "§6>> §3Use of traduction files : %s",
-  "cyan.message.getCfgOptions.distanceToEntitiesKgi": "§6>> §3kgi distance (in chunks): %s",
+  "cyan.message.getCfgOptions.distanceToEntitiesKgi": "§6>> §3kgi distance (in chunks) : %s",
   "cyan.message.getCfgOptions.minOpLevelExeKgi": "§6>> §3Minimu OP level for /kgi : %s",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "A few more advancements",

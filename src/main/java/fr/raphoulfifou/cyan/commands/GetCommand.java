@@ -33,7 +33,7 @@ public class GetCommand
     }
 
     /**
-     * <p>Called when a player execute the command "/getCyanConfigOptions"</p>
+     * <p>Called when a player execute the command <code>/getCyanConfigOptions</code></p>
      * <p>Send a player in the player's chat with all options and their values</p>
      */
     public static int getConfigOptions(@NotNull CommandContext<ServerCommandSource> context)
@@ -109,7 +109,7 @@ public class GetCommand
         );
 
         sendPlayerMessage(player,
-                "§6>> §3Distance in which ground items will be removed (in chunks): %s",
+                "§6>> §3kgi distance (in chunks): %s",
                 Formatting.GOLD + Integer.toString(CyanMidnightConfig.distanceToEntitiesKgi),
                 "cyan.message.getCfgOptions.distanceToEntitiesKgi",
                 false,
