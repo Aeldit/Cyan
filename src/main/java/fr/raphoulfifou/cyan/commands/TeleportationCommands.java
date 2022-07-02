@@ -61,7 +61,7 @@ public class TeleportationCommands
     }
 
     /**
-     * <p>Called when a player execute the commands "/bed" or "/b"</p>
+     * <p>Called when a player execute the commands <code>/bed</code> or <code>/b</code></p>
      *
      * <ul>If the dimension of the player's spawnpoint is in the Overworld, get :
      *     <li>- Teleport the player to the coordinates, yaw and pitch in the Overworld</li>
@@ -168,7 +168,7 @@ public class TeleportationCommands
     }
 
     /**
-     * Called when a player execute the commands "/bedof [playerName]" or "/bo [playerName]"
+     * Called when a player execute the commands <code>/bedof [playerName]</code> or <code>/bo [playerName]</code>
      * <ul>If the player is online :
      *     <ul>If the player's spawnpoint is in the OVERWORLD:
      *         <li>- teleports the player to its spawnpoint (bed or respawn anchor)</li>
@@ -291,7 +291,7 @@ public class TeleportationCommands
     }
 
     /**
-     * <p>Called when a player execute the commands "/surface" or "/s"</p>
+     * <p>Called when a player execute the commands <code>/surface</code> or <code>/s</code></p>
      * <p>Teleport the player to the highest block that was found on the player's coordinates</p>
      */
     public static int surface(@NotNull CommandContext<ServerCommandSource> context)

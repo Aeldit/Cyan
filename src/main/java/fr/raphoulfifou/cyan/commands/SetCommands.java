@@ -69,10 +69,10 @@ public class SetCommands
     // Set
 
     /**
-     * <p>Called when a player execute the command "/allowBed [true | false]"</p>
+     * <p>Called when a player execute the command <code>/allowBed [true | false]</code></p>
      *
      * <ul>If the player has a permission level equal to 4
-     *      <li>-> Enables/disables the use of the /bed command</li>
+     *      <li>-> Enables/disables the use of the <code>/bed</code> command</li>
      * </ul>
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
@@ -122,10 +122,10 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/allowKgi [true | false]"</p>
+     * <p>Called when a player execute the command <code>/allowKgi [true | false]</code></p>
      *
      * <ul>If the player has a permission level equal to 4
-     *      <li>-> Enables/disables the use of the /kgi command</li>
+     *      <li>-> Enables/disables the use of the <code>/kgi</code> command</li>
      * </ul>
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
@@ -171,10 +171,10 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/allowSurface [true | false]"</p>
+     * <p>Called when a player execute the command <code>/allowSurface [true | false]</code></p>
      *
      * <ul>If the player has a permission level equal to 4
-     *      <li>-> Enables/disables the use of the /surface command</li>
+     *      <li>-> Enables/disables the use of the <code>/surface</code> command</li>
      * </ul>
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
@@ -220,10 +220,10 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/useOneLanguage [true | false]"</p>
+     * <p>Called when a player execute the command <code>/useOneLanguage [true | false]</code></p>
      *
      * <ul>If the player has a permission level equal to 4
-     *      <li>-> Set the option to use only one language to the value</li>
+     *      <li>-> Set the option to use only one language to the given value</li>
      * </ul>
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
@@ -282,10 +282,10 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/requiredOpLevelKgi [int]"</p>
+     * <p>Called when a player execute the command <code>/requiredOpLevelKgi [int]</code></p>
      *
      * <ul>If the player has a permission level equal to 4
-     *      <li>-> Set the minimum OP level required to execute the /kgi command</li>
+     *      <li>-> Set the minimum OP level required to execute the <code>/kgi</code> command</li>
      * </ul>
      * <ul>Else:
      *      <li>-> The player receive a message saying that it doesn't have the required permission</li>
@@ -337,7 +337,7 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/distanceToEntitiesKgi [int]"</p>
+     * <p>Called when a player execute the command <code>/distanceToEntitiesKgi [int]</code></p>
      *
      * <ul>If the player has a permission level equal to 4
      *      <li>-> Set the distance (in chunks) in which the ground items will be removed</li>
@@ -389,8 +389,10 @@ public class SetCommands
         return Command.SINGLE_SUCCESS;
     }
 
+    // Get
+
     /**
-     * <p>Called when a player execute the command "/allowBed"</p>
+     * <p>Called when a player execute the command <code>/allowBed</code></p>
      *
      * <li>-> Gives the status of the options 'allowBed'</li>
      */
@@ -420,10 +422,8 @@ public class SetCommands
         return Command.SINGLE_SUCCESS;
     }
 
-    // Get
-
     /**
-     * <p>Called when a player execute the command "/allowKgi"</p>
+     * <p>Called when a player execute the command <code>/allowKgi</code></p>
      *
      * <li>-> Gives the status of the options 'allowKgi'</li>
      */
@@ -454,7 +454,7 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/allowSurface"</p>
+     * <p>Called when a player execute the command <code>/allowSurface</code></p>
      *
      * <li>-> Gives the status of the options 'allowSurface'</li>
      */
@@ -485,7 +485,7 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/useOneLanguage"</p>
+     * <p>Called when a player execute the command <code>/useOneLanguage</code></p>
      *
      * <li>-> Gives the status of the options 'useOneLanguage'</li>
      */
@@ -516,7 +516,7 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/distanceToEntitiesKgi"</p>
+     * <p>Called when a player execute the command <code>/distanceToEntitiesKgi</code></p>
      *
      * <li>-> Gives the status of the options 'distanceToEntitiesKgi'</li>
      */
@@ -539,7 +539,7 @@ public class SetCommands
     }
 
     /**
-     * <p>Called when a player execute the command "/requiredOpLevelKgi"</p>
+     * <p>Called when a player execute the command <code>/requiredOpLevelKgi</code></p>
      *
      * <li>-> Gives the status of the options 'requiredOpLevelKgi'</li>
      */

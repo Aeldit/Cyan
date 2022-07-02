@@ -211,7 +211,8 @@ public class MiscellaneousCommands
                 Arrays.toString(FabricLoader.getInstance().getAllMods().toArray()),
                 "cyan.message.mods",
                 false,
-                CyanMidnightConfig.useOneLanguage);
+                CyanMidnightConfig.useOneLanguage
+        );
 
         return Command.SINGLE_SUCCESS;
     }
