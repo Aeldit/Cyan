@@ -15,7 +15,7 @@
 > For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
 > on the github page of the mod
 >
->![github_issues](https://img.shields.io/github/issues/Raphoulfifou/Cyan?color=red&style=for-the-badge) ![github_pull_requests](https://img.shields.io/github/issues-pr/Raphoulfifou/Cyan?style=for-the-badge)
+>![github_issues](https://img.shields.io/github/issues/Raphoulfifou/Cyan?color=red&style=for-the-badge&logo=github) ![github_pull_requests](https://img.shields.io/github/issues-pr/Raphoulfifou/Cyan?style=for-the-badge&logo=github)
 
 
 📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
