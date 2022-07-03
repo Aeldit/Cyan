@@ -43,8 +43,8 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
     - /allowSurface [true|false] -> allows or not the use of /surface
     - /useOneLanguage [true|false] (server-side) -> If the we use translation files
 
-    - /setDistanceToEntitiesKgi [distance in chunks] -> change the value that is used by default by the /kgi
-    -  /setRequiredOpLevelKgi [integer between 0 and 4 (both included)] -> change the value of the minimum required OP
+    - /distanceToEntitiesKgi [distance in chunks] -> change the value that is used by default by the /kgi
+    -  /requiredOpLevelKgi [integer between 0 and 4 (both included)] -> change the value of the minimum required OP
         level used for the /kgi
 
 
