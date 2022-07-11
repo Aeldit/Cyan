@@ -280,7 +280,7 @@ public class SetCommands
         }
         return Command.SINGLE_SUCCESS;
     }
-
+    
     /**
      * <p>Called when a player execute the command <code>/requiredOpLevelKgi [int]</code></p>
      *

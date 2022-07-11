@@ -116,4 +116,12 @@ public final class ArgumentSuggestion
         return newL;
     }
 
+    public static CompletableFuture<Suggestions> getOptions(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
+    {
+        MinecraftServer server = context.getSource().getServer();
+
+        
+        return CommandSource.suggestMatching(userNames, builder);
+    }
+
 }

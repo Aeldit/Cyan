@@ -1,10 +1,7 @@
 package fr.raphoulfifou.cyan;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import fr.raphoulfifou.cyan.commands.GetCommand;
-import fr.raphoulfifou.cyan.commands.MiscellaneousCommands;
-import fr.raphoulfifou.cyan.commands.SetCommands;
-import fr.raphoulfifou.cyan.commands.TeleportationCommands;
+import fr.raphoulfifou.cyan.commands.*;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -35,6 +32,7 @@ public class CyanClientCore implements ClientModInitializer
             MiscellaneousCommands.register(dispatcher);
             SetCommands.register(dispatcher);
             GetCommand.register(dispatcher);
+            SettingsCommands.register(dispatcher);
         });
         CyanClientCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
         CyanClientCore.LOGGER.info("{} Successfully completed initialization", MODNAME);

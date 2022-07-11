@@ -7,10 +7,10 @@
 
 | Supported MC Version  | Up to date |
 |:---------------------:|:----------:|
-|       `1.16.x`        |     No     |
-|       `1.17.x`        |     No     |
-|       `1.18.x`        |    Yes     |
-|       `1.19.x`        |    Yes     |
+|       `1.16.x`        |     ❌      |
+|       `1.17.x`        |     ❌      |
+|       `1.18.x`        |     ✅      |
+|       `1.19.x`        |     ✅      |
 
 > For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
 > on the github page of the mod
