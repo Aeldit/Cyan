@@ -1,16 +1,19 @@
 package fr.raphoulfifou.cyan.commands.argumentTypes;
 
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
+import fr.raphoulfifou.cyan.util.ChatConstants;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public final class ArgumentSuggestion
@@ -19,109 +22,153 @@ public final class ArgumentSuggestion
     /**
      * @param context the command context
      * @param builder the suggestion builder
-     *
-     * @return a suggestion with all players names (online <s>and whitelisted</s> player)
+     * @return a suggestion with all available boolean options
      */
-    public static CompletableFuture<Suggestions> getAllPlayersNames(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
+    public static CompletableFuture<Suggestions> getOtherBoolOptions(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) throws CommandSyntaxException
     {
         MinecraftServer server = context.getSource().getServer();
+        Map<String, Object> options = CyanMidnightConfig.generateOtherBoolOptionsMap();
 
-        Set<String> userNames = new HashSet<>(ArgumentSuggestion.getOnlinePlayerNames(server));
-        //userNames.addAll(ArgumentSuggestion.getWhitelistedNames(server));
-        /*if (!builder.getRemaining().isEmpty())
+        List<String> exeLevels = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : options.entrySet())
         {
-            
-        }*/
+            exeLevels.add(entry.getKey());
+        }
 
         // Return the suggestion handler
-        return CommandSource.suggestMatching(userNames, builder);
+        return CommandSource.suggestMatching(exeLevels, builder);
     }
 
     /**
      * @param context the command context
      * @param builder the suggestion builder
-     *
-     * @return a suggestion with all players UUIDs (online and whitelisted player)
+     * @return a suggestion with all available integer options
      */
-    public static CompletableFuture<Suggestions> getAllPlayersUUID(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
+    public static CompletableFuture<Suggestions> getOtherIntOptions(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) throws CommandSyntaxException
     {
         MinecraftServer server = context.getSource().getServer();
+        Map<String, Object> options = CyanMidnightConfig.generateOtherIntOptionsMap();
 
-        Set<String> userNames = new HashSet<>(ArgumentSuggestion.getOnlinePlayersUUID(server));
-        userNames.addAll(ArgumentSuggestion.getWhitelistedUUIDs(server));
-        /*if (!builder.getRemaining().isEmpty())
+        List<String> exeLevels = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : options.entrySet())
         {
-
-        }*/
+            exeLevels.add(entry.getKey());
+        }
 
         // Return the suggestion handler
-        return CommandSource.suggestMatching(userNames, builder);
+        return CommandSource.suggestMatching(exeLevels, builder);
     }
 
     /**
-     * @param server the Minecraft server
-     *
-     * @return an array with the name of all online players names
+     * @param context the command context
+     * @param builder the suggestion builder
+     * @return a suggestion with all available allow options
      */
-    public static @NotNull List<String> getOnlinePlayerNames(final @NotNull MinecraftServer server)
+    public static CompletableFuture<Suggestions> getCommands(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) throws CommandSyntaxException
     {
-        PlayerManager playerManager = server.getPlayerManager();
-        return Arrays.asList(playerManager.getPlayerNames());
-    }
+        MinecraftServer server = context.getSource().getServer();
+        Map<String, Object> options = CyanMidnightConfig.generateAllowOptionsMap();
 
-    /**
-     * @param server server the Minecraft server
-     *
-     * @return an array with the name of all whitelisted players names
-     */
-    public static @NotNull List<String> getWhitelistedNames(final @NotNull MinecraftServer server)
-    {
-        PlayerManager playerManager = server.getPlayerManager();
-        return Arrays.asList(playerManager.getWhitelistedNames());
-    }
-
-    /**
-     * @param server the Minecraft server
-     *
-     * @return an array with the name of all online players UUIDs
-     */
-    public static @NotNull List<String> getOnlinePlayersUUID(final @NotNull MinecraftServer server)
-    {
-        PlayerManager playerManager = server.getPlayerManager();
-        List<ServerPlayerEntity> playerList = playerManager.getPlayerList();
-        List<String> newL = new ArrayList<>();
-        for (ServerPlayerEntity serverPlayerEntity : playerList)
+        List<String> exeLevels = new ArrayList<>();
+        // Here we cut the 'allow' part of the String
+        for (Map.Entry<String, Object> entry : options.entrySet())
         {
-            UUID tempUUID = serverPlayerEntity.getUuid();
-            newL.add(tempUUID.toString());
+            String cutWord = entry.getKey().substring(5);
+            String tmpOption = String.valueOf(cutWord.charAt(0)).toLowerCase();
+            cutWord = cutWord.substring(1);
+            tmpOption = tmpOption.concat(cutWord);
+            exeLevels.add(tmpOption);
         }
-        return newL;
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(exeLevels, builder);
     }
 
     /**
-     * @param server server the Minecraft server
-     *
-     * @return an array with the name of all whitelisted players names
+     * @param context the command context
+     * @param builder the suggestion builder
+     * @return a suggestion with all available allow options
      */
-    public static @NotNull List<String> getWhitelistedUUIDs(final @NotNull MinecraftServer server)
+    public static CompletableFuture<Suggestions> getOptionsTypes(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) throws CommandSyntaxException
     {
-        PlayerManager playerManager = server.getPlayerManager();
-        List<String> playerList = Arrays.stream(playerManager.getWhitelistedNames()).toList();
-        List<String> newL = new ArrayList<>();
-        for (String s : playerList)
-        {
-            UUID tempUUID = UUID.fromString(s);
-            newL.add(tempUUID.toString());
-        }
-        return newL;
+        List<String> options = ChatConstants.generateOptionsTypesMap();
+
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(options, builder);
     }
 
-    public static CompletableFuture<Suggestions> getOptions(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
+    /**
+     * @param context the command context
+     * @param builder the suggestion builder
+     * @return a suggestion with all available allow options
+     */
+    public static CompletableFuture<Suggestions> getOptions(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) throws CommandSyntaxException
+    {
+        MinecraftServer server = context.getSource().getServer();
+        Map<String, Object> options = CyanMidnightConfig.generateAllowOptionsMap();
+
+        List<String> exeLevels = new ArrayList<>();
+        exeLevels.add("all");
+        // Here we cut the 'allow' part of the String
+        for (Map.Entry<String, Object> entry : options.entrySet())
+        {
+            String cutWord = entry.getKey().substring(5);
+            String tmpOption = String.valueOf(cutWord.charAt(0)).toLowerCase();
+            cutWord = cutWord.substring(1);
+            tmpOption = tmpOption.concat(cutWord);
+            exeLevels.add(tmpOption);
+        }
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(exeLevels, builder);
+    }
+
+    /**
+     * @param context the command context
+     * @param builder the suggestion builder
+     * @return a suggestion with all available allow options + the bulk toogle + modifConfig
+     */
+    public static CompletableFuture<Suggestions> getOptionsGeneral(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder) throws CommandSyntaxException
+    {
+        MinecraftServer server = context.getSource().getServer();
+        Map<String, Object> options = CyanMidnightConfig.generateAllowOptionsMap();
+
+        List<String> exeLevels = new ArrayList<>();
+        exeLevels.add("all");
+        exeLevels.add("modifConfig");
+        // Here we cut the 'allow' part of the String
+        for (Map.Entry<String, Object> entry : options.entrySet())
+        {
+            String cutWord = entry.getKey().substring(5);
+            String tmpOption = String.valueOf(cutWord.charAt(0)).toLowerCase();
+            cutWord = cutWord.substring(1);
+            tmpOption = tmpOption.concat(cutWord);
+            exeLevels.add(tmpOption);
+        }
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(exeLevels, builder);
+    }
+
+    /**
+     * @param context the command context
+     * @param builder the suggestion builder
+     * @return a suggestion with all OP levels
+     */
+    public static CompletableFuture<Suggestions> getOpLevels(@NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder)
     {
         MinecraftServer server = context.getSource().getServer();
 
-        
-        return CommandSource.suggestMatching(userNames, builder);
+        List<String> exeLevels = new ArrayList<>();
+        exeLevels.add("0");
+        exeLevels.add("1");
+        exeLevels.add("2");
+        exeLevels.add("3");
+        exeLevels.add("4");
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(exeLevels, builder);
     }
 
 }

@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
@@ -55,13 +56,15 @@ public class MiscellaneousCommands
      * <ul>Else:
      *      <li>-> A message is send to the player saying that it doesn't have the required permission</li>
      * </ul>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
+    public static int kgi(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
-        assert player != null;
 
+        assert player != null;
         if (CyanMidnightConfig.allowKgi)
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
@@ -90,7 +93,7 @@ public class MiscellaneousCommands
         {
             sendPlayerMessage(player,
                     "§cThe /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
-                    null,
+                    Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
                     "cyan.message.disabled.kgi",
                     false,
                     CyanMidnightConfig.useOneLanguage
@@ -109,14 +112,16 @@ public class MiscellaneousCommands
      * <ul>Else:
      *      <li>-> A message is send to the player saying that it doesn't have the required permission</li>
      * </ul>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
+    public static int kgir(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
         int arg = IntegerArgumentType.getInteger(context, "distance_in_chunks");
-        assert player != null;
 
+        assert player != null;
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             if (CyanMidnightConfig.allowKgi)
@@ -134,7 +139,7 @@ public class MiscellaneousCommands
             {
                 sendPlayerMessage(player,
                         "§cThe /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
-                        null,
+                        Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
                         "cyan.message.disabled.kgi",
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -164,13 +169,15 @@ public class MiscellaneousCommands
      * <ul>Else:
      *      <li>-> A message tells the player taht it doesn't have the required permission</li>
      * </ul>
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int ops(@NotNull CommandContext<ServerCommandSource> context)
+    public static int ops(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
-        assert player != null;
 
+        assert player != null;
         if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
         {
             sendPlayerMessage(player,
@@ -199,14 +206,14 @@ public class MiscellaneousCommands
      * <p>
      * A list of all mods installed on the server
      * TODO -> make work
+     *
+     * @throws CommandSyntaxException if the syntaxe of the command isn't correct
      */
-    public static int mods(@NotNull CommandContext<ServerCommandSource> context)
+    public static int mods(@NotNull CommandContext<ServerCommandSource> context) throws CommandSyntaxException
     {
         ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-        assert player != null;
 
-        sendPlayerMessage(player,
+        sendPlayerMessage(source.getPlayer(),
                 "The mods installed on this server are : \n%s",
                 Arrays.toString(FabricLoader.getInstance().getAllMods().toArray()),
                 "cyan.message.mods",

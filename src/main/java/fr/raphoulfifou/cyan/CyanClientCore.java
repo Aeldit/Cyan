@@ -30,9 +30,7 @@ public class CyanClientCore implements ClientModInitializer
         {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            SetCommands.register(dispatcher);
-            GetCommand.register(dispatcher);
-            SettingsCommands.register(dispatcher);
+            CyanCommands.register(dispatcher);
         });
         CyanClientCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
         CyanClientCore.LOGGER.info("{} Successfully completed initialization", MODNAME);

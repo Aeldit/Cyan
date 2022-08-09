@@ -30,9 +30,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
         {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            SetCommands.register(dispatcher);
-            GetCommand.register(dispatcher);
-            SettingsCommands.register(dispatcher);
+            CyanCommands.register(dispatcher);
         });
         CyanServerCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
         CyanServerCore.LOGGER.info("{} Successfully completed initialization", MODNAME);
