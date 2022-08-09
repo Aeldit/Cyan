@@ -43,6 +43,7 @@
   "cyan.message.getDescription.command.bed": "La commande §e/bed §fvous téléporte à votre lit ou votre ancre de réapparition",
   "cyan.message.getDescription.command.kgi": "La commande §e/kgi §ftue tout les items au sol dans un certain rayon.\n§e/kgi §fpour tuer les items dans le rayon par défaut.\n§e/kgi [distance_en_chunks] §fpour tuer les items dans le rayon passé en argument",
   "cyan.message.getDescription.command.surface": "La commande §e/surface §fvous téléporte au bloc le plus élevé à votre position XY",
+  "cyan.message.getDescription.options.headerTop": "§l§e------------------------------------",
   "cyan.message.getDescription.options.header": "\n§lDescription de l'option §e/%s :",
   "cyan.message.getDescription.options.allow": "§eLes options 'Allow' §fpremettent au joueur d'activer ou désactiver l'utilisation des commandes correspondantes",
   "cyan.message.getDescription.options.minOpLevelExe": "§eMinOpLevelExe §fpermettent au joueur de définir le niveau OP requis pour exécuter les différentes commandes",

@@ -43,6 +43,7 @@
   "cyan.message.getDescription.command.bed": "The §e/bed §fcommand teleports you to your bed or respawn anchor",
   "cyan.message.getDescription.command.kgi": "The §e/kgi §fcommand kills all item on the ground in a specific radius.\n§e/kgi §fto kill items in the default radius.\n§e/kgi [distance_in_chunks] §fto kill items in the specified radius",
   "cyan.message.getDescription.command.surface": "The §e/surface §fcommand teleports you to the highest block located at your XY position",
+  "cyan.message.getDescription.options.headerTop": "§l§e------------------------------------",
   "cyan.message.getDescription.options.header": "\n§lDescription of the §e/%s option :",
   "cyan.message.getDescription.options.allow": "§eAllow §foptions allows the player to enable or disable the use of a command",
   "cyan.message.getDescription.options.minOpLevelExe": "§eMinOpLevelExe §fallows the player to define which OP level is required to execute the different commands",

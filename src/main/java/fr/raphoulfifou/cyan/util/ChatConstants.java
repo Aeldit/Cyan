@@ -27,8 +27,8 @@ public class ChatConstants
 
     public static void generateOptionsTraductionsMap()
     {
-        commandsTraductionsMap.put("headerTop", "§e------------------------------------");
-        commandsTraductionsMap.put("header", "\n§lDescription of the §e/%s option :");
+        optionsTraductionsMap.put("headerTop", "§e------------------------------------");
+        optionsTraductionsMap.put("header", "\n§lDescription of the §e/%s option :");
 
         optionsTraductionsMap.put("allow", "§eAllow §foptions allows the player to enable or disable the use of a command");
         optionsTraductionsMap.put("minOpLevelExe", "§eMinOpLevelExe §fallows the player to define which OP level is required to execute the different commands");

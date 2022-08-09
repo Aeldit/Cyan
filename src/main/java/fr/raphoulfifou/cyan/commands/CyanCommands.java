@@ -98,11 +98,18 @@ public class CyanCommands
         ServerPlayerEntity player = source.getPlayer();
 
         String option = StringArgumentType.getString(context, "optionType");
-        Map<String, Map<String, String>> traductions = generateTraductionsMap();
+        Map<String, String> optionsTraductions = generateTraductionsMap().get("options");
 
         assert player != null;
         sendPlayerMessage(player,
-                Formatting.BOLD + traductions.get("options").get("header").formatted(Formatting.YELLOW + option),
+                optionsTraductions.get("headerTop"),
+                null,
+                "cyan.message.getDescription.options.headerTop",
+                false,
+                CyanMidnightConfig.useOneLanguage
+        );
+        sendPlayerMessage(player,
+                optionsTraductions.get("header").formatted(Formatting.YELLOW + option),
                 Formatting.YELLOW + option,
                 "cyan.message.getDescription.options.header",
                 false,
@@ -110,7 +117,7 @@ public class CyanCommands
         );
 
         sendPlayerMessage(player,
-                traductions.get("commands").get(option),
+                optionsTraductions.get(option),
                 null,
                 "cyan.message.getDescription.options.%s".formatted(option),
                 false,
@@ -122,7 +129,7 @@ public class CyanCommands
     }
 
     /**
-     * <p>Called when a player execute the command <code>/cyan description commands</code></p>
+     * <p>Called when a player execute the command <code>/cyan description options</code></p>
      * <p>Send a player in the player's chat with all the mod's options and their values</p>
      */
     public static int getAllOptionTypesDescription(@NotNull CommandContext<ServerCommandSource> context)
@@ -133,11 +140,19 @@ public class CyanCommands
         Map<String, String> optionsTraductions = generateTraductionsMap().get("options");
         List<String> optionTypes = generateOptionsTypesMap();
 
+        assert player != null;
+        sendPlayerMessage(player,
+                traductions.get("options").get("headerTop"),
+                null,
+                "cyan.message.getDescription.options.headerTop",
+                false,
+                CyanMidnightConfig.useOneLanguage
+        );
+
         for (String option : optionTypes)
         {
-            assert player != null;
             sendPlayerMessage(player,
-                    Formatting.BOLD + optionsTraductions.get("header").formatted(Formatting.YELLOW + option),
+                    optionsTraductions.get("header").formatted(Formatting.YELLOW + option),
                     Formatting.YELLOW + option,
                     "cyan.message.getDescription.options.header",
                     false,
@@ -235,7 +250,7 @@ public class CyanCommands
     }
 
     /**
-     * <p>Called when a player execute the command <code>/cyan getCyanConfigOptions</code></p>
+     * <p>Called when a player execute the command <code>/cyan description</code></p>
      * <p>Send a player in the player's chat with all the mod's options and their values</p>
      */
     public static int getAllDescriptions(@NotNull CommandContext<ServerCommandSource> context)
@@ -514,7 +529,7 @@ public class CyanCommands
                 sendPlayerMessage(player,
                         line_start + "§3%s %s".formatted(option, "option have been set to %s"),
                         red + Boolean.toString(boolValue),
-                        "cyan.message.%s".formatted(option),
+                        "cyan.message.set%s".formatted(option),
                         false,
                         CyanMidnightConfig.useOneLanguage
                 );
@@ -555,6 +570,8 @@ public class CyanCommands
         String option = StringArgumentType.getString(context, "otherOption");
         int intValue = IntegerArgumentType.getInteger(context, "intValue");
 
+        option = option.substring(0, 1).toUpperCase() + option.substring(1);
+
         // If OP with minimum defined level (minOpLevelExe option)
         assert player != null;
         if (player.hasPermissionLevel((Integer) options.get("minOpLevelExe").get("minOpLevelExeModifConfig")))
@@ -563,7 +580,7 @@ public class CyanCommands
             sendPlayerMessage(player,
                     line_start + "§3%s %s".formatted(option, "option have been set to %s"),
                     gold + Integer.toString(intValue),
-                    "cyan.message.%s".formatted(option),
+                    "cyan.message.set%s".formatted(option),
                     false,
                     CyanMidnightConfig.useOneLanguage
             );
@@ -584,7 +601,7 @@ public class CyanCommands
     }
 
     /**
-     * <p>Called when a player execute the command <code>/cyan getCyanConfigOptions</code></p>
+     * <p>Called when a player execute the command <code>/cyan config</code></p>
      * <p>Send a player in the player's chat with all the mod's options and their values</p>
      */
     public static int getConfigOptions(@NotNull CommandContext<ServerCommandSource> context)
@@ -651,4 +668,6 @@ public class CyanCommands
 
         return Command.SINGLE_SUCCESS;
     }
+
+
 }
