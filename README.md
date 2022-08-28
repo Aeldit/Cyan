@@ -1,4 +1,4 @@
-![banner](https://github.com/Raphoulfifou/Cyan/blob/1.19.x/images/banner.png?raw=true)
+![banner](https://github.com/Raphoulfifou/Cyan/blob/1.19.x/images/banner_small.png?raw=true)
 
 # 📝 REQUIRES FABRIC API
 
