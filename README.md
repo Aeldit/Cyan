@@ -1,3 +1,5 @@
+![banner](https://github.com/Raphoulfifou/Cyan/blob/main/images/banner.png?raw=true)
+
 # 📝 REQUIRES FABRIC API
 
 ![LICENSE_PLATE](https://img.shields.io/github/license/Raphoulfifou/Cyan?style=flat-square)
