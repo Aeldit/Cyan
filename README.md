@@ -25,34 +25,7 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
 
 #### ✅ List of commands :
 
-    - /bed -> teleport the player to his bed or respawn anchor, depending one which one is the respawn point
-    - /bedof [player_name] -> teleport the player to the bed or respawn anchor of the specified player
-        (only works if the player is online)
-    - /surface -> teleport the player to the surface
-
-    - /killgrounditems [distance_in_chunks] -> kill the items that are floating on the ground
-        (if a radius is specified, it will only kill items that are within it;
-         ex: /kgi 5 -> radius of 5 chunks
-         If no radius is specified, the default value defined in the config will be used.
-            This value can be changed with /setDistanceToEntitiesKgi)
-
-    - /ops -> displays a list of all op players
-
-
-    If the following commands have no argument, the value of the option will be displayed :
-    - /allowBed [true|false] -> allows or not the use of /bed
-    - /allowKgi [true|false] -> allows or not the use of /kgi
-    - /allowSurface [true|false] -> allows or not the use of /surface
-    - /useOneLanguage [true|false] (server-side) -> If the we use translation files
-
-    - /distanceToEntitiesKgi [distance in chunks] -> change the value that is used by default by the /kgi
-    -  /requiredOpLevelKgi [integer between 0 and 4 (both included)] -> change the value of the minimum required OP
-        level used for the /kgi
-
-
-    - /getCyanConfigOptions -> display the values of the different options of the mod in the player's chat
-
-![example_image](https://raw.githubusercontent.com/Raphoulfifou/Cyan/1.18.x/images/getCyanConfigOptions_example.png)
+    See 
 
 #### ✔️ List of current aliases:
 
