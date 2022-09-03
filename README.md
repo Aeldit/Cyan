@@ -25,7 +25,7 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
 
 #### ✅ List of commands :
 
-    See 
+See [COMMANDS.md](https://github.com/Raphoulfifou/Cyan/blob/1.19.x/docs/COMMANDS.md)
 
 #### ✔️ List of current aliases:
 
