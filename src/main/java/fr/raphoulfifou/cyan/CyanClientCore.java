@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
  */
 public class CyanClientCore implements ClientModInitializer
 {
-
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
     public static final String MODNAME = "[Cyan]";
