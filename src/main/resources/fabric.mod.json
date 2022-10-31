@@ -5,29 +5,29 @@
   "name": "Cyan",
   "description": "This mod adds a few commands to minecraft",
   "authors": [
-    "Raphoulfifou"
+    "Aeldit"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/user/lRyDhyWM",
-    "sources": "https://github.com/Raphoulfifou/Cyan",
-    "issues": "https://github.com/Raphoulfifou/Cyan/issues"
+    "homepage": "https://modrinth.com/user/Aeldit",
+    "sources": "https://github.com/Aeldit/Cyan",
+    "issues": "https://github.com/Aeldit/Cyan/issues"
   },
   "license": "CC0-1.0",
   "icon": "assets/cyan/icon.png",
   "environment": "*",
   "entrypoints": {
     "server": [
-      "fr.raphoulfifou.cyan.CyanServerCore"
+      "fr.aeldit.cyan.CyanServerCore"
     ],
     "client": [
-      "fr.raphoulfifou.cyan.CyanClientCore"
+      "fr.aeldit.cyan.CyanClientCore"
     ],
     "modmenu": [
-      "fr.raphoulfifou.cyan.config.ModMenuApiImpl"
+      "fr.aeldit.cyan.config.ModMenuApiImpl"
     ]
   },
   "depends": {
-    "fabricloader": ">=0.14.6",
+    "fabricloader": ">=0.14.10",
     "fabric": "*",
     "minecraft": "1.19.x",
     "java": ">=17"

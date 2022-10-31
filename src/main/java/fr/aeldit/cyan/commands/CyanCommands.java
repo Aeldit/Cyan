@@ -1,4 +1,4 @@
-package fr.raphoulfifou.cyan.commands;
+package fr.aeldit.cyan.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -6,9 +6,9 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.raphoulfifou.cyan.commands.argumentTypes.ArgumentSuggestion;
-import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
-import fr.raphoulfifou.cyan.util.ChatConstants;
+import fr.aeldit.cyan.commands.argumentTypes.ArgumentSuggestion;
+import fr.aeldit.cyan.config.CyanMidnightConfig;
+import fr.aeldit.cyan.util.ChatConstants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-import static fr.raphoulfifou.cyan.util.ChatConstants.*;
-import static fr.raphoulfifou.cyanlib.util.ChatUtil.sendPlayerMessage;
+import static fr.aeldit.cyan.util.ChatConstants.*;
+import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 public class CyanCommands
 {
@@ -31,7 +31,7 @@ public class CyanCommands
                 .then(CommandManager.literal("config")
                         .then(CommandManager.literal("allow")
                                 .then(CommandManager.argument("allowOption", StringArgumentType.string())
-                                        .suggests(ArgumentSuggestion::getOptions)
+                                        .suggests((context4, builder4) -> ArgumentSuggestion.getOptions(builder4))
                                         .then(CommandManager.argument("boolValue", BoolArgumentType.bool())
                                                 .executes(CyanCommands::setAllowOption)
                                         )
@@ -40,9 +40,9 @@ public class CyanCommands
                         )
                         .then(CommandManager.literal("minOpLevelExe")
                                 .then(CommandManager.argument("minOpLevelExeOption", StringArgumentType.string())
-                                        .suggests(ArgumentSuggestion::getOptionsGeneral)
+                                        .suggests((context5, builder5) -> ArgumentSuggestion.getOptionsGeneral(builder5))
                                         .then(CommandManager.argument("intValue", StringArgumentType.string())
-                                                .suggests(ArgumentSuggestion::getOpLevels)
+                                                .suggests((context6, builder6) -> ArgumentSuggestion.getOpLevels(builder6))
                                                 .executes(CyanCommands::setMinOpLevelExeOption)
                                         )
                                 )
@@ -50,7 +50,7 @@ public class CyanCommands
                         .then(CommandManager.literal("other")
                                 .then(CommandManager.literal("boolean")
                                         .then(CommandManager.argument("otherOption", StringArgumentType.string())
-                                                .suggests(ArgumentSuggestion::getOtherBoolOptions)
+                                                .suggests((context, builder) -> ArgumentSuggestion.getOtherBoolOptions(builder))
                                                 .then(CommandManager.argument("boolValue", BoolArgumentType.bool())
                                                         .executes(CyanCommands::setOtherBoolOption)
                                                 )
@@ -58,7 +58,7 @@ public class CyanCommands
                                 )
                                 .then(CommandManager.literal("integer")
                                         .then(CommandManager.argument("otherOption", StringArgumentType.string())
-                                                .suggests(ArgumentSuggestion::getOtherIntOptions)
+                                                .suggests((context1, builder1) -> ArgumentSuggestion.getOtherIntOptions(builder1))
                                                 .then(CommandManager.argument("intValue", IntegerArgumentType.integer())
                                                         .executes(CyanCommands::setOtherIntOption)
                                                 )
@@ -70,19 +70,18 @@ public class CyanCommands
                 .then(CommandManager.literal("description")
                         .then(CommandManager.literal("commands")
                                 .then(CommandManager.argument("commandName", StringArgumentType.string())
-                                        .suggests(ArgumentSuggestion::getCommands)
+                                        .suggests((context2, builder2) -> ArgumentSuggestion.getCommands(builder2))
                                         .executes(CyanCommands::getCommandDescription)
                                 )
                                 .executes(CyanCommands::getAllCommandsDescription)
                         )
                         .then(CommandManager.literal("options")
                                 .then(CommandManager.argument("optionType", StringArgumentType.string())
-                                        .suggests(ArgumentSuggestion::getOptionsTypes)
+                                        .suggests((context3, builder3) -> ArgumentSuggestion.getOptionsTypes(builder3))
                                         .executes(CyanCommands::getOptionTypeDescription)
                                 )
                                 .executes(CyanCommands::getAllOptionTypesDescription)
                         )
-                        .executes(CyanCommands::getAllDescriptions)
                 )
         );
     }
@@ -250,76 +249,6 @@ public class CyanCommands
     }
 
     /**
-     * <p>Called when a player execute the command <code>/cyan description</code></p>
-     * <p>Send a player in the player's chat with all the mod's options and their values</p>
-     */
-    public static int getAllDescriptions(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-
-        String option = StringArgumentType.getString(context, "optionName");
-        Map<String, Map<String, Object>> options = CyanMidnightConfig.generateOptionsMap();
-
-        assert player != null;
-        sendPlayerMessage(player,
-                "\n§6|--> §3Description of the Cyan mod's options :",
-                null,
-                "cyan.message.getDescription.header",
-                false,
-                CyanMidnightConfig.useOneLanguage
-        );
-
-        for (Map.Entry<String, Map<String, Object>> entry : options.entrySet())
-        {
-            Map<String, Object> key = entry.getValue();
-            for (Map.Entry<String, Object> entry2 : key.entrySet())
-            {
-                Object key2 = entry2.getKey();
-                String currentTrad = null;
-                if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
-                {
-                    currentTrad = ChatConstants.getOptionTraduction(entry2.getKey());
-                }
-
-                if (entry2.getValue() instanceof Boolean value)
-                {
-                    if (value)
-                    {
-                        sendPlayerMessage(player,
-                                currentTrad,
-                                green + Boolean.toString(value),
-                                "cyan.message.getDescription.%s.%s".formatted(key, key2),
-                                false,
-                                CyanMidnightConfig.useOneLanguage
-                        );
-                    } else
-                    {
-                        sendPlayerMessage(player,
-                                currentTrad,
-                                red + Boolean.toString(value),
-                                "cyan.message.getDescription.%s.%s".formatted(key, key2),
-                                false,
-                                CyanMidnightConfig.useOneLanguage
-                        );
-                    }
-                } else if (entry2.getValue() instanceof Integer value)
-                {
-                    sendPlayerMessage(player,
-                            currentTrad,
-                            gold + Integer.toString(value),
-                            "cyan.message.getDescription.%s.%s".formatted(key, key2),
-                            false,
-                            CyanMidnightConfig.useOneLanguage
-                    );
-                }
-            }
-        }
-
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
      * <p>Called when a player execute the command <code>/cyan allow [optionName] [true|false]</code></p>
      *
      * <ul>If the player has a permission level equal to the option MinOpLevelExeModifConfig (see {@link CyanMidnightConfig})
@@ -355,7 +284,7 @@ public class CyanCommands
                 {
                     sendPlayerMessage(player,
                             line_start + "§3Allow options have been set to %s",
-                            green + Boolean.toString(boolValue),
+                            green + Boolean.toString(true),
                             "cyan.message.setAllow",
                             false,
                             CyanMidnightConfig.useOneLanguage
@@ -364,7 +293,7 @@ public class CyanCommands
                 {
                     sendPlayerMessage(player,
                             line_start + "§3setAllow%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
-                            green + Boolean.toString(boolValue),
+                            green + Boolean.toString(true),
                             "cyan.message.setAllow%s".formatted(upperCaseOptionName),
                             false,
                             CyanMidnightConfig.useOneLanguage
@@ -376,7 +305,7 @@ public class CyanCommands
                 {
                     sendPlayerMessage(player,
                             line_start + "§3Allow options have been set to %s",
-                            red + Boolean.toString(boolValue),
+                            red + Boolean.toString(false),
                             "cyan.message.setAllow",
                             false,
                             CyanMidnightConfig.useOneLanguage
@@ -385,7 +314,7 @@ public class CyanCommands
                 {
                     sendPlayerMessage(player,
                             line_start + "§3setAllow%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
-                            red + Boolean.toString(boolValue),
+                            red + Boolean.toString(false),
                             "cyan.message.setAllow%s".formatted(upperCaseOptionName),
                             false,
                             CyanMidnightConfig.useOneLanguage
@@ -516,10 +445,9 @@ public class CyanCommands
             CyanMidnightConfig.setBoolOption(option, boolValue);
             if (boolValue)
             {
-
                 sendPlayerMessage(player,
                         line_start + "§3%s %s".formatted(option, "option have been set to %s"),
-                        green + Boolean.toString(boolValue),
+                        green + Boolean.toString(true),
                         "cyan.message.set%s".formatted(option),
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -528,7 +456,7 @@ public class CyanCommands
             {
                 sendPlayerMessage(player,
                         line_start + "§3%s %s".formatted(option, "option have been set to %s"),
-                        red + Boolean.toString(boolValue),
+                        red + Boolean.toString(false),
                         "cyan.message.set%s".formatted(option),
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -638,7 +566,7 @@ public class CyanCommands
                     {
                         sendPlayerMessage(player,
                                 currentTrad,
-                                green + Boolean.toString(value),
+                                green + Boolean.toString(true),
                                 "cyan.message.getCfgOptions.%s".formatted(key2),
                                 false,
                                 CyanMidnightConfig.useOneLanguage
@@ -647,7 +575,7 @@ public class CyanCommands
                     {
                         sendPlayerMessage(player,
                                 currentTrad,
-                                red + Boolean.toString(value),
+                                red + Boolean.toString(false),
                                 "cyan.message.getCfgOptions.%s".formatted(key2),
                                 false,
                                 CyanMidnightConfig.useOneLanguage
@@ -668,6 +596,5 @@ public class CyanCommands
 
         return Command.SINGLE_SUCCESS;
     }
-
 
 }

@@ -1,9 +1,11 @@
-package fr.raphoulfifou.cyan;
+package fr.aeldit.cyan;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import fr.raphoulfifou.cyan.commands.*;
-import fr.raphoulfifou.cyan.config.CyanMidnightConfig;
-import net.fabricmc.api.ClientModInitializer;
+import fr.aeldit.cyan.commands.CyanCommands;
+import fr.aeldit.cyan.commands.MiscellaneousCommands;
+import fr.aeldit.cyan.commands.TeleportationCommands;
+import fr.aeldit.cyan.config.CyanMidnightConfig;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,18 +13,19 @@ import org.slf4j.LoggerFactory;
 /**
  * @since 0.0.1
  */
-public class CyanClientCore implements ClientModInitializer
+public class CyanServerCore implements DedicatedServerModInitializer
 {
+
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
     public static final String MODNAME = "[Cyan]";
 
     @Override
     // Initialize the differents parts of the mod when lauched on client (used when in singleplayer)
-    public void onInitializeClient()
+    public void onInitializeServer()
     {
         MidnightConfig.init(MODID, CyanMidnightConfig.class);
-        CyanClientCore.LOGGER.info("{} Successfully initialized config", MODNAME);
+        CyanServerCore.LOGGER.info("{} Successfully initialized config", MODNAME);
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->
@@ -31,8 +34,8 @@ public class CyanClientCore implements ClientModInitializer
             MiscellaneousCommands.register(dispatcher);
             CyanCommands.register(dispatcher);
         });
-        CyanClientCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
-        CyanClientCore.LOGGER.info("{} Successfully completed initialization", MODNAME);
+        CyanServerCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
+        CyanServerCore.LOGGER.info("{} Successfully completed initialization", MODNAME);
 
     }
 

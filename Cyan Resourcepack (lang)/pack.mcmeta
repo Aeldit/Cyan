@@ -1,17 +1,17 @@
 {
     "pack": {
-        "pack_format": 8,
+        "pack_format": 9,
         "description": [
             {
                 "text": "Cyan",
                 "color": "gold"
             },
             {
-                "text": " MC 1.18.x",
+                "text": " MC 1.19.x",
                 "color": "dark_aqua"
             },
             {
-                "text": "\n[par Raphoulfifou]",
+            "text": "\n[par Aeldit]",
                 "color": "dark_red"
             }
         ]

@@ -1,4 +1,4 @@
-package fr.raphoulfifou.cyan.util;
+package fr.aeldit.cyan.util;
 
 import net.minecraft.util.Formatting;
 
