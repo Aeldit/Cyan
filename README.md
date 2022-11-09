@@ -1,4 +1,4 @@
-![banner](https://github.com/Aeldit/Cyan/blob/1.19.x/images/banner_small.png?raw=true)
+![banner](images/banner_small.png)
 
 # 📝 REQUIRES FABRIC API
 
@@ -31,10 +31,6 @@
 > ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
 > ![github_pull_requests](https://img.shields.io/github/issues-pr/Aeldit/Cyan?style=for-the-badge&logo=github)
 
-
-📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
-it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
-
 ### ✅ ```List of commands (and their aliases)```
 
 #### ✔️ List of current aliases:
@@ -55,3 +51,6 @@ see [COMMANDS.md](docs/COMMANDS.md)
 >
 >If you are not using this mod on client but only on server side, download the resource pack for messages translations
 > (Cyan 1.1X.x located in this mod's github repository)
+
+> 📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
+> it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
