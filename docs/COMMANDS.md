@@ -1,9 +1,10 @@
 # Documentation for the commands of the mod
 
-Commands are present in 2 different forms :
+Commands :
 
-1. /cyan _argument_
-2. Other commands
+1. /cyan (for description and config editing)
+2. Teleportation
+3. Misc
 
 ## I). /cyan commands
 
@@ -44,10 +45,11 @@ cyan
         └── other -> Displays the description of the 'other' options
 ```
 
-## II). Other commands
+## II). Teleportation
 
-> These commands are the main part of the mod
+- /bed → teleports the player executing the command to its bed or respawn anchor
+- /surface → teleports the player executing the command to the highest block on its position
 
-- /bed
-- /kgi
-- /surface
+## III). Misc
+
+- /kgi → removes items floating on the ground in the default radius (in chunks), or in the specified radius
