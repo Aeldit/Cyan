@@ -22,12 +22,13 @@
     
     - Remove items that are floating on the ground (useful if there is a lot of them, which causes lag)
     
-    - See and edit plenty of options, like the minimum OP level required to run a command, or the distance in which items will be removed
+    - See and edit plenty of options, like the minimum OP level required to run a command, or the
+      distance in which items will be removed
 
 > For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
 > on the github page of the mod
 >
->![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
+> ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
 > ![github_pull_requests](https://img.shields.io/github/issues-pr/Aeldit/Cyan?style=for-the-badge&logo=github)
 
 
@@ -38,9 +39,9 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
 
 #### ✔️ List of current aliases:
 
-    - /bed -> b
-    - /surface -> s
-    - /killgrounditems -> kgi
+    - /bed -> /b
+    - /surface -> /s
+    - /killgrounditems -> /kgi
 
 For a more detailed explanation on how to use every command,
 see [COMMANDS.md](docs/COMMANDS.md)
@@ -52,5 +53,5 @@ see [COMMANDS.md](docs/COMMANDS.md)
 
 > ### ❗ Important :
 >
->If you are not using this mod on client but only on server side, download the resource pack for messages translations (
-> Cyan 1.1X.x located in this mod's github repository)
+>If you are not using this mod on client but only on server side, download the resource pack for messages translations
+> (Cyan 1.1X.x located in this mod's github repository)
