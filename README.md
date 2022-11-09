@@ -33,8 +33,6 @@
 
 ### ✅ ```List of commands (and their aliases)```
 
-#### ✔️ List of current aliases:
-
     - /bed -> /b
     - /surface -> /s
     - /killgrounditems -> /kgi
