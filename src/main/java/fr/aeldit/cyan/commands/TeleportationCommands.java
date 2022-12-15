@@ -77,9 +77,9 @@ public class TeleportationCommands
                     player.teleport(overworld, x, y, z, yaw, pitch);
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     sendPlayerMessage(player,
-                            gold + "You have been teleported to your bed",
+                            cyan + "You have been teleported to your bed",
                             null,
-                            gold + "cyan.message.bed",
+                            "cyan.message.bed",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useOneLanguage
                     );
@@ -88,9 +88,9 @@ public class TeleportationCommands
                     player.teleport(nether, x, y, z, yaw, pitch);
                     player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     sendPlayerMessage(player,
-                            gold + "You have been teleported to your respawn anchor",
+                            cyan + "You have been teleported to your respawn anchor",
                             null,
-                            gold + "cyan.message.respawnanchor",
+                            "cyan.message.respawnAnchor",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useOneLanguage
                     );
@@ -100,7 +100,7 @@ public class TeleportationCommands
                 sendPlayerMessage(player,
                         red + "You don't have an attributed bed or respawn anchor",
                         null,
-                        red + "cyan.message.bed.error",
+                        "cyan.message.bed.error",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useOneLanguage
                 );
@@ -110,7 +110,7 @@ public class TeleportationCommands
             sendPlayerMessage(player,
                     red + "The /bed command is disabled. To enable it, enter '/allowBed true' in chat",
                     null,
-                    red + "cyan.message.disabled.bed",
+                    "cyan.message.disabled.bed",
                     CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
@@ -141,9 +141,9 @@ public class TeleportationCommands
             player.teleport(world, x, y, z, yaw, pitch);
             player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
             sendPlayerMessage(player,
-                    gold + "You have been teleported to the surface",
+                    cyan + "You have been teleported to the surface",
                     null,
-                    gold + "cyan.message.surface",
+                    "cyan.message.surface",
                     CyanMidnightConfig.msgToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
@@ -152,7 +152,7 @@ public class TeleportationCommands
             sendPlayerMessage(player,
                     red + "The /surface command is disabled. To enable it, enter '/allowSurface true' in chat",
                     null,
-                    red + "cyan.message.disabled.surface",
+                    "cyan.message.disabled.surface",
                     CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );

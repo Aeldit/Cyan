@@ -58,7 +58,7 @@ public class MiscellaneousCommands
                 // Default distance is 14 chunks, but can be changed in settings
                 source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                 sendPlayerMessage(player,
-                        gold + "Ground items have been removed",
+                        cyan + "Ground items have been removed",
                         null,
                         "cyan.message.kgi",
                         CyanMidnightConfig.msgToActionBar,
@@ -113,7 +113,7 @@ public class MiscellaneousCommands
                 // The default distance is 14 chunks, but it can be changed in the config file or with commands
                 source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                 sendPlayerMessage(player,
-                        gold + "Ground items have been removed in a radius of %s §cchunks",
+                        cyan + "Ground items have been removed in a radius of %s §cchunks",
                         green + Integer.toString(arg),
                         "cyan.message.kgir",
                         CyanMidnightConfig.msgToActionBar,

@@ -14,6 +14,7 @@ public class ChatConstants
     public static Formatting green = Formatting.GREEN;
     public static Formatting red = Formatting.RED;
     public static Formatting gold = Formatting.GOLD;
+    public static Formatting cyan = Formatting.DARK_AQUA;
 
     public static final Map<String, String> optionsTraductionsMap = new HashMap<>();
     public static final Map<String, String> commandsTraductionsMap = new HashMap<>();

@@ -14,6 +14,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
@@ -283,7 +284,7 @@ public class CyanCommands
                 if ("all".equals(option))
                 {
                     sendPlayerMessage(player,
-                            line_start + "§3Allow options have been set to %s",
+                            "§3Allow options have been set to %s",
                             green + Boolean.toString(true),
                             "cyan.message.setAllow",
                             false,
@@ -292,7 +293,7 @@ public class CyanCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            line_start + "§3setAllow%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
+                            "§3setAllow%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
                             green + Boolean.toString(true),
                             "cyan.message.setAllow%s".formatted(upperCaseOptionName),
                             false,
@@ -304,7 +305,7 @@ public class CyanCommands
                 if ("all".equals(option))
                 {
                     sendPlayerMessage(player,
-                            line_start + "§3Allow options have been set to %s",
+                            "§3Allow options have been set to %s",
                             red + Boolean.toString(false),
                             "cyan.message.setAllow",
                             false,
@@ -313,7 +314,7 @@ public class CyanCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            line_start + "§3setAllow%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
+                            "§3setAllow%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
                             red + Boolean.toString(false),
                             "cyan.message.setAllow%s".formatted(upperCaseOptionName),
                             false,
@@ -364,7 +365,7 @@ public class CyanCommands
         {
             assert player != null;
             sendPlayerMessage(player,
-                    line_start_error + "The OP level must be [0;1;2;3 or 4]",
+                    "The OP level must be [0;1;2;3 or 4]",
                     null,
                     "cyan.message.incorrectIntOp",
                     false,
@@ -386,8 +387,8 @@ public class CyanCommands
             if ("all".equals(option))
             {
                 sendPlayerMessage(player,
-                        line_start + "§3MinOpLevelExe options have been set to %s",
-                        gold + Integer.toString(intValue),
+                        "§3MinOpLevelExe options have been set to %s",
+                        cyan + Integer.toString(intValue),
                         "cyan.message.setMinOpLevelExe",
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -395,8 +396,8 @@ public class CyanCommands
             } else
             {
                 sendPlayerMessage(player,
-                        line_start + "§3MinOpLevelExe%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
-                        gold + Integer.toString(intValue),
+                        "§3MinOpLevelExe%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
+                        cyan + Integer.toString(intValue),
                         "cyan.message.setMinOpLevelExe%s".formatted(upperCaseOptionName),
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -442,11 +443,12 @@ public class CyanCommands
         assert player != null;
         if (player.hasPermissionLevel((Integer) options.get("minOpLevelExe").get("minOpLevelExeModifConfig")))
         {
+            player.sendMessage(Text.of(option));
             CyanMidnightConfig.setBoolOption(option, boolValue);
             if (boolValue)
             {
                 sendPlayerMessage(player,
-                        line_start + "§3%s %s".formatted(option, "option have been set to %s"),
+                        "§3%s %s".formatted(option, "option have been set to %s"),
                         green + Boolean.toString(true),
                         "cyan.message.set%s".formatted(option),
                         false,
@@ -455,7 +457,7 @@ public class CyanCommands
             } else
             {
                 sendPlayerMessage(player,
-                        line_start + "§3%s %s".formatted(option, "option have been set to %s"),
+                        "§3%s %s".formatted(option, "option have been set to %s"),
                         red + Boolean.toString(false),
                         "cyan.message.set%s".formatted(option),
                         false,
@@ -506,8 +508,8 @@ public class CyanCommands
         {
             CyanMidnightConfig.setIntOption(option, intValue);
             sendPlayerMessage(player,
-                    line_start + "§3%s %s".formatted(option, "option have been set to %s"),
-                    gold + Integer.toString(intValue),
+                    "§3%s %s".formatted(option, "option have been set to %s"),
+                    cyan + Integer.toString(intValue),
                     "cyan.message.set%s".formatted(option),
                     false,
                     CyanMidnightConfig.useOneLanguage

@@ -108,9 +108,9 @@ public class CyanMidnightConfig extends MidnightConfig
             case "bed" -> allowBed = value;
             case "kgi" -> allowKgi = value;
             case "surface" -> allowSurface = value;
-            case "useOneLanguage" -> useOneLanguage = value;
-            case "msgToActionBar" -> msgToActionBar = value;
-            case "errorToActionBar" -> errorToActionBar = value;
+            case "UseOneLanguage" -> useOneLanguage = value;
+            case "MsgToActionBar" -> msgToActionBar = value;
+            case "ErrorToActionBar" -> errorToActionBar = value;
         }
         write("cyan");
     }
