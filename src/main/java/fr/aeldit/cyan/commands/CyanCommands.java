@@ -14,7 +14,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
@@ -368,7 +367,7 @@ public class CyanCommands
                     "The OP level must be [0;1;2;3 or 4]",
                     null,
                     "cyan.message.incorrectIntOp",
-                    false,
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
             return 0;
@@ -388,7 +387,7 @@ public class CyanCommands
             {
                 sendPlayerMessage(player,
                         "§3MinOpLevelExe options have been set to %s",
-                        cyan + Integer.toString(intValue),
+                        gold + Integer.toString(intValue),
                         "cyan.message.setMinOpLevelExe",
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -397,7 +396,7 @@ public class CyanCommands
             {
                 sendPlayerMessage(player,
                         "§3MinOpLevelExe%s %s".formatted(upperCaseOptionName, "option have been set to %s"),
-                        cyan + Integer.toString(intValue),
+                        gold + Integer.toString(intValue),
                         "cyan.message.setMinOpLevelExe%s".formatted(upperCaseOptionName),
                         false,
                         CyanMidnightConfig.useOneLanguage
@@ -409,7 +408,7 @@ public class CyanCommands
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true,
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
             return 0;
@@ -443,7 +442,6 @@ public class CyanCommands
         assert player != null;
         if (player.hasPermissionLevel((Integer) options.get("minOpLevelExe").get("minOpLevelExeModifConfig")))
         {
-            player.sendMessage(Text.of(option));
             CyanMidnightConfig.setBoolOption(option, boolValue);
             if (boolValue)
             {
@@ -509,7 +507,7 @@ public class CyanCommands
             CyanMidnightConfig.setIntOption(option, intValue);
             sendPlayerMessage(player,
                     "§3%s %s".formatted(option, "option have been set to %s"),
-                    cyan + Integer.toString(intValue),
+                    gold + Integer.toString(intValue),
                     "cyan.message.set%s".formatted(option),
                     false,
                     CyanMidnightConfig.useOneLanguage
@@ -522,7 +520,7 @@ public class CyanCommands
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true,
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
             return 0;
