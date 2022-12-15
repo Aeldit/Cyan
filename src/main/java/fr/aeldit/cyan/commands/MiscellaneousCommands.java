@@ -5,14 +5,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 import static fr.aeldit.cyan.util.ChatConstants.*;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
@@ -36,14 +32,6 @@ public class MiscellaneousCommands
                         .executes(MiscellaneousCommands::kgir)
                 )
                 .executes(MiscellaneousCommands::kgi)
-        );
-
-        dispatcher.register(CommandManager.literal("ops")
-                .executes(MiscellaneousCommands::ops)
-        );
-
-        dispatcher.register(CommandManager.literal("mods")
-                .executes(MiscellaneousCommands::mods)
         );
     }
 
@@ -70,10 +58,10 @@ public class MiscellaneousCommands
                 // Default distance is 14 chunks, but can be changed in settings
                 source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                 sendPlayerMessage(player,
-                        "§cGround items have been removed",
+                        gold + "Ground items have been removed",
                         null,
                         "cyan.message.kgi",
-                        true,
+                        CyanMidnightConfig.msgToActionBar,
                         CyanMidnightConfig.useOneLanguage
                 );
             } else
@@ -82,7 +70,7 @@ public class MiscellaneousCommands
                         notOP,
                         null,
                         "cyan.message.notOp",
-                        true,
+                        CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useOneLanguage
                 );
                 return 0;
@@ -90,10 +78,10 @@ public class MiscellaneousCommands
         } else
         {
             sendPlayerMessage(player,
-                    "§cThe /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
-                    Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
+                    red + "The /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
+                    null,
                     "cyan.message.disabled.kgi",
-                    false,
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
             return 0;
@@ -125,19 +113,19 @@ public class MiscellaneousCommands
                 // The default distance is 14 chunks, but it can be changed in the config file or with commands
                 source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                 sendPlayerMessage(player,
-                        "§cGround items have been removed in a radius of %s §cchunks",
+                        gold + "Ground items have been removed in a radius of %s §cchunks",
                         green + Integer.toString(arg),
                         "cyan.message.kgir",
-                        true,
+                        CyanMidnightConfig.msgToActionBar,
                         CyanMidnightConfig.useOneLanguage
                 );
             } else
             {
                 sendPlayerMessage(player,
-                        "§cThe /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
-                        Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
+                        red + "The /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
+                        null,
                         "cyan.message.disabled.kgi",
-                        false,
+                        CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useOneLanguage
                 );
                 return 0;
@@ -148,71 +136,11 @@ public class MiscellaneousCommands
                     notOP,
                     null,
                     "cyan.message.notOp",
-                    true,
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
             return 0;
         }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * <p>Called when a player execute the command <code>/ops</code></p>
-     *
-     * <ul>If the player has a permission level equal to the level defined in the config (4 by default)
-     *      <li>-> A list with all the op players is displayed</li>
-     * </ul>
-     * <ul>Else:
-     *      <li>-> A message tells the player taht it doesn't have the required permission</li>
-     * </ul>
-     */
-    public static int ops(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-
-        assert player != null;
-        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
-        {
-            sendPlayerMessage(player,
-                    line_start + "The op players are :\n%s",
-                    Arrays.toString(source.getServer().getPlayerManager().getOpNames()),
-                    "cyan.message.ops",
-                    false,
-                    CyanMidnightConfig.useOneLanguage
-            );
-        } else
-        {
-            sendPlayerMessage(player,
-                    notOP,
-                    null,
-                    "cyan.message.notOp",
-                    true,
-                    CyanMidnightConfig.useOneLanguage
-            );
-            return 0;
-        }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * <p>Called when a player execute the command <code>/mods</code></p>
-     * <p>
-     * A list of all mods installed on the server
-     * TODO -> make work
-     */
-    public static int mods(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        ServerCommandSource source = context.getSource();
-
-        sendPlayerMessage(Objects.requireNonNull(source.getPlayer()),
-                "The mods installed on this server are : \n%s",
-                Arrays.toString(FabricLoader.getInstance().getAllMods().toArray()),
-                "cyan.message.mods",
-                false,
-                CyanMidnightConfig.useOneLanguage
-        );
-
         return Command.SINGLE_SUCCESS;
     }
 

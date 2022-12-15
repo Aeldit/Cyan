@@ -41,6 +41,10 @@ public class CyanMidnightConfig extends MidnightConfig
     public static Comment otherOptions;
     @Entry
     public static boolean useOneLanguage = false;
+    @Entry
+    public static boolean msgToActionBar = true;
+    @Entry
+    public static boolean errorToActionBar = true;
 
     public static Map<String, Object> generateAllowOptionsMap()
     {
@@ -64,6 +68,8 @@ public class CyanMidnightConfig extends MidnightConfig
     public static Map<String, Object> generateOtherBoolOptionsMap()
     {
         otherOptionsBoolMap.put("useOneLanguage", useOneLanguage);
+        otherOptionsBoolMap.put("msgToActionBar", msgToActionBar);
+        otherOptionsBoolMap.put("errorToActionBar", errorToActionBar);
 
         return otherOptionsBoolMap;
     }
@@ -103,6 +109,8 @@ public class CyanMidnightConfig extends MidnightConfig
             case "kgi" -> allowKgi = value;
             case "surface" -> allowSurface = value;
             case "useOneLanguage" -> useOneLanguage = value;
+            case "msgToActionBar" -> msgToActionBar = value;
+            case "errorToActionBar" -> errorToActionBar = value;
         }
         write("cyan");
     }

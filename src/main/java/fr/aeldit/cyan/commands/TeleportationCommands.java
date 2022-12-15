@@ -16,8 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static fr.aeldit.cyan.util.ChatConstants.line_start;
-import static fr.aeldit.cyan.util.ChatConstants.line_start_error;
+import static fr.aeldit.cyan.util.ChatConstants.*;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
@@ -75,76 +74,46 @@ public class TeleportationCommands
 
                 if (player.getSpawnPointDimension() == World.OVERWORLD)
                 {
-                    if (player.getWorld().getRegistryKey() != World.OVERWORLD)
-                    {
-                        player.teleport(overworld, x, y, z, yaw, pitch);
-                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        sendPlayerMessage(player,
-                                line_start + "§6You have been teleported to your bed",
-                                null,
-                                "cyan.message.bed",
-                                true,
-                                CyanMidnightConfig.useOneLanguage
-                        );
-                    } else
-                    {
-                        player.teleport(overworld, x, y, z, yaw, pitch);
-                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        sendPlayerMessage(player,
-                                line_start + "§6You have been teleported to your bed",
-                                null,
-                                "cyan.message.bed",
-                                true,
-                                CyanMidnightConfig.useOneLanguage
-                        );
-                    }
+                    player.teleport(overworld, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    sendPlayerMessage(player,
+                            gold + "You have been teleported to your bed",
+                            null,
+                            gold + "cyan.message.bed",
+                            CyanMidnightConfig.msgToActionBar,
+                            CyanMidnightConfig.useOneLanguage
+                    );
                 } else if (player.getSpawnPointDimension() == World.NETHER)
                 {
-                    if (player.getWorld().getRegistryKey() != World.NETHER)
-                    {
-                        player.teleport(nether, x, y, z, yaw, pitch);
-                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        sendPlayerMessage(player,
-                                line_start + "§6You have been teleported to your respawn anchor",
-                                null,
-                                "cyan.message.respawnanchor",
-                                true,
-                                CyanMidnightConfig.useOneLanguage
-                        );
-                    } else
-                    {
-                        player.teleport(nether, x, y, z, yaw, pitch);
-                        player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                        sendPlayerMessage(player,
-                                line_start + "§6You have been teleported to your respawn anchor",
-                                null,
-                                "cyan.message.respawnanchor",
-                                true,
-                                CyanMidnightConfig.useOneLanguage
-                        );
-                    }
+                    player.teleport(nether, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    sendPlayerMessage(player,
+                            gold + "You have been teleported to your respawn anchor",
+                            null,
+                            gold + "cyan.message.respawnanchor",
+                            CyanMidnightConfig.msgToActionBar,
+                            CyanMidnightConfig.useOneLanguage
+                    );
                 }
             } else
             {
                 sendPlayerMessage(player,
-                        line_start_error + "§cYou don't have an attributed bed or respawn anchor",
+                        red + "You don't have an attributed bed or respawn anchor",
                         null,
-                        "cyan.message.bed.notfound",
-                        false,
+                        red + "cyan.message.bed.error",
+                        CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useOneLanguage
                 );
-                return 0;
             }
         } else
         {
             sendPlayerMessage(player,
-                    line_start_error + "The /bed command is disabled. To enable it, enter '/allowBed true' in chat",
+                    red + "The /bed command is disabled. To enable it, enter '/allowBed true' in chat",
                     null,
-                    "cyan.message.disabled.bed",
-                    false,
+                    red + "cyan.message.disabled.bed",
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
-            return 0;
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -172,22 +141,21 @@ public class TeleportationCommands
             player.teleport(world, x, y, z, yaw, pitch);
             player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
             sendPlayerMessage(player,
-                    line_start + "§6You have been teleported to the surface",
+                    gold + "You have been teleported to the surface",
                     null,
-                    "cyan.message.surface",
-                    true,
+                    gold + "cyan.message.surface",
+                    CyanMidnightConfig.msgToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
         } else
         {
             sendPlayerMessage(player,
-                    line_start_error + "The /surface command is disabled. To enable it, enter '/allowSurface true' in chat",
+                    red + "The /surface command is disabled. To enable it, enter '/allowSurface true' in chat",
                     null,
-                    "cyan.message.disabled.surface",
-                    false,
+                    red + "cyan.message.disabled.surface",
+                    CyanMidnightConfig.errorToActionBar,
                     CyanMidnightConfig.useOneLanguage
             );
-            return 0;
         }
 
         return Command.SINGLE_SUCCESS;
