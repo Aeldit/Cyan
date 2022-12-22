@@ -10,6 +10,8 @@ import java.util.Map;
 public class ChatConstants
 {
     public static String notOP = "§cYou don't have the required permission to do that";
+    public static String on = Formatting.GREEN + "ON";
+    public static String off = Formatting.RED + "OFF";
 
     public static Formatting green = Formatting.GREEN;
     public static Formatting red = Formatting.RED;
@@ -79,9 +81,8 @@ public class ChatConstants
         return optionsTraductionsMap.get(optionName);
     }
 
-    public static Map<String, String> getOptionsTraductionsMap()
+    public static String getAllOptionTraduction(String optionName)
     {
-        return optionsTraductionsMap;
+        return optionsTraductionsMap.get(optionName);
     }
-
 }

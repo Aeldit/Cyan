@@ -14,6 +14,7 @@ public class CyanMidnightConfig extends MidnightConfig
     public static Map<String, Object> otherOptionsBoolMap = new HashMap<>();
     public static Map<String, Object> otherOptionsIntMap = new HashMap<>();
     public static Map<String, Map<String, Object>> optionsMap = new HashMap<>();
+    public static Map<String, Object> allOptionsMap = new HashMap<>();
 
     @Comment
     public static Comment allowOptions;
@@ -45,6 +46,25 @@ public class CyanMidnightConfig extends MidnightConfig
     public static boolean msgToActionBar = true;
     @Entry
     public static boolean errorToActionBar = true;
+
+    public static Map<String, Object> generateAllOptionsMap()
+    {
+        allOptionsMap.put("allowBed", allowBed);
+        allOptionsMap.put("allowKgi", allowKgi);
+        allOptionsMap.put("allowSurface", allowSurface);
+        allOptionsMap.put("useOneLanguage", useOneLanguage);
+        allOptionsMap.put("msgToActionBar", msgToActionBar);
+        allOptionsMap.put("errorToActionBar", errorToActionBar);
+
+        allOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
+        allOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
+        allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
+        allOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
+
+        allOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
+
+        return allOptionsMap;
+    }
 
     public static Map<String, Object> generateAllowOptionsMap()
     {
