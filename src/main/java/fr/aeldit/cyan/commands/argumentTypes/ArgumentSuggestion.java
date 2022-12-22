@@ -14,6 +14,21 @@ import java.util.concurrent.CompletableFuture;
 
 public final class ArgumentSuggestion
 {
+    public static CompletableFuture<Suggestions> getBoolOptions(@NotNull SuggestionsBuilder builder)
+    {
+        Map<String, Object> options = CyanMidnightConfig.generateBoolOptionsMap();
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(options.keySet(), builder);
+    }
+
+    public static CompletableFuture<Suggestions> getIntegerOptions(@NotNull SuggestionsBuilder builder)
+    {
+        Map<String, Object> options = CyanMidnightConfig.generateIntegerOptionsMap();
+
+        // Return the suggestion handler
+        return CommandSource.suggestMatching(options.keySet(), builder);
+    }
 
     /**
      * @param builder the suggestion builder
@@ -81,7 +96,6 @@ public final class ArgumentSuggestion
     public static CompletableFuture<Suggestions> getOptionsTypes(@NotNull SuggestionsBuilder builder)
     {
         List<String> options = ChatConstants.generateOptionsTypesMap();
-
 
         // Return the suggestion handler
         return CommandSource.suggestMatching(options, builder);

@@ -14,6 +14,8 @@ public class CyanMidnightConfig extends MidnightConfig
     public static Map<String, Object> otherOptionsBoolMap = new HashMap<>();
     public static Map<String, Object> otherOptionsIntMap = new HashMap<>();
     public static Map<String, Map<String, Object>> optionsMap = new HashMap<>();
+    public static Map<String, Object> boolOptionsMap = new HashMap<>();
+    public static Map<String, Object> integerOptionsMap = new HashMap<>();
     public static Map<String, Object> allOptionsMap = new HashMap<>();
 
     @Comment
@@ -47,22 +49,34 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry
     public static boolean errorToActionBar = true;
 
+    public static Map<String, Object> generateBoolOptionsMap()
+    {
+        boolOptionsMap.put("allowBed", allowBed);
+        boolOptionsMap.put("allowKgi", allowKgi);
+        boolOptionsMap.put("allowSurface", allowSurface);
+        boolOptionsMap.put("useOneLanguage", useOneLanguage);
+        boolOptionsMap.put("msgToActionBar", msgToActionBar);
+        boolOptionsMap.put("errorToActionBar", errorToActionBar);
+
+        return boolOptionsMap;
+    }
+
+    public static Map<String, Object> generateIntegerOptionsMap()
+    {
+        integerOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
+        integerOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
+        integerOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
+        integerOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
+
+        integerOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
+
+        return integerOptionsMap;
+    }
+
     public static Map<String, Object> generateAllOptionsMap()
     {
-        allOptionsMap.put("allowBed", allowBed);
-        allOptionsMap.put("allowKgi", allowKgi);
-        allOptionsMap.put("allowSurface", allowSurface);
-        allOptionsMap.put("useOneLanguage", useOneLanguage);
-        allOptionsMap.put("msgToActionBar", msgToActionBar);
-        allOptionsMap.put("errorToActionBar", errorToActionBar);
-
-        allOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
-        allOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
-        allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
-        allOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
-
-        allOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
-
+        allOptionsMap.putAll(generateBoolOptionsMap());
+        allOptionsMap.putAll(generateIntegerOptionsMap());
         return allOptionsMap;
     }
 
@@ -124,13 +138,12 @@ public class CyanMidnightConfig extends MidnightConfig
     {
         switch (optionName)
         {
-            case "all" -> allowBed = allowKgi = allowSurface = value;
-            case "bed" -> allowBed = value;
-            case "kgi" -> allowKgi = value;
-            case "surface" -> allowSurface = value;
-            case "UseOneLanguage" -> useOneLanguage = value;
-            case "MsgToActionBar" -> msgToActionBar = value;
-            case "ErrorToActionBar" -> errorToActionBar = value;
+            case "allowBed" -> allowBed = value;
+            case "allowKgi" -> allowKgi = value;
+            case "allowSurface" -> allowSurface = value;
+            case "useOneLanguage" -> useOneLanguage = value;
+            case "msgToActionBar" -> msgToActionBar = value;
+            case "errorToActionBar" -> errorToActionBar = value;
         }
         write("cyan");
     }
@@ -140,7 +153,6 @@ public class CyanMidnightConfig extends MidnightConfig
         switch (optionName)
         {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
-            case "all" -> minOpLevelExeModifConfig = minOpLevelExeBed = minOpLevelExeKgi = minOpLevelExeSurface = value;
             case "modifConfig" -> minOpLevelExeModifConfig = value;
             case "bed" -> minOpLevelExeBed = value;
             case "kgi" -> minOpLevelExeKgi = value;
