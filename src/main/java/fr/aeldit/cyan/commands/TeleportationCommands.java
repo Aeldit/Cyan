@@ -16,7 +16,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static fr.aeldit.cyan.util.ChatConstants.*;
+import static fr.aeldit.cyan.util.ChatConstants.cyan;
+import static fr.aeldit.cyan.util.ChatConstants.red;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
@@ -81,7 +82,7 @@ public class TeleportationCommands
                             null,
                             "cyan.message.bed",
                             CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 } else if (player.getSpawnPointDimension() == World.NETHER)
                 {
@@ -92,7 +93,7 @@ public class TeleportationCommands
                             null,
                             "cyan.message.respawnAnchor",
                             CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 }
             } else
@@ -102,7 +103,7 @@ public class TeleportationCommands
                         null,
                         "cyan.message.bed.error",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             }
         } else
@@ -112,7 +113,7 @@ public class TeleportationCommands
                     null,
                     "cyan.message.disabled.bed",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
         }
         return Command.SINGLE_SUCCESS;
@@ -145,7 +146,7 @@ public class TeleportationCommands
                     null,
                     "cyan.message.surface",
                     CyanMidnightConfig.msgToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
         } else
         {
@@ -154,7 +155,7 @@ public class TeleportationCommands
                     null,
                     "cyan.message.disabled.surface",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
         }
 

@@ -97,7 +97,7 @@ public class CyanCommands
         ServerPlayerEntity player = source.getPlayer();
 
         String option = StringArgumentType.getString(context, "optionType");
-        Map<String, String> optionsTraductions = generateTraductionsMap().get("options");
+        Map<String, String> optionsTraductions = generateDescriptionTraductionsMap().get("options");
 
         assert player != null;
         sendPlayerMessage(player,
@@ -105,14 +105,14 @@ public class CyanCommands
                 null,
                 "cyan.message.getDescription.options.headerTop",
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
         sendPlayerMessage(player,
                 optionsTraductions.get("header").formatted(Formatting.YELLOW + option),
                 Formatting.YELLOW + option,
                 "cyan.message.getDescription.options.header",
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
         sendPlayerMessage(player,
@@ -120,7 +120,7 @@ public class CyanCommands
                 null,
                 "cyan.message.getDescription.options.%s".formatted(option),
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
 
@@ -136,7 +136,7 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        Map<String, String> optionsTraductions = generateTraductionsMap().get("options");
+        Map<String, String> optionsTraductions = generateDescriptionTraductionsMap().get("options");
         List<String> optionTypes = generateOptionsTypesMap();
 
         assert player != null;
@@ -145,7 +145,7 @@ public class CyanCommands
                 null,
                 "cyan.message.getDescription.options.headerTop",
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
         for (String option : optionTypes)
@@ -155,7 +155,7 @@ public class CyanCommands
                     Formatting.YELLOW + option,
                     "cyan.message.getDescription.options.header",
                     false,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
 
             sendPlayerMessage(player,
@@ -163,7 +163,7 @@ public class CyanCommands
                     null,
                     "cyan.message.getDescription.options.%s".formatted(option),
                     false,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
         }
 
@@ -181,7 +181,7 @@ public class CyanCommands
         ServerPlayerEntity player = source.getPlayer();
 
         String option = StringArgumentType.getString(context, "commandName");
-        Map<String, Map<String, String>> traductions = generateTraductionsMap();
+        Map<String, Map<String, String>> traductions = generateDescriptionTraductionsMap();
 
         assert player != null;
         sendPlayerMessage(player,
@@ -189,7 +189,7 @@ public class CyanCommands
                 Formatting.YELLOW + option,
                 "cyan.message.getDescription.command.header",
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
         sendPlayerMessage(player,
@@ -197,7 +197,7 @@ public class CyanCommands
                 null,
                 "cyan.message.getDescription.command.%s".formatted(option),
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
 
@@ -213,7 +213,7 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        Map<String, String> commandsTraductions = generateTraductionsMap().get("commands");
+        Map<String, String> commandsTraductions = generateDescriptionTraductionsMap().get("commands");
         List<String> commands = generateCommandsMap();
 
         assert player != null;
@@ -222,7 +222,7 @@ public class CyanCommands
                 null,
                 "cyan.message.getDescription.command.headerTop",
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
         for (String command : commands)
@@ -232,7 +232,7 @@ public class CyanCommands
                     Formatting.YELLOW + command,
                     "cyan.message.getDescription.command.header",
                     false,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
 
             sendPlayerMessage(player,
@@ -240,7 +240,7 @@ public class CyanCommands
                     null,
                     "cyan.message.getDescription.command.%s".formatted(command),
                     false,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
         }
 
@@ -287,7 +287,7 @@ public class CyanCommands
                             green + Boolean.toString(true),
                             "cyan.message.setAllow",
                             false,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 } else
                 {
@@ -296,7 +296,7 @@ public class CyanCommands
                             green + Boolean.toString(true),
                             "cyan.message.setAllow%s".formatted(upperCaseOptionName),
                             false,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 }
             } else
@@ -308,7 +308,7 @@ public class CyanCommands
                             red + Boolean.toString(false),
                             "cyan.message.setAllow",
                             false,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 } else
                 {
@@ -317,7 +317,7 @@ public class CyanCommands
                             red + Boolean.toString(false),
                             "cyan.message.setAllow%s".formatted(upperCaseOptionName),
                             false,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 }
             }
@@ -330,7 +330,7 @@ public class CyanCommands
                     null,
                     "cyan.message.notOp",
                     true,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }
@@ -368,7 +368,7 @@ public class CyanCommands
                     null,
                     "cyan.message.incorrectIntOp",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }
@@ -390,7 +390,7 @@ public class CyanCommands
                         gold + Integer.toString(intValue),
                         "cyan.message.setMinOpLevelExe",
                         false,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             } else
             {
@@ -399,7 +399,7 @@ public class CyanCommands
                         gold + Integer.toString(intValue),
                         "cyan.message.setMinOpLevelExe%s".formatted(upperCaseOptionName),
                         false,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             }
         } else  // If not OP or not OP with max level
@@ -409,7 +409,7 @@ public class CyanCommands
                     null,
                     "cyan.message.notOp",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }
@@ -450,7 +450,7 @@ public class CyanCommands
                         green + Boolean.toString(true),
                         "cyan.message.set%s".formatted(option),
                         false,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             } else
             {
@@ -459,7 +459,7 @@ public class CyanCommands
                         red + Boolean.toString(false),
                         "cyan.message.set%s".formatted(option),
                         false,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             }
         }
@@ -471,7 +471,7 @@ public class CyanCommands
                     null,
                     "cyan.message.notOp",
                     true,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }
@@ -510,7 +510,7 @@ public class CyanCommands
                     gold + Integer.toString(intValue),
                     "cyan.message.set%s".formatted(option),
                     false,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
         }
         // If not OP or not OP with max level
@@ -521,7 +521,7 @@ public class CyanCommands
                     null,
                     "cyan.message.notOp",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }
@@ -545,7 +545,7 @@ public class CyanCommands
                 null,
                 "cyan.message.getCfgOptions.header",
                 false,
-                CyanMidnightConfig.useOneLanguage
+                CyanMidnightConfig.useTranslations
         );
 
         for (Map.Entry<String, Map<String, Object>> entry : options.entrySet())
@@ -569,7 +569,7 @@ public class CyanCommands
                                 green + Boolean.toString(true),
                                 "cyan.message.getCfgOptions.%s".formatted(key2),
                                 false,
-                                CyanMidnightConfig.useOneLanguage
+                                CyanMidnightConfig.useTranslations
                         );
                     } else
                     {
@@ -578,7 +578,7 @@ public class CyanCommands
                                 red + Boolean.toString(false),
                                 "cyan.message.getCfgOptions.%s".formatted(key2),
                                 false,
-                                CyanMidnightConfig.useOneLanguage
+                                CyanMidnightConfig.useTranslations
                         );
                     }
                 } else if (entry2.getValue() instanceof Integer value)
@@ -588,7 +588,7 @@ public class CyanCommands
                             gold + Integer.toString(value),
                             "cyan.message.getCfgOptions.%s".formatted(key2),
                             false,
-                            CyanMidnightConfig.useOneLanguage
+                            CyanMidnightConfig.useTranslations
                     );
                 }
             }

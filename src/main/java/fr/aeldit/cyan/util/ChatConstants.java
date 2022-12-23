@@ -18,21 +18,13 @@ public class ChatConstants
     public static Formatting gold = Formatting.GOLD;
     public static Formatting cyan = Formatting.DARK_AQUA;
 
-    public static final Map<String, String> optionsTraductionsMap = new HashMap<>();
     public static final Map<String, String> commandsTraductionsMap = new HashMap<>();
     public static final Map<String, Map<String, String>> traductions = new HashMap<>();
     public static final List<String> commandsList = new ArrayList<>();
     public static final List<String> optionsTypesList = new ArrayList<>();
 
-    public static void generateOptionsTraductionsMap()
-    {
-        optionsTraductionsMap.put("headerTop", "§e------------------------------------");
-        optionsTraductionsMap.put("header", "\n§lDescription of the §e/%s option :");
-
-        optionsTraductionsMap.put("allow", "§eAllow §foptions allows the player to enable or disable the use of a command");
-        optionsTraductionsMap.put("minOpLevelExe", "§eMinOpLevelExe §fallows the player to define which OP level is required to execute the different commands");
-        optionsTraductionsMap.put("other", "The other options have various other functionnalities, that are described by the name of the option itself");
-    }
+    public static final Map<String, String> optionsTraductionsMap = new HashMap<>();
+    public static final Map<String, String> configTraductionsMap = new HashMap<>();
 
     public static void generateCommandsTraductionsMap()
     {
@@ -40,16 +32,28 @@ public class ChatConstants
         commandsTraductionsMap.put("header", "\n§lDescription of the §e/%s command :");
 
         commandsTraductionsMap.put("bed", "The §e/bed §fcommand teleports you to your bed or respawn anchor");
-        commandsTraductionsMap.put("kgi", "The §e/kgi §fcommand kills all item on the ground in a specific radius.\n§e/kgi §fto kill items in the default radius.\n§e/kgi [distance_in_chunks] §fto kill items in the specified radius");
-        commandsTraductionsMap.put("surface", "The §e/surface §fcommand teleports you to the highest block located at your XY position");
+        commandsTraductionsMap.put("kgi", "The §e/kgi §fcommand kills every item that is on the ground in a specific radius.\n§e/kgi §fto kill items in the default radius (defined in the config, can be changed).\n§e/kgi [distance_in_chunks] §fto kill items in the specified radius");
+        commandsTraductionsMap.put("surface", "The §e/surface §fcommand teleports you to the highest block located at your position");
     }
 
+    public static void generateOptionsTraductionsMap()
+    {
+        optionsTraductionsMap.put("headerTop", "§l§e------------------------------------");
+        optionsTraductionsMap.put("header", "\n§lDescription of the §e/%s option :");
+
+        optionsTraductionsMap.put("allowBed", "§eAllowBed §foption toogles the use of the /bed command");
+        optionsTraductionsMap.put("allowKgi", "§eAllowKgi §foption toogles the use of the /kgi command");
+        optionsTraductionsMap.put("allowSurface", "§eAllowSurface §foption toogles the use of the /surface command");
+
+        optionsTraductionsMap.put("useTranslations", "§eUseTranslations §foption toogles the use of translations (server-side only)");
+    }
+
+    // For the ArgumentSuggestions
     public static List<String> generateCommandsMap()
     {
         commandsList.add("bed");
         commandsList.add("kgi");
         commandsList.add("surface");
-
 
         return commandsList;
     }
@@ -58,13 +62,12 @@ public class ChatConstants
     {
         optionsTypesList.add("allow");
         optionsTypesList.add("minOpLevelExe");
-        optionsTypesList.add("other");
-
 
         return optionsTypesList;
     }
 
-    public static Map<String, Map<String, String>> generateTraductionsMap()
+    // Generates the final map
+    public static Map<String, Map<String, String>> generateConfigTraductionsMap()
     {
         generateOptionsTraductionsMap();
         generateCommandsTraductionsMap();
@@ -72,16 +75,26 @@ public class ChatConstants
         traductions.put("options", optionsTraductionsMap);
         traductions.put("commands", commandsTraductionsMap);
 
+        return traductions;
+    }
+
+    public static Map<String, Map<String, String>> generateDescriptionTraductionsMap()
+    {
+        generateOptionsTraductionsMap();
+        generateCommandsTraductionsMap();
+
+        traductions.put("options", optionsTraductionsMap);
+        traductions.put("commands", commandsTraductionsMap);
 
         return traductions;
     }
 
-    public static String getOptionTraduction(String optionName)
+    public static String getConfigTraduction(String optionName)
     {
-        return optionsTraductionsMap.get(optionName);
+        return configTraductionsMap.get(optionName);
     }
 
-    public static String getAllOptionTraduction(String optionName)
+    public static String getOptionTraduction(String optionName)
     {
         return optionsTraductionsMap.get(optionName);
     }

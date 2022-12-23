@@ -62,7 +62,7 @@ public class MiscellaneousCommands
                         null,
                         "cyan.message.kgi",
                         CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             } else
             {
@@ -71,7 +71,7 @@ public class MiscellaneousCommands
                         null,
                         "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
                 return 0;
             }
@@ -82,7 +82,7 @@ public class MiscellaneousCommands
                     null,
                     "cyan.message.disabled.kgi",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }
@@ -117,7 +117,7 @@ public class MiscellaneousCommands
                         green + Integer.toString(arg),
                         "cyan.message.kgir",
                         CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
             } else
             {
@@ -126,7 +126,7 @@ public class MiscellaneousCommands
                         null,
                         "cyan.message.disabled.kgi",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useOneLanguage
+                        CyanMidnightConfig.useTranslations
                 );
                 return 0;
             }
@@ -137,7 +137,7 @@ public class MiscellaneousCommands
                     null,
                     "cyan.message.notOp",
                     CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useOneLanguage
+                    CyanMidnightConfig.useTranslations
             );
             return 0;
         }

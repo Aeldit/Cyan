@@ -41,9 +41,9 @@ public class CyanMidnightConfig extends MidnightConfig
     public static int minOpLevelExeSurface = 0;
 
     @Comment
-    public static Comment otherOptions;
+    public static Comment boolOptions;
     @Entry
-    public static boolean useOneLanguage = false;
+    public static boolean useTranslations = true;
     @Entry
     public static boolean msgToActionBar = true;
     @Entry
@@ -54,7 +54,7 @@ public class CyanMidnightConfig extends MidnightConfig
         boolOptionsMap.put("allowBed", allowBed);
         boolOptionsMap.put("allowKgi", allowKgi);
         boolOptionsMap.put("allowSurface", allowSurface);
-        boolOptionsMap.put("useOneLanguage", useOneLanguage);
+        boolOptionsMap.put("useTranslations", useTranslations);
         boolOptionsMap.put("msgToActionBar", msgToActionBar);
         boolOptionsMap.put("errorToActionBar", errorToActionBar);
 
@@ -101,7 +101,7 @@ public class CyanMidnightConfig extends MidnightConfig
 
     public static Map<String, Object> generateOtherBoolOptionsMap()
     {
-        otherOptionsBoolMap.put("useOneLanguage", useOneLanguage);
+        otherOptionsBoolMap.put("useOneLanguage", useTranslations);
         otherOptionsBoolMap.put("msgToActionBar", msgToActionBar);
         otherOptionsBoolMap.put("errorToActionBar", errorToActionBar);
 
@@ -141,7 +141,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowBed" -> allowBed = value;
             case "allowKgi" -> allowKgi = value;
             case "allowSurface" -> allowSurface = value;
-            case "useOneLanguage" -> useOneLanguage = value;
+            case "useOneLanguage" -> useTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
         }
