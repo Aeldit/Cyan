@@ -94,6 +94,7 @@ public class CyanCommandsV2
         ServerPlayerEntity player = source.getPlayer();
 
         Map<String, Map<String, Object>> options = CyanMidnightConfig.generateOptionsMap();
+        Map<String, String> configTraductions = ChatConstants.generateConfigTraductionsMap();
 
         String option = StringArgumentType.getString(context, "option");
         boolean value = BoolArgumentType.getBool(context, "value");
@@ -108,7 +109,7 @@ public class CyanCommandsV2
             {
                 CyanMidnightConfig.setBoolOption(option, value);
                 sendPlayerMessage(player,
-                        "§3Toogled§6%s".formatted(option + "have been set to %s"),
+                        configTraductions.get(option),
                         value ? on : off,
                         "cyan.message.set.%s".formatted(option),
                         CyanMidnightConfig.msgToActionBar,
@@ -145,6 +146,7 @@ public class CyanCommandsV2
         ServerPlayerEntity player = source.getPlayer();
 
         Map<String, Map<String, Object>> options = CyanMidnightConfig.generateOptionsMap();
+        Map<String, String> configTraductions = ChatConstants.generateConfigTraductionsMap();
 
         String option = StringArgumentType.getString(context, "option");
         int value = IntegerArgumentType.getInteger(context, "value");
@@ -173,7 +175,7 @@ public class CyanCommandsV2
                 {
                     CyanMidnightConfig.setIntOption(option, value);
                     sendPlayerMessage(player,
-                            "§3%s".formatted(option + "have been set to %s"),
+                            configTraductions.get(option),
                             gold + String.valueOf(value),
                             "cyan.message.set.%s".formatted(option),
                             CyanMidnightConfig.msgToActionBar,

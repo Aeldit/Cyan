@@ -1,7 +1,7 @@
 package fr.aeldit.cyan;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import fr.aeldit.cyan.commands.CyanCommands;
+import fr.aeldit.cyan.commands.CyanCommandsV2;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
@@ -32,7 +32,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
         {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            CyanCommands.register(dispatcher);
+            CyanCommandsV2.register(dispatcher);
         });
         CyanServerCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
         CyanServerCore.LOGGER.info("{} Successfully completed initialization", MODNAME);

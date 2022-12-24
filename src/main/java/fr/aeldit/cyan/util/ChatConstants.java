@@ -30,7 +30,7 @@ public class ChatConstants
 
     public static void generateCommandsTraductionsMap()
     {
-        commandsTraductionsMap.put("headerTop", "§e------------------------------------");
+        commandsTraductionsMap.put("headerTop", "§3------------------------------------");
         commandsTraductionsMap.put("header", "§3Description of the §6/%s §l§3command :");
 
         commandsTraductionsMap.put("bed", "§3The §6/bed §3command teleports you to your bed or respawn anchor");
@@ -45,7 +45,7 @@ public class ChatConstants
 
     public static void generateOptionsTraductionsMap()
     {
-        optionsTraductionsMap.put("headerTop", "§l§e------------------------------------");
+        optionsTraductionsMap.put("headerTop", "§3------------------------------------");
         optionsTraductionsMap.put("header", "§l§3Description of the §6/%s §l§3option :");
 
         optionsTraductionsMap.put("allowBed", "§eAllowBed §3option toogles the use of the §6/bed command");
@@ -85,6 +85,23 @@ public class ChatConstants
         traductions.put("commands", commandsTraductionsMap);
 
         return traductions;
+    }
+
+    public static Map<String, String> generateConfigTraductionsMap()
+    {
+        configTraductionsMap.put("allowBed", "§3Toogled §d/bed §3command %s");
+        configTraductionsMap.put("allowKgi", "§3Toogled §d/kgi §3command %s");
+        configTraductionsMap.put("allowSurface", "§3Toogled §d/surface §3command %s");
+        configTraductionsMap.put("useTranslations", "§3Toogled translations %s");
+        configTraductionsMap.put("msgToActionBar", "§3Toogled messages to action bar %s");
+        configTraductionsMap.put("errorToActionBar", "§3Toogled error messages to action bar %s");
+        configTraductionsMap.put("distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s");
+        configTraductionsMap.put("minOpLevelExeModifConfig", "§3The minimum OP level to edit the config is now %s");
+        configTraductionsMap.put("minOpLevelExeBed", "§3The minimum OP level to execute §d/bed §3is now %s");
+        configTraductionsMap.put("minOpLevelExeKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
+        configTraductionsMap.put("minOpLevelExeSurface", "§3The minimum OP level to execute §d/surface §3is now %s");
+
+        return configTraductionsMap;
     }
 
     public static String getConfigTraduction(String optionName)
