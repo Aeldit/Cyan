@@ -141,7 +141,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowBed" -> allowBed = value;
             case "allowKgi" -> allowKgi = value;
             case "allowSurface" -> allowSurface = value;
-            case "useOneLanguage" -> useTranslations = value;
+            case "useTranslations" -> useTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
         }
@@ -153,10 +153,10 @@ public class CyanMidnightConfig extends MidnightConfig
         switch (optionName)
         {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
-            case "modifConfig" -> minOpLevelExeModifConfig = value;
-            case "bed" -> minOpLevelExeBed = value;
-            case "kgi" -> minOpLevelExeKgi = value;
-            case "surface" -> minOpLevelExeSurface = value;
+            case "minOpLevelExeModifConfig" -> minOpLevelExeModifConfig = value;
+            case "minOpLevelExeBed" -> minOpLevelExeBed = value;
+            case "minOpLevelExeKgi" -> minOpLevelExeKgi = value;
+            case "minOpLevelExeSurface" -> minOpLevelExeSurface = value;
         }
         write("cyan");
     }

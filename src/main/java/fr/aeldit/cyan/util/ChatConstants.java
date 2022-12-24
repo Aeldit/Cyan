@@ -10,6 +10,8 @@ import java.util.Map;
 public class ChatConstants
 {
     public static String notOP = "§cYou don't have the required permission to do that";
+    public static String playerOnlyCmd = "§cThis command can only be executed by a player";
+    public static String wrongOPLevel = "§cThe OP level must be in [1, 4]";
     public static String on = Formatting.GREEN + "ON";
     public static String off = Formatting.RED + "OFF";
 
@@ -29,23 +31,30 @@ public class ChatConstants
     public static void generateCommandsTraductionsMap()
     {
         commandsTraductionsMap.put("headerTop", "§e------------------------------------");
-        commandsTraductionsMap.put("header", "\n§lDescription of the §e/%s command :");
+        commandsTraductionsMap.put("header", "§3Description of the §6/%s §l§3command :");
 
-        commandsTraductionsMap.put("bed", "The §e/bed §fcommand teleports you to your bed or respawn anchor");
-        commandsTraductionsMap.put("kgi", "The §e/kgi §fcommand kills every item that is on the ground in a specific radius.\n§e/kgi §fto kill items in the default radius (defined in the config, can be changed).\n§e/kgi [distance_in_chunks] §fto kill items in the specified radius");
-        commandsTraductionsMap.put("surface", "The §e/surface §fcommand teleports you to the highest block located at your position");
+        commandsTraductionsMap.put("bed", "§3The §6/bed §3command teleports you to your bed or respawn anchor");
+        commandsTraductionsMap.put("kgi",
+                """
+                        §3The §6/kgi §3command kills every item that is on the ground in a specific radius.
+                        §6/kgi §3to kill items in the default radius (defined in the config, can be changed).
+                        §6/kgi [distance_in_chunks] §3to kill items in the specified radius
+                        """);
+        commandsTraductionsMap.put("surface", "§3The §6/surface §3command teleports you to the highest block located at your position");
     }
 
     public static void generateOptionsTraductionsMap()
     {
         optionsTraductionsMap.put("headerTop", "§l§e------------------------------------");
-        optionsTraductionsMap.put("header", "\n§lDescription of the §e/%s option :");
+        optionsTraductionsMap.put("header", "§l§3Description of the §6/%s §l§3option :");
 
-        optionsTraductionsMap.put("allowBed", "§eAllowBed §foption toogles the use of the /bed command");
-        optionsTraductionsMap.put("allowKgi", "§eAllowKgi §foption toogles the use of the /kgi command");
-        optionsTraductionsMap.put("allowSurface", "§eAllowSurface §foption toogles the use of the /surface command");
+        optionsTraductionsMap.put("allowBed", "§eAllowBed §3option toogles the use of the §6/bed command");
+        optionsTraductionsMap.put("allowKgi", "§eAllowKgi §3option toogles the use of the §6/kgi command");
+        optionsTraductionsMap.put("allowSurface", "§eAllowSurface §3option toogles the use of the §6/surface command");
 
-        optionsTraductionsMap.put("useTranslations", "§eUseTranslations §foption toogles the use of translations (server-side only)");
+        optionsTraductionsMap.put("useTranslations", "§eUseTranslations §3option toogles the use of translations (server-side only)");
+        optionsTraductionsMap.put("msgToActionBar", "§eMsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
+        optionsTraductionsMap.put("errorToActionBar", "§eErrorToActionBar §3option determines if error messages are send to the chat or the player's action bar");
     }
 
     // For the ArgumentSuggestions
@@ -67,17 +76,6 @@ public class ChatConstants
     }
 
     // Generates the final map
-    public static Map<String, Map<String, String>> generateConfigTraductionsMap()
-    {
-        generateOptionsTraductionsMap();
-        generateCommandsTraductionsMap();
-
-        traductions.put("options", optionsTraductionsMap);
-        traductions.put("commands", commandsTraductionsMap);
-
-        return traductions;
-    }
-
     public static Map<String, Map<String, String>> generateDescriptionTraductionsMap()
     {
         generateOptionsTraductionsMap();
