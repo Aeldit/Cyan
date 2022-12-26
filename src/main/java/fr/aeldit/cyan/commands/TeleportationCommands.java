@@ -10,14 +10,15 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static fr.aeldit.cyan.util.ChatConstants.cyan;
-import static fr.aeldit.cyan.util.ChatConstants.red;
+import static fr.aeldit.cyan.util.ChatConstants.getCmdFeedbackTraduction;
+import static fr.aeldit.cyan.util.ChatConstants.getErrorTraduction;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
@@ -25,7 +26,6 @@ import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
  */
 public class TeleportationCommands
 {
-
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("bed")
@@ -58,65 +58,90 @@ public class TeleportationCommands
      */
     public static int bed(@NotNull CommandContext<ServerCommandSource> context)
     {
+        ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = context.getSource().getPlayer();
-        assert player != null;
-        ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
-        ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-        if (CyanMidnightConfig.allowBed)
+        if (player == null)
         {
-            if (player.getSpawnPointPosition() != null)
-            {
-                double x = player.getSpawnPointPosition().getX();
-                double y = player.getSpawnPointPosition().getY();
-                double z = player.getSpawnPointPosition().getZ();
-                float yaw = player.getYaw();
-                float pitch = player.getPitch();
+            source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
+            return 0;
+        } else
+        {
+            ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
+            ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-                if (player.getSpawnPointDimension() == World.OVERWORLD)
+            if (CyanMidnightConfig.allowBed)
+            {
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeBed))
                 {
-                    player.teleport(overworld, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    if (player.getSpawnPointPosition() != null)
+                    {
+                        double x = player.getSpawnPointPosition().getX();
+                        double y = player.getSpawnPointPosition().getY();
+                        double z = player.getSpawnPointPosition().getZ();
+                        float yaw = player.getYaw();
+                        float pitch = player.getPitch();
+
+                        if (player.getSpawnPointDimension() == World.OVERWORLD)
+                        {
+                            player.teleport(overworld, x, y, z, yaw, pitch);
+                            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                            sendPlayerMessage(player,
+                                    getCmdFeedbackTraduction("bed"),
+                                    null,
+                                    "cyan.message.bed",
+                                    CyanMidnightConfig.msgToActionBar,
+                                    CyanMidnightConfig.useTranslations
+                            );
+                        } else if (player.getSpawnPointDimension() == World.NETHER)
+                        {
+                            player.teleport(nether, x, y, z, yaw, pitch);
+                            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                            sendPlayerMessage(player,
+                                    getCmdFeedbackTraduction("respawnAnchor"),
+                                    null,
+                                    "cyan.message.respawnAnchor",
+                                    CyanMidnightConfig.msgToActionBar,
+                                    CyanMidnightConfig.useTranslations
+                            );
+                        }
+
+
+                        return Command.SINGLE_SUCCESS;
+                    } else
+                    {
+                        sendPlayerMessage(player,
+                                getErrorTraduction("bed.error"),
+                                null,
+                                "cyan.message.bed.error",
+                                CyanMidnightConfig.errorToActionBar,
+                                CyanMidnightConfig.useTranslations
+                        );
+                        return 0;
+                    }
+                } else
+                {
                     sendPlayerMessage(player,
-                            cyan + "You have been teleported to your bed",
+                            getErrorTraduction("notOp"),
                             null,
-                            "cyan.message.bed",
-                            CyanMidnightConfig.msgToActionBar,
+                            "cyan.message.notOp",
+                            CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
                     );
-                } else if (player.getSpawnPointDimension() == World.NETHER)
-                {
-                    player.teleport(nether, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-                    sendPlayerMessage(player,
-                            cyan + "You have been teleported to your respawn anchor",
-                            null,
-                            "cyan.message.respawnAnchor",
-                            CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations
-                    );
+                    return 0;
                 }
             } else
             {
                 sendPlayerMessage(player,
-                        red + "You don't have an attributed bed or respawn anchor",
+                        getErrorTraduction("disabled.bed"),
                         null,
-                        "cyan.message.bed.error",
+                        "cyan.message.disabled.bed",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
                 );
+                return 0;
             }
-        } else
-        {
-            sendPlayerMessage(player,
-                    red + "The /bed command is disabled. To enable it, enter '/allowBed true' in chat",
-                    null,
-                    "cyan.message.disabled.bed",
-                    CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useTranslations
-            );
         }
-        return Command.SINGLE_SUCCESS;
     }
 
 
@@ -126,40 +151,58 @@ public class TeleportationCommands
      */
     public static int surface(@NotNull CommandContext<ServerCommandSource> context)
     {
+        ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld world = context.getSource().getWorld();
 
-        assert player != null;
-
-        int x = player.getBlockPos().getX();
-        int z = player.getBlockPos().getZ();
-        int y = player.world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
-        float yaw = player.getYaw();
-        float pitch = player.getPitch();
-
-        if (CyanMidnightConfig.allowSurface)
+        if (player == null)
         {
-            player.teleport(world, x, y, z, yaw, pitch);
-            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
-            sendPlayerMessage(player,
-                    cyan + "You have been teleported to the surface",
-                    null,
-                    "cyan.message.surface",
-                    CyanMidnightConfig.msgToActionBar,
-                    CyanMidnightConfig.useTranslations
-            );
+            source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
+            return 0;
         } else
         {
-            sendPlayerMessage(player,
-                    red + "The /surface command is disabled. To enable it, enter '/allowSurface true' in chat",
-                    null,
-                    "cyan.message.disabled.surface",
-                    CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useTranslations
-            );
+            if (CyanMidnightConfig.allowSurface)
+            {
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeSurface))
+                {
+                    int x = player.getBlockPos().getX();
+                    int z = player.getBlockPos().getZ();
+                    int y = player.world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
+                    float yaw = player.getYaw();
+                    float pitch = player.getPitch();
+
+                    player.teleport(world, x, y, z, yaw, pitch);
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
+                    sendPlayerMessage(player,
+                            getCmdFeedbackTraduction("surface"),
+                            null,
+                            "cyan.message.surface",
+                            CyanMidnightConfig.msgToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                    return Command.SINGLE_SUCCESS;
+                } else
+                {
+                    sendPlayerMessage(player,
+                            getErrorTraduction("notOp"),
+                            null,
+                            "cyan.message.notOp",
+                            CyanMidnightConfig.errorToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                    return 0;
+                }
+            } else
+            {
+                sendPlayerMessage(player,
+                        getErrorTraduction("disabled.surface"),
+                        null,
+                        "cyan.message.disabled.surface",
+                        CyanMidnightConfig.errorToActionBar,
+                        CyanMidnightConfig.useTranslations
+                );
+                return 0;
+            }
         }
-
-        return Command.SINGLE_SUCCESS;
     }
-
 }

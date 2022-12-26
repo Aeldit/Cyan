@@ -8,6 +8,7 @@ import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.util.ChatConstants.*;
@@ -18,7 +19,6 @@ import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
  */
 public class MiscellaneousCommands
 {
-
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("killgrounditems")
@@ -50,43 +50,50 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        assert player != null;
-        if (CyanMidnightConfig.allowKgi)
+        if (player == null)
         {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+            source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
+            return 0;
+        } else
+        {
+            if (CyanMidnightConfig.allowKgi)
             {
-                // Default distance is 14 chunks, but can be changed in settings
-                source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
-                sendPlayerMessage(player,
-                        cyan + "Ground items have been removed",
-                        null,
-                        "cyan.message.kgi",
-                        CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.useTranslations
-                );
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+                {
+                    source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
+                    sendPlayerMessage(player,
+                            getCmdFeedbackTraduction("kgi"),
+                            null,
+                            "cyan.message.kgi",
+                            CyanMidnightConfig.msgToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+
+
+                    return Command.SINGLE_SUCCESS;
+                } else
+                {
+                    sendPlayerMessage(player,
+                            getErrorTraduction("notOp"),
+                            null,
+                            "cyan.message.notOp",
+                            CyanMidnightConfig.errorToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                    return 0;
+                }
             } else
             {
                 sendPlayerMessage(player,
-                        notOP,
+                        getErrorTraduction("disabled.kgi"),
                         null,
-                        "cyan.message.notOp",
+                        "cyan.message.disabled.kgi",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
                 );
                 return 0;
             }
-        } else
-        {
-            sendPlayerMessage(player,
-                    red + "The /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
-                    null,
-                    "cyan.message.disabled.kgi",
-                    CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useTranslations
-            );
-            return 0;
         }
-        return Command.SINGLE_SUCCESS;
     }
 
     /**
@@ -103,45 +110,50 @@ public class MiscellaneousCommands
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
+
         int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
 
-        assert player != null;
-        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+        if (player == null)
         {
-            if (CyanMidnightConfig.allowKgi)
+            source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
+            return 0;
+        } else
+        {
+            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
             {
-                // The default distance is 14 chunks, but it can be changed in the config file or with commands
-                source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
-                sendPlayerMessage(player,
-                        cyan + "Ground items have been removed in a radius of %s §cchunks",
-                        green + Integer.toString(arg),
-                        "cyan.message.kgir",
-                        CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.useTranslations
-                );
+                if (CyanMidnightConfig.allowKgi)
+                {
+                    source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
+                    sendPlayerMessage(player,
+                            getCmdFeedbackTraduction("kgir").formatted(gold + Integer.toString(arg)),
+                            gold + Integer.toString(arg),
+                            "cyan.message.kgir",
+                            CyanMidnightConfig.msgToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                    return Command.SINGLE_SUCCESS;
+                } else
+                {
+                    sendPlayerMessage(player,
+                            getErrorTraduction("disabled.kgi"),
+                            null,
+                            "cyan.message.disabled.kgi",
+                            CyanMidnightConfig.errorToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                    return 0;
+                }
             } else
             {
                 sendPlayerMessage(player,
-                        red + "The /kgi command is disabled. To enable it, enter '/allowKgi true' in chat",
+                        getErrorTraduction("notOp"),
                         null,
-                        "cyan.message.disabled.kgi",
+                        "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
                 );
                 return 0;
             }
-        } else
-        {
-            sendPlayerMessage(player,
-                    notOP,
-                    null,
-                    "cyan.message.notOp",
-                    CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useTranslations
-            );
-            return 0;
         }
-        return Command.SINGLE_SUCCESS;
     }
-
 }

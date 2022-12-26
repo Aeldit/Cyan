@@ -1,10 +1,11 @@
 package fr.aeldit.cyan;
 
 import eu.midnightdust.lib.config.MidnightConfig;
-import fr.aeldit.cyan.commands.CyanCommandsV2;
+import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
+import fr.aeldit.cyan.util.ChatConstants;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -27,12 +28,14 @@ public class CyanServerCore implements DedicatedServerModInitializer
         MidnightConfig.init(MODID, CyanMidnightConfig.class);
         CyanServerCore.LOGGER.info("{} Successfully initialized config", MODNAME);
 
+        ChatConstants.generateAllMaps();
+
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->
         {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            CyanCommandsV2.register(dispatcher);
+            CyanCommands.register(dispatcher);
         });
         CyanServerCore.LOGGER.info("{} Successfully initialized commands", MODNAME);
         CyanServerCore.LOGGER.info("{} Successfully completed initialization", MODNAME);

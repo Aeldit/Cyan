@@ -3,17 +3,14 @@ package fr.aeldit.cyan.config;
 import eu.midnightdust.lib.config.MidnightConfig;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CyanMidnightConfig extends MidnightConfig
 {
-
-    public static Map<String, Object> allowOptionsMap = new HashMap<>();
-    public static Map<String, Object> exeLevelOptionsMap = new HashMap<>();
-    public static Map<String, Object> otherOptionsBoolMap = new HashMap<>();
-    public static Map<String, Object> otherOptionsIntMap = new HashMap<>();
-    public static Map<String, Map<String, Object>> optionsMap = new HashMap<>();
+    public static final List<String> commandsList = new ArrayList<>();
     public static Map<String, Object> boolOptionsMap = new HashMap<>();
     public static Map<String, Object> integerOptionsMap = new HashMap<>();
     public static Map<String, Object> allOptionsMap = new HashMap<>();
@@ -29,7 +26,7 @@ public class CyanMidnightConfig extends MidnightConfig
 
     @Comment
     public static Comment intOptions;
-    @Entry(min = 1, max = 64)
+    @Entry(min = 1, max = 128)
     public static int distanceToEntitiesKgi = 14;
     @Entry(min = 0, max = 4)
     public static int minOpLevelExeModifConfig = 4;
@@ -80,58 +77,14 @@ public class CyanMidnightConfig extends MidnightConfig
         return allOptionsMap;
     }
 
-    public static Map<String, Object> generateAllowOptionsMap()
+    // For the ArgumentSuggestions
+    public static List<String> generateCommandsList()
     {
-        allowOptionsMap.put("allowBed", allowBed);
-        allowOptionsMap.put("allowKgi", allowKgi);
-        allowOptionsMap.put("allowSurface", allowSurface);
+        commandsList.add("bed");
+        commandsList.add("kgi");
+        commandsList.add("surface");
 
-        return allowOptionsMap;
-    }
-
-    public static Map<String, Object> generateExeLevelOptionsMap()
-    {
-        exeLevelOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
-        exeLevelOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
-        exeLevelOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
-        exeLevelOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
-
-        return exeLevelOptionsMap;
-    }
-
-    public static Map<String, Object> generateOtherBoolOptionsMap()
-    {
-        otherOptionsBoolMap.put("useOneLanguage", useTranslations);
-        otherOptionsBoolMap.put("msgToActionBar", msgToActionBar);
-        otherOptionsBoolMap.put("errorToActionBar", errorToActionBar);
-
-        return otherOptionsBoolMap;
-    }
-
-    public static Map<String, Object> generateOtherIntOptionsMap()
-    {
-        otherOptionsIntMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
-
-        return otherOptionsIntMap;
-    }
-
-    /**
-     * Generates the map that will contain all options and their value
-     *
-     * @return a <code>Map</code> that contains all the options
-     */
-    public static Map<String, Map<String, Object>> generateOptionsMap()
-    {
-        allowOptionsMap = generateAllowOptionsMap();
-        exeLevelOptionsMap = generateExeLevelOptionsMap();
-        otherOptionsBoolMap = generateOtherBoolOptionsMap();
-        otherOptionsIntMap = generateOtherIntOptionsMap();
-        optionsMap.put("allows", allowOptionsMap);
-        optionsMap.put("minOpLevelExe", exeLevelOptionsMap);
-        optionsMap.put("otherBool", otherOptionsBoolMap);
-        optionsMap.put("otherInt", otherOptionsIntMap);
-
-        return optionsMap;
+        return commandsList;
     }
 
     public static void setBoolOption(@NotNull String optionName, boolean value)
@@ -160,5 +113,4 @@ public class CyanMidnightConfig extends MidnightConfig
         }
         write("cyan");
     }
-
 }
