@@ -5,7 +5,6 @@ import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
-import fr.aeldit.cyan.util.ChatConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class CyanClientCore implements ClientModInitializer
         MidnightConfig.init(MODID, CyanMidnightConfig.class);
         CyanClientCore.LOGGER.info("{} Successfully initialized config", MODNAME);
 
-        ChatConstants.generateErrorsTraductionsMap();
+        CyanMidnightConfig.setBoolOption("useTranslations", true);
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->

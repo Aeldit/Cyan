@@ -26,15 +26,15 @@ public class CyanMidnightConfig extends MidnightConfig
 
     @Comment
     public static Comment intOptions;
-    @Entry(min = 1, max = 128)
+    @Entry(isSlider = true, min = 1, max = 128)
     public static int distanceToEntitiesKgi = 14;
-    @Entry(min = 0, max = 4)
+    @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeModifConfig = 4;
-    @Entry(min = 0, max = 4)
+    @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeBed = 0;
-    @Entry(min = 0, max = 4)
+    @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeKgi = 4;
-    @Entry(min = 0, max = 4)
+    @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeSurface = 0;
 
     @Comment

@@ -103,44 +103,32 @@ public class CyanCommands
             return 0;
         } else
         {
-            if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT && Objects.equals(option, "useTranslations"))
+            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeModifConfig))
+            {
+                CyanMidnightConfig.setBoolOption(option, value);
+                sendPlayerMessage(player,
+                        getConfigSetTraduction(option),
+                        value ? on : off,
+                        "cyan.message.set.%s".formatted(option),
+                        CyanMidnightConfig.msgToActionBar,
+                        CyanMidnightConfig.useTranslations
+                );
+            } else
             {
                 sendPlayerMessage(player,
+                        getErrorTraduction("notOp"),
                         null,
-                        null,
-                        "cyan.message.servOnly",
+                        "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
                 );
                 return 0;
-            } else
-            {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeModifConfig))
-                {
-                    CyanMidnightConfig.setBoolOption(option, value);
-                    sendPlayerMessage(player,
-                            getConfigSetTraduction(option),
-                            value ? on : off,
-                            "cyan.message.set.%s".formatted(option),
-                            CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations
-                    );
-                } else
-                {
-                    sendPlayerMessage(player,
-                            getErrorTraduction("notOp"),
-                            null,
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useTranslations
-                    );
-                    return 0;
-                }
-
-
-                return Command.SINGLE_SUCCESS;
             }
+
+
+            return Command.SINGLE_SUCCESS;
         }
+
     }
 
     /**
