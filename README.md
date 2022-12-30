@@ -33,9 +33,11 @@
 
 ### ✅ ```List of commands (and their aliases)```
 
-    - /bed -> /b
-    - /surface -> /s
-    - /killgrounditems -> /kgi
+|      Command       |                       Description                        | Alias  |
+|:------------------:|:--------------------------------------------------------:|:------:|
+|       `/bed`       |       Teleports you to your bed or respawn anchor        |  `/b`  |
+| `/killgrounditems` | Kills a items floating on the ground in a certain radius | `/kgi` |
+|     `/surface`     |               Teleports you to the surface               |  `/s`  |
 
 For a more detailed explanation on how to use every command,
 see [COMMANDS.md](docs/COMMANDS.md)
