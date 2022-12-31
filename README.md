@@ -28,8 +28,11 @@
 > For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
 > on the github page of the mod
 >
-> ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
 > ![github_pull_requests](https://img.shields.io/github/issues-pr/Aeldit/Cyan?style=for-the-badge&logo=github)
+
+> If you find any issue, please make sure to report it on github so I can fix it
+>
+> ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
 
 ### ✅ ```List of commands (and their aliases)```
 
