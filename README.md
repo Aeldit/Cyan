@@ -1,4 +1,4 @@
-![banner](images/banner_small.png)
+![banner](https://github.com/Aeldit/Cyan/blob/1.19.x/images/banner_small.png?raw=true)
 
 # 📝 REQUIRES FABRIC API
 
@@ -9,9 +9,8 @@
 
 | Supported MC Version | Up to date |
 |:--------------------:|:----------:|
-|       `1.16.x`       |     ❌      |
-|       `1.17.x`       |     ❌      |
-|       `1.18.x`       |     ❌      |
+|       `1.17.x`       |     ✅      |
+|       `1.18.x`       |     ✅      |
 |       `1.19.x`       |     ✅      |
 
 ### 💲```Features```
@@ -43,7 +42,7 @@
 |     `/surface`     |               Teleports you to the surface               |  `/s`  |
 
 For a more detailed explanation on how to use every command,
-see [COMMANDS.md](docs/COMMANDS.md)
+see [COMMANDS.md](https://github.com/Aeldit/Cyan/blob/1.19.x/docs/COMMANDS.md)
 
 ### 🌐```Current languages```
 
