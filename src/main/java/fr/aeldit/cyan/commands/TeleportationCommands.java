@@ -17,17 +17,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static fr.aeldit.cyan.util.ChatConstants.getCmdFeedbackTraduction;
-import static fr.aeldit.cyan.util.ChatConstants.getErrorTraduction;
+import static fr.aeldit.cyan.util.Constants.getCmdFeedbackTraduction;
+import static fr.aeldit.cyan.util.Constants.getErrorTraduction;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
  * @since 0.0.1
  */
-public class TeleportationCommands
-{
-    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
-    {
+public class TeleportationCommands {
+    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("bed")
                 .executes(TeleportationCommands::bed)
         );
@@ -56,34 +54,27 @@ public class TeleportationCommands
      *     <li>- send a message to the player saying that no bed or respawn anchor was found</li>
      * </ul>
      */
-    public static int bed(@NotNull CommandContext<ServerCommandSource> context)
-    {
+    public static int bed(@NotNull CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = context.getSource().getPlayer();
 
-        if (player == null)
-        {
+        if (player == null) {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
             return 0;
-        } else
-        {
+        } else {
             ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
             ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
 
-            if (CyanMidnightConfig.allowBed)
-            {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeBed))
-                {
-                    if (player.getSpawnPointPosition() != null)
-                    {
+            if (CyanMidnightConfig.allowBed) {
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeBed)) {
+                    if (player.getSpawnPointPosition() != null) {
                         double x = player.getSpawnPointPosition().getX();
                         double y = player.getSpawnPointPosition().getY();
                         double z = player.getSpawnPointPosition().getZ();
                         float yaw = player.getYaw();
                         float pitch = player.getPitch();
 
-                        if (player.getSpawnPointDimension() == World.OVERWORLD)
-                        {
+                        if (player.getSpawnPointDimension() == World.OVERWORLD) {
                             player.teleport(overworld, x, y, z, yaw, pitch);
                             player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                             sendPlayerMessage(player,
@@ -93,8 +84,7 @@ public class TeleportationCommands
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations
                             );
-                        } else if (player.getSpawnPointDimension() == World.NETHER)
-                        {
+                        } else if (player.getSpawnPointDimension() == World.NETHER) {
                             player.teleport(nether, x, y, z, yaw, pitch);
                             player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                             sendPlayerMessage(player,
@@ -108,8 +98,7 @@ public class TeleportationCommands
 
 
                         return Command.SINGLE_SUCCESS;
-                    } else
-                    {
+                    } else {
                         sendPlayerMessage(player,
                                 getErrorTraduction("bed.error"),
                                 null,
@@ -119,8 +108,7 @@ public class TeleportationCommands
                         );
                         return 0;
                     }
-                } else
-                {
+                } else {
                     sendPlayerMessage(player,
                             getErrorTraduction("notOp"),
                             null,
@@ -130,8 +118,7 @@ public class TeleportationCommands
                     );
                     return 0;
                 }
-            } else
-            {
+            } else {
                 sendPlayerMessage(player,
                         getErrorTraduction("disabled.bed"),
                         null,
@@ -149,22 +136,17 @@ public class TeleportationCommands
      * <p>Called when a player execute the commands <code>/surface</code> or <code>/s</code></p>
      * <p>Teleport the player to the highest block that was found on the player's coordinates</p>
      */
-    public static int surface(@NotNull CommandContext<ServerCommandSource> context)
-    {
+    public static int surface(@NotNull CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = context.getSource().getPlayer();
         ServerWorld world = context.getSource().getWorld();
 
-        if (player == null)
-        {
+        if (player == null) {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
             return 0;
-        } else
-        {
-            if (CyanMidnightConfig.allowSurface)
-            {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeSurface))
-                {
+        } else {
+            if (CyanMidnightConfig.allowSurface) {
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeSurface)) {
                     int x = player.getBlockPos().getX();
                     int z = player.getBlockPos().getZ();
                     int y = player.world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
@@ -181,8 +163,7 @@ public class TeleportationCommands
                             CyanMidnightConfig.useTranslations
                     );
                     return Command.SINGLE_SUCCESS;
-                } else
-                {
+                } else {
                     sendPlayerMessage(player,
                             getErrorTraduction("notOp"),
                             null,
@@ -192,8 +173,7 @@ public class TeleportationCommands
                     );
                     return 0;
                 }
-            } else
-            {
+            } else {
                 sendPlayerMessage(player,
                         getErrorTraduction("disabled.surface"),
                         null,

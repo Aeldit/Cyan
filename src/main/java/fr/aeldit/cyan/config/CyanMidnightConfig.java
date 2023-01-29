@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CyanMidnightConfig extends MidnightConfig
-{
+public class CyanMidnightConfig extends MidnightConfig {
     public static final List<String> commandsList = new ArrayList<>();
     public static Map<String, Object> boolOptionsMap = new HashMap<>();
     public static Map<String, Object> integerOptionsMap = new HashMap<>();
@@ -23,6 +22,8 @@ public class CyanMidnightConfig extends MidnightConfig
     public static boolean allowKgi = true;
     @Entry
     public static boolean allowSurface = true;
+    @Entry
+    public static boolean allowLocations = true;
 
     @Comment
     public static Comment intOptions;
@@ -36,6 +37,10 @@ public class CyanMidnightConfig extends MidnightConfig
     public static int minOpLevelExeKgi = 4;
     @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeSurface = 0;
+    @Entry(isSlider = true, min = 0, max = 4)
+    public static int minOpLevelExeLocation = 0;
+    @Entry(isSlider = true, min = 0, max = 4)
+    public static int minOpLevelExeEditLocation = 4;
 
     @Comment
     public static Comment boolOptions;
@@ -46,11 +51,11 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry
     public static boolean errorToActionBar = true;
 
-    public static Map<String, Object> generateBoolOptionsMap()
-    {
+    public static Map<String, Object> generateBoolOptionsMap() {
         boolOptionsMap.put("allowBed", allowBed);
         boolOptionsMap.put("allowKgi", allowKgi);
         boolOptionsMap.put("allowSurface", allowSurface);
+        boolOptionsMap.put("allowLocations", allowLocations);
         boolOptionsMap.put("useTranslations", useTranslations);
         boolOptionsMap.put("msgToActionBar", msgToActionBar);
         boolOptionsMap.put("errorToActionBar", errorToActionBar);
@@ -58,28 +63,27 @@ public class CyanMidnightConfig extends MidnightConfig
         return boolOptionsMap;
     }
 
-    public static Map<String, Object> generateIntegerOptionsMap()
-    {
+    public static Map<String, Object> generateIntegerOptionsMap() {
         integerOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
         integerOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
         integerOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
         integerOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
+        integerOptionsMap.put("minOpLevelExeLocation", minOpLevelExeLocation);
+        integerOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
 
         integerOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
 
         return integerOptionsMap;
     }
 
-    public static Map<String, Object> generateAllOptionsMap()
-    {
+    public static Map<String, Object> generateAllOptionsMap() {
         allOptionsMap.putAll(generateBoolOptionsMap());
         allOptionsMap.putAll(generateIntegerOptionsMap());
         return allOptionsMap;
     }
 
     // For the ArgumentSuggestions
-    public static List<String> generateCommandsList()
-    {
+    public static List<String> generateCommandsList() {
         commandsList.add("bed");
         commandsList.add("kgi");
         commandsList.add("surface");
@@ -87,13 +91,12 @@ public class CyanMidnightConfig extends MidnightConfig
         return commandsList;
     }
 
-    public static void setBoolOption(@NotNull String optionName, boolean value)
-    {
-        switch (optionName)
-        {
+    public static void setBoolOption(@NotNull String optionName, boolean value) {
+        switch (optionName) {
             case "allowBed" -> allowBed = value;
             case "allowKgi" -> allowKgi = value;
             case "allowSurface" -> allowSurface = value;
+            case "allowLocations" -> allowLocations = value;
             case "useTranslations" -> useTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
@@ -101,15 +104,15 @@ public class CyanMidnightConfig extends MidnightConfig
         write("cyan");
     }
 
-    public static void setIntOption(@NotNull String optionName, int value)
-    {
-        switch (optionName)
-        {
+    public static void setIntOption(@NotNull String optionName, int value) {
+        switch (optionName) {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
             case "minOpLevelExeModifConfig" -> minOpLevelExeModifConfig = value;
             case "minOpLevelExeBed" -> minOpLevelExeBed = value;
             case "minOpLevelExeKgi" -> minOpLevelExeKgi = value;
             case "minOpLevelExeSurface" -> minOpLevelExeSurface = value;
+            case "minOpLevelExeLocation" -> minOpLevelExeLocation = value;
+            case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
         }
         write("cyan");
     }
