@@ -75,6 +75,8 @@
   "cyan.message.getDescription.options.useTranslations": "- §euseTranslations §3option toogles the use of translations (server-side only)\n",
   "cyan.message.getDescription.options.msgToActionBar": "- §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar\n",
   "cyan.message.getDescription.options.errorToActionBar": "- §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar\n",
+  "cyan.message.getDescription.options.minOpLevelExeLocation": "- §eminOpLevelExeLocation §3determines the minimum OP level required to see / teleport to locations\n",
+  "cyan.message.getDescription.options.minOpLevelExeEditLocation": "- §eminOpLevelExeEditLocation §3determines the minimum OP level required to edit locations\n",
   "-------------------------------------------------ADVANCEMENTS--------------------------------------------------": "",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "A few more advancements",

@@ -75,6 +75,8 @@
   "cyan.message.getDescription.options.msgToActionBar": "- §3L'option §emsgToActionBar §3bascule les messages vers la barre d'action ou le chat\n",
   "cyan.message.getDescription.options.errorToActionBar": "- §3L'option §eerrorToActionBar §3bascule les messages d'erreur vers la barre d'action ou le chat\n",
   "cyan.message.getDescription.options.allowLocations": "- §eL'option allowLocations §3définit si les commandes de §dlocation §3peuvent être utilisées\n",
+  "cyan.message.getDescription.options.minOpLevelExeLocation": "- §eL'option minOpLevelExeLocation §3détermine le niveau OP requis pour voir / se tp aux locations\n",
+  "cyan.message.getDescription.options.minOpLevelExeEditLocation": "- §eL'option minOpLevelExeEditLocation §3détermine le niveau OP requis pour modifier les locations\n",
   "-------------------------------------------------ADVANCEMENTS--------------------------------------------------": "",
   "cyan.advancements.root.title": "Cyan",
   "cyan.advancements.root.description": "Quelques défis supplémentaires",
