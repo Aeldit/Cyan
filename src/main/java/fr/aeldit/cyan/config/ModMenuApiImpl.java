@@ -11,18 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class ModMenuApiImpl implements ModMenuApi {
-
+public class ModMenuApiImpl implements ModMenuApi
+{
     @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+    public ConfigScreenFactory<?> getModConfigScreenFactory()
+    {
         return parent -> MidnightConfig.getScreen(parent, CyanClientCore.MODID);
     }
 
     @Override
-    public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
+    public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories()
+    {
         HashMap<String, ConfigScreenFactory<?>> map = new HashMap<>();
         MidnightConfig.configClass.forEach((modid, cClass) -> map.put(modid, parent -> MidnightConfig.getScreen(parent, modid)));
         return map;
     }
-
 }

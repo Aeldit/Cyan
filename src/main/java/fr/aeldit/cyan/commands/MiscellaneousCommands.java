@@ -14,9 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
-/**
- * @since 0.0.2
- */
 public class MiscellaneousCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)

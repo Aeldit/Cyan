@@ -17,9 +17,6 @@ import java.nio.file.Files;
 
 import static fr.aeldit.cyan.util.Utils.locationsPath;
 
-/**
- * @since 0.0.1
- */
 public class CyanClientCore implements ClientModInitializer
 {
     public static final String MODID = "cyan";
@@ -57,9 +54,7 @@ public class CyanClientCore implements ClientModInitializer
             LocationCommands.register(dispatcher);
         });
         LOGGER.info("{} Successfully initialized commands", MODNAME);
-
-
+        
         LOGGER.info("{} Successfully completed initialization", MODNAME);
     }
-
 }

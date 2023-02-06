@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CyanMidnightConfig extends MidnightConfig {
+public class CyanMidnightConfig extends MidnightConfig
+{
     public static final List<String> commandsList = new ArrayList<>();
     public static Map<String, Object> boolOptionsMap = new HashMap<>();
     public static Map<String, Object> integerOptionsMap = new HashMap<>();
@@ -51,7 +52,8 @@ public class CyanMidnightConfig extends MidnightConfig {
     @Entry
     public static boolean errorToActionBar = true;
 
-    public static Map<String, Object> generateBoolOptionsMap() {
+    public static Map<String, Object> generateBoolOptionsMap()
+    {
         boolOptionsMap.put("allowBed", allowBed);
         boolOptionsMap.put("allowKgi", allowKgi);
         boolOptionsMap.put("allowSurface", allowSurface);
@@ -63,7 +65,8 @@ public class CyanMidnightConfig extends MidnightConfig {
         return boolOptionsMap;
     }
 
-    public static Map<String, Object> generateIntegerOptionsMap() {
+    public static Map<String, Object> generateIntegerOptionsMap()
+    {
         integerOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
         integerOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
         integerOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
@@ -76,14 +79,16 @@ public class CyanMidnightConfig extends MidnightConfig {
         return integerOptionsMap;
     }
 
-    public static Map<String, Object> generateAllOptionsMap() {
+    public static Map<String, Object> generateAllOptionsMap()
+    {
         allOptionsMap.putAll(generateBoolOptionsMap());
         allOptionsMap.putAll(generateIntegerOptionsMap());
         return allOptionsMap;
     }
 
     // For the ArgumentSuggestions
-    public static List<String> generateCommandsList() {
+    public static List<String> generateCommandsList()
+    {
         commandsList.add("bed");
         commandsList.add("kgi");
         commandsList.add("surface");
@@ -91,8 +96,10 @@ public class CyanMidnightConfig extends MidnightConfig {
         return commandsList;
     }
 
-    public static void setBoolOption(@NotNull String optionName, boolean value) {
-        switch (optionName) {
+    public static void setBoolOption(@NotNull String optionName, boolean value)
+    {
+        switch (optionName)
+        {
             case "allowBed" -> allowBed = value;
             case "allowKgi" -> allowKgi = value;
             case "allowSurface" -> allowSurface = value;
@@ -104,8 +111,10 @@ public class CyanMidnightConfig extends MidnightConfig {
         write("cyan");
     }
 
-    public static void setIntOption(@NotNull String optionName, int value) {
-        switch (optionName) {
+    public static void setIntOption(@NotNull String optionName, int value)
+    {
+        switch (optionName)
+        {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
             case "minOpLevelExeModifConfig" -> minOpLevelExeModifConfig = value;
             case "minOpLevelExeBed" -> minOpLevelExeBed = value;

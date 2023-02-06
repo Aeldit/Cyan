@@ -21,9 +21,6 @@ import static fr.aeldit.cyan.util.Utils.getCmdFeedbackTraduction;
 import static fr.aeldit.cyan.util.Utils.getErrorTraduction;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
-/**
- * @since 0.0.1
- */
 public class TeleportationCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
@@ -137,7 +134,6 @@ public class TeleportationCommands
         }
         return Command.SINGLE_SUCCESS;
     }
-
 
     /**
      * <p>Called when a player execute the commands <code>/surface</code> or <code>/s</code></p>

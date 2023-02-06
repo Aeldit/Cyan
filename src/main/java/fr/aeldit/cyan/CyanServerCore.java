@@ -18,9 +18,6 @@ import java.nio.file.Files;
 
 import static fr.aeldit.cyan.util.Utils.locationsPath;
 
-/**
- * @since 0.0.1
- */
 public class CyanServerCore implements DedicatedServerModInitializer
 {
     public static final String MODID = "cyan";
@@ -58,8 +55,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
             LocationCommands.register(dispatcher);
         });
         LOGGER.info("{} Successfully initialized commands", MODNAME);
+
         LOGGER.info("{} Successfully completed initialization", MODNAME);
-
     }
-
 }
