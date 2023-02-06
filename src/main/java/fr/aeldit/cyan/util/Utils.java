@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Constants {
-
+public class Utils
+{
     public static final Path locationsPath = FabricLoader.getInstance().getConfigDir().resolve("cyan/locations.properties");
     public static String on = Formatting.GREEN + "ON";
     public static String off = Formatting.RED + "OFF";
@@ -26,7 +26,8 @@ public class Constants {
     private static final Map<String, String> errorsTraductionsMap = new HashMap<>();
     private static final Map<String, String> cmdFeedbackTraductionsMap = new HashMap<>();
 
-    private static void generateCommandsTraductionsMap() {
+    private static void generateCommandsTraductionsMap()
+    {
         commandsTraductionsMap.put("header", "§3Description of the §d/%s §3command :");
 
         commandsTraductionsMap.put("bed", "- §3The §d/bed §3command teleports you to your bed or respawn anchor\n");
@@ -40,7 +41,8 @@ public class Constants {
         commandsTraductionsMap.put("surface", "- §3The §d/surface §3command teleports you to the highest block located at your position\n");
     }
 
-    private static void generateOptionsTraductionsMap() {
+    private static void generateOptionsTraductionsMap()
+    {
         optionsTraductionsMap.put("header", "§3Description of the §e%s §3option :");
 
         optionsTraductionsMap.put("allowBed", "- §eallowBed §3option toogles the use of the §d/bed §3command\n");
@@ -53,12 +55,14 @@ public class Constants {
         optionsTraductionsMap.put("errorToActionBar", "- §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar\n");
     }
 
-    private static void generateMiscTraductionsMap() {
+    private static void generateMiscTraductionsMap()
+    {
         miscTraductionsMap.put("headerTop", "§3------------------------------------");
         miscTraductionsMap.put("listLocations", "Locations :");
     }
 
-    private static void generateConfigTraductionsMap() {
+    private static void generateConfigTraductionsMap()
+    {
         configTraductionsMap.put("header", "§3Cyan mod's options :");
         configTraductionsMap.put("allowBed", "- §3/bed : %s");
         configTraductionsMap.put("allowKgi", "- §3/kgi : %s");
@@ -77,7 +81,8 @@ public class Constants {
         configTraductionsMap.put("minOpLevelExeEditLocation", "- §3Minimum OP level to edit locations: %s");
     }
 
-    private static void generateConfigSetTraductionsMap() {
+    private static void generateConfigSetTraductionsMap()
+    {
         configSetTraductionsMap.put("allowBed", "§3Toogled §d/bed §3command %s");
         configSetTraductionsMap.put("allowKgi", "§3Toogled §d/kgi §3command %s");
         configSetTraductionsMap.put("allowSurface", "§3Toogled §d/surface §3command %s");
@@ -94,7 +99,8 @@ public class Constants {
         configSetTraductionsMap.put("minOpLevelExeEditLocation", "§3The minimum OP level to edit locations is now %s");
     }
 
-    public static void generateErrorsTraductionsMap() {
+    public static void generateErrorsTraductionsMap()
+    {
         errorsTraductionsMap.put("notOp", "§cYou don't have the required permission to do that");
         errorsTraductionsMap.put("wrongOPLevel", "§cThe OP level must be in [0;4]");
         errorsTraductionsMap.put("wrongDistanceKgi", "§cThe kgi distance must be in [1;128]");
@@ -112,19 +118,21 @@ public class Constants {
         errorsTraductionsMap.put("locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
     }
 
-    private static void generateCmdFeedbackTraductionsMap() {
+    private static void generateCmdFeedbackTraductionsMap()
+    {
         cmdFeedbackTraductionsMap.put("bed", "§3You have been teleported to your bed");
         cmdFeedbackTraductionsMap.put("respawnAnchor", "§3You have been teleported to your respawn anchor");
         cmdFeedbackTraductionsMap.put("kgi", "§3Ground items have been removed");
         cmdFeedbackTraductionsMap.put("kgir", "§3Ground items have been removed in a radius of %s §3chunks");
         cmdFeedbackTraductionsMap.put("surface", "§3You have been teleported to the surface");
         cmdFeedbackTraductionsMap.put("setLocation", "§3The location %s §3have been saved");
-        cmdFeedbackTraductionsMap.put("goToLocation", "§3You have been teleported to the location %s");
+        cmdFeedbackTraductionsMap.put("goToLocation", "§3You have been teleported to %s");
         cmdFeedbackTraductionsMap.put("removeLocation", "§3The location %s §3have been removed");
         cmdFeedbackTraductionsMap.put("listLocations", "§3Locations :");
     }
 
-    public static void generateAllMaps() {
+    public static void generateAllMaps()
+    {
         generateCommandsTraductionsMap();
         generateOptionsTraductionsMap();
         generateMiscTraductionsMap();
@@ -134,35 +142,43 @@ public class Constants {
         generateCmdFeedbackTraductionsMap();
     }
 
-    public static String getCommandTraduction(String command) {
+    public static String getCommandTraduction(String command)
+    {
         return commandsTraductionsMap.get(command) != null ? commandsTraductionsMap.get(command) : "null";
     }
 
-    public static String getOptionTraduction(String option) {
+    public static String getOptionTraduction(String option)
+    {
         return optionsTraductionsMap.get(option) != null ? optionsTraductionsMap.get(option) : "null";
     }
 
-    public static String getMiscTraduction(String option) {
+    public static String getMiscTraduction(String option)
+    {
         return miscTraductionsMap.get(option) != null ? miscTraductionsMap.get(option) : "null";
     }
 
-    public static String getConfigTraduction(String option) {
+    public static String getConfigTraduction(String option)
+    {
         return configTraductionsMap.get(option) != null ? configTraductionsMap.get(option) : "null";
     }
 
-    public static String getConfigSetTraduction(String option) {
+    public static String getConfigSetTraduction(String option)
+    {
         return configSetTraductionsMap.get(option) != null ? configSetTraductionsMap.get(option) : "null";
     }
 
-    public static String getErrorTraduction(String option) {
+    public static String getErrorTraduction(String option)
+    {
         return errorsTraductionsMap.get(option) != null ? errorsTraductionsMap.get(option) : "null";
     }
 
-    public static String getCmdFeedbackTraduction(String option) {
+    public static String getCmdFeedbackTraduction(String option)
+    {
         return cmdFeedbackTraductionsMap.get(option) != null ? cmdFeedbackTraductionsMap.get(option) : "null";
     }
 
-    public static Map<String, String> getOptionsTraductionsMap() {
+    public static Map<String, String> getOptionsTraductionsMap()
+    {
         return optionsTraductionsMap;
     }
 }

@@ -11,14 +11,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.Constants.*;
+import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 /**
  * @since 0.0.2
  */
-public class MiscellaneousCommands {
-    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
+public class MiscellaneousCommands
+{
+    public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
+    {
         dispatcher.register(CommandManager.literal("killgrounditems")
                 .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
                         .executes(MiscellaneousCommands::kgir)
@@ -43,16 +45,20 @@ public class MiscellaneousCommands {
      *      <li>-> A message is send to the player saying that it doesn't have the required permission</li>
      * </ul>
      */
-    public static int kgi(@NotNull CommandContext<ServerCommandSource> context) {
+    public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
+    {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null) {
+        if (player == null)
+        {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
-            return 0;
-        } else {
-            if (CyanMidnightConfig.allowKgi) {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
+        } else
+        {
+            if (CyanMidnightConfig.allowKgi)
+            {
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+                {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                     sendPlayerMessage(player,
                             getCmdFeedbackTraduction("kgi"),
@@ -61,10 +67,8 @@ public class MiscellaneousCommands {
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations
                     );
-
-
-                    return Command.SINGLE_SUCCESS;
-                } else {
+                } else
+                {
                     sendPlayerMessage(player,
                             getErrorTraduction("notOp"),
                             null,
@@ -72,9 +76,9 @@ public class MiscellaneousCommands {
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
                     );
-                    return 0;
                 }
-            } else {
+            } else
+            {
                 sendPlayerMessage(player,
                         getErrorTraduction("disabled.kgi"),
                         null,
@@ -82,9 +86,9 @@ public class MiscellaneousCommands {
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
                 );
-                return 0;
             }
         }
+        return Command.SINGLE_SUCCESS;
     }
 
     /**
@@ -97,18 +101,22 @@ public class MiscellaneousCommands {
      *      <li>-> A message is send to the player saying that it doesn't have the required permission</li>
      * </ul>
      */
-    public static int kgir(@NotNull CommandContext<ServerCommandSource> context) {
+    public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
+    {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
         int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
 
-        if (player == null) {
+        if (player == null)
+        {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
-            return 0;
-        } else {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi)) {
-                if (CyanMidnightConfig.allowKgi) {
+        } else
+        {
+            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+            {
+                if (CyanMidnightConfig.allowKgi)
+                {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                     sendPlayerMessage(player,
                             getCmdFeedbackTraduction("kgir").formatted(gold + Integer.toString(arg)),
@@ -117,8 +125,8 @@ public class MiscellaneousCommands {
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations
                     );
-                    return Command.SINGLE_SUCCESS;
-                } else {
+                } else
+                {
                     sendPlayerMessage(player,
                             getErrorTraduction("disabled.kgi"),
                             null,
@@ -126,9 +134,9 @@ public class MiscellaneousCommands {
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
                     );
-                    return 0;
                 }
-            } else {
+            } else
+            {
                 sendPlayerMessage(player,
                         getErrorTraduction("notOp"),
                         null,
@@ -136,8 +144,8 @@ public class MiscellaneousCommands {
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
                 );
-                return 0;
             }
         }
+        return Command.SINGLE_SUCCESS;
     }
 }

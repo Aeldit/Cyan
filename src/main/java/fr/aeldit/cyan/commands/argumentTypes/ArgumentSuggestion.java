@@ -14,16 +14,18 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
-import static fr.aeldit.cyan.util.Constants.locationsPath;
+import static fr.aeldit.cyan.util.Utils.locationsPath;
 
-public final class ArgumentSuggestion {
+public final class ArgumentSuggestion
+{
     /**
      * Called by the commands {@code /cyan config booleanOption} and {@code /cyan description options booleanOption}
      *
      * @param builder the suggestion builder
      * @return a suggestion with all the available commands
      */
-    public static CompletableFuture<Suggestions> getBoolOptions(@NotNull SuggestionsBuilder builder) {
+    public static CompletableFuture<Suggestions> getBoolOptions(@NotNull SuggestionsBuilder builder)
+    {
         return CommandSource.suggestMatching(CyanMidnightConfig.generateBoolOptionsMap().keySet(), builder);
     }
 
@@ -33,28 +35,33 @@ public final class ArgumentSuggestion {
      * @param builder the suggestion builder
      * @return a suggestion with all the available commands
      */
-    public static CompletableFuture<Suggestions> getIntegerOptions(@NotNull SuggestionsBuilder builder) {
+    public static CompletableFuture<Suggestions> getIntegerOptions(@NotNull SuggestionsBuilder builder)
+    {
         return CommandSource.suggestMatching(CyanMidnightConfig.generateIntegerOptionsMap().keySet(), builder);
     }
 
     /**
-     * Called by the command {@code /cyan getConfig}
+     * Called by the command {@code /cyan description commands}
      *
      * @param builder the suggestion builder
      * @return a suggestion with all the available commands
      */
-    public static CompletableFuture<Suggestions> getCommands(@NotNull SuggestionsBuilder builder) {
+    public static CompletableFuture<Suggestions> getCommands(@NotNull SuggestionsBuilder builder)
+    {
         return CommandSource.suggestMatching(CyanMidnightConfig.generateCommandsList(), builder);
     }
 
-    public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder) {
+    public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder)
+    {
         List<String> locations = new ArrayList<>();
-        try {
+        try
+        {
             Properties properties = new Properties();
             properties.load(new FileInputStream(new File(locationsPath.toUri())));
 
             locations.addAll(properties.stringPropertyNames());
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         return CommandSource.suggestMatching(locations, builder);

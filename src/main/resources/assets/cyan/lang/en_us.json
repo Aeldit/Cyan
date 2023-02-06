@@ -25,7 +25,7 @@
   "cyan.message.kgi": "§3Ground items have been removed",
   "cyan.message.kgir": "§3Ground items have been removed in a radius of %s §3chunks",
   "cyan.message.setLocation": "§3The location %s §3have been saved",
-  "cyan.message.goToLocation": "§3You have been teleported to the location %s",
+  "cyan.message.goToLocation": "§3You have been teleported to %s",
   "cyan.message.removeLocation": "§3The location %s §3have been removed",
   "cyan.message.listLocations": "§3Locations :",
   "-----------------------------------------------------SETS------------------------------------------------------": "",

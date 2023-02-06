@@ -25,7 +25,7 @@
   "cyan.message.kgi": "§3Les items au sol ont été supprimés",
   "cyan.message.kgir": "§3Les items au sol ont été supprimés dans un rayon de %s §3chunks",
   "cyan.message.setLocation": "§3La location %s §3a été enregistrée",
-  "cyan.message.goToLocation": "§3Vous avez été téléporté à la location %s",
+  "cyan.message.goToLocation": "§3Vous avez été téléporté à %s",
   "cyan.message.removeLocation": "§3La location %s §3a été supprimée",
   "cyan.message.listLocations": "§3Locations :",
   "-----------------------------------------------------SETS------------------------------------------------------": "",
