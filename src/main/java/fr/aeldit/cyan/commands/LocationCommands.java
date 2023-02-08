@@ -108,13 +108,13 @@ public class LocationCommands
                         {
                             if (player.getWorld() == overworld)
                             {
-                                properties.put(locationName, "%s %f %f %f %f %f".formatted("overworld", x, y, z, yaw, pitch));
+                                properties.put(locationName, "%s %f %f %f %f %f %s".formatted("overworld", x, y, z, yaw, pitch, player.getName().getString()));
                             } else if (player.getWorld() == nether)
                             {
-                                properties.put(locationName, "%s %f %f %f %f %f".formatted("nether", x, y, z, yaw, pitch));
+                                properties.put(locationName, "%s %f %f %f %f %f %s".formatted("nether", x, y, z, yaw, pitch, player.getName().getString()));
                             } else if (player.getWorld() == end)
                             {
-                                properties.put(locationName, "%s %f %f %f %f %f".formatted("end", x, y, z, yaw, pitch));
+                                properties.put(locationName, "%s %f %f %f %f %f %s".formatted("end", x, y, z, yaw, pitch, player.getName().getString()));
                             }
 
                             properties.store(new FileOutputStream(locationsPath.toFile()), null);
@@ -369,7 +369,14 @@ public class LocationCommands
 
                         for (String key : properties.stringPropertyNames())
                         {
-                            player.sendMessage(Text.of(yellow + key + gold + " (" + properties.get(key).toString().split(" ")[0] + ")"));
+                            // Allows OP players to see which player created the location
+                            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation) && properties.get(key).toString().split(" ").length == 7)
+                            {
+                                player.sendMessage(Text.of(yellow + key + gold + " (in the " + properties.get(key).toString().split(" ")[0] + ", created by " + properties.get(key).toString().split(" ")[6] + ")"));
+                            } else
+                            {
+                                player.sendMessage(Text.of(yellow + key + gold + " (" + properties.get(key).toString().split(" ")[0] + ")"));
+                            }
                         }
                     } catch (IOException e)
                     {

@@ -19,7 +19,7 @@ import static fr.aeldit.cyan.util.Utils.locationsPath;
 public final class ArgumentSuggestion
 {
     /**
-     * Called by the commands {@code /cyan config booleanOption} and {@code /cyan description options booleanOption}
+     * Called for the commands {@code /cyan config booleanOption} and {@code /cyan description options booleanOption}
      *
      * @param builder the suggestion builder
      * @return a suggestion with all the available commands
@@ -30,7 +30,7 @@ public final class ArgumentSuggestion
     }
 
     /**
-     * Called by the commands {@code /cyan config integerOption} and {@code /cyan description options integerOption}
+     * Called for the commands {@code /cyan config integerOption} and {@code /cyan description options integerOption}
      *
      * @param builder the suggestion builder
      * @return a suggestion with all the available commands
@@ -41,7 +41,7 @@ public final class ArgumentSuggestion
     }
 
     /**
-     * Called by the command {@code /cyan description commands}
+     * Called for the command {@code /cyan description commands}
      *
      * @param builder the suggestion builder
      * @return a suggestion with all the available commands
@@ -51,6 +51,12 @@ public final class ArgumentSuggestion
         return CommandSource.suggestMatching(CyanMidnightConfig.generateCommandsList(), builder);
     }
 
+    /**
+     * Called for the location commands
+     *
+     * @param builder the suggestion builder
+     * @return a suggestion with all the locations
+     */
     public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder)
     {
         List<String> locations = new ArrayList<>();
