@@ -8,8 +8,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -81,7 +79,6 @@ public class TeleportationCommands
                         if (player.getSpawnPointDimension() == World.OVERWORLD)
                         {
                             player.teleport(overworld, x, y, z, yaw, pitch);
-                            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                             sendPlayerMessage(player,
                                     getCmdFeedbackTraduction("bed"),
                                     null,
@@ -92,7 +89,6 @@ public class TeleportationCommands
                         } else if (player.getSpawnPointDimension() == World.NETHER)
                         {
                             player.teleport(nether, x, y, z, yaw, pitch);
-                            player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                             sendPlayerMessage(player,
                                     getCmdFeedbackTraduction("respawnAnchor"),
                                     null,
@@ -161,7 +157,6 @@ public class TeleportationCommands
                     float pitch = player.getPitch();
 
                     player.teleport(world, x, y, z, yaw, pitch);
-                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM, SoundCategory.BLOCKS, 10, 1);
                     sendPlayerMessage(player,
                             getCmdFeedbackTraduction("surface"),
                             null,
