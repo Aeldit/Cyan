@@ -15,14 +15,19 @@
 
 ### 💲```Features```
 
-    - Teleport yourself to :
-        - your bed / respawn anchor
-        - the surface (highest block on your current position)
-    
-    - Remove items that are floating on the ground (useful if there is a lot of them, which causes lag)
-    
-    - See and edit plenty of options, like the minimum OP level required to run a command, or the
-      distance in which items will be removed
+1. Teleport yourself to :
+    - your bed / respawn anchor
+    - the surface (highest block on your current position)
+
+2. Save your current location so anyone can teleport to it
+   (useful on servers where you don't want players to set a point but want to let them teleport to predefined ones)
+
+3. Remove items that are floating on the ground (useful if there is a lot of them, which causes lag)
+
+4. See and edit plenty of options, like the minimum OP level required to run a command, or the
+   distance in which items will be removed
+
+***
 
 > For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
 > on the github page of the mod
@@ -33,13 +38,19 @@
 >
 > ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
 
+***
+
 ### ✅ ```List of commands (and their aliases)```
 
-|      Command       |                       Description                        | Alias  |
-|:------------------:|:--------------------------------------------------------:|:------:|
-|       `/bed`       |       Teleports you to your bed or respawn anchor        |  `/b`  |
-| `/killgrounditems` | Kills a items floating on the ground in a certain radius | `/kgi` |
-|     `/surface`     |               Teleports you to the surface               |  `/s`  |
+|              Command              |                       Description                        |         Alias         |
+|:---------------------------------:|:--------------------------------------------------------:|:---------------------:|
+|              `/bed`               |       Teleports you to your bed or respawn anchor        |         `/b`          |
+|        `/killgrounditems`         | Kills a items floating on the ground in a certain radius |        `/kgi`         |
+|            `/surface`             |               Teleports you to the surface               |         `/s`          |
+|  `/setlocation <location_name>`   |         Saves the current position as a location         | `/sl <location_name>` |
+| `/removelocation <location_name>` |                Removes the given location                | `/rl <location_name>` |
+|    `/location <location_name>`    |           Teleports you to the given location            | `/l <location_name>`  |
+|          `/getlocations`          |             Displays all the saved locations             |         `/gl`         |
 
 For a more detailed explanation on how to use every command,
 see [COMMANDS.md](https://github.com/Aeldit/Cyan/blob/1.19.x/docs/COMMANDS.md)
