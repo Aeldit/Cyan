@@ -85,13 +85,12 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        String locationName = StringArgumentType.getString(context, "name");
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
         } else
         {
+            String locationName = StringArgumentType.getString(context, "name");
             double x = player.getX();
             double y = player.getY();
             double z = player.getZ();
@@ -173,8 +172,6 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        String locationName = StringArgumentType.getString(context, "name");
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
@@ -184,6 +181,7 @@ public class LocationCommands
             {
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
+                    String locationName = StringArgumentType.getString(context, "name");
                     checkOrCreateDirs();
                     try
                     {
@@ -295,8 +293,6 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        String locationName = StringArgumentType.getString(context, "name");
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
@@ -306,6 +302,7 @@ public class LocationCommands
             {
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeLocation))
                 {
+                    String locationName = StringArgumentType.getString(context, "name");
                     checkOrCreateDirs();
                     try
                     {
