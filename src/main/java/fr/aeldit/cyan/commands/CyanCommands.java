@@ -15,11 +15,10 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
@@ -107,16 +106,15 @@ public class CyanCommands
                 CyanMidnightConfig.setBoolOption(option, value);
                 sendPlayerMessage(player,
                         getConfigSetTraduction(option),
-                        value ? on : off,
                         "cyan.message.set.%s".formatted(option),
                         CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.useTranslations
+                        CyanMidnightConfig.useTranslations,
+                        value ? on : off
                 );
             } else
             {
                 sendPlayerMessage(player,
                         getErrorTraduction("notOp"),
-                        null,
                         "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -153,7 +151,6 @@ public class CyanCommands
             {
                 sendPlayerMessage(player,
                         getErrorTraduction("wrongOPLevel"),
-                        null,
                         "cyan.message.wrongOPLevel",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -162,7 +159,6 @@ public class CyanCommands
             {
                 sendPlayerMessage(player,
                         getErrorTraduction("wrongDistanceKgi"),
-                        null,
                         "cyan.message.wrongDistanceKgi",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -174,16 +170,15 @@ public class CyanCommands
                     CyanMidnightConfig.setIntOption(option, value);
                     sendPlayerMessage(player,
                             getConfigSetTraduction(option),
-                            gold + String.valueOf(value),
                             "cyan.message.set.%s".formatted(option),
                             CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.useTranslations,
+                            Formatting.GOLD + String.valueOf(value)
                     );
                 } else
                 {
                     sendPlayerMessage(player,
                             getErrorTraduction("notOp"),
-                            null,
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -206,29 +201,25 @@ public class CyanCommands
         ServerPlayerEntity player = source.getPlayer();
         String currentTrad = null;
 
-        Map<String, Object> options = CyanMidnightConfig.generateAllOptionsMap();
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
         } else
         {
             sendPlayerMessage(player,
-                    getMiscTraduction("headerTop"),
-                    null,
-                    "cyan.message.getDescription.headerTop",
+                    getMiscTraduction("dashSeparation"),
+                    "cyan.message.getDescription.dashSeparation",
                     false,
                     CyanMidnightConfig.useTranslations
             );
             sendPlayerMessage(player,
                     getConfigTraduction("header"),
-                    null,
                     "cyan.message.getCfgOptions.header",
                     false,
                     CyanMidnightConfig.useTranslations
             );
 
-            for (Map.Entry<String, Object> entry : options.entrySet())
+            for (Map.Entry<String, Object> entry : CyanMidnightConfig.getAllOptionsMap().entrySet())
             {
                 Object key2 = entry.getKey();
                 if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
@@ -240,22 +231,28 @@ public class CyanCommands
                 {
                     sendPlayerMessage(player,
                             currentTrad,
-                            value ? on : off,
                             "cyan.message.getCfgOptions.%s".formatted(key2),
                             false,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.useTranslations,
+                            value ? on : off
                     );
                 } else if (entry.getValue() instanceof Integer value)
                 {
                     sendPlayerMessage(player,
                             currentTrad,
-                            gold + Integer.toString(value),
                             "cyan.message.getCfgOptions.%s".formatted(key2),
                             false,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.useTranslations,
+                            Formatting.GOLD + Integer.toString(value)
                     );
                 }
             }
+            sendPlayerMessage(player,
+                    getMiscTraduction("dashSeparation"),
+                    "cyan.message.getDescription.dashSeparation",
+                    false,
+                    CyanMidnightConfig.useTranslations
+            );
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -269,23 +266,14 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        String option = StringArgumentType.getString(context, "commandName");
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
         } else
         {
-            sendPlayerMessage(player,
-                    getCommandTraduction("header").formatted(magenta + option),
-                    magenta + option,
-                    "cyan.message.getDescription.command.header",
-                    false,
-                    CyanMidnightConfig.useTranslations
-            );
+            String option = StringArgumentType.getString(context, "commandName");
             sendPlayerMessage(player,
                     getCommandTraduction(option),
-                    null,
                     "cyan.message.getDescription.command.%s".formatted(option),
                     false,
                     CyanMidnightConfig.useTranslations
@@ -303,23 +291,14 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        String option = StringArgumentType.getString(context, "option");
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
         } else
         {
-            sendPlayerMessage(player,
-                    getOptionTraduction("header").formatted(yellow + option),
-                    yellow + option,
-                    "cyan.message.getDescription.options.header",
-                    false,
-                    CyanMidnightConfig.useTranslations
-            );
+            String option = StringArgumentType.getString(context, "option");
             sendPlayerMessage(player,
                     getOptionTraduction(option),
-                    null,
                     "cyan.message.getDescription.options.%s".formatted(option),
                     false,
                     CyanMidnightConfig.useTranslations
@@ -337,38 +316,39 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        List<String> commands = CyanMidnightConfig.generateCommandsList();
-
         if (player == null)
         {
             source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
         } else
         {
             sendPlayerMessage(player,
-                    getMiscTraduction("headerTop"),
-                    null,
-                    "cyan.message.getDescription.headerTop",
+                    getMiscTraduction("dashSeparation"),
+                    "cyan.message.getDescription.dashSeparation",
+                    false,
+                    CyanMidnightConfig.useTranslations
+            );
+            sendPlayerMessage(player,
+                    getMiscTraduction("headerDescCmd"),
+                    "cyan.message.getDescription.headerDescCmd",
                     false,
                     CyanMidnightConfig.useTranslations
             );
 
-            for (String command : commands)
+            for (String command : getCommandsTraductionsMap().keySet())
             {
                 sendPlayerMessage(player,
-                        getCommandTraduction("header").formatted(magenta + command),
-                        magenta + command,
-                        "cyan.message.getDescription.command.header",
-                        false,
-                        CyanMidnightConfig.useTranslations
-                );
-                sendPlayerMessage(player,
                         getCommandTraduction(command),
-                        null,
                         "cyan.message.getDescription.command.%s".formatted(command),
                         false,
                         CyanMidnightConfig.useTranslations
                 );
             }
+            sendPlayerMessage(player,
+                    getMiscTraduction("dashSeparation"),
+                    "cyan.message.getDescription.dashSeparation",
+                    false,
+                    CyanMidnightConfig.useTranslations
+            );
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -388,34 +368,33 @@ public class CyanCommands
         } else
         {
             sendPlayerMessage(player,
-                    getMiscTraduction("headerTop"),
-                    null,
-                    "cyan.message.getDescription.headerTop",
+                    getMiscTraduction("dashSeparation"),
+                    "cyan.message.getDescription.dashSeparation",
+                    false,
+                    CyanMidnightConfig.useTranslations
+            );
+            sendPlayerMessage(player,
+                    getMiscTraduction("headerDescOptions"),
+                    "cyan.message.getDescription.headerDescOptions",
                     false,
                     CyanMidnightConfig.useTranslations
             );
 
             for (String option : getOptionsTraductionsMap().keySet())
             {
-                if (Objects.equals(option, "header"))
-                {
-                    continue;
-                }
-                sendPlayerMessage(player,
-                        getOptionTraduction("header").formatted(yellow + option),
-                        yellow + option,
-                        "cyan.message.getDescription.options.header",
-                        false,
-                        CyanMidnightConfig.useTranslations
-                );
                 sendPlayerMessage(player,
                         getOptionTraduction(option),
-                        null,
                         "cyan.message.getDescription.options.%s".formatted(option),
                         false,
                         CyanMidnightConfig.useTranslations
                 );
             }
+            sendPlayerMessage(player,
+                    getMiscTraduction("dashSeparation"),
+                    "cyan.message.getDescription.dashSeparation",
+                    false,
+                    CyanMidnightConfig.useTranslations
+            );
         }
         return Command.SINGLE_SUCCESS;
     }

@@ -60,7 +60,7 @@
   "cyan.message.getCfgOptions.minOpLevelExeLocation": "- §3Niveau OP minimum pour voir / se tp aux locations: %s",
   "cyan.message.getCfgOptions.minOpLevelExeEditLocation": "- §3Niveau OP minimum pour modifier les locations: %s",
   "---------------------------------------------------GET_DESC----------------------------------------------------": "",
-  "cyan.message.getDescription.headerTop": "§3------------------------------------",
+  "cyan.message.getDescription.dashSeparation": "§3------------------------------------",
   "---------------------------------------------------COMMANDS----------------------------------------------------": "",
   "cyan.message.getDescription.command.header": "§3Description de la commande §d/%s :",
   "cyan.message.getDescription.command.bed": "§3La commande §d/bed §3vous téléporte à votre lit ou votre ancre de réapparition",

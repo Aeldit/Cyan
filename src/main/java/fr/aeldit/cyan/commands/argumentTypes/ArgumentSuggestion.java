@@ -3,6 +3,7 @@ package fr.aeldit.cyan.commands.argumentTypes;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
+import fr.aeldit.cyan.util.Utils;
 import net.minecraft.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,7 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getBoolOptions(@NotNull SuggestionsBuilder builder)
     {
-        return CommandSource.suggestMatching(CyanMidnightConfig.generateBoolOptionsMap().keySet(), builder);
+        return CommandSource.suggestMatching(CyanMidnightConfig.getBoolOptionsMap().keySet(), builder);
     }
 
     /**
@@ -37,7 +38,7 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getIntegerOptions(@NotNull SuggestionsBuilder builder)
     {
-        return CommandSource.suggestMatching(CyanMidnightConfig.generateIntegerOptionsMap().keySet(), builder);
+        return CommandSource.suggestMatching(CyanMidnightConfig.getIntegerOptionsMap().keySet(), builder);
     }
 
     /**
@@ -48,7 +49,7 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getCommands(@NotNull SuggestionsBuilder builder)
     {
-        return CommandSource.suggestMatching(CyanMidnightConfig.generateCommandsList(), builder);
+        return CommandSource.suggestMatching(Utils.getCommandsTraductionsMap().keySet(), builder);
     }
 
     /**

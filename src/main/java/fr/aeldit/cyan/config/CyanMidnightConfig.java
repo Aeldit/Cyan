@@ -3,14 +3,11 @@ package fr.aeldit.cyan.config;
 import eu.midnightdust.lib.config.MidnightConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CyanMidnightConfig extends MidnightConfig
 {
-    public static final List<String> commandsList = new ArrayList<>();
     public static Map<String, Object> boolOptionsMap = new HashMap<>();
     public static Map<String, Object> integerOptionsMap = new HashMap<>();
     public static Map<String, Object> allOptionsMap = new HashMap<>();
@@ -52,7 +49,7 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry
     public static boolean errorToActionBar = true;
 
-    public static Map<String, Object> generateBoolOptionsMap()
+    private static void generateBoolOptionsMap()
     {
         boolOptionsMap.put("allowBed", allowBed);
         boolOptionsMap.put("allowKgi", allowKgi);
@@ -61,11 +58,9 @@ public class CyanMidnightConfig extends MidnightConfig
         boolOptionsMap.put("useTranslations", useTranslations);
         boolOptionsMap.put("msgToActionBar", msgToActionBar);
         boolOptionsMap.put("errorToActionBar", errorToActionBar);
-
-        return boolOptionsMap;
     }
 
-    public static Map<String, Object> generateIntegerOptionsMap()
+    private static void generateIntegerOptionsMap()
     {
         integerOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
         integerOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
@@ -75,25 +70,14 @@ public class CyanMidnightConfig extends MidnightConfig
         integerOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
 
         integerOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
-
-        return integerOptionsMap;
     }
 
-    public static Map<String, Object> generateAllOptionsMap()
+    public static void generateAllOptionsMap()
     {
-        allOptionsMap.putAll(generateBoolOptionsMap());
-        allOptionsMap.putAll(generateIntegerOptionsMap());
-        return allOptionsMap;
-    }
-
-    // For the ArgumentSuggestions
-    public static List<String> generateCommandsList()
-    {
-        commandsList.add("bed");
-        commandsList.add("kgi");
-        commandsList.add("surface");
-
-        return commandsList;
+        generateBoolOptionsMap();
+        generateIntegerOptionsMap();
+        allOptionsMap.putAll(getBoolOptionsMap());
+        allOptionsMap.putAll(getIntegerOptionsMap());
     }
 
     public static void setBoolOption(@NotNull String optionName, boolean value)
@@ -124,5 +108,20 @@ public class CyanMidnightConfig extends MidnightConfig
             case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
         }
         write("cyan");
+    }
+
+    public static Map<String, Object> getBoolOptionsMap()
+    {
+        return boolOptionsMap;
+    }
+
+    public static Map<String, Object> getIntegerOptionsMap()
+    {
+        return integerOptionsMap;
+    }
+
+    public static Map<String, Object> getAllOptionsMap()
+    {
+        return allOptionsMap;
     }
 }

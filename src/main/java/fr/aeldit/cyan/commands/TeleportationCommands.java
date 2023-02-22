@@ -81,7 +81,6 @@ public class TeleportationCommands
                             player.teleport(overworld, x, y, z, yaw, pitch);
                             sendPlayerMessage(player,
                                     getCmdFeedbackTraduction("bed"),
-                                    null,
                                     "cyan.message.bed",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations
@@ -91,7 +90,6 @@ public class TeleportationCommands
                             player.teleport(nether, x, y, z, yaw, pitch);
                             sendPlayerMessage(player,
                                     getCmdFeedbackTraduction("respawnAnchor"),
-                                    null,
                                     "cyan.message.respawnAnchor",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations
@@ -101,7 +99,6 @@ public class TeleportationCommands
                     {
                         sendPlayerMessage(player,
                                 getErrorTraduction("bed.error"),
-                                null,
                                 "cyan.message.bed.error",
                                 CyanMidnightConfig.errorToActionBar,
                                 CyanMidnightConfig.useTranslations
@@ -111,7 +108,6 @@ public class TeleportationCommands
                 {
                     sendPlayerMessage(player,
                             getErrorTraduction("notOp"),
-                            null,
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -121,7 +117,6 @@ public class TeleportationCommands
             {
                 sendPlayerMessage(player,
                         getErrorTraduction("disabled.bed"),
-                        null,
                         "cyan.message.disabled.bed",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -159,7 +154,6 @@ public class TeleportationCommands
                     player.teleport(world, x, y, z, yaw, pitch);
                     sendPlayerMessage(player,
                             getCmdFeedbackTraduction("surface"),
-                            null,
                             "cyan.message.surface",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -168,7 +162,6 @@ public class TeleportationCommands
                 {
                     sendPlayerMessage(player,
                             getErrorTraduction("notOp"),
-                            null,
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -178,7 +171,6 @@ public class TeleportationCommands
             {
                 sendPlayerMessage(player,
                         getErrorTraduction("disabled.surface"),
-                        null,
                         "cyan.message.disabled.surface",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
