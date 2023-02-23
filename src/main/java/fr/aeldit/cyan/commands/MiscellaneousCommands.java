@@ -12,8 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.Utils.getCmdFeedbackTraduction;
-import static fr.aeldit.cyan.util.Utils.getErrorTraduction;
+import static fr.aeldit.cyan.util.LanguageUtils.getTranslation;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
 public class MiscellaneousCommands
@@ -51,7 +50,7 @@ public class MiscellaneousCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowKgi)
@@ -60,7 +59,7 @@ public class MiscellaneousCommands
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                     sendPlayerMessage(player,
-                            getCmdFeedbackTraduction("kgi"),
+                            getTranslation("kgi"),
                             "cyan.message.kgi",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -68,7 +67,7 @@ public class MiscellaneousCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getErrorTraduction("notOp"),
+                            getTranslation("notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -77,7 +76,7 @@ public class MiscellaneousCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getErrorTraduction("disabled.kgi"),
+                        getTranslation("disabled.kgi"),
                         "cyan.message.disabled.kgi",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -106,7 +105,7 @@ public class MiscellaneousCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getErrorTraduction("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
         } else
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
@@ -115,7 +114,7 @@ public class MiscellaneousCommands
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                     sendPlayerMessage(player,
-                            getCmdFeedbackTraduction("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
+                            getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
                             "cyan.message.kgir",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations,
@@ -124,7 +123,7 @@ public class MiscellaneousCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getErrorTraduction("disabled.kgi"),
+                            getTranslation("disabled.kgi"),
                             "cyan.message.disabled.kgi",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -133,7 +132,7 @@ public class MiscellaneousCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getErrorTraduction("notOp"),
+                        getTranslation("notOp"),
                         "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations

@@ -30,6 +30,7 @@
   "cyan.message.removeLocation": "§3The location %s §3have been removed",
   "cyan.message.listLocations": "§6Cyan - LOCATIONS :\n",
   "cyan.message.removedAllLocations": "§3All the locations have been removed",
+  "cyan.message.translationsReloaded": "§3The translations have been reloaded",
   "-----------------------------------------------------SETS------------------------------------------------------": "",
   "cyan.message.set.allowBed": "§3Toogled §d/bed §3command %s",
   "cyan.message.set.allowKgi": "§3Toogled §d/kgi §3command %s",

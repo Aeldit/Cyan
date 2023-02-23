@@ -49,7 +49,7 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getCommands(@NotNull SuggestionsBuilder builder)
     {
-        return CommandSource.suggestMatching(Utils.getCommandsTraductionsMap().keySet(), builder);
+        return CommandSource.suggestMatching(Utils.getCommandsList(), builder);
     }
 
     /**

@@ -28,7 +28,7 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry(isSlider = true, min = 1, max = 128)
     public static int distanceToEntitiesKgi = 14;
     @Entry(isSlider = true, min = 0, max = 4)
-    public static int minOpLevelExeModifConfig = 4;
+    public static int minOpLevelExeEditConfig = 4;
     @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeBed = 0;
     @Entry(isSlider = true, min = 0, max = 4)
@@ -43,11 +43,11 @@ public class CyanMidnightConfig extends MidnightConfig
     @Comment
     public static Comment boolOptions;
     @Entry
-    public static boolean useTranslations = true;
-    @Entry
     public static boolean msgToActionBar = true;
     @Entry
     public static boolean errorToActionBar = true;
+    @Entry
+    public static boolean useTranslations = true;
 
     private static void generateBoolOptionsMap()
     {
@@ -62,7 +62,7 @@ public class CyanMidnightConfig extends MidnightConfig
 
     private static void generateIntegerOptionsMap()
     {
-        integerOptionsMap.put("minOpLevelExeModifConfig", minOpLevelExeModifConfig);
+        integerOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
         integerOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
         integerOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
         integerOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
@@ -93,6 +93,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "errorToActionBar" -> errorToActionBar = value;
         }
         write("cyan");
+        generateAllOptionsMap();
     }
 
     public static void setIntOption(@NotNull String optionName, int value)
@@ -100,7 +101,7 @@ public class CyanMidnightConfig extends MidnightConfig
         switch (optionName)
         {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
-            case "minOpLevelExeModifConfig" -> minOpLevelExeModifConfig = value;
+            case "minOpLevelExeEditConfig" -> minOpLevelExeEditConfig = value;
             case "minOpLevelExeBed" -> minOpLevelExeBed = value;
             case "minOpLevelExeKgi" -> minOpLevelExeKgi = value;
             case "minOpLevelExeSurface" -> minOpLevelExeSurface = value;
@@ -108,6 +109,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
         }
         write("cyan");
+        generateAllOptionsMap();
     }
 
     public static Map<String, Object> getBoolOptionsMap()
