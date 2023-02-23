@@ -31,12 +31,6 @@ public class CyanCommands
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("cyan")
-                .then(CommandManager.literal("reloadTranslations")
-                        .executes(CyanCommands::reloadTranslations)
-                )
-                .then(CommandManager.literal("getConfig")
-                        .executes(CyanCommands::getConfigOptions)
-                )
                 .then(CommandManager.literal("config")
                         .then(CommandManager.literal("booleanOption")
                                 .then(CommandManager.argument("option", StringArgumentType.string())
@@ -72,6 +66,12 @@ public class CyanCommands
                                 )
                                 .executes(CyanCommands::getAllOptionsDescription)
                         )
+                )
+                .then(CommandManager.literal("getConfig")
+                        .executes(CyanCommands::getConfigOptions)
+                )
+                .then(CommandManager.literal("reloadTranslations")
+                        .executes(CyanCommands::reloadTranslations)
                 )
         );
     }
