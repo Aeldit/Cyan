@@ -12,6 +12,7 @@
 |       `1.17.x`       |     ✅      |
 |       `1.18.x`       |     ✅      |
 |       `1.19.x`       |     ✅      |
+|       `1.19.3`       |     ✅      |
 
 ### 💲```Features```
 
@@ -49,6 +50,7 @@
 |            `/surface`             |               Teleports you to the surface               |         `/s`          |
 |  `/setlocation <location_name>`   |         Saves the current position as a location         | `/sl <location_name>` |
 | `/removelocation <location_name>` |                Removes the given location                | `/rl <location_name>` |
+|       `/removealllocations`       |                Removes the given location                |           ❌           |
 |    `/location <location_name>`    |           Teleports you to the given location            | `/l <location_name>`  |
 |          `/getlocations`          |             Displays all the saved locations             |         `/gl`         |
 
@@ -59,6 +61,24 @@ see [COMMANDS.md](https://github.com/Aeldit/Cyan/blob/1.19.x/docs/COMMANDS.md)
 
 - English
 - French
+
+### ```Default Translations```
+
+> If you have set the option ```useTranslations``` to false, the default language was english. But with the latest
+> update
+> (0.9.3), you can put a file in the config directory with the translations in the language you want (you will have to
+> translate the file by yourself,
+> but this way you can also customize the messages)
+
+How to do this ?
+
+1. Download the file ```translations.properties```
+   located [here](https://github.com/Aeldit/Cyan/tree/1.19.3/docs) and put it in your Minecraft server folder
+   (```minecraft/config/cyan```)
+2. Then you can translate the file to any language you want
+3. There are some unicode characters in the file (they look like ```\u00A7c```). They are used to determine the
+   color of the text so don't delete them unless you don't want the colors. If you want to change the colors, here
+   is a link where you can find the [unicode colors](https://minecraft.tools/en/color-code.php)
 
 > ### ❗ Important :
 >

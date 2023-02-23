@@ -12,6 +12,8 @@ Commands :
 
 ```bash
 cyan
+├── reloadTranslations -> Reloads the translations file
+│
 ├── getConfig -> Displays all the current options values
 │
 ├── config -> If no argument is given after this one, the list of option and their value is send to the chat of the player
