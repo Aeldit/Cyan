@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.aeldit.cyan.util.LanguageUtils.ERROR;
 import static fr.aeldit.cyan.util.LanguageUtils.getTranslation;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
 
@@ -67,7 +68,7 @@ public class MiscellaneousCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation("notOp"),
+                            getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -76,7 +77,7 @@ public class MiscellaneousCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("disabled.kgi"),
+                        getTranslation(ERROR + "kgiDisabled"),
                         "cyan.message.disabled.kgi",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -101,17 +102,16 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
-
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
             {
                 if (CyanMidnightConfig.allowKgi)
                 {
+                    int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                     sendPlayerMessage(player,
                             getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
@@ -123,7 +123,7 @@ public class MiscellaneousCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation("disabled.kgi"),
+                            getTranslation(ERROR + "kgiDisabled"),
                             "cyan.message.disabled.kgi",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -132,7 +132,7 @@ public class MiscellaneousCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("notOp"),
+                        getTranslation(ERROR + "notOp"),
                         "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations

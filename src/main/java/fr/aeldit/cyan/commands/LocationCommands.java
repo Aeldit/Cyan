@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
+import static fr.aeldit.cyan.util.LanguageUtils.ERROR;
 import static fr.aeldit.cyan.util.LanguageUtils.getTranslation;
 import static fr.aeldit.cyan.util.Utils.checkOrCreateDirs;
 import static fr.aeldit.cyan.util.Utils.locationsPath;
@@ -81,7 +82,6 @@ public class LocationCommands
         );
     }
 
-    // TODO -> Track the time and date at which the location was created
     public static int setLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -89,7 +89,7 @@ public class LocationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             String locationName = StringArgumentType.getString(context, "name");
@@ -137,7 +137,7 @@ public class LocationCommands
                         } else
                         {
                             sendPlayerMessage(player,
-                                    getTranslation("locationAlreadyExists"),
+                                    getTranslation(ERROR + "locationAlreadyExists"),
                                     "cyan.message.locationAlreadyExists",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations
@@ -145,7 +145,7 @@ public class LocationCommands
                         }
                     } catch (IOException e)
                     {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 } else
                 {
@@ -159,7 +159,7 @@ public class LocationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("disabled.locations"),
+                        getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -176,7 +176,7 @@ public class LocationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowLocations)
@@ -205,7 +205,7 @@ public class LocationCommands
                         } else
                         {
                             sendPlayerMessage(player,
-                                    getTranslation("locationNotFound"),
+                                    getTranslation(ERROR + "locationNotFound"),
                                     "cyan.message.locationNotFound",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations,
@@ -214,12 +214,12 @@ public class LocationCommands
                         }
                     } catch (IOException e)
                     {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation("notOp"),
+                            getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -228,7 +228,7 @@ public class LocationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("disabled.locations"),
+                        getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -245,7 +245,7 @@ public class LocationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowLocations)
@@ -271,7 +271,7 @@ public class LocationCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation("notOp"),
+                            getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -280,7 +280,7 @@ public class LocationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("disabled.locations"),
+                        getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -297,7 +297,7 @@ public class LocationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowLocations)
@@ -361,7 +361,7 @@ public class LocationCommands
                         } else
                         {
                             sendPlayerMessage(player,
-                                    getTranslation("locationNotFound"),
+                                    getTranslation(ERROR + "locationNotFound"),
                                     "cyan.message.locationNotFound",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations,
@@ -370,12 +370,12 @@ public class LocationCommands
                         }
                     } catch (IOException e)
                     {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation("notOp"),
+                            getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -384,7 +384,7 @@ public class LocationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("disabled.locations"),
+                        getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -401,7 +401,7 @@ public class LocationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowLocations)
@@ -445,12 +445,12 @@ public class LocationCommands
                         );
                     } catch (IOException e)
                     {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation("notOp"),
+                            getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             false,
                             CyanMidnightConfig.useTranslations
@@ -459,7 +459,7 @@ public class LocationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation("disabled.locations"),
+                        getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
