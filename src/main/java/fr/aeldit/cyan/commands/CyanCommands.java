@@ -215,6 +215,7 @@ public class CyanCommands
 
     /**
      * Called when a player execute the command {@code /cyan config}
+     * <p>
      * Send a player in the player's chat with all the mod's options and their values
      */
     public static int getConfigOptions(@NotNull CommandContext<ServerCommandSource> context)

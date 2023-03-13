@@ -51,7 +51,7 @@ public class MiscellaneousCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowKgi)
@@ -104,7 +104,7 @@ public class MiscellaneousCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "²")));
         } else
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
