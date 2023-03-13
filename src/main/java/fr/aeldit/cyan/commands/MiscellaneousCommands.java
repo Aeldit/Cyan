@@ -12,9 +12,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.LanguageUtils.ERROR;
-import static fr.aeldit.cyan.util.LanguageUtils.getTranslation;
+import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
+import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class MiscellaneousCommands
 {
@@ -51,7 +51,7 @@ public class MiscellaneousCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation("playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation("playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowKgi)
@@ -60,7 +60,7 @@ public class MiscellaneousCommands
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                     sendPlayerMessage(player,
-                            getTranslation("kgi"),
+                            CyanLanguageUtils.getTranslation("kgi"),
                             "cyan.message.kgi",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -68,7 +68,7 @@ public class MiscellaneousCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation(ERROR + "notOp"),
+                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -77,7 +77,7 @@ public class MiscellaneousCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation(ERROR + "kgiDisabled"),
+                        CyanLanguageUtils.getTranslation(ERROR + "kgiDisabled"),
                         "cyan.message.disabled.kgi",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -104,7 +104,7 @@ public class MiscellaneousCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
@@ -114,7 +114,7 @@ public class MiscellaneousCommands
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
                     sendPlayerMessage(player,
-                            getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
+                            CyanLanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
                             "cyan.message.kgir",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations,
@@ -123,7 +123,7 @@ public class MiscellaneousCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation(ERROR + "kgiDisabled"),
+                            CyanLanguageUtils.getTranslation(ERROR + "kgiDisabled"),
                             "cyan.message.disabled.kgi",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -132,7 +132,7 @@ public class MiscellaneousCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation(ERROR + "notOp"),
+                        CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                         "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations

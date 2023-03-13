@@ -6,7 +6,6 @@ import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
-import fr.aeldit.cyan.util.LanguageUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -16,12 +15,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
-import static fr.aeldit.cyan.util.LanguageUtils.languagePath;
-import static fr.aeldit.cyan.util.Utils.locationsPath;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanClientCore implements ClientModInitializer
 {
-    public static final String MODID = "cyan";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
     public static final String MODNAME = "[Cyan]";
 
@@ -38,12 +35,6 @@ public class CyanClientCore implements ClientModInitializer
                 Files.delete(locationsPath);
                 LOGGER.info("{} Deleted the locations file because it was empty", MODNAME);
             }
-
-            if (Files.exists(languagePath) && Files.readAllLines(languagePath).size() <= 1)
-            {
-                Files.delete(languagePath);
-                LOGGER.info("{} Deleted the translation file because it was empty", MODNAME);
-            }
         } catch (IOException e)
         {
             throw new RuntimeException(e);
@@ -51,7 +42,7 @@ public class CyanClientCore implements ClientModInitializer
 
         if (!CyanMidnightConfig.useTranslations)
         {
-            LanguageUtils.loadLanguage();
+            CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
         generateAllOptionsMap();

@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static fr.aeldit.cyan.util.LanguageUtils.ERROR;
-import static fr.aeldit.cyan.util.LanguageUtils.getTranslation;
+import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
 import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
+import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class TeleportationCommands
 {
@@ -58,7 +58,7 @@ public class TeleportationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
@@ -80,7 +80,7 @@ public class TeleportationCommands
                         {
                             player.teleport(overworld, x, y, z, yaw, pitch);
                             sendPlayerMessage(player,
-                                    getTranslation("bed"),
+                                    CyanLanguageUtils.getTranslation("bed"),
                                     "cyan.message.bed",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations
@@ -89,7 +89,7 @@ public class TeleportationCommands
                         {
                             player.teleport(nether, x, y, z, yaw, pitch);
                             sendPlayerMessage(player,
-                                    getTranslation("respawnAnchor"),
+                                    CyanLanguageUtils.getTranslation("respawnAnchor"),
                                     "cyan.message.respawnAnchor",
                                     CyanMidnightConfig.msgToActionBar,
                                     CyanMidnightConfig.useTranslations
@@ -98,7 +98,7 @@ public class TeleportationCommands
                     } else
                     {
                         sendPlayerMessage(player,
-                                getTranslation(ERROR + "bed"),
+                                CyanLanguageUtils.getTranslation(ERROR + "bed"),
                                 "cyan.message.bed.error",
                                 CyanMidnightConfig.errorToActionBar,
                                 CyanMidnightConfig.useTranslations
@@ -107,7 +107,7 @@ public class TeleportationCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation(ERROR + "notOp"),
+                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -116,7 +116,7 @@ public class TeleportationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation(ERROR + "bedDisabled"),
+                        CyanLanguageUtils.getTranslation(ERROR + "bedDisabled"),
                         "cyan.message.disabled.bed",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
@@ -137,7 +137,7 @@ public class TeleportationCommands
 
         if (player == null)
         {
-            source.getServer().sendMessage(Text.of(getTranslation(ERROR + "playerOnlyCmd")));
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (CyanMidnightConfig.allowSurface)
@@ -153,7 +153,7 @@ public class TeleportationCommands
 
                     player.teleport(world, x, y, z, yaw, pitch);
                     sendPlayerMessage(player,
-                            getTranslation("surface"),
+                            CyanLanguageUtils.getTranslation("surface"),
                             "cyan.message.surface",
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -161,7 +161,7 @@ public class TeleportationCommands
                 } else
                 {
                     sendPlayerMessage(player,
-                            getTranslation(ERROR + "notOp"),
+                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
@@ -170,7 +170,7 @@ public class TeleportationCommands
             } else
             {
                 sendPlayerMessage(player,
-                        getTranslation(ERROR + "surfaceDisabled"),
+                        CyanLanguageUtils.getTranslation(ERROR + "surfaceDisabled"),
                         "cyan.message.disabled.surface",
                         CyanMidnightConfig.errorToActionBar,
                         CyanMidnightConfig.useTranslations
