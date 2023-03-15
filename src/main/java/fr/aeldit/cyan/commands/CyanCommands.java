@@ -79,18 +79,24 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (!CyanMidnightConfig.allowConsoleEditConfig)
         {
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             CyanLanguageUtils.loadLanguage(Utils.getDefaultTranslations());
-            sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation("translationsReloaded"),
-                    "cyan.message.translationsReloaded",
-                    CyanMidnightConfig.msgToActionBar,
-                    CyanMidnightConfig.useTranslations
-            );
+            if (player == null)
+            {
+                source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation("translationsReloaded")));
+            } else
+            {
+                sendPlayerMessage(player,
+                        CyanLanguageUtils.getTranslation("translationsReloaded"),
+                        "cyan.message.translationsReloaded",
+                        CyanMidnightConfig.msgToActionBar,
+                        CyanMidnightConfig.useTranslations
+                );
+            }
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -112,12 +118,12 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (!CyanMidnightConfig.allowConsoleEditConfig)
         {
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+            if (player == null)
             {
                 String option = StringArgumentType.getString(context, "option");
                 boolean value = BoolArgumentType.getBool(context, "value");
@@ -126,21 +132,34 @@ public class CyanCommands
                 {
                     CyanLanguageUtils.loadLanguage(getDefaultTranslations());
                 }
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(SET + option),
-                        "cyan.message.set.%s".formatted(option),
-                        CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.useTranslations,
-                        value ? on : off
-                );
+                source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(SET + option)));
             } else
             {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                        "cyan.message.notOp",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
-                );
+                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+                {
+                    String option = StringArgumentType.getString(context, "option");
+                    boolean value = BoolArgumentType.getBool(context, "value");
+                    CyanMidnightConfig.setBoolOption(option, value);
+                    if (option.equals("useTranslations") && !CyanMidnightConfig.useTranslations)
+                    {
+                        CyanLanguageUtils.loadLanguage(getDefaultTranslations());
+                    }
+                    sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(SET + option),
+                            "cyan.message.set.%s".formatted(option),
+                            CyanMidnightConfig.msgToActionBar,
+                            CyanMidnightConfig.useTranslations,
+                            value ? on : off
+                    );
+                } else
+                {
+                    sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
+                            "cyan.message.notOp",
+                            CyanMidnightConfig.errorToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                }
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -164,47 +183,66 @@ public class CyanCommands
         String option = StringArgumentType.getString(context, "option");
         int value = IntegerArgumentType.getInteger(context, "value");
 
-        if (player == null)
+        if (!CyanMidnightConfig.allowConsoleEditConfig)
         {
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
             if (option.startsWith("minOpLevelExe") && (value < 0 || value > 4))
             {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "wrongOPLevel"),
-                        "cyan.message.wrongOPLevel",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
-                );
-            } else if (option.startsWith("distanceToEntitiesKgi") && (value < 1 || value > 128))
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "wrongDistanceKgi"),
-                        "cyan.message.wrongDistanceKgi",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
-                );
-            } else
-            {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+                if (player == null)
                 {
-                    CyanMidnightConfig.setIntOption(option, value);
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(SET + option),
-                            "cyan.message.set.%s".formatted(option),
-                            CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations,
-                            Formatting.GOLD + String.valueOf(value)
-                    );
+                    source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "wrongOPLevel")));
                 } else
                 {
                     sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
+                            CyanLanguageUtils.getTranslation(ERROR + "wrongOPLevel"),
+                            "cyan.message.wrongOPLevel",
                             CyanMidnightConfig.errorToActionBar,
                             CyanMidnightConfig.useTranslations
                     );
+                }
+            } else if (option.startsWith("distanceToEntitiesKgi") && (value < 1 || value > 128))
+            {
+                if (player == null)
+                {
+                    source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "wrongDistanceKgi")));
+                } else
+                {
+                    sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(ERROR + "wrongDistanceKgi"),
+                            "cyan.message.wrongDistanceKgi",
+                            CyanMidnightConfig.errorToActionBar,
+                            CyanMidnightConfig.useTranslations
+                    );
+                }
+            } else
+            {
+                if (player == null)
+                {
+                    CyanMidnightConfig.setIntOption(option, value);
+                    source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(SET + option)));
+                } else
+                {
+                    if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+                    {
+                        CyanMidnightConfig.setIntOption(option, value);
+                        sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(SET + option),
+                                "cyan.message.set.%s".formatted(option),
+                                CyanMidnightConfig.msgToActionBar,
+                                CyanMidnightConfig.useTranslations,
+                                Formatting.GOLD + String.valueOf(value)
+                        );
+                    } else
+                    {
+                        sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "notOp"),
+                                "cyan.message.notOp",
+                                CyanMidnightConfig.errorToActionBar,
+                                CyanMidnightConfig.useTranslations
+                        );
+                    }
                 }
             }
         }

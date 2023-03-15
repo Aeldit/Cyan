@@ -88,10 +88,9 @@ public class Utils
     // Language Utils
     public static final Path languagePath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.properties");
 
-    public static LinkedHashMap<String, String> defaultTranslations = new LinkedHashMap<>();
-
     public static LanguageUtils CyanLanguageUtils = new LanguageUtils(Utils.MODID);
-
+    public static LinkedHashMap<String, String> defaultTranslations = new LinkedHashMap<>();
+    
     public static void generateDefaultTranslations()
     {
 

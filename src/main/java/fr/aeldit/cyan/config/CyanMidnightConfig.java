@@ -22,6 +22,8 @@ public class CyanMidnightConfig extends MidnightConfig
     public static boolean allowSurface = true;
     @Entry
     public static boolean allowLocations = true;
+    @Entry
+    public static boolean allowConsoleEditConfig = false;
 
     @Comment
     public static Comment intOptions;
@@ -55,6 +57,7 @@ public class CyanMidnightConfig extends MidnightConfig
         boolOptionsMap.put("allowKgi", allowKgi);
         boolOptionsMap.put("allowSurface", allowSurface);
         boolOptionsMap.put("allowLocations", allowLocations);
+        boolOptionsMap.put("allowConsoleEditConfig", allowConsoleEditConfig);
         boolOptionsMap.put("useTranslations", useTranslations);
         boolOptionsMap.put("msgToActionBar", msgToActionBar);
         boolOptionsMap.put("errorToActionBar", errorToActionBar);
@@ -88,6 +91,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowKgi" -> allowKgi = value;
             case "allowSurface" -> allowSurface = value;
             case "allowLocations" -> allowLocations = value;
+            case "allowConsoleEditConfig" -> allowConsoleEditConfig = value;
             case "useTranslations" -> useTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
