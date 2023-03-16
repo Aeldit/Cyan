@@ -13,7 +13,7 @@ import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
-import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
+import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class MiscellaneousCommands

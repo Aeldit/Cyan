@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import static fr.aeldit.cyan.util.Utils.*;
-import static fr.aeldit.cyanlib.util.ChatUtil.sendPlayerMessage;
+import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class LocationCommands
