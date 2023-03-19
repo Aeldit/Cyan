@@ -101,7 +101,7 @@ public class LocationCommands
             {
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
-                    checkOrCreateDirs();
+                    checkOrCreateFile(locationsPath);
                     try
                     {
                         Properties properties = new Properties();
@@ -182,7 +182,7 @@ public class LocationCommands
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
-                    checkOrCreateDirs();
+                    checkOrCreateFile(locationsPath);
                     try
                     {
                         Properties properties = new Properties();
@@ -303,7 +303,7 @@ public class LocationCommands
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeLocation))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
-                    checkOrCreateDirs();
+                    checkOrCreateFile(locationsPath);
                     try
                     {
                         Properties properties = new Properties();
@@ -406,7 +406,7 @@ public class LocationCommands
             {
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeLocation))
                 {
-                    checkOrCreateDirs();
+                    checkOrCreateFile(locationsPath);
                     try
                     {
                         Properties properties = new Properties();

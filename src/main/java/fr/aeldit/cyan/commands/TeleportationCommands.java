@@ -13,9 +13,12 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Properties;
 
-import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
+import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
@@ -23,6 +26,10 @@ public class TeleportationCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
+        dispatcher.register(CommandManager.literal("back")
+                .executes(TeleportationCommands::back)
+        );
+
         dispatcher.register(CommandManager.literal("bed")
                 .executes(TeleportationCommands::bed)
         );
@@ -36,6 +43,92 @@ public class TeleportationCommands
         dispatcher.register(CommandManager.literal("s")
                 .executes(TeleportationCommands::surface)
         );
+    }
+
+    public static int back(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerCommandSource source = context.getSource();
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        if (player == null)
+        {
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
+        } else
+        {
+            if (CyanMidnightConfig.allowBackTp)
+            {
+                ServerWorld overworld = Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
+                ServerWorld nether = Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
+                ServerWorld end = Objects.requireNonNull(player.getServer()).getWorld(World.END);
+                checkOrCreateFile(backTpPath);
+                try
+                {
+                    Properties properties = new Properties();
+                    properties.load(new FileInputStream(backTpPath.toFile()));
+                    if (properties.containsKey(player.getUuidAsString()))
+                    {
+                        String pos = (String) properties.get(player.getUuidAsString());
+                        if (Objects.equals(pos.split(" ")[0], "overworld"))
+                        {
+                            player.teleport(
+                                    overworld,
+                                    Double.parseDouble(pos.split(" ")[1]),
+                                    Double.parseDouble(pos.split(" ")[2]),
+                                    Double.parseDouble(pos.split(" ")[3]),
+                                    0,
+                                    0
+                            );
+                        } else if (Objects.equals(pos.split(" ")[0], "nether"))
+                        {
+                            player.teleport(
+                                    nether,
+                                    Double.parseDouble(pos.split(" ")[1]),
+                                    Double.parseDouble(pos.split(" ")[2]),
+                                    Double.parseDouble(pos.split(" ")[3]),
+                                    0,
+                                    0
+                            );
+                        } else if (Objects.equals(pos.split(" ")[0], "end"))
+                        {
+                            player.teleport(
+                                    end,
+                                    Double.parseDouble(pos.split(" ")[1]),
+                                    Double.parseDouble(pos.split(" ")[2]),
+                                    Double.parseDouble(pos.split(" ")[3]),
+                                    0,
+                                    0
+                            );
+                        }
+                        sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation("backTp"),
+                                "cyan.message.backTp",
+                                CyanMidnightConfig.errorToActionBar,
+                                CyanMidnightConfig.useTranslations
+                        );
+                    } else
+                    {
+                        sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "noLastPos"),
+                                "cyan.message.noLastPos",
+                                CyanMidnightConfig.errorToActionBar,
+                                CyanMidnightConfig.useTranslations
+                        );
+                    }
+                } catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            } else
+            {
+                sendPlayerMessage(player,
+                        CyanLanguageUtils.getTranslation(ERROR + "disabled.backTp"),
+                        "cyan.message.disabled.backTp",
+                        CyanMidnightConfig.errorToActionBar,
+                        CyanMidnightConfig.useTranslations
+                );
+            }
+        }
+        return Command.SINGLE_SUCCESS;
     }
 
     /**

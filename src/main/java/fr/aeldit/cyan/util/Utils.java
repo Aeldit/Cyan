@@ -2,14 +2,18 @@ package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyanlib.util.LanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Formatting;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class Utils
 {
@@ -33,6 +37,7 @@ public class Utils
         options.add("allowKgi");
         options.add("allowSurface");
         options.add("allowLocations");
+        options.add("allowBackTp");
 
         options.add("useTranslations");
         options.add("msgToActionBar");
@@ -57,10 +62,8 @@ public class Utils
         return options;
     }
 
-    // Locations
-    public static final Path locationsPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties");
-
-    public static void checkOrCreateDirs()
+    // Files
+    public static void checkOrCreateModDir()
     {
         if (!Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID)))
         {
@@ -72,11 +75,16 @@ public class Utils
                 throw new RuntimeException(e);
             }
         }
-        if (!Files.exists(locationsPath))
+    }
+
+    public static void checkOrCreateFile(Path path)
+    {
+        checkOrCreateModDir();
+        if (!Files.exists(path))
         {
             try
             {
-                Files.createFile(locationsPath);
+                Files.createFile(path);
             } catch (IOException e)
             {
                 throw new RuntimeException(e);
@@ -84,13 +92,52 @@ public class Utils
         }
     }
 
+    public static void setPropertiesKey(@NotNull Path filePath, String key, Object value)
+    {
+        try
+        {
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(filePath.toFile()));
+            properties.put(key, value);
+            properties.store(new FileOutputStream(filePath.toFile()), null);
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Death Event
+    public static final Path backTpPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties");
+
+    public static void saveDeadPlayersPos(@NotNull LivingEntity entity)
+    {
+        if (entity.isPlayer())
+        {
+            ServerWorld overworld = Objects.requireNonNull(entity.getServer()).getWorld(World.OVERWORLD);
+            ServerWorld nether = Objects.requireNonNull(entity.getServer()).getWorld(World.NETHER);
+            ServerWorld end = Objects.requireNonNull(entity.getServer()).getWorld(World.END);
+            checkOrCreateFile(backTpPath);
+            String pos = null;
+            if (entity.getWorld() == overworld)
+            {
+                pos = "overworld" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
+            } else if (entity.getWorld() == nether)
+            {
+                pos = "nether" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
+            } else if (entity.getWorld() == end)
+            {
+                pos = "end" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
+            }
+            setPropertiesKey(backTpPath, entity.getUuidAsString(), pos);
+        }
+    }
 
     // Language Utils
     public static final Path languagePath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.properties");
 
     public static LanguageUtils CyanLanguageUtils = new LanguageUtils(Utils.MODID);
     public static LinkedHashMap<String, String> defaultTranslations = new LinkedHashMap<>();
-    
+
     public static void generateDefaultTranslations()
     {
 
@@ -136,6 +183,7 @@ public class Utils
         defaultTranslations.put("set.allowKgi", "§3Toogled §d/kgi §3command %s");
         defaultTranslations.put("set.allowSurface", "§3Toogled §d/surface §3command %s");
         defaultTranslations.put("set.allowLocations", "§3Toogled §dlocation §3commands %s");
+        defaultTranslations.put("set.allowBackTp", "§3Toogled §d/back §3command %s");
         defaultTranslations.put("set.useTranslations", "§3Toogled translations %s");
         defaultTranslations.put("set.msgToActionBar", "§3Toogled messages to action bar %s");
         defaultTranslations.put("set.errorToActionBar", "§3Toogled error messages to action bar %s");
@@ -163,6 +211,7 @@ public class Utils
         defaultTranslations.put("error.locationsDisabled", "§cThe locations commands are disabled. To enable them, enter '/cyan config booleanOptions allowLocations true' in chat");
         defaultTranslations.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
         defaultTranslations.put("error.fileNotRemoved", "§cAn error occured while trying to remove the locations file");
+        defaultTranslations.put("error.noLastPos", "§cYour last death location was not saved");
 
         defaultTranslations.put("bed", "§3You have been teleported to your bed");
         defaultTranslations.put("respawnAnchor", "§3You have been teleported to your respawn anchor");
@@ -174,6 +223,7 @@ public class Utils
         defaultTranslations.put("removeLocation", "§3The location %s §3have been removed");
         defaultTranslations.put("removedAllLocations", "§3All the locations have been removed");
         defaultTranslations.put("translationsReloaded", "§3The translations have been reloaded");
+        defaultTranslations.put("backTp", "§3You have been teleported to the place you died");
     }
 
     public static LinkedHashMap<String, String> getDefaultTranslations()
@@ -184,4 +234,7 @@ public class Utils
         }
         return defaultTranslations;
     }
+
+    // Locations
+    public static final Path locationsPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties");
 }

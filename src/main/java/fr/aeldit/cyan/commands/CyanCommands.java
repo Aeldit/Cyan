@@ -79,7 +79,7 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (!CyanMidnightConfig.allowConsoleEditConfig)
+        if (player == null && !CyanMidnightConfig.allowConsoleEditConfig)
         {
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
@@ -118,7 +118,7 @@ public class CyanCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (!CyanMidnightConfig.allowConsoleEditConfig)
+        if (player == null && !CyanMidnightConfig.allowConsoleEditConfig)
         {
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
@@ -128,10 +128,7 @@ public class CyanCommands
                 String option = StringArgumentType.getString(context, "option");
                 boolean value = BoolArgumentType.getBool(context, "value");
                 CyanMidnightConfig.setBoolOption(option, value);
-                if (option.equals("useTranslations") && !CyanMidnightConfig.useTranslations)
-                {
-                    CyanLanguageUtils.loadLanguage(getDefaultTranslations());
-                }
+
                 source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(SET + option)));
             } else
             {
@@ -140,10 +137,7 @@ public class CyanCommands
                     String option = StringArgumentType.getString(context, "option");
                     boolean value = BoolArgumentType.getBool(context, "value");
                     CyanMidnightConfig.setBoolOption(option, value);
-                    if (option.equals("useTranslations") && !CyanMidnightConfig.useTranslations)
-                    {
-                        CyanLanguageUtils.loadLanguage(getDefaultTranslations());
-                    }
+
                     sendPlayerMessage(player,
                             CyanLanguageUtils.getTranslation(SET + option),
                             "cyan.message.set.%s".formatted(option),
@@ -183,7 +177,7 @@ public class CyanCommands
         String option = StringArgumentType.getString(context, "option");
         int value = IntegerArgumentType.getInteger(context, "value");
 
-        if (!CyanMidnightConfig.allowConsoleEditConfig)
+        if (player == null && !CyanMidnightConfig.allowConsoleEditConfig)
         {
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
