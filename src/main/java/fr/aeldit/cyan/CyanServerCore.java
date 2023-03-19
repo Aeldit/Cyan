@@ -8,6 +8,7 @@ import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
+import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanServerCore implements DedicatedServerModInitializer
@@ -46,12 +48,13 @@ public class CyanServerCore implements DedicatedServerModInitializer
             throw new RuntimeException(e);
         }
 
+        generateAllOptionsMap();
         if (!CyanMidnightConfig.useTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
-        generateAllOptionsMap();
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->

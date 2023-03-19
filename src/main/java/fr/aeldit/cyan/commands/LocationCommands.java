@@ -41,7 +41,7 @@ public class LocationCommands
                 )
         );
 
-        dispatcher.register(CommandManager.literal("removelocations")
+        dispatcher.register(CommandManager.literal("removelocation")
                 .then(CommandManager.argument("name", StringArgumentType.string())
                         .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
                         .executes(LocationCommands::removeLocation)
@@ -53,7 +53,7 @@ public class LocationCommands
                         .executes(LocationCommands::removeLocation)
                 )
         );
-        dispatcher.register(CommandManager.literal("removealllocation")
+        dispatcher.register(CommandManager.literal("removealllocations")
                 .executes(LocationCommands::removeAllLocations)
         );
 
@@ -80,6 +80,12 @@ public class LocationCommands
         );
     }
 
+    /**
+     * Called by the command {@code /setlocation <location_name>} or {@code /sl <location_name>}
+     * <p>
+     * Saves the current player's location (dimension, x, y, z, yaw, pitch) + the player who created the location in
+     * the locations file
+     */
     public static int setLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -167,6 +173,11 @@ public class LocationCommands
         return Command.SINGLE_SUCCESS;
     }
 
+    /**
+     * Called by the command {@code /removelocation <location_name>} or {@code /rl <location_name>}
+     * <p>
+     * Removes the given location
+     */
     public static int removeLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -236,6 +247,11 @@ public class LocationCommands
         return Command.SINGLE_SUCCESS;
     }
 
+    /**
+     * Called by the command {@code /removealllocations}
+     * <p>
+     * Removes all the locations
+     */
     public static int removeAllLocations(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -288,6 +304,11 @@ public class LocationCommands
         return Command.SINGLE_SUCCESS;
     }
 
+    /**
+     * Called by the command {@code /location <location_name>} or {@code /l <location_name>}
+     * <p>
+     * Teleports the player to the given location
+     */
     public static int goToLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -392,6 +413,11 @@ public class LocationCommands
         return Command.SINGLE_SUCCESS;
     }
 
+    /**
+     * Called by the command {@code /getlocations} or {@code /gl}
+     * <p>
+     * Lists all the locations in the player's chat
+     */
     public static int getLocationsList(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();

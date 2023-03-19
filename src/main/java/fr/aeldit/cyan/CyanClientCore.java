@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
+import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanClientCore implements ClientModInitializer
@@ -42,7 +43,6 @@ public class CyanClientCore implements ClientModInitializer
         }
 
         generateAllOptionsMap();
-
         if (!CyanMidnightConfig.useTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());

@@ -35,14 +35,9 @@ public class MiscellaneousCommands
     }
 
     /**
-     * <p>Called when a player execute the command <code>/killgrounditems</code> or <code>/kgi</code></p>
-     *
-     * <ul>If the player has a permission level equal to the minimum required OP level
-     *      <li>-> The ground items are removed and the player is notified by a message that the entities where removed</li>
-     * </ul>
-     * <ul>Else:
-     *      <li>-> A message is send to the player saying that it doesn't have the required permission</li>
-     * </ul>
+     * Called when a player execute the command {@code /killgrounditems} or {@code /kgi}
+     * <p>
+     * Kills all the items on the ground in the default radius (defined if {@link CyanMidnightConfig})
      */
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {
@@ -88,14 +83,9 @@ public class MiscellaneousCommands
     }
 
     /**
-     * <p>Called when a player execute the command <code>/killgrounditems [int]</code> or <code>/kgi [int]</code></p>
-     *
-     * <ul>If the player has a permission level equal to the minimum required OP level
-     *      <li>-> The ground items are removed in the specified radius (in chunks) and the player is notified by a message that the entities where removed</li>
-     * </ul>
-     * <ul>Else:
-     *      <li>-> A message is send to the player saying that it doesn't have the required permission</li>
-     * </ul>
+     * Called when a player execute the command {@code /killgrounditems [int]} or {@code /kgi [int]}
+     * <p>
+     * Kills all the items on the ground in the specified radius
      */
     public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
     {

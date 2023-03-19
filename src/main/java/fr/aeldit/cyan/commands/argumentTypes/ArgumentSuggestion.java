@@ -22,7 +22,6 @@ public final class ArgumentSuggestion
     /**
      * Called for the commands {@code /cyan config booleanOption} and {@code /cyan description options booleanOption}
      *
-     * @param builder the suggestion builder
      * @return a suggestion with all the available commands
      */
     public static CompletableFuture<Suggestions> getBoolOptions(@NotNull SuggestionsBuilder builder)
@@ -33,7 +32,6 @@ public final class ArgumentSuggestion
     /**
      * Called for the commands {@code /cyan config integerOption} and {@code /cyan description options integerOption}
      *
-     * @param builder the suggestion builder
      * @return a suggestion with all the available commands
      */
     public static CompletableFuture<Suggestions> getIntegerOptions(@NotNull SuggestionsBuilder builder)
@@ -44,7 +42,6 @@ public final class ArgumentSuggestion
     /**
      * Called for the command {@code /cyan description commands}
      *
-     * @param builder the suggestion builder
      * @return a suggestion with all the available commands
      */
     public static CompletableFuture<Suggestions> getCommands(@NotNull SuggestionsBuilder builder)
@@ -55,7 +52,6 @@ public final class ArgumentSuggestion
     /**
      * Called for the location commands
      *
-     * @param builder the suggestion builder
      * @return a suggestion with all the locations
      */
     public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder)

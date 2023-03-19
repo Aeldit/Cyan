@@ -2,10 +2,7 @@ package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyanlib.util.LanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
@@ -13,7 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Properties;
 
 public class Utils
 {
@@ -29,6 +29,8 @@ public class Utils
         commands.add("bed");
         commands.add("kgi");
         commands.add("surface");
+        commands.add("back");
+        commands.add("location");
     }
 
     private static void generateOptionsTraductionsList()
@@ -106,32 +108,6 @@ public class Utils
         }
     }
 
-    // Death Event
-    public static final Path backTpPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties");
-
-    public static void saveDeadPlayersPos(@NotNull LivingEntity entity)
-    {
-        if (entity.isPlayer())
-        {
-            ServerWorld overworld = Objects.requireNonNull(entity.getServer()).getWorld(World.OVERWORLD);
-            ServerWorld nether = Objects.requireNonNull(entity.getServer()).getWorld(World.NETHER);
-            ServerWorld end = Objects.requireNonNull(entity.getServer()).getWorld(World.END);
-            checkOrCreateFile(backTpPath);
-            String pos = null;
-            if (entity.getWorld() == overworld)
-            {
-                pos = "overworld" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
-            } else if (entity.getWorld() == nether)
-            {
-                pos = "nether" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
-            } else if (entity.getWorld() == end)
-            {
-                pos = "end" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
-            }
-            setPropertiesKey(backTpPath, entity.getUuidAsString(), pos);
-        }
-    }
-
     // Language Utils
     public static final Path languagePath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.properties");
 
@@ -168,6 +144,7 @@ public class Utils
         defaultTranslations.put("getCfg.allowKgi", "§6- §3/kgi : %s");
         defaultTranslations.put("getCfg.allowSurface", "§6- §3/surface : %s");
         defaultTranslations.put("getCfg.allowLocations", "§6- §3location commands : %s");
+        defaultTranslations.put("getCfg.allowBackTp", "§6- §d/back %3: %s");
         defaultTranslations.put("getCfg.useTranslations", "§6- §3Use translations : %s");
         defaultTranslations.put("getCfg.msgToActionBar", "§6- §3Messages to action bar : %s");
         defaultTranslations.put("getCfg.errorToActionBar", "§6- §3Error messages to action bar : %s");

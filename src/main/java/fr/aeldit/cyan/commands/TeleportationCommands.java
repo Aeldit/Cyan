@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.util.EventUtils.backTpPath;
+import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
+import static fr.aeldit.cyan.util.Utils.checkOrCreateFile;
 import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
@@ -45,6 +47,11 @@ public class TeleportationCommands
         );
     }
 
+    /**
+     * Called by the command {@code /back}
+     * <p>
+     * Teleports the player to its last death position
+     */
     public static int back(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -132,17 +139,9 @@ public class TeleportationCommands
     }
 
     /**
-     * <p>Called when a player execute the commands <code>/bed</code> or <code>/b</code></p>
-     *
-     * <ul>If the dimension of the player's spawnpoint is in the Overworld, get :
-     *     <li>- Teleport the player to the coordinates, yaw and pitch in the Overworld</li>
-     * </ul>
-     * <ul>If the dimension of the player's spawnpoint is in the Nether, get :
-     *     <li>- Teleport the player to the coordinates, yaw and pitch in the Nether</li>
-     * </ul>
-     * <ul>Else:
-     *     <li>- send a message to the player saying that no bed or respawn anchor was found</li>
-     * </ul>
+     * Called when a player execute the commands {@code /bed} or {@code /b}
+     * <p>
+     * Teleports the player to its bed
      */
     public static int bed(@NotNull CommandContext<ServerCommandSource> context)
     {
@@ -220,8 +219,9 @@ public class TeleportationCommands
     }
 
     /**
-     * <p>Called when a player execute the commands <code>/surface</code> or <code>/s</code></p>
-     * <p>Teleport the player to the highest block that was found on the player's coordinates</p>
+     * Called when a player execute the commands {@code /surface} or {@code /s}
+     * <p>
+     * Teleport the player to the highest block that was found on the player's coordinates
      */
     public static int surface(@NotNull CommandContext<ServerCommandSource> context)
     {
