@@ -155,7 +155,7 @@ public class CyanCommands
                             "cyan.message.set.%s".formatted(option),
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useTranslations,
-                            value ? on : off
+                            value ? Formatting.GREEN + "ON" : Formatting.RED + "OFF"
                     );
                 } else
                 {
@@ -296,7 +296,7 @@ public class CyanCommands
                             "cyan.message.getCfgOptions.%s".formatted(key2),
                             false,
                             CyanMidnightConfig.useTranslations,
-                            value ? on : off
+                            value ? Formatting.GREEN + "ON" : Formatting.RED + "OFF"
                     );
                 } else if (entry.getValue() instanceof Integer value)
                 {

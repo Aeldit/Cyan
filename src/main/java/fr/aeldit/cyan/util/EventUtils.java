@@ -23,10 +23,15 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Properties;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.util.Utils.MODID;
+import static fr.aeldit.cyan.util.Utils.checkOrCreateFile;
 
 public class EventUtils
 {
@@ -52,7 +57,16 @@ public class EventUtils
             {
                 pos = "end" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
             }
-            setPropertiesKey(backTpPath, entity.getUuidAsString(), pos);
+            try
+            {
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(backTpPath.toFile()));
+                properties.put(entity.getUuidAsString(), pos);
+                properties.store(new FileOutputStream(backTpPath.toFile()), null);
+            } catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
