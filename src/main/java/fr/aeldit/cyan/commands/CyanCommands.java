@@ -31,6 +31,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
@@ -157,6 +159,7 @@ public class CyanCommands
                             CyanMidnightConfig.useTranslations,
                             value ? Formatting.GREEN + "ON" : Formatting.RED + "OFF"
                     );
+                    source.getServer().getCommandManager().executeWithPrefix(source, "/cyan getConfig");
                 } else
                 {
                     sendPlayerMessage(player,
@@ -268,53 +271,62 @@ public class CyanCommands
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
-            sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation("dashSeparation"),
-                    "cyan.message.getDescription.dashSeparation",
-                    false,
-                    CyanMidnightConfig.useTranslations
-            );
-            sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation(GETCFG + "header"),
-                    "cyan.message.getCfgOptions.header",
-                    false,
-                    CyanMidnightConfig.useTranslations
-            );
-
-            for (Map.Entry<String, Object> entry : CyanMidnightConfig.getAllOptionsMap().entrySet())
+            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
             {
-                Object key2 = entry.getKey();
-                if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
-                {
-                    currentTrad = CyanLanguageUtils.getTranslation(GETCFG + key2);
-                }
+                sendPlayerMessage(player,
+                        CyanLanguageUtils.getTranslation("dashSeparation"),
+                        "cyan.message.getDescription.dashSeparation",
+                        false,
+                        CyanMidnightConfig.useTranslations
+                );
+                sendPlayerMessage(player,
+                        CyanLanguageUtils.getTranslation(GETCFG + "header"),
+                        "cyan.message.getCfgOptions.header",
+                        false,
+                        CyanMidnightConfig.useTranslations
+                );
 
-                if (entry.getValue() instanceof Boolean value)
+                for (Map.Entry<String, Object> entry : CyanMidnightConfig.getAllOptionsMap().entrySet())
                 {
-                    sendPlayerMessage(player,
-                            currentTrad,
-                            "cyan.message.getCfgOptions.%s".formatted(key2),
-                            false,
-                            CyanMidnightConfig.useTranslations,
-                            value ? Formatting.GREEN + "ON" : Formatting.RED + "OFF"
-                    );
-                } else if (entry.getValue() instanceof Integer value)
-                {
-                    sendPlayerMessage(player,
-                            currentTrad,
-                            "cyan.message.getCfgOptions.%s".formatted(key2),
-                            false,
-                            CyanMidnightConfig.useTranslations,
-                            Formatting.GOLD + Integer.toString(value)
-                    );
+                    Object key2 = entry.getKey();
+                    if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
+                    {
+                        currentTrad = CyanLanguageUtils.getTranslation(GETCFG + key2);
+                    }
+
+                    if (entry.getValue() instanceof Boolean value)
+                    {
+                        sendPlayerMessage(player,
+                                currentTrad,
+                                "cyan.message.getCfgOptions.%s".formatted(key2),
+                                false,
+                                CyanMidnightConfig.useTranslations,
+                                value ? Text.literal(Formatting.GREEN + "ON").
+                                        setStyle(Style.EMPTY.withClickEvent(
+                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config booleanOption \"%s\" false".formatted(key2)))
+                                        ) : Text.literal(Formatting.RED + "OFF").
+                                        setStyle(Style.EMPTY.withClickEvent(
+                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config booleanOption \"%s\" true".formatted(key2)))
+                                        )
+                        );
+                    } else if (entry.getValue() instanceof Integer value)
+                    {
+                        sendPlayerMessage(player,
+                                currentTrad,
+                                "cyan.message.getCfgOptions.%s".formatted(key2),
+                                false,
+                                CyanMidnightConfig.useTranslations,
+                                Formatting.GOLD + Integer.toString(value)
+                        );
+                    }
                 }
+                sendPlayerMessage(player,
+                        CyanLanguageUtils.getTranslation("dashSeparation"),
+                        "cyan.message.getDescription.dashSeparation",
+                        false,
+                        CyanMidnightConfig.useTranslations
+                );
             }
-            sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation("dashSeparation"),
-                    "cyan.message.getDescription.dashSeparation",
-                    false,
-                    CyanMidnightConfig.useTranslations
-            );
         }
         return Command.SINGLE_SUCCESS;
     }

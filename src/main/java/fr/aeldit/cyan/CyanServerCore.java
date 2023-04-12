@@ -48,10 +48,11 @@ public class CyanServerCore implements DedicatedServerModInitializer
         }
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
+        // TODO -> Block break event for claims
+
 
         // Register all the commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->
-        {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
             CyanCommands.register(dispatcher);
