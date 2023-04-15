@@ -127,7 +127,7 @@ public class TeleportationCommands
                                 CyanLanguageUtils.getTranslation("backTp"),
                                 "cyan.message.backTp",
                                 CyanMidnightConfig.errorToActionBar,
-                                CyanMidnightConfig.useTranslations
+                                CyanMidnightConfig.customTranslations
                         );
                     } else
                     {
@@ -135,7 +135,7 @@ public class TeleportationCommands
                                 CyanLanguageUtils.getTranslation(ERROR + "noLastPos"),
                                 "cyan.message.noLastPos",
                                 CyanMidnightConfig.errorToActionBar,
-                                CyanMidnightConfig.useTranslations
+                                CyanMidnightConfig.customTranslations
                         );
                     }
                 } catch (IOException e)
@@ -148,7 +148,7 @@ public class TeleportationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "disabled.backTp"),
                         "cyan.message.disabled.backTp",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
+                        CyanMidnightConfig.customTranslations
                 );
             }
         }
@@ -192,7 +192,7 @@ public class TeleportationCommands
                                     CyanLanguageUtils.getTranslation("bed"),
                                     "cyan.message.bed",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.useTranslations
+                                    CyanMidnightConfig.customTranslations
                             );
                         } else if (player.getSpawnPointDimension() == World.NETHER)
                         {
@@ -201,7 +201,7 @@ public class TeleportationCommands
                                     CyanLanguageUtils.getTranslation("respawnAnchor"),
                                     "cyan.message.respawnAnchor",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.useTranslations
+                                    CyanMidnightConfig.customTranslations
                             );
                         }
                     } else
@@ -210,7 +210,7 @@ public class TeleportationCommands
                                 CyanLanguageUtils.getTranslation(ERROR + "bed"),
                                 "cyan.message.bed.error",
                                 CyanMidnightConfig.errorToActionBar,
-                                CyanMidnightConfig.useTranslations
+                                CyanMidnightConfig.customTranslations
                         );
                     }
                 } else
@@ -219,7 +219,7 @@ public class TeleportationCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.customTranslations
                     );
                 }
             } else
@@ -228,7 +228,7 @@ public class TeleportationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "bedDisabled"),
                         "cyan.message.disabled.bed",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
+                        CyanMidnightConfig.customTranslations
                 );
             }
         }
@@ -266,7 +266,7 @@ public class TeleportationCommands
                             CyanLanguageUtils.getTranslation("surface"),
                             "cyan.message.surface",
                             CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.customTranslations
                     );
                 } else
                 {
@@ -274,7 +274,7 @@ public class TeleportationCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.customTranslations
                     );
                 }
             } else
@@ -283,7 +283,7 @@ public class TeleportationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "surfaceDisabled"),
                         "cyan.message.disabled.surface",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
+                        CyanMidnightConfig.customTranslations
                 );
             }
         }

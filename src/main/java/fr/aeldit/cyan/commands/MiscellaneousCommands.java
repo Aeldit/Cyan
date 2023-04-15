@@ -75,7 +75,7 @@ public class MiscellaneousCommands
                             CyanLanguageUtils.getTranslation("kgi"),
                             "cyan.message.kgi",
                             CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.customTranslations
                     );
                 } else
                 {
@@ -83,7 +83,7 @@ public class MiscellaneousCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.customTranslations
                     );
                 }
             } else
@@ -92,7 +92,7 @@ public class MiscellaneousCommands
                         CyanLanguageUtils.getTranslation(ERROR + "kgiDisabled"),
                         "cyan.message.disabled.kgi",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
+                        CyanMidnightConfig.customTranslations
                 );
             }
         }
@@ -124,7 +124,7 @@ public class MiscellaneousCommands
                             CyanLanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
                             "cyan.message.kgir",
                             CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useTranslations,
+                            CyanMidnightConfig.customTranslations,
                             Formatting.GOLD + Integer.toString(arg)
                     );
                 } else
@@ -133,7 +133,7 @@ public class MiscellaneousCommands
                             CyanLanguageUtils.getTranslation(ERROR + "kgiDisabled"),
                             "cyan.message.disabled.kgi",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useTranslations
+                            CyanMidnightConfig.customTranslations
                     );
                 }
             } else
@@ -142,7 +142,7 @@ public class MiscellaneousCommands
                         CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                         "cyan.message.notOp",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useTranslations
+                        CyanMidnightConfig.customTranslations
                 );
             }
         }

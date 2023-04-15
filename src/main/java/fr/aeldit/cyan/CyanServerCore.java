@@ -42,14 +42,13 @@ public class CyanServerCore implements DedicatedServerModInitializer
         removeEmptyFiles();
 
         generateAllOptionsMap();
-        if (!CyanMidnightConfig.useTranslations)
+        if (CyanMidnightConfig.customTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         // TODO -> Block break event for claims
-
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {

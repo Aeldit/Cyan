@@ -19,7 +19,6 @@ package fr.aeldit.cyan.commands.argumentTypes;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
 import fr.aeldit.cyan.util.Utils;
 import net.minecraft.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
@@ -36,36 +35,6 @@ import static fr.aeldit.cyan.util.Utils.locationsPath;
 
 public final class ArgumentSuggestion
 {
-    /**
-     * Called for the commands {@code /cyan config booleanOption} and {@code /cyan description options booleanOption}
-     *
-     * @return a suggestion with all the available commands
-     */
-    public static CompletableFuture<Suggestions> getBoolOptions(@NotNull SuggestionsBuilder builder)
-    {
-        return CommandSource.suggestMatching(CyanMidnightConfig.getBoolOptionsMap().keySet(), builder);
-    }
-
-    /**
-     * Called for the commands {@code /cyan config integerOption} and {@code /cyan description options integerOption}
-     *
-     * @return a suggestion with all the available commands
-     */
-    public static CompletableFuture<Suggestions> getIntegerOptions(@NotNull SuggestionsBuilder builder)
-    {
-        return CommandSource.suggestMatching(CyanMidnightConfig.getIntegerOptionsMap().keySet(), builder);
-    }
-
-    /**
-     * Called for the command {@code /cyan description commands}
-     *
-     * @return a suggestion with all the available commands
-     */
-    public static CompletableFuture<Suggestions> getCommands(@NotNull SuggestionsBuilder builder)
-    {
-        return CommandSource.suggestMatching(Utils.getCommandsList(), builder);
-    }
-
     /**
      * Called for the location commands
      *
@@ -85,5 +54,39 @@ public final class ArgumentSuggestion
             e.printStackTrace();
         }
         return CommandSource.suggestMatching(locations, builder);
+    }
+
+    /**
+     * Called for the command {@code /cyan optionName}
+     *
+     * @return a suggestion with all the available options
+     */
+    public static CompletableFuture<Suggestions> getOptions(@NotNull SuggestionsBuilder builder)
+    {
+        List<String> options = new ArrayList<>();
+        options.addAll(Utils.getOptionsList().get("booleans"));
+        options.addAll(Utils.getOptionsList().get("integers"));
+        return CommandSource.suggestMatching(options, builder);
+    }
+
+    /**
+     * Called for the command {@code /cyan optionName [integer]}
+     *
+     * @return a suggestion with all the available integers for the configurations
+     */
+    public static CompletableFuture<Suggestions> getInts(@NotNull SuggestionsBuilder builder)
+    {
+        List<String> ints = new ArrayList<>();
+        ints.add("0");
+        ints.add("1");
+        ints.add("2");
+        ints.add("3");
+        ints.add("4");
+        ints.add("8");
+        ints.add("16");
+        ints.add("32");
+        ints.add("64");
+        ints.add("128");
+        return CommandSource.suggestMatching(ints, builder);
     }
 }

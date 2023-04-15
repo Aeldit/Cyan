@@ -25,17 +25,16 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class Utils
 {
     public static final String MODID = "cyan";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-    private static final List<String> commands = new ArrayList<>();
-    private static final List<String> options = new ArrayList<>();
+    private static final List<String> optionsBool = new ArrayList<>();
+    private static final List<String> optionsInt = new ArrayList<>();
+    private static final Map<String, List<String>> options = new HashMap<>();
 
     // Language Utils
     public static final Path languagePath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.properties");
@@ -45,33 +44,30 @@ public class Utils
     // Locations
     public static final Path locationsPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties");
 
-
-    public static List<String> getCommandsList()
-    {
-        if (commands.isEmpty())
-        {
-            commands.add("bed");
-            commands.add("kgi");
-            commands.add("surface");
-            commands.add("back");
-            commands.add("location");
-        }
-        return commands;
-    }
-
-    public static List<String> getOptionsList()
+    public static Map<String, List<String>> getOptionsList()
     {
         if (options.isEmpty())
         {
-            options.add("allowBed");
-            options.add("allowKgi");
-            options.add("allowSurface");
-            options.add("allowLocations");
-            options.add("allowBackTp");
+            optionsBool.add("allowBed");
+            optionsBool.add("allowKgi");
+            optionsBool.add("allowSurface");
+            optionsBool.add("allowLocations");
+            optionsBool.add("allowBackTp");
+            optionsBool.add("allowConsoleEditConfig");
+            optionsBool.add("customTranslations");
+            optionsBool.add("msgToActionBar");
+            optionsBool.add("errorToActionBar");
 
-            options.add("useTranslations");
-            options.add("msgToActionBar");
-            options.add("errorToActionBar");
+            optionsInt.add("distanceToEntitiesKgi");
+            optionsInt.add("minOpLevelExeEditConfig");
+            optionsInt.add("minOpLevelExeBed");
+            optionsInt.add("minOpLevelExeKgi");
+            optionsInt.add("minOpLevelExeSurface");
+            optionsInt.add("minOpLevelExeLocation");
+            optionsInt.add("minOpLevelExeEditLocation");
+
+            options.put("booleans", optionsBool);
+            options.put("integers", optionsInt);
         }
         return options;
     }
@@ -123,9 +119,9 @@ public class Utils
     }
 
     // Language Utils
-    public static LinkedHashMap<String, String> getDefaultTranslations()
+    public static LinkedHashMap<String, String> getDefaultTranslations(boolean... reloadAll)
     {
-        if (defaultTranslations.isEmpty())
+        if (defaultTranslations.isEmpty() || (reloadAll.length > 0 && reloadAll[0]))
         {
             defaultTranslations.put("desc.bed", "§3The §d/bed §3command teleports you to your bed or respawn anchor");
             defaultTranslations.put("desc.kgi",
@@ -140,9 +136,17 @@ public class Utils
             defaultTranslations.put("desc.allowKgi", "§3The §eallowKgi §3option toogles the use of the §d/kgi §3command");
             defaultTranslations.put("desc.allowSurface", "§3The §eallowSurface §3option toogles the use of the §d/surface §3command");
             defaultTranslations.put("desc.allowLocations", "§3The §eallowLocations §3option toogles the use of the §dlocation §3commands");
-            defaultTranslations.put("desc.useTranslations", "§3The §euseTranslations §3option toogles the use of translations (server-side only)");
+            defaultTranslations.put("desc.allowBackTp", "§3The §eallowBackTp §3option toogles the use of the §d/back §3command");
+            defaultTranslations.put("desc.customTranslations", "§3The §euseTranslations §3option toogles the use of custom translations (server-side only)");
             defaultTranslations.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
             defaultTranslations.put("desc.errorToActionBar", "§3The §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar");
+            defaultTranslations.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
+            defaultTranslations.put("desc.minOpLevelExeEditConfig", "§3The §eminOpLevelExeEditConfig §3option defines the required OP level to edit config");
+            defaultTranslations.put("desc.minOpLevelExeBed", "§3The §eminOpLevelExeBed §3option defines the required OP level to use the §d/bed §3command");
+            defaultTranslations.put("desc.minOpLevelExeKgi", "§3The §eminOpLevelExeKgi §3option defines the required OP level to use the §d/kgi §3command");
+            defaultTranslations.put("desc.minOpLevelExeSurface", "§3The §eminOpLevelExeSurface §3option defines the required OP level to use the §d/surface §3command");
+            defaultTranslations.put("desc.minOpLevelExeLocation", "§3The §eminOpLevelExeLocation §3option defines the required OP level to use the §dlocation §3commands");
+            defaultTranslations.put("desc.minOpLevelExeEditLocation", "§3The §eminOpLevelExeEditLocation §3option defines the required OP level to edit the locations");
 
             defaultTranslations.put("dashSeparation", "§6------------------------------------");
             defaultTranslations.put("listLocations", "§6Cyan - LOCATIONS :\n");
@@ -150,15 +154,16 @@ public class Utils
             defaultTranslations.put("headerDescOptions", "§6Cyan - DESCRIPTION (options) :\n");
 
             defaultTranslations.put("getCfg.header", "§6Cyan - OPTIONS :\n");
-            defaultTranslations.put("getCfg.allowBed", "§6- §3/bed : %s");
-            defaultTranslations.put("getCfg.allowKgi", "§6- §3/kgi : %s");
-            defaultTranslations.put("getCfg.allowSurface", "§6- §3/surface : %s");
-            defaultTranslations.put("getCfg.allowLocations", "§6- §3location commands : %s");
-            defaultTranslations.put("getCfg.allowBackTp", "§6- §d/back %3: %s");
-            defaultTranslations.put("getCfg.useTranslations", "§6- §3Use translations : %s");
+            defaultTranslations.put("getCfg.allowBed", "§6- §d/bed : %s");
+            defaultTranslations.put("getCfg.allowKgi", "§6- §d/kgi : %s");
+            defaultTranslations.put("getCfg.allowSurface", "§6- §d/surface : %s");
+            defaultTranslations.put("getCfg.allowLocations", "§6- §3Location commands : %s");
+            defaultTranslations.put("getCfg.allowBackTp", "§6- §d/back §3: %s");
+            defaultTranslations.put("getCfg.customTranslations", "§6- §3Custom translations : %s");
             defaultTranslations.put("getCfg.msgToActionBar", "§6- §3Messages to action bar : %s");
             defaultTranslations.put("getCfg.errorToActionBar", "§6- §3Error messages to action bar : %s");
-            defaultTranslations.put("getCfg.distanceToEntitiesKgi", "§6- §3kgi distance (in chunks) : %s");
+            defaultTranslations.put("getCfg.allowConsoleEditConfig", "§6- §3Edit config via console : %s");
+            defaultTranslations.put("getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s");
             defaultTranslations.put("getCfg.minOpLevelExeEditConfig", "§6- §3Minimum OP level to edit config : %s");
             defaultTranslations.put("getCfg.minOpLevelExeBed", "§6- §3Minimum OP level for §d/bed §3: %s");
             defaultTranslations.put("getCfg.minOpLevelExeKgi", "§6- §3Minimum OP level for §d/kgi §3: %s");
@@ -171,11 +176,12 @@ public class Utils
             defaultTranslations.put("set.allowSurface", "§3Toogled §d/surface §3command %s");
             defaultTranslations.put("set.allowLocations", "§3Toogled §dlocation §3commands %s");
             defaultTranslations.put("set.allowBackTp", "§3Toogled §d/back §3command %s");
-            defaultTranslations.put("set.useTranslations", "§3Toogled translations %s");
+            defaultTranslations.put("set.customTranslations", "§3Toogled custom translations %s");
             defaultTranslations.put("set.msgToActionBar", "§3Toogled messages to action bar %s");
             defaultTranslations.put("set.errorToActionBar", "§3Toogled error messages to action bar %s");
+            defaultTranslations.put("set.allowConsoleEditConfig", "§3Toogled config editing via console %s");
             defaultTranslations.put("set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s");
-            defaultTranslations.put("set.minOpLevelExeModifConfig", "§3The minimum OP level to edit the config is now %s");
+            defaultTranslations.put("set.minOpLevelExeEditConfig", "§3The minimum OP level to edit the config is now %s");
             defaultTranslations.put("set.minOpLevelExeBed", "§3The minimum OP level to execute §d/bed §3is now %s");
             defaultTranslations.put("set.minOpLevelExeKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
             defaultTranslations.put("set.minOpLevelExeSurface", "§3The minimum OP level to execute §d/surface §3is now %s");
@@ -199,6 +205,7 @@ public class Utils
             defaultTranslations.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
             defaultTranslations.put("error.fileNotRemoved", "§cAn error occured while trying to remove the locations file");
             defaultTranslations.put("error.noLastPos", "§cYour last death location was not saved");
+            defaultTranslations.put("error.optionNotFound", "§cThis option does not exist or you tried to set it to the wrong type of value (int or bool)");
 
             defaultTranslations.put("bed", "§3You have been teleported to your bed");
             defaultTranslations.put("respawnAnchor", "§3You have been teleported to your respawn anchor");
@@ -211,6 +218,8 @@ public class Utils
             defaultTranslations.put("removedAllLocations", "§3All the locations have been removed");
             defaultTranslations.put("translationsReloaded", "§3The translations have been reloaded");
             defaultTranslations.put("backTp", "§3You have been teleported to the place you died");
+            defaultTranslations.put("currentValue", "§7Current value : %s");
+            defaultTranslations.put("setValue", "§7Set value to : %s  %s  %s  %s");
         }
         return defaultTranslations;
     }

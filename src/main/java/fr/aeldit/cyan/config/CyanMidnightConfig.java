@@ -23,10 +23,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
+import static fr.aeldit.cyan.util.Utils.getDefaultTranslations;
+
 public class CyanMidnightConfig extends MidnightConfig
 {
-    public static Map<String, Object> boolOptionsMap = new HashMap<>();
-    public static Map<String, Object> integerOptionsMap = new HashMap<>();
     public static Map<String, Object> allOptionsMap = new HashMap<>();
 
     @Comment
@@ -68,39 +69,28 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry
     public static boolean errorToActionBar = true;
     @Entry
-    public static boolean useTranslations = true;
-
-    private static void generateBoolOptionsMap()
-    {
-        boolOptionsMap.put("allowBed", allowBed);
-        boolOptionsMap.put("allowKgi", allowKgi);
-        boolOptionsMap.put("allowSurface", allowSurface);
-        boolOptionsMap.put("allowLocations", allowLocations);
-        boolOptionsMap.put("allowBackTp", allowBackTp);
-        boolOptionsMap.put("allowConsoleEditConfig", allowConsoleEditConfig);
-        boolOptionsMap.put("useTranslations", useTranslations);
-        boolOptionsMap.put("msgToActionBar", msgToActionBar);
-        boolOptionsMap.put("errorToActionBar", errorToActionBar);
-    }
-
-    private static void generateIntegerOptionsMap()
-    {
-        integerOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
-        integerOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
-        integerOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
-        integerOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
-        integerOptionsMap.put("minOpLevelExeLocation", minOpLevelExeLocation);
-        integerOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
-
-        integerOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
-    }
+    public static boolean customTranslations = false;
 
     public static void generateAllOptionsMap()
     {
-        generateBoolOptionsMap();
-        generateIntegerOptionsMap();
-        allOptionsMap.putAll(getBoolOptionsMap());
-        allOptionsMap.putAll(getIntegerOptionsMap());
+        allOptionsMap.put("allowBed", allowBed);
+        allOptionsMap.put("allowKgi", allowKgi);
+        allOptionsMap.put("allowSurface", allowSurface);
+        allOptionsMap.put("allowLocations", allowLocations);
+        allOptionsMap.put("allowBackTp", allowBackTp);
+        allOptionsMap.put("allowConsoleEditConfig", allowConsoleEditConfig);
+        allOptionsMap.put("customTranslations", customTranslations);
+        allOptionsMap.put("msgToActionBar", msgToActionBar);
+        allOptionsMap.put("errorToActionBar", errorToActionBar);
+
+        allOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
+        allOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
+        allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
+        allOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
+        allOptionsMap.put("minOpLevelExeLocation", minOpLevelExeLocation);
+        allOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
+
+        allOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
     }
 
     public static void setBoolOption(@NotNull String optionName, boolean value)
@@ -113,12 +103,16 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowLocations" -> allowLocations = value;
             case "allowBackTp" -> allowBackTp = value;
             case "allowConsoleEditConfig" -> allowConsoleEditConfig = value;
-            case "useTranslations" -> useTranslations = value;
+            case "customTranslations" -> customTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
         }
         write("cyan");
         generateAllOptionsMap();
+        if (customTranslations)
+        {
+            CyanLanguageUtils.loadLanguage(getDefaultTranslations());
+        }
     }
 
     public static void setIntOption(@NotNull String optionName, int value)
@@ -135,16 +129,6 @@ public class CyanMidnightConfig extends MidnightConfig
         }
         write("cyan");
         generateAllOptionsMap();
-    }
-
-    public static Map<String, Object> getBoolOptionsMap()
-    {
-        return boolOptionsMap;
-    }
-
-    public static Map<String, Object> getIntegerOptionsMap()
-    {
-        return integerOptionsMap;
     }
 
     public static Map<String, Object> getAllOptionsMap()

@@ -42,7 +42,7 @@ public class CyanClientCore implements ClientModInitializer
         removeEmptyFiles();
 
         generateAllOptionsMap();
-        if (!CyanMidnightConfig.useTranslations)
+        if (CyanMidnightConfig.customTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
@@ -50,8 +50,7 @@ public class CyanClientCore implements ClientModInitializer
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
 
         // Register all the commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->
-        {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
             CyanCommands.register(dispatcher);
