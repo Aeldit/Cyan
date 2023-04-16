@@ -42,7 +42,7 @@ public class CyanClientCore implements ClientModInitializer
         removeEmptyFiles();
 
         generateAllOptionsMap();
-        if (CyanMidnightConfig.customTranslations)
+        if (CyanMidnightConfig.useCustomTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }

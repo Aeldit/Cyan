@@ -152,7 +152,7 @@ public class LocationCommands
                                     CyanLanguageUtils.getTranslation("setLocation"),
                                     "cyan.message.setLocation",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Formatting.YELLOW + locationName
                             );
                         } else
@@ -161,7 +161,7 @@ public class LocationCommands
                                     CyanLanguageUtils.getTranslation(ERROR + "locationAlreadyExists"),
                                     "cyan.message.locationAlreadyExists",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.customTranslations
+                                    CyanMidnightConfig.useCustomTranslations
                             );
                         }
                     } catch (IOException e)
@@ -174,7 +174,7 @@ public class LocationCommands
                             CyanLanguageUtils.getTranslation("notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             } else
@@ -183,7 +183,7 @@ public class LocationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }
@@ -225,7 +225,7 @@ public class LocationCommands
                                     CyanLanguageUtils.getTranslation("removeLocation"),
                                     "cyan.message.removeLocation",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Formatting.YELLOW + locationName
                             );
                         } else
@@ -234,7 +234,7 @@ public class LocationCommands
                                     CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
                                     "cyan.message.locationNotFound",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Formatting.YELLOW + locationName
                             );
                         }
@@ -248,7 +248,7 @@ public class LocationCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             } else
@@ -257,7 +257,7 @@ public class LocationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }
@@ -293,7 +293,7 @@ public class LocationCommands
                                 CyanLanguageUtils.getTranslation("removedAllLocations"),
                                 "cyan.message.removedAllLocations",
                                 CyanMidnightConfig.msgToActionBar,
-                                CyanMidnightConfig.customTranslations
+                                CyanMidnightConfig.useCustomTranslations
                         );
                     } catch (IOException ex)
                     {
@@ -305,7 +305,7 @@ public class LocationCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             } else
@@ -314,7 +314,7 @@ public class LocationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }
@@ -391,7 +391,7 @@ public class LocationCommands
                                     CyanLanguageUtils.getTranslation("goToLocation"),
                                     "cyan.message.goToLocation",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Formatting.YELLOW + locationName
                             );
                         } else
@@ -400,7 +400,7 @@ public class LocationCommands
                                     CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
                                     "cyan.message.locationNotFound",
                                     CyanMidnightConfig.msgToActionBar,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Formatting.YELLOW + locationName
                             );
                         }
@@ -414,7 +414,7 @@ public class LocationCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             } else
@@ -423,7 +423,7 @@ public class LocationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }
@@ -458,13 +458,13 @@ public class LocationCommands
                                 CyanLanguageUtils.getTranslation("dashSeparation"),
                                 "cyan.message.getDescription.dashSeparation",
                                 false,
-                                CyanMidnightConfig.customTranslations
+                                CyanMidnightConfig.useCustomTranslations
                         );
                         sendPlayerMessage(player,
                                 CyanLanguageUtils.getTranslation("listLocations"),
                                 "cyan.message.listLocations",
                                 false,
-                                CyanMidnightConfig.customTranslations
+                                CyanMidnightConfig.useCustomTranslations
                         );
 
                         for (String key : properties.stringPropertyNames())
@@ -482,7 +482,7 @@ public class LocationCommands
                                 CyanLanguageUtils.getTranslation("dashSeparation"),
                                 "cyan.message.getDescription.dashSeparation",
                                 false,
-                                CyanMidnightConfig.customTranslations
+                                CyanMidnightConfig.useCustomTranslations
                         );
                     } catch (IOException e)
                     {
@@ -494,7 +494,7 @@ public class LocationCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             false,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             } else
@@ -503,7 +503,7 @@ public class LocationCommands
                         CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
                         "cyan.message.disabled.locations",
                         CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }

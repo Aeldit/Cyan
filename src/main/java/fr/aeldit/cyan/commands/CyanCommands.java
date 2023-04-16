@@ -92,7 +92,7 @@ public class CyanCommands
                         CyanLanguageUtils.getTranslation("translationsReloaded"),
                         "cyan.message.translationsReloaded",
                         CyanMidnightConfig.msgToActionBar,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }
@@ -140,7 +140,7 @@ public class CyanCommands
                                 CyanLanguageUtils.getTranslation(SET + option),
                                 "cyan.message.set.%s".formatted(option),
                                 CyanMidnightConfig.msgToActionBar,
-                                CyanMidnightConfig.customTranslations,
+                                CyanMidnightConfig.useCustomTranslations,
                                 value ? Formatting.GREEN + "ON" : Formatting.RED + "OFF"
                         );
                     } else
@@ -149,7 +149,7 @@ public class CyanCommands
                                 CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
                                 "cyan.message.error.optionNotFound",
                                 CyanMidnightConfig.msgToActionBar,
-                                CyanMidnightConfig.customTranslations
+                                CyanMidnightConfig.useCustomTranslations
                         );
                     }
                 } else
@@ -158,7 +158,7 @@ public class CyanCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             }
@@ -205,7 +205,7 @@ public class CyanCommands
                                 CyanLanguageUtils.getTranslation(SET + option),
                                 "cyan.message.set.%s".formatted(option),
                                 CyanMidnightConfig.msgToActionBar,
-                                CyanMidnightConfig.customTranslations,
+                                CyanMidnightConfig.useCustomTranslations,
                                 Formatting.GOLD + String.valueOf(value)
                         );
                     } else
@@ -214,7 +214,7 @@ public class CyanCommands
                                 CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
                                 "cyan.message.error.optionNotFound",
                                 CyanMidnightConfig.msgToActionBar,
-                                CyanMidnightConfig.customTranslations
+                                CyanMidnightConfig.useCustomTranslations
                         );
                     }
                 } else
@@ -223,7 +223,7 @@ public class CyanCommands
                             CyanLanguageUtils.getTranslation(ERROR + "notOp"),
                             "cyan.message.notOp",
                             CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             }
@@ -254,14 +254,14 @@ public class CyanCommands
                             CyanLanguageUtils.getTranslation("dashSeparation"),
                             "cyan.message.getDescription.dashSeparation",
                             false,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
 
                     sendPlayerMessage(player,
                             CyanLanguageUtils.getTranslation(DESC + optionName),
                             "cyan.message.getDescription.%s".formatted(optionName),
                             false,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
 
                     if (key instanceof Boolean currentValue)
@@ -270,7 +270,7 @@ public class CyanCommands
                                 CyanLanguageUtils.getTranslation("currentValue"),
                                 "cyan.message.currentValue",
                                 false,
-                                CyanMidnightConfig.customTranslations,
+                                CyanMidnightConfig.useCustomTranslations,
                                 currentValue ? Text.literal(Formatting.GREEN + "ON (click to change)").
                                         setStyle(Style.EMPTY.withClickEvent(
                                                 new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set false".formatted(optionName)))
@@ -285,7 +285,7 @@ public class CyanCommands
                                 CyanLanguageUtils.getTranslation("currentValue"),
                                 "cyan.message.currentValue",
                                 false,
-                                CyanMidnightConfig.customTranslations,
+                                CyanMidnightConfig.useCustomTranslations,
                                 Formatting.GOLD + String.valueOf(currentValue)
                         );
                         if (optionName.startsWith("minOpLevelExe"))
@@ -294,7 +294,7 @@ public class CyanCommands
                                     CyanLanguageUtils.getTranslation("setValue"),
                                     "cyan.message.setValue",
                                     false,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "0")).
                                             setStyle(Style.EMPTY.withClickEvent(
                                                     new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 0".formatted(optionName)))
@@ -322,7 +322,7 @@ public class CyanCommands
                                     CyanLanguageUtils.getTranslation("setValue"),
                                     "cyan.message.setValue",
                                     false,
-                                    CyanMidnightConfig.customTranslations,
+                                    CyanMidnightConfig.useCustomTranslations,
                                     Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "8")).
                                             setStyle(Style.EMPTY.withClickEvent(
                                                     new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 8".formatted(optionName)))
@@ -351,7 +351,7 @@ public class CyanCommands
                             CyanLanguageUtils.getTranslation("dashSeparation"),
                             "cyan.message.getDescription.dashSeparation",
                             false,
-                            CyanMidnightConfig.customTranslations
+                            CyanMidnightConfig.useCustomTranslations
                     );
                 }
             }
@@ -381,13 +381,13 @@ public class CyanCommands
                         CyanLanguageUtils.getTranslation("dashSeparation"),
                         "cyan.message.getDescription.dashSeparation",
                         false,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
                 sendPlayerMessage(player,
                         CyanLanguageUtils.getTranslation(GETCFG + "header"),
                         "cyan.message.getCfg.header",
                         false,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
 
                 for (Map.Entry<String, Object> entry : CyanMidnightConfig.getAllOptionsMap().entrySet())
@@ -404,7 +404,7 @@ public class CyanCommands
                                 currentTrad,
                                 "cyan.message.getCfg.%s".formatted(key2),
                                 false,
-                                CyanMidnightConfig.customTranslations,
+                                CyanMidnightConfig.useCustomTranslations,
                                 value ? Text.literal(Formatting.GREEN + "ON").
                                         setStyle(Style.EMPTY.withClickEvent(
                                                 new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set false".formatted(key2)))
@@ -419,7 +419,7 @@ public class CyanCommands
                                 currentTrad,
                                 "cyan.message.getCfg.%s".formatted(key2),
                                 false,
-                                CyanMidnightConfig.customTranslations,
+                                CyanMidnightConfig.useCustomTranslations,
                                 Formatting.GOLD + Integer.toString(value)
                         );
                     }
@@ -428,7 +428,7 @@ public class CyanCommands
                         CyanLanguageUtils.getTranslation("dashSeparation"),
                         "cyan.message.getDescription.dashSeparation",
                         false,
-                        CyanMidnightConfig.customTranslations
+                        CyanMidnightConfig.useCustomTranslations
                 );
             }
         }

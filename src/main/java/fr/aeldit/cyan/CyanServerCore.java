@@ -42,7 +42,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
         removeEmptyFiles();
 
         generateAllOptionsMap();
-        if (CyanMidnightConfig.customTranslations)
+        if (CyanMidnightConfig.useCustomTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }

@@ -54,7 +54,7 @@ public class Utils
             optionsBool.add("allowLocations");
             optionsBool.add("allowBackTp");
             optionsBool.add("allowConsoleEditConfig");
-            optionsBool.add("customTranslations");
+            optionsBool.add("useCustomTranslations");
             optionsBool.add("msgToActionBar");
             optionsBool.add("errorToActionBar");
 
@@ -137,7 +137,7 @@ public class Utils
             defaultTranslations.put("desc.allowSurface", "§3The §eallowSurface §3option toogles the use of the §d/surface §3command");
             defaultTranslations.put("desc.allowLocations", "§3The §eallowLocations §3option toogles the use of the §dlocation §3commands");
             defaultTranslations.put("desc.allowBackTp", "§3The §eallowBackTp §3option toogles the use of the §d/back §3command");
-            defaultTranslations.put("desc.customTranslations", "§3The §euseTranslations §3option toogles the use of custom translations (server-side only)");
+            defaultTranslations.put("desc.useCustomTranslations", "§3The §euseTranslations §3option toogles the use of custom translations (server-side only)");
             defaultTranslations.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
             defaultTranslations.put("desc.errorToActionBar", "§3The §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar");
             defaultTranslations.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
@@ -159,7 +159,7 @@ public class Utils
             defaultTranslations.put("getCfg.allowSurface", "§6- §d/surface : %s");
             defaultTranslations.put("getCfg.allowLocations", "§6- §3Location commands : %s");
             defaultTranslations.put("getCfg.allowBackTp", "§6- §d/back §3: %s");
-            defaultTranslations.put("getCfg.customTranslations", "§6- §3Custom translations : %s");
+            defaultTranslations.put("getCfg.useCustomTranslations", "§6- §3Custom translations : %s");
             defaultTranslations.put("getCfg.msgToActionBar", "§6- §3Messages to action bar : %s");
             defaultTranslations.put("getCfg.errorToActionBar", "§6- §3Error messages to action bar : %s");
             defaultTranslations.put("getCfg.allowConsoleEditConfig", "§6- §3Edit config via console : %s");
@@ -176,7 +176,7 @@ public class Utils
             defaultTranslations.put("set.allowSurface", "§3Toogled §d/surface §3command %s");
             defaultTranslations.put("set.allowLocations", "§3Toogled §dlocation §3commands %s");
             defaultTranslations.put("set.allowBackTp", "§3Toogled §d/back §3command %s");
-            defaultTranslations.put("set.customTranslations", "§3Toogled custom translations %s");
+            defaultTranslations.put("set.useCustomTranslations", "§3Toogled custom translations %s");
             defaultTranslations.put("set.msgToActionBar", "§3Toogled messages to action bar %s");
             defaultTranslations.put("set.errorToActionBar", "§3Toogled error messages to action bar %s");
             defaultTranslations.put("set.allowConsoleEditConfig", "§3Toogled config editing via console %s");

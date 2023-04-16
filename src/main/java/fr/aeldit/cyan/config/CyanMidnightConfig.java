@@ -69,7 +69,7 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry
     public static boolean errorToActionBar = true;
     @Entry
-    public static boolean customTranslations = false;
+    public static boolean useCustomTranslations = false;
 
     public static void generateAllOptionsMap()
     {
@@ -79,7 +79,7 @@ public class CyanMidnightConfig extends MidnightConfig
         allOptionsMap.put("allowLocations", allowLocations);
         allOptionsMap.put("allowBackTp", allowBackTp);
         allOptionsMap.put("allowConsoleEditConfig", allowConsoleEditConfig);
-        allOptionsMap.put("customTranslations", customTranslations);
+        allOptionsMap.put("useCustomTranslations", useCustomTranslations);
         allOptionsMap.put("msgToActionBar", msgToActionBar);
         allOptionsMap.put("errorToActionBar", errorToActionBar);
 
@@ -103,13 +103,13 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowLocations" -> allowLocations = value;
             case "allowBackTp" -> allowBackTp = value;
             case "allowConsoleEditConfig" -> allowConsoleEditConfig = value;
-            case "customTranslations" -> customTranslations = value;
+            case "useCustomTranslations" -> useCustomTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
         }
         write("cyan");
         generateAllOptionsMap();
-        if (customTranslations)
+        if (useCustomTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
