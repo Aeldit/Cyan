@@ -10,17 +10,14 @@ Commands :
 
 > These commands are for configuration and description
 
-```bash
+```text
 cyan
 ├── reloadTranslations -> Reloads the translations file
 │
 ├── getConfig -> Displays all the current options values
 │
-├── config -> If no argument is given after this one, the list of option and their value is send to the chat of the player
-│   ├── booleanOption
-│   │   └── [option] [true|false] -> Sets the given boolean option to the given value
-│   │
-│   └── integerOption [option] [int] -> Sets the given integer option to the given value
+├── config [option] -> If no argument is given, the description and current value of the option are displayed in the player's chat 
+│               └── [integer | boolean] -> Sets the given option to the given value
 │
 └── description
     ├── commands -> If no argument is given after this one, displays the description for all commands
@@ -37,4 +34,4 @@ cyan
 
 ## III). Misc
 
-- /kgi → removes items floating on the ground in the default radius (in chunks), or in the specified radius
+- /kgi -> removes items floating on the ground in the default radius (in chunks), or in the specified radius

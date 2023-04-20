@@ -35,18 +35,23 @@
 
 ***
 
-> If you find any issue, please make sure to report it on github so I can fix it
->
-> ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
-
-> For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
-> on the github page of the mod
->
-> ![github_pull_requests](https://img.shields.io/github/issues-pr/Aeldit/Cyan?style=for-the-badge&logo=github)
-
-***
-
 ### ✅ `List of commands (and their aliases)`
+
+|              Command              |                       Description                        |         Alias         |
+|:---------------------------------:|:--------------------------------------------------------:|:---------------------:|
+|              `/bed`               |       Teleports you to your bed or respawn anchor        |         `/b`          |
+|        `/killgrounditems`         | Kills a items floating on the ground in a certain radius |        `/kgi`         |
+|            `/surface`             |               Teleports you to the surface               |         `/s`          |
+|                                   |                                                          |                       |
+|  `/setlocation <location_name>`   |         Saves the current position as a location         | `/sl <location_name>` |
+| `/removelocation <location_name>` |                Removes the given location                | `/rl <location_name>` |
+|       `/removealllocations`       |                Removes the given location                |           ❌           |
+|    `/location <location_name>`    |           Teleports you to the given location            | `/l <location_name>`  |
+|          `/getlocations`          |             Displays all the saved locations             |         `/gl`         |
+|                                   |                                                          |                       |
+|              `/back`              |         Teleports you to the last place you died         |           ❌           |
+
+### `List of config commands`
 
 |              Command              |                       Description                        |         Alias         |
 |:---------------------------------:|:--------------------------------------------------------:|:---------------------:|
@@ -92,10 +97,27 @@ How to do this ?
 
 ***
 
-> ### ❗ Important :
->
->If you are not using this mod on client but only on server side, download the resource pack for messages translations
-> (Cyan 1.1X.x located in this mod's github repository)
+### ❗ Important :
 
-> 📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
-> it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
+If you are not using this mod on client but only on server side, download the resource pack for messages translations
+(Cyan 1.1X.x located in this mod's github repository)
+
+📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
+it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
+
+
+***
+
+> If you find any issue, please make sure to report it on github so I can fix it
+>
+> ![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)
+
+> For dev people : if you have ideas you want to see in this mod, and know how to code them, you can make a pull request
+> on the github page of the mod
+>
+> ![github_pull_requests](https://img.shields.io/github/issues-pr/Aeldit/Cyan?style=for-the-badge&logo=github)
+
+> If you have any question, you can ask them on my Discord server
+>
+> ![discord_badge](https://img.shields.io/discord/750243612473819188?color=7289da&label=DISCORD&logo=discord&logoColor=7289da&style=for-the-badge)
+> 
