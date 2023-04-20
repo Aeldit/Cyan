@@ -25,13 +25,11 @@ import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
+import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
-import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class MiscellaneousCommands
 {
@@ -61,12 +59,9 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (isPlayer(source))
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        } else
-        {
-            if (CyanMidnightConfig.allowKgi)
+            if (isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
             {
                 if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
                 {
@@ -77,23 +72,7 @@ public class MiscellaneousCommands
                             CyanMidnightConfig.msgToActionBar,
                             CyanMidnightConfig.useCustomTranslations
                     );
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "kgiDisabled"),
-                        "cyan.message.disabled.kgi",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -109,14 +88,11 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (isPlayer(source))
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "²")));
-        } else
-        {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+            if (isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
             {
-                if (CyanMidnightConfig.allowKgi)
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
@@ -127,23 +103,7 @@ public class MiscellaneousCommands
                             CyanMidnightConfig.useCustomTranslations,
                             Formatting.GOLD + Integer.toString(arg)
                     );
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "kgiDisabled"),
-                            "cyan.message.disabled.kgi",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                        "cyan.message.notOp",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;

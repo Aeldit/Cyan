@@ -82,11 +82,6 @@ public final class ArgumentSuggestion
         ints.add("2");
         ints.add("3");
         ints.add("4");
-        ints.add("8");
-        ints.add("16");
-        ints.add("32");
-        ints.add("64");
-        ints.add("128");
         return CommandSource.suggestMatching(ints, builder);
     }
 }

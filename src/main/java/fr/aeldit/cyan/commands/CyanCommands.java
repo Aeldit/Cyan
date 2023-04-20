@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
+import static fr.aeldit.cyan.util.Utils.hasPermission;
 import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 import static fr.aeldit.cyanlib.util.Constants.*;
 
@@ -72,6 +73,11 @@ public class CyanCommands
         );
     }
 
+    /**
+     * Called by the command {@code /cyan reloadTranslations}
+     * <p>
+     * Reloads the custom translations
+     */
     public static int reloadTranslations(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -101,6 +107,11 @@ public class CyanCommands
 
     // Set functions
 
+    /**
+     * Called by the command {@code /cyan <optionName> set [boolValue]}
+     * <p>
+     * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue]
+     */
     public static int setBoolOption(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -126,7 +137,7 @@ public class CyanCommands
                 }
             } else
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
                 {
                     String option = StringArgumentType.getString(context, "optionName");
                     boolean value = BoolArgumentType.getBool(context, "booleanValue");
@@ -152,20 +163,17 @@ public class CyanCommands
                                 CyanMidnightConfig.useCustomTranslations
                         );
                     }
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
             }
         }
         return Command.SINGLE_SUCCESS;
     }
 
+    /**
+     * Called by the command {@code /cyan <optionName> set [intValue]}
+     * <p>
+     * Changes the option in the {@link CyanMidnightConfig} class to the value [intValue]
+     */
     public static int setIntOption(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -191,7 +199,7 @@ public class CyanCommands
                 }
             } else
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
                 {
                     String option = StringArgumentType.getString(context, "optionName");
                     int value = IntegerArgumentType.getInteger(context, "integerValue");
@@ -217,14 +225,6 @@ public class CyanCommands
                                 CyanMidnightConfig.useCustomTranslations
                         );
                     }
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
             }
         }
@@ -232,6 +232,12 @@ public class CyanCommands
     }
 
     // Get functions
+
+    /**
+     * Called by the command {@code /cyan <optionName>}
+     * <p>
+     * Displays the option description and its current values in the player's chat
+     */
     public static int getOptionChatConfig(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -242,7 +248,7 @@ public class CyanCommands
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+            if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
             {
                 String optionName = StringArgumentType.getString(context, "optionName");
                 if (Utils.getOptionsList().get("booleans").contains(optionName) || Utils.getOptionsList().get("integers").contains(optionName))
@@ -373,7 +379,7 @@ public class CyanCommands
             source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
         } else
         {
-            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditConfig))
+            if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
             {
                 sendPlayerMessage(player,
                         CyanLanguageUtils.getTranslation("dashSeparation"),

@@ -17,8 +17,13 @@
 
 package fr.aeldit.cyan.util;
 
+import fr.aeldit.cyan.config.CyanMidnightConfig;
 import fr.aeldit.cyanlib.util.LanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +31,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+
+import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
+import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class Utils
 {
@@ -172,14 +180,15 @@ public class Utils
         defaultTranslations.put("error.playerNotFound", "§cPlayer not found. The player must be online");
         defaultTranslations.put("error.incorrectIntOp", "§cThe OP level must be in [0;4]");
         defaultTranslations.put("error.incorrectIntKgi", "§cThe distance must be in [1;128]");
-        defaultTranslations.put("error.bedDisabled", "§cThe /bed command is disabled. To enable it, enter '/cyan config booleanOptions allowBed true' in chat");
-        defaultTranslations.put("error.kgiDisabled", "§cThe /kgi command is disabled. To enable it, enter '/cyan config booleanOptions allowKgi true' in chat");
-        defaultTranslations.put("error.surfaceDisabled", "§cThe /surface command is disabled. To enable it, enter '/cyan config booleanOptions allowSurface true' in chat");
+        defaultTranslations.put("error.bedDisabled", "§cThe /bed command is disabled");
+        defaultTranslations.put("error.kgiDisabled", "§cThe /kgi command is disabled");
+        defaultTranslations.put("error.surfaceDisabled", "§cThe /surface command is disabled");
+        defaultTranslations.put("error.backTpDisabled", "§cThe /back command is disabled");
         defaultTranslations.put("error.servOnly", "§cThis command can only be used on servers");
-        defaultTranslations.put("error.bed", "§cYou don't have an attributed bed or respawn anchor");
+        defaultTranslations.put("error.bedNotFound", "§cYou don't have an attributed bed or respawn anchor");
         defaultTranslations.put("error.playerOnlyCmd", "§cThis command can only be executed by a player");
         defaultTranslations.put("error.locationAlreadyExists", "§cA location with this name already exists");
-        defaultTranslations.put("error.locationsDisabled", "§cThe locations commands are disabled. To enable them, enter '/cyan config booleanOptions allowLocations true' in chat");
+        defaultTranslations.put("error.locationsDisabled", "§cThe locations commands are disabled");
         defaultTranslations.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
         defaultTranslations.put("error.fileNotRemoved", "§cAn error occured while trying to remove the locations file");
         defaultTranslations.put("error.noLastPos", "§cYour last death location was not saved");
@@ -216,5 +225,46 @@ public class Utils
             generateDefaultTranslations();
         }
         return defaultTranslations;
+    }
+
+    // Redundant checks
+    public static boolean isPlayer(@NotNull ServerCommandSource source)
+    {
+        if (source.getPlayer() == null)
+        {
+            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean hasPermission(@NotNull ServerPlayerEntity player, int permission)
+    {
+        if (!player.hasPermissionLevel(permission))
+        {
+            sendPlayerMessage(player,
+                    CyanLanguageUtils.getTranslation(ERROR + "notOp"),
+                    "cyan.message.notOp",
+                    CyanMidnightConfig.errorToActionBar,
+                    CyanMidnightConfig.useCustomTranslations
+            );
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isOptionAllowed(@NotNull ServerPlayerEntity player, boolean option, String msgPath)
+    {
+        if (!option)
+        {
+            sendPlayerMessage(player,
+                    CyanLanguageUtils.getTranslation(ERROR + msgPath),
+                    "cyan.message.%s".formatted(msgPath),
+                    CyanMidnightConfig.errorToActionBar,
+                    CyanMidnightConfig.useCustomTranslations
+            );
+            return false;
+        }
+        return true;
     }
 }

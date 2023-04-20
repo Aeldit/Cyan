@@ -108,10 +108,7 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        } else
+        if (isPlayer(source))
         {
             String locationName = StringArgumentType.getString(context, "name");
             double x = player.getX();
@@ -120,9 +117,9 @@ public class LocationCommands
             float yaw = player.getYaw();
             float pitch = player.getPitch();
 
-            if (CyanMidnightConfig.allowLocations)
+            if (isOptionAllowed(player, CyanMidnightConfig.allowLocations, "locationsDisabled"))
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation))
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
                     checkOrCreateFile(locationsPath);
                     try
@@ -168,23 +165,7 @@ public class LocationCommands
                     {
                         throw new RuntimeException(e);
                     }
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation("notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
-                        "cyan.message.disabled.locations",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -200,14 +181,11 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (isPlayer(source))
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        } else
-        {
-            if (CyanMidnightConfig.allowLocations)
+            if (isOptionAllowed(player, CyanMidnightConfig.allowLocations, "locationsDisabled"))
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation))
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
                     checkOrCreateFile(locationsPath);
@@ -242,23 +220,7 @@ public class LocationCommands
                     {
                         throw new RuntimeException(e);
                     }
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
-                        "cyan.message.disabled.locations",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -274,14 +236,11 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (isPlayer(source))
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        } else
-        {
-            if (CyanMidnightConfig.allowLocations)
+            if (isOptionAllowed(player, CyanMidnightConfig.allowLocations, "locationsDisabled"))
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation))
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
                     try
                     {
@@ -299,23 +258,7 @@ public class LocationCommands
                     {
                         throw new RuntimeException(ex);
                     }
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
-                        "cyan.message.disabled.locations",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -331,14 +274,11 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (isPlayer(source))
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        } else
-        {
-            if (CyanMidnightConfig.allowLocations)
+            if (isOptionAllowed(player, CyanMidnightConfig.allowLocations, "locationsDisabled"))
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeLocation))
+                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeLocation))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
                     checkOrCreateFile(locationsPath);
@@ -408,23 +348,7 @@ public class LocationCommands
                     {
                         throw new RuntimeException(e);
                     }
-                } else
-                {
-                    sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
-                            CyanMidnightConfig.errorToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
-                    );
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
-                        "cyan.message.disabled.locations",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;
@@ -440,71 +364,49 @@ public class LocationCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (player == null)
+        if (isPlayer(source))
         {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        } else
-        {
-            if (CyanMidnightConfig.allowLocations)
+            if (hasPermission(player, CyanMidnightConfig.minOpLevelExeLocation))
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeLocation))
+                checkOrCreateFile(locationsPath);
+                try
                 {
-                    checkOrCreateFile(locationsPath);
-                    try
-                    {
-                        Properties properties = new Properties();
-                        properties.load(new FileInputStream(new File(locationsPath.toUri())));
-                        sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation("dashSeparation"),
-                                "cyan.message.getDescription.dashSeparation",
-                                false,
-                                CyanMidnightConfig.useCustomTranslations
-                        );
-                        sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation("listLocations"),
-                                "cyan.message.listLocations",
-                                false,
-                                CyanMidnightConfig.useCustomTranslations
-                        );
-
-                        for (String key : properties.stringPropertyNames())
-                        {
-                            // Allows OP players to see which player created the location
-                            if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation) && properties.get(key).toString().split(" ").length == 7)
-                            {
-                                player.sendMessage(Text.of(Formatting.YELLOW + key + Formatting.DARK_AQUA + " (" + properties.get(key).toString().split(" ")[0].toUpperCase() + ", created by " + properties.get(key).toString().split(" ")[6] + ")"));
-                            } else
-                            {
-                                player.sendMessage(Text.of(Formatting.YELLOW + key + Formatting.DARK_AQUA + " (" + properties.get(key).toString().split(" ")[0].toUpperCase() + ")"));
-                            }
-                        }
-                        sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation("dashSeparation"),
-                                "cyan.message.getDescription.dashSeparation",
-                                false,
-                                CyanMidnightConfig.useCustomTranslations
-                        );
-                    } catch (IOException e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                } else
-                {
+                    Properties properties = new Properties();
+                    properties.load(new FileInputStream(new File(locationsPath.toUri())));
                     sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                            "cyan.message.notOp",
+                            CyanLanguageUtils.getTranslation("dashSeparation"),
+                            "cyan.message.getDescription.dashSeparation",
                             false,
                             CyanMidnightConfig.useCustomTranslations
                     );
+                    sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation("listLocations"),
+                            "cyan.message.listLocations",
+                            false,
+                            CyanMidnightConfig.useCustomTranslations
+                    );
+
+                    for (String key : properties.stringPropertyNames())
+                    {
+                        // Allows OP players to see which player created the location
+                        if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeEditLocation) && properties.get(key).toString().split(" ").length == 7)
+                        {
+                            player.sendMessage(Text.of(Formatting.YELLOW + key + Formatting.DARK_AQUA + " (" + properties.get(key).toString().split(" ")[0].toUpperCase() + ", created by " + properties.get(key).toString().split(" ")[6] + ")"));
+                        } else
+                        {
+                            player.sendMessage(Text.of(Formatting.YELLOW + key + Formatting.DARK_AQUA + " (" + properties.get(key).toString().split(" ")[0].toUpperCase() + ")"));
+                        }
+                    }
+                    sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation("dashSeparation"),
+                            "cyan.message.getDescription.dashSeparation",
+                            false,
+                            CyanMidnightConfig.useCustomTranslations
+                    );
+                } catch (IOException e)
+                {
+                    throw new RuntimeException(e);
                 }
-            } else
-            {
-                sendPlayerMessage(player,
-                        CyanLanguageUtils.getTranslation(ERROR + "locationsDisabled"),
-                        "cyan.message.disabled.locations",
-                        CyanMidnightConfig.errorToActionBar,
-                        CyanMidnightConfig.useCustomTranslations
-                );
             }
         }
         return Command.SINGLE_SUCCESS;
