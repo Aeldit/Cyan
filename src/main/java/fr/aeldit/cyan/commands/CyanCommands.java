@@ -232,7 +232,6 @@ public class CyanCommands
     }
 
     // Get functions
-
     public static int getOptionChatConfig(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
@@ -346,7 +345,6 @@ public class CyanCommands
                             );
                         }
                     }
-
                     sendPlayerMessage(player,
                             CyanLanguageUtils.getTranslation("dashSeparation"),
                             "cyan.message.getDescription.dashSeparation",
