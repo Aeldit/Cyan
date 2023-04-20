@@ -51,22 +51,6 @@
 |                                   |                                                          |                       |
 |              `/back`              |         Teleports you to the last place you died         |           ❌           |
 
-### `List of config commands`
-
-|              Command              |                       Description                        |         Alias         |
-|:---------------------------------:|:--------------------------------------------------------:|:---------------------:|
-|              `/bed`               |       Teleports you to your bed or respawn anchor        |         `/b`          |
-|        `/killgrounditems`         | Kills a items floating on the ground in a certain radius |        `/kgi`         |
-|            `/surface`             |               Teleports you to the surface               |         `/s`          |
-|                                   |                                                          |                       |
-|  `/setlocation <location_name>`   |         Saves the current position as a location         | `/sl <location_name>` |
-| `/removelocation <location_name>` |                Removes the given location                | `/rl <location_name>` |
-|       `/removealllocations`       |                Removes the given location                |           ❌           |
-|    `/location <location_name>`    |           Teleports you to the given location            | `/l <location_name>`  |
-|          `/getlocations`          |             Displays all the saved locations             |         `/gl`         |
-|                                   |                                                          |                       |
-|              `/back`              |         Teleports you to the last place you died         |           ❌           |
-
 For a more detailed explanation on how to use every command,
 see [COMMANDS.md](https://github.com/Aeldit/Cyan/blob/1.19.x/docs/COMMANDS.md)
 
