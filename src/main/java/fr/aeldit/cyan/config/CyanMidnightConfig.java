@@ -23,8 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
-import static fr.aeldit.cyan.util.Utils.getDefaultTranslations;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanMidnightConfig extends MidnightConfig
 {
@@ -52,13 +51,7 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeEditConfig = 4;
     @Entry(isSlider = true, min = 0, max = 4)
-    public static int minOpLevelExeBed = 0;
-    @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeKgi = 4;
-    @Entry(isSlider = true, min = 0, max = 4)
-    public static int minOpLevelExeSurface = 0;
-    @Entry(isSlider = true, min = 0, max = 4)
-    public static int minOpLevelExeLocation = 0;
     @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeEditLocation = 4;
 
@@ -84,10 +77,7 @@ public class CyanMidnightConfig extends MidnightConfig
         allOptionsMap.put("errorToActionBar", errorToActionBar);
 
         allOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
-        allOptionsMap.put("minOpLevelExeBed", minOpLevelExeBed);
         allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
-        allOptionsMap.put("minOpLevelExeSurface", minOpLevelExeSurface);
-        allOptionsMap.put("minOpLevelExeLocation", minOpLevelExeLocation);
         allOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
 
         allOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
@@ -113,6 +103,14 @@ public class CyanMidnightConfig extends MidnightConfig
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
+        if (optionName.equals("errorToActionBar"))
+        {
+            CyanLibUtils.setErrorToActionBar(value);
+        }
+        else if (optionName.equals("useCustomTranslations"))
+        {
+            CyanLibUtils.setUseCustomTranslations(value);
+        }
     }
 
     public static void setIntOption(@NotNull String optionName, int value)
@@ -121,10 +119,7 @@ public class CyanMidnightConfig extends MidnightConfig
         {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
             case "minOpLevelExeEditConfig" -> minOpLevelExeEditConfig = value;
-            case "minOpLevelExeBed" -> minOpLevelExeBed = value;
             case "minOpLevelExeKgi" -> minOpLevelExeKgi = value;
-            case "minOpLevelExeSurface" -> minOpLevelExeSurface = value;
-            case "minOpLevelExeLocation" -> minOpLevelExeLocation = value;
             case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
         }
         write("cyan");

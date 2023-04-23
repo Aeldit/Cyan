@@ -18,12 +18,9 @@
 package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyan.config.CyanMidnightConfig;
+import fr.aeldit.cyanlib.util.CyanLibUtils;
 import fr.aeldit.cyanlib.util.LanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +28,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
-import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
-import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
 public class Utils
 {
@@ -52,6 +46,9 @@ public class Utils
 
     // Locations
     public static final Path locationsPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties");
+
+    // Utils
+    public static CyanLibUtils CyanLibUtils = new CyanLibUtils(Utils.MODID, CyanLanguageUtils, CyanMidnightConfig.errorToActionBar, CyanMidnightConfig.useCustomTranslations);
 
     public static Map<String, List<String>> getOptionsList()
     {
@@ -127,11 +124,8 @@ public class Utils
         defaultTranslations.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
         defaultTranslations.put("desc.errorToActionBar", "§3The §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar");
         defaultTranslations.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
-        defaultTranslations.put("desc.minOpLevelExeEditConfig", "§3The §eminOpLevelExeEditConfig §3option defines the required OP level to edit config");
-        defaultTranslations.put("desc.minOpLevelExeBed", "§3The §eminOpLevelExeBed §3option defines the required OP level to use the §d/bed §3command");
         defaultTranslations.put("desc.minOpLevelExeKgi", "§3The §eminOpLevelExeKgi §3option defines the required OP level to use the §d/kgi §3command");
-        defaultTranslations.put("desc.minOpLevelExeSurface", "§3The §eminOpLevelExeSurface §3option defines the required OP level to use the §d/surface §3command");
-        defaultTranslations.put("desc.minOpLevelExeLocation", "§3The §eminOpLevelExeLocation §3option defines the required OP level to use the §dlocation §3commands");
+        defaultTranslations.put("desc.minOpLevelExeEditConfig", "§3The §eminOpLevelExeEditConfig §3option defines the required OP level to edit config");
         defaultTranslations.put("desc.minOpLevelExeEditLocation", "§3The §eminOpLevelExeEditLocation §3option defines the required OP level to edit the locations");
 
         defaultTranslations.put("dashSeparation", "§6------------------------------------");
@@ -150,11 +144,8 @@ public class Utils
         defaultTranslations.put("getCfg.errorToActionBar", "§6- §3Error messages to action bar : %s");
         defaultTranslations.put("getCfg.allowConsoleEditConfig", "§6- §3Edit config via console : %s");
         defaultTranslations.put("getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s");
-        defaultTranslations.put("getCfg.minOpLevelExeEditConfig", "§6- §3Minimum OP level to edit config : %s");
-        defaultTranslations.put("getCfg.minOpLevelExeBed", "§6- §3Minimum OP level for §d/bed §3: %s");
         defaultTranslations.put("getCfg.minOpLevelExeKgi", "§6- §3Minimum OP level for §d/kgi §3: %s");
-        defaultTranslations.put("getCfg.minOpLevelExeSurface", "§6- §3Minimum OP level for §d/surface §3: %s");
-        defaultTranslations.put("getCfg.minOpLevelExeLocation", "§6- §3Minimum OP level to see / teleport to locations §3: %s");
+        defaultTranslations.put("getCfg.minOpLevelExeEditConfig", "§6- §3Minimum OP level to edit config : %s");
         defaultTranslations.put("getCfg.minOpLevelExeEditLocation", "§6- §3Minimum OP level to edit locations: %s");
 
         defaultTranslations.put("set.allowBed", "§3Toogled §d/bed §3command %s");
@@ -167,11 +158,8 @@ public class Utils
         defaultTranslations.put("set.errorToActionBar", "§3Toogled error messages to action bar %s");
         defaultTranslations.put("set.allowConsoleEditConfig", "§3Toogled config editing via console %s");
         defaultTranslations.put("set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s");
-        defaultTranslations.put("set.minOpLevelExeEditConfig", "§3The minimum OP level to edit the config is now %s");
-        defaultTranslations.put("set.minOpLevelExeBed", "§3The minimum OP level to execute §d/bed §3is now %s");
         defaultTranslations.put("set.minOpLevelExeKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
-        defaultTranslations.put("set.minOpLevelExeSurface", "§3The minimum OP level to execute §d/surface §3is now %s");
-        defaultTranslations.put("set.minOpLevelExeLocation", "§3The minimum OP level to see / teleport to locations is now %s");
+        defaultTranslations.put("set.minOpLevelExeEditConfig", "§3The minimum OP level to edit the config is now %s");
         defaultTranslations.put("set.minOpLevelExeEditLocation", "§3The minimum OP level to edit locations is now %s");
 
         defaultTranslations.put("error.notOp", "§cYou don't have the required permission to do that");
@@ -225,46 +213,5 @@ public class Utils
             generateDefaultTranslations();
         }
         return defaultTranslations;
-    }
-
-    // Redundant checks
-    public static boolean isPlayer(@NotNull ServerCommandSource source)
-    {
-        if (source.getPlayer() == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean hasPermission(@NotNull ServerPlayerEntity player, int permission)
-    {
-        if (!player.hasPermissionLevel(permission))
-        {
-            sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation(ERROR + "notOp"),
-                    "cyan.message.notOp",
-                    CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useCustomTranslations
-            );
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isOptionAllowed(@NotNull ServerPlayerEntity player, boolean option, String msgPath)
-    {
-        if (!option)
-        {
-            sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation(ERROR + msgPath),
-                    "cyan.message.%s".formatted(msgPath),
-                    CyanMidnightConfig.errorToActionBar,
-                    CyanMidnightConfig.useCustomTranslations
-            );
-            return false;
-        }
-        return true;
     }
 }

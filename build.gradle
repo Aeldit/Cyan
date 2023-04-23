@@ -33,6 +33,8 @@ dependencies {
 
     modImplementation "maven.modrinth:cyanlib:${project.cyanlib_version}"
     include "maven.modrinth:cyanlib:${project.cyanlib_version}"
+
+    modLocalRuntime("com.terraformersmc:modmenu:${project.mod_menu_version}")
 }
 
 processResources {

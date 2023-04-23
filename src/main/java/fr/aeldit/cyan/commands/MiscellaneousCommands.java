@@ -28,7 +28,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
+import static fr.aeldit.cyan.util.Utils.CyanLibUtils;
 import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 
 public class MiscellaneousCommands
@@ -59,11 +60,11 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (isPlayer(source))
+        if (CyanLibUtils.isPlayer(source))
         {
-            if (isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
+            if (CyanLibUtils.isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
             {
-                if (player.hasPermissionLevel(CyanMidnightConfig.minOpLevelExeKgi))
+                if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
                     sendPlayerMessage(player,
@@ -88,11 +89,11 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (isPlayer(source))
+        if (CyanLibUtils.isPlayer(source))
         {
-            if (isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
+            if (CyanLibUtils.isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
             {
-                if (hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
+                if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
