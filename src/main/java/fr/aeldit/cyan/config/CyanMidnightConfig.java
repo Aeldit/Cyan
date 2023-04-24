@@ -49,9 +49,9 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry(isSlider = true, min = 1, max = 128)
     public static int distanceToEntitiesKgi = 14;
     @Entry(isSlider = true, min = 0, max = 4)
-    public static int minOpLevelExeEditConfig = 4;
-    @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeKgi = 4;
+    @Entry(isSlider = true, min = 0, max = 4)
+    public static int minOpLevelExeEditConfig = 4;
     @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeEditLocation = 4;
 
