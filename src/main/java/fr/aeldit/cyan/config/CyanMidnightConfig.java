@@ -76,11 +76,10 @@ public class CyanMidnightConfig extends MidnightConfig
         allOptionsMap.put("msgToActionBar", msgToActionBar);
         allOptionsMap.put("errorToActionBar", errorToActionBar);
 
-        allOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
-        allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
-        allOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
-
         allOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
+        allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
+        allOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
+        allOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
     }
 
     public static void setBoolOption(@NotNull String optionName, boolean value)
@@ -97,7 +96,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "msgToActionBar" -> msgToActionBar = value;
             case "errorToActionBar" -> errorToActionBar = value;
         }
-        write("cyan");
+        write(MODID);
         generateAllOptionsMap();
         if (useCustomTranslations)
         {
@@ -118,11 +117,11 @@ public class CyanMidnightConfig extends MidnightConfig
         switch (optionName)
         {
             case "distanceToEntitiesKgi" -> distanceToEntitiesKgi = value;
-            case "minOpLevelExeEditConfig" -> minOpLevelExeEditConfig = value;
             case "minOpLevelExeKgi" -> minOpLevelExeKgi = value;
+            case "minOpLevelExeEditConfig" -> minOpLevelExeEditConfig = value;
             case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
         }
-        write("cyan");
+        write(MODID);
         generateAllOptionsMap();
     }
 

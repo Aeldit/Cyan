@@ -65,11 +65,8 @@ public class Utils
             optionsBool.add("errorToActionBar");
 
             optionsInt.add("distanceToEntitiesKgi");
-            optionsInt.add("minOpLevelExeEditConfig");
-            optionsInt.add("minOpLevelExeBed");
             optionsInt.add("minOpLevelExeKgi");
-            optionsInt.add("minOpLevelExeSurface");
-            optionsInt.add("minOpLevelExeLocation");
+            optionsInt.add("minOpLevelExeEditConfig");
             optionsInt.add("minOpLevelExeEditLocation");
 
             options.put("booleans", optionsBool);
