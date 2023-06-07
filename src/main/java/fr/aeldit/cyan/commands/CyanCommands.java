@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
 import static fr.aeldit.cyan.util.Utils.CyanLibUtils;
 import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
@@ -82,6 +83,8 @@ public class CyanCommands
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
+
+        transferPropertiesToGson();
 
         if (player == null && !CyanMidnightConfig.allowConsoleEditConfig)
         {

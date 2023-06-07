@@ -27,10 +27,13 @@ import fr.aeldit.cyanlib.util.FileUtils;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
 import static fr.aeldit.cyan.util.EventUtils.backTpPath;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
+import static fr.aeldit.cyan.util.GsonUtils.LOCATIONS_PATH;
+import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanServerCore implements DedicatedServerModInitializer
@@ -41,7 +44,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
         MidnightConfig.init(MODID, CyanMidnightConfig.class);
         LOGGER.info("[Cyan] Successfully initialized config");
 
-        FileUtils.removeEmptyFiles(locationsPath, languagePath, backTpPath);
+        FileUtils.removeEmptyFiles(LOCATIONS_PATH, LANGUAGE_PATH, backTpPath);
 
         generateAllOptionsMap();
         if (CyanMidnightConfig.useCustomTranslations)
@@ -49,6 +52,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         // TODO -> Block break event for claims
 

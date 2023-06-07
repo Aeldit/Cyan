@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'fabric-loom' version '1.2-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -31,10 +31,14 @@ dependencies {
     modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
     include "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
+    //CyanLib
     modImplementation "maven.modrinth:cyanlib:${project.cyanlib_version}"
     include "maven.modrinth:cyanlib:${project.cyanlib_version}"
 
     modLocalRuntime("com.terraformersmc:modmenu:${project.mod_menu_version}")
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 processResources {

@@ -21,6 +21,7 @@ import fr.aeldit.cyan.config.CyanMidnightConfig;
 import fr.aeldit.cyanlib.util.CyanLibUtils;
 import fr.aeldit.cyanlib.util.LanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +41,9 @@ public class Utils
     private static final Map<String, List<String>> options = new HashMap<>();
 
     // Language Utils
-    public static final Path languagePath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.properties");
+    public static final Path LANGUAGE_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.json");
     public static LanguageUtils CyanLanguageUtils = new LanguageUtils(Utils.MODID);
     public static LinkedHashMap<String, String> defaultTranslations = new LinkedHashMap<>();
-
-    // Locations
-    public static final Path locationsPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties");
 
     // Utils
     public static CyanLibUtils CyanLibUtils = new CyanLibUtils(Utils.MODID, CyanLanguageUtils, CyanMidnightConfig.errorToActionBar, CyanMidnightConfig.useCustomTranslations);
@@ -75,6 +73,31 @@ public class Utils
         return options;
     }
 
+    // Locations Utils
+    public static boolean locationExists(@NotNull List<Location> homes, String locationName)
+    {
+        for (Location location : homes)
+        {
+            if (location.name().equals(locationName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int getLocationIndex(@NotNull List<Location> homes, String locationName)
+    {
+        for (Location location : homes)
+        {
+            if (location.name().equals(locationName))
+            {
+                return homes.indexOf(location);
+            }
+        }
+        return -1;
+    }
+
     // Files
     public static void checkOrCreateFile(Path path)
     {
@@ -83,7 +106,8 @@ public class Utils
             try
             {
                 Files.createDirectory(FabricLoader.getInstance().getConfigDir().resolve(MODID));
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
@@ -93,7 +117,8 @@ public class Utils
             try
             {
                 Files.createFile(path);
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
@@ -175,9 +200,9 @@ public class Utils
         defaultTranslations.put("error.locationAlreadyExists", "§cA location with this name already exists");
         defaultTranslations.put("error.locationsDisabled", "§cThe locations commands are disabled");
         defaultTranslations.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
-        defaultTranslations.put("error.fileNotRemoved", "§cAn error occured while trying to remove the locations file");
+        defaultTranslations.put("error.noLocations", "§cThere is no saved locations");
         defaultTranslations.put("error.noLastPos", "§cYour last death location was not saved");
-        defaultTranslations.put("error.optionNotFound", "§cThis option does not exist or you tried to set it to the wrong type of value (int or bool)");
+        defaultTranslations.put("error.optionNotFound", "§cThis option does not exist or you tried to set it to the wrong type (int or bool)");
 
         defaultTranslations.put("bed", "§3You have been teleported to your bed");
         defaultTranslations.put("respawnAnchor", "§3You have been teleported to your respawn anchor");
@@ -188,6 +213,7 @@ public class Utils
         defaultTranslations.put("goToLocation", "§3You have been teleported to %s");
         defaultTranslations.put("removeLocation", "§3The location %s §3have been removed");
         defaultTranslations.put("removedAllLocations", "§3All the locations have been removed");
+        defaultTranslations.put("getLocation", "%s §3(%s§3)");
         defaultTranslations.put("translationsReloaded", "§3The translations have been reloaded");
         defaultTranslations.put("backTp", "§3You have been teleported to the place you died");
         defaultTranslations.put("currentValue", "§7Current value : %s");
