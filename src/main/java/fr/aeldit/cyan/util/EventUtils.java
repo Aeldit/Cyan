@@ -17,53 +17,59 @@
 
 package fr.aeldit.cyan.util;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Objects;
-import java.util.Properties;
+import java.nio.file.Files;
+import java.util.ArrayList;
 
-import static fr.aeldit.cyan.util.Utils.MODID;
-import static fr.aeldit.cyan.util.Utils.checkOrCreateFile;
+import static fr.aeldit.cyan.util.GsonUtils.*;
+import static fr.aeldit.cyan.util.Utils.backTpExists;
+import static fr.aeldit.cyan.util.Utils.getBackTpIndex;
 
 public class EventUtils
 {
-    // Death Event
-    public static final Path backTpPath = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties");
-
     public static void saveDeadPlayersPos(@NotNull LivingEntity entity)
     {
         if (entity.isPlayer())
         {
-            ServerWorld overworld = Objects.requireNonNull(entity.getServer()).getWorld(World.OVERWORLD);
-            ServerWorld nether = Objects.requireNonNull(entity.getServer()).getWorld(World.NETHER);
-            ServerWorld end = Objects.requireNonNull(entity.getServer()).getWorld(World.END);
-            checkOrCreateFile(backTpPath);
-            String pos = null;
-            if (entity.getWorld() == overworld)
-            {
-                pos = "overworld" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
-            } else if (entity.getWorld() == nether)
-            {
-                pos = "nether" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
-            } else if (entity.getWorld() == end)
-            {
-                pos = "end" + " " + entity.getX() + " " + entity.getY() + " " + entity.getZ();
-            }
             try
             {
-                Properties properties = new Properties();
-                properties.load(new FileInputStream(backTpPath.toFile()));
-                properties.put(entity.getUuidAsString(), pos);
-                properties.store(new FileOutputStream(backTpPath.toFile()), null);
-            } catch (IOException e)
+                ArrayList<BackTp> backTps = new ArrayList<>();
+
+                if (!Files.exists(BACK_TP_PATH))
+                {
+                    Files.createFile(BACK_TP_PATH);
+                }
+
+                if (!Files.readAllLines(BACK_TP_PATH).isEmpty())
+                {
+                    backTps = readBackTpFile();
+                }
+
+                if (backTpExists(backTps, entity.getUuidAsString()))
+                {
+                    backTps.remove(getBackTpIndex(backTps, entity.getUuidAsString()));
+                }
+
+                if (entity.getWorld() == entity.getServer().getWorld(World.OVERWORLD))
+                {
+                    backTps.add(new BackTp(entity.getUuidAsString(), "overworld", entity.getX(), entity.getY(), entity.getZ()));
+                }
+                else if (entity.getWorld() == entity.getServer().getWorld(World.NETHER))
+                {
+                    backTps.add(new BackTp(entity.getUuidAsString(), "nether", entity.getX(), entity.getY(), entity.getZ()));
+                }
+                else
+                {
+                    backTps.add(new BackTp(entity.getUuidAsString(), "end", entity.getX(), entity.getY(), entity.getZ()));
+                }
+
+                writeBackTp(backTps);
+            }
+            catch (IOException e)
             {
                 throw new RuntimeException(e);
             }

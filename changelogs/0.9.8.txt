@@ -1,0 +1,4 @@
+Added :
+- The command '/cyan removePropertiesFiles' that allows you to transfer properties files to json files and remove
+the properties files once this is done (the properties are transfered to json at the server start, but this is also
+made here just in case)

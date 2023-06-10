@@ -60,8 +60,6 @@ public class CyanMidnightConfig extends MidnightConfig
     @Entry
     public static boolean msgToActionBar = true;
     @Entry
-    public static boolean errorToActionBar = true;
-    @Entry
     public static boolean useCustomTranslations = false;
 
     public static void generateAllOptionsMap()
@@ -74,7 +72,6 @@ public class CyanMidnightConfig extends MidnightConfig
         allOptionsMap.put("allowConsoleEditConfig", allowConsoleEditConfig);
         allOptionsMap.put("useCustomTranslations", useCustomTranslations);
         allOptionsMap.put("msgToActionBar", msgToActionBar);
-        allOptionsMap.put("errorToActionBar", errorToActionBar);
 
         allOptionsMap.put("distanceToEntitiesKgi", distanceToEntitiesKgi);
         allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
@@ -94,17 +91,18 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowConsoleEditConfig" -> allowConsoleEditConfig = value;
             case "useCustomTranslations" -> useCustomTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
-            case "errorToActionBar" -> errorToActionBar = value;
         }
+
         write(MODID);
         generateAllOptionsMap();
+
         if (useCustomTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
-        if (optionName.equals("errorToActionBar"))
+        if (optionName.equals("msgToActionBar"))
         {
-            CyanLibUtils.setErrorToActionBar(value);
+            CyanLibUtils.setMsgToActionBar(value);
         }
         else if (optionName.equals("useCustomTranslations"))
         {
@@ -121,6 +119,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "minOpLevelExeEditConfig" -> minOpLevelExeEditConfig = value;
             case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
         }
+
         write(MODID);
         generateAllOptionsMap();
     }

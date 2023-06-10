@@ -30,10 +30,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 
 import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
-import static fr.aeldit.cyan.util.EventUtils.backTpPath;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
-import static fr.aeldit.cyan.util.GsonUtils.LOCATIONS_PATH;
-import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
+import static fr.aeldit.cyan.util.GsonUtils.*;
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanClientCore implements ClientModInitializer
@@ -44,9 +42,10 @@ public class CyanClientCore implements ClientModInitializer
         MidnightConfig.init(MODID, CyanMidnightConfig.class);
         LOGGER.info("[Cyan] Successfully initialized config");
 
-        FileUtils.removeEmptyFiles(LOCATIONS_PATH, LANGUAGE_PATH, backTpPath);
+        FileUtils.removeEmptyFiles(LOCATIONS_PATH, LANGUAGE_PATH, BACK_TP_PATH);
 
         generateAllOptionsMap();
+
         if (CyanMidnightConfig.useCustomTranslations)
         {
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());

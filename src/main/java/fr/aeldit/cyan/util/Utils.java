@@ -25,10 +25,11 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Utils
 {
@@ -43,10 +44,10 @@ public class Utils
     // Language Utils
     public static final Path LANGUAGE_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/translations.json");
     public static LanguageUtils CyanLanguageUtils = new LanguageUtils(Utils.MODID);
-    public static LinkedHashMap<String, String> defaultTranslations = new LinkedHashMap<>();
+    public static HashMap<String, String> defaultTranslations = new HashMap<>();
 
     // Utils
-    public static CyanLibUtils CyanLibUtils = new CyanLibUtils(Utils.MODID, CyanLanguageUtils, CyanMidnightConfig.errorToActionBar, CyanMidnightConfig.useCustomTranslations);
+    public static CyanLibUtils CyanLibUtils = new CyanLibUtils(Utils.MODID, CyanLanguageUtils, CyanMidnightConfig.msgToActionBar, CyanMidnightConfig.useCustomTranslations);
 
     public static Map<String, List<String>> getOptionsList()
     {
@@ -60,7 +61,6 @@ public class Utils
             optionsBool.add("allowConsoleEditConfig");
             optionsBool.add("useCustomTranslations");
             optionsBool.add("msgToActionBar");
-            optionsBool.add("errorToActionBar");
 
             optionsInt.add("distanceToEntitiesKgi");
             optionsInt.add("minOpLevelExeKgi");
@@ -98,31 +98,29 @@ public class Utils
         return -1;
     }
 
-    // Files
-    public static void checkOrCreateFile(Path path)
+    // BackTp Utils
+    public static boolean backTpExists(@NotNull List<BackTp> backTps, String playerUUID)
     {
-        if (!Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID)))
+        for (BackTp backTp : backTps)
         {
-            try
+            if (backTp.playerUUID().equals(playerUUID))
             {
-                Files.createDirectory(FabricLoader.getInstance().getConfigDir().resolve(MODID));
-            }
-            catch (IOException e)
-            {
-                throw new RuntimeException(e);
+                return true;
             }
         }
-        if (!Files.exists(path))
+        return false;
+    }
+
+    public static int getBackTpIndex(@NotNull List<BackTp> backTps, String playerUUID)
+    {
+        for (BackTp backTp : backTps)
         {
-            try
+            if (backTp.playerUUID().equals(playerUUID))
             {
-                Files.createFile(path);
-            }
-            catch (IOException e)
-            {
-                throw new RuntimeException(e);
+                return backTps.indexOf(backTp);
             }
         }
+        return -1;
     }
 
     // Language Utils
@@ -144,7 +142,6 @@ public class Utils
         defaultTranslations.put("desc.allowBackTp", "§3The §eallowBackTp §3option toogles the use of the §d/back §3command");
         defaultTranslations.put("desc.useCustomTranslations", "§3The §euseTranslations §3option toogles the use of custom translations (server-side only)");
         defaultTranslations.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
-        defaultTranslations.put("desc.errorToActionBar", "§3The §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar");
         defaultTranslations.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
         defaultTranslations.put("desc.minOpLevelExeKgi", "§3The §eminOpLevelExeKgi §3option defines the required OP level to use the §d/kgi §3command");
         defaultTranslations.put("desc.minOpLevelExeEditConfig", "§3The §eminOpLevelExeEditConfig §3option defines the required OP level to edit config");
@@ -163,7 +160,6 @@ public class Utils
         defaultTranslations.put("getCfg.allowBackTp", "§6- §d/back §3: %s");
         defaultTranslations.put("getCfg.useCustomTranslations", "§6- §3Custom translations : %s");
         defaultTranslations.put("getCfg.msgToActionBar", "§6- §3Messages to action bar : %s");
-        defaultTranslations.put("getCfg.errorToActionBar", "§6- §3Error messages to action bar : %s");
         defaultTranslations.put("getCfg.allowConsoleEditConfig", "§6- §3Edit config via console : %s");
         defaultTranslations.put("getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s");
         defaultTranslations.put("getCfg.minOpLevelExeKgi", "§6- §3Minimum OP level for §d/kgi §3: %s");
@@ -177,7 +173,6 @@ public class Utils
         defaultTranslations.put("set.allowBackTp", "§3Toogled §d/back §3command %s");
         defaultTranslations.put("set.useCustomTranslations", "§3Toogled custom translations %s");
         defaultTranslations.put("set.msgToActionBar", "§3Toogled messages to action bar %s");
-        defaultTranslations.put("set.errorToActionBar", "§3Toogled error messages to action bar %s");
         defaultTranslations.put("set.allowConsoleEditConfig", "§3Toogled config editing via console %s");
         defaultTranslations.put("set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s");
         defaultTranslations.put("set.minOpLevelExeKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
@@ -203,6 +198,7 @@ public class Utils
         defaultTranslations.put("error.noLocations", "§cThere is no saved locations");
         defaultTranslations.put("error.noLastPos", "§cYour last death location was not saved");
         defaultTranslations.put("error.optionNotFound", "§cThis option does not exist or you tried to set it to the wrong type (int or bool)");
+        defaultTranslations.put("error.noPropertiesFiles", "§cNo properties files were found");
 
         defaultTranslations.put("bed", "§3You have been teleported to your bed");
         defaultTranslations.put("respawnAnchor", "§3You have been teleported to your respawn anchor");
@@ -218,9 +214,10 @@ public class Utils
         defaultTranslations.put("backTp", "§3You have been teleported to the place you died");
         defaultTranslations.put("currentValue", "§7Current value : %s");
         defaultTranslations.put("setValue", "§7Set value to : %s  %s  %s  %s %s");
+        defaultTranslations.put("propertiesFilesDeleted", "§3Properties files were successfully removed");
     }
 
-    public static LinkedHashMap<String, String> getDefaultTranslations()
+    public static Map<String, String> getDefaultTranslations()
     {
         if (defaultTranslations.isEmpty())
         {
@@ -229,7 +226,7 @@ public class Utils
         return defaultTranslations;
     }
 
-    public static LinkedHashMap<String, String> getDefaultTranslations(boolean reloadAll)
+    public static Map<String, String> getDefaultTranslations(boolean reloadAll)
     {
         if (defaultTranslations.isEmpty() || reloadAll)
         {

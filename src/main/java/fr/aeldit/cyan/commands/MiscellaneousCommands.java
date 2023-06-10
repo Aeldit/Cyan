@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
 import static fr.aeldit.cyan.util.Utils.CyanLibUtils;
-import static fr.aeldit.cyanlib.util.ChatUtils.sendPlayerMessage;
 
 public class MiscellaneousCommands
 {
@@ -67,11 +66,9 @@ public class MiscellaneousCommands
                 if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
-                    sendPlayerMessage(player,
+                    CyanLibUtils.sendPlayerMessage(player,
                             CyanLanguageUtils.getTranslation("kgi"),
-                            "cyan.message.kgi",
-                            CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useCustomTranslations
+                            "cyan.message.kgi"
                     );
                 }
             }
@@ -97,11 +94,9 @@ public class MiscellaneousCommands
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
-                    sendPlayerMessage(player,
+                    CyanLibUtils.sendPlayerMessage(player,
                             CyanLanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
                             "cyan.message.kgir",
-                            CyanMidnightConfig.msgToActionBar,
-                            CyanMidnightConfig.useCustomTranslations,
                             Formatting.GOLD + Integer.toString(arg)
                     );
                 }

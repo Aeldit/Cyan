@@ -23,6 +23,7 @@
   "cyan.message.bedNotFound": "§cYou don't have an attributed bed or respawn anchor",
   "cyan.message.playerNotFound": "§cPlayer not found. The player must be online",
   "cyan.message.optionNotFound": "§cThis option does not exist or you tried to set it to the wrong type of value (int or bool)",
+  "cyan.message.noPropertiesFiles": "§cNo properties files were found",
   "---------------------------------------------------MESSAGES----------------------------------------------------": "",
   "cyan.message.bed": "§3You have been teleported to your bed",
   "cyan.message.respawnAnchor": "§3You have been teleported to your respawn anchor",
@@ -39,6 +40,7 @@
   "cyan.message.backTp": "§3You have been teleported to the place you died",
   "cyan.message.currentValue": "§7Current value : %s",
   "cyan.message.setValue": "§7Set value to : %s  %s  %s  %s",
+  "cyan.message.propertiesFilesDeleted": "§3Properties files were successfully removed",
   "-----------------------------------------------------SETS------------------------------------------------------": "",
   "cyan.message.set.allowBed": "§3Toogled §d/bed §3command %s",
   "cyan.message.set.allowKgi": "§3Toogled §d/kgi §3command %s",
@@ -48,7 +50,6 @@
   "cyan.message.set.allowConsoleEditConfig": "§3Editing the config via console is now %s",
   "cyan.message.set.useCustomTranslations": "§3Toogled translations %s",
   "cyan.message.set.msgToActionBar": "§3Toogled messages to action bar %s",
-  "cyan.message.set.errorToActionBar": "§3Toogled error messages to action bar %s",
   "cyan.message.set.distanceToEntitiesKgi": "§3The distance for §d/kgi §3is now %s",
   "cyan.message.set.minOpLevelExeKgi": "§3The minimum OP level to execute §d/kgi §3is now %s",
   "cyan.message.set.minOpLevelExeEditConfig": "§3The minimum OP level to edit the config is now %s",
@@ -63,7 +64,6 @@
   "cyan.message.getCfg.allowConsoleEditConfig": "§6- §3Edit config via console : %s",
   "cyan.message.getCfg.useCustomTranslations": "§6- §3Custom translations : %s",
   "cyan.message.getCfg.msgToActionBar": "§6- §3Messages to action bar : %s",
-  "cyan.message.getCfg.errorToActionBar": "§6- §3Error messages to action bar : %s",
   "cyan.message.getCfg.distanceToEntitiesKgi": "§6- §d/kgi §3distance (in chunks) : %s",
   "cyan.message.getCfg.minOpLevelExeKgi": "§6- §3Minimum OP level for §d/kgi §3: %s",
   "cyan.message.getCfg.minOpLevelExeEditConfig": "§6- §3Minimum OP level to edit config : %s",
@@ -87,7 +87,6 @@
   "cyan.message.getDescription.options.allowConsoleEditConfig": "§3The §eallowConsoleEditConfig §3option toogles the possiblity to edit the config via the server's console",
   "cyan.message.getDescription.options.useCustomTranslations": "§3The §euseTranslations §3option toogles the use of translations §c(server-side only)",
   "cyan.message.getDescription.options.msgToActionBar": "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar",
-  "cyan.message.getDescription.options.errorToActionBar": "§3The §eerrorToActionBar §3option determines if error messages are send to the chat or the player's action bar",
   "cyan.message.getDescription.options.distanceToEntitiesKgi": "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed",
   "cyan.message.getDescription.options.minOpLevelExeKgi": "§3The §eminOpLevelExeKgi §3option defines the required OP level to use the §d/kgi §3command",
   "cyan.message.getDescription.options.minOpLevelExeEditConfig": "§3The §eminOpLevelExeEditConfig §3option defines the required OP level to edit config",
@@ -119,7 +118,5 @@
   "cyan.midnightconfig.useCustomTranslations": "§cUse the custom language files",
   "cyan.midnightconfig.useCustomTranslations.tooltip": "§cDefines wether the custom translations will be used (server-side only)",
   "cyan.midnightconfig.msgToActionBar": "Send messages to action bar",
-  "cyan.midnightconfig.msgToActionBar.tooltip": "Defines if the messages wil be send through the chat or the action bar",
-  "cyan.midnightconfig.errorToActionBar": "Send error messages to action bar",
-  "cyan.midnightconfig.errorToActionBar.tooltip": "Defines if the messages wil be send through the chat or the action bar"
+  "cyan.midnightconfig.msgToActionBar.tooltip": "Defines if the messages wil be send through the chat or the action bar"
 }
