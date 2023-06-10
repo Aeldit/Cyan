@@ -50,17 +50,9 @@
 |                                   |                                                          |                       |
 |              `/back`              |         Teleports you to the last place you died         |           ❌           |
 
-For a more detailed explanation on how to use every command,
-see [COMMANDS.md](https://github.com/Aeldit/Cyan/blob/1.19.x/docs/COMMANDS.md)
-
 ***
 
-### 🌐`Current languages`
-
-- English
-- French
-
-### `Default Translations`
+### 🌐 `Default Translations`
 
 > If you have set the option `useTranslations` to false, the default language was english. But with the latest
 > update
@@ -70,7 +62,7 @@ see [COMMANDS.md](https://github.com/Aeldit/Cyan/blob/1.19.x/docs/COMMANDS.md)
 
 How to do this ?
 
-1. Download the file `translations.properties`
+1. Download the file `translations.json`
    located [here](https://github.com/Aeldit/Cyan/tree/1.19.3/docs) and put it in your Minecraft server folder
    (`minecraft/config/cyan`)
 2. Then you can translate the file to any language you want
