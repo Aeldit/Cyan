@@ -23,13 +23,11 @@ import fr.aeldit.cyan.util.Utils;
 import net.minecraft.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static fr.aeldit.cyan.util.GsonUtils.LOCATIONS_PATH;
-import static fr.aeldit.cyan.util.GsonUtils.readLocationsFile;
+import static fr.aeldit.cyan.util.Utils.LocationsObj;
 
 public final class ArgumentSuggestion
 {
@@ -40,14 +38,7 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder)
     {
-        if (Files.exists(LOCATIONS_PATH))
-        {
-            ArrayList<String> locations = new ArrayList<>();
-            readLocationsFile().forEach(location -> locations.add(location.name()));
-
-            return CommandSource.suggestMatching(locations, builder);
-        }
-        return new CompletableFuture<>();
+        return CommandSource.suggestMatching(LocationsObj.getLocationsNames(), builder);
     }
 
     /**

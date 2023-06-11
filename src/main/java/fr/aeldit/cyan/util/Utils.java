@@ -74,29 +74,7 @@ public class Utils
     }
 
     // Locations Utils
-    public static boolean locationExists(@NotNull List<Location> homes, String locationName)
-    {
-        for (Location location : homes)
-        {
-            if (location.name().equals(locationName))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static int getLocationIndex(@NotNull List<Location> homes, String locationName)
-    {
-        for (Location location : homes)
-        {
-            if (location.name().equals(locationName))
-            {
-                return homes.indexOf(location);
-            }
-        }
-        return -1;
-    }
+    public static Locations LocationsObj = new Locations();
 
     // BackTp Utils
     public static boolean backTpExists(@NotNull List<BackTp> backTps, String playerUUID)

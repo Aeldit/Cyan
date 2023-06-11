@@ -31,11 +31,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-
-import static fr.aeldit.cyan.util.GsonUtils.*;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
@@ -111,60 +106,33 @@ public class LocationCommands
             {
                 if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
-                    try
+                    if (!LocationsObj.locationExists(locationName))
                     {
-                        ArrayList<Location> locations = new ArrayList<>();
-
-                        if (Files.exists(LOCATIONS_PATH) && !Files.readAllLines(LOCATIONS_PATH).isEmpty())
+                        if (player.getWorld() == player.getServer().getWorld(World.OVERWORLD))
                         {
-                            locations = readLocationsFile();
+                            LocationsObj.add(new Location(locationName, "overworld", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
                         }
-
-                        boolean locationExists = false;
-
-                        for (Location location : locations)
+                        else if (player.getWorld() == player.getServer().getWorld(World.NETHER))
                         {
-                            if (location.name().equals(locationName))
-                            {
-                                locationExists = true;
-                                break;
-                            }
-                        }
-
-                        if (!locationExists)
-                        {
-                            if (player.getWorld() == player.getServer().getWorld(World.OVERWORLD))
-                            {
-                                locations.add(new Location(locationName, "overworld", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
-                            }
-                            else if (player.getWorld() == player.getServer().getWorld(World.NETHER))
-                            {
-                                locations.add(new Location(locationName, "nether", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
-                            }
-                            else
-                            {
-                                locations.add(new Location(locationName, "end", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
-                            }
-
-                            writeLocations(locations);
-
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation("setLocation"),
-                                    "cyan.message.setLocation",
-                                    Formatting.YELLOW + locationName
-                            );
+                            LocationsObj.add(new Location(locationName, "nether", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
                         }
                         else
                         {
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation(ERROR + "locationAlreadyExists"),
-                                    "cyan.message.locationAlreadyExists"
-                            );
+                            LocationsObj.add(new Location(locationName, "end", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
                         }
+
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation("setLocation"),
+                                "cyan.message.setLocation",
+                                Formatting.YELLOW + locationName
+                        );
                     }
-                    catch (IOException e)
+                    else
                     {
-                        throw new RuntimeException(e);
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "locationAlreadyExists"),
+                                "cyan.message.locationAlreadyExists"
+                        );
                     }
                 }
             }
@@ -189,43 +157,22 @@ public class LocationCommands
                 {
                     String locationName = StringArgumentType.getString(context, "name");
 
-                    try
+                    if (LocationsObj.locationExists(locationName))
                     {
-                        if (Files.exists(LOCATIONS_PATH) && !Files.readAllLines(LOCATIONS_PATH).isEmpty())
-                        {
-                            ArrayList<Location> locations = readLocationsFile();
-
-                            if (locationExists(locations, locationName))
-                            {
-                                locations.remove(getLocationIndex(locations, locationName));
-                                writeLocations(locations);
-                                CyanLibUtils.sendPlayerMessage(player,
-                                        CyanLanguageUtils.getTranslation("removeLocation"),
-                                        "cyan.message.removeLocation",
-                                        Formatting.YELLOW + locationName
-                                );
-                            }
-                            else
-                            {
-                                CyanLibUtils.sendPlayerMessage(player,
-                                        CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
-                                        "cyan.message.locationNotFound",
-                                        Formatting.YELLOW + locationName
-                                );
-                            }
-                        }
-                        else
-                        {
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
-                                    "cyan.message.locationNotFound",
-                                    Formatting.YELLOW + locationName
-                            );
-                        }
+                        LocationsObj.remove(locationName);
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation("removeLocation"),
+                                "cyan.message.removeLocation",
+                                Formatting.YELLOW + locationName
+                        );
                     }
-                    catch (IOException e)
+                    else
                     {
-                        throw new RuntimeException(e);
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
+                                "cyan.message.locationNotFound",
+                                Formatting.YELLOW + locationName
+                        );
                     }
                 }
             }
@@ -248,20 +195,19 @@ public class LocationCommands
             {
                 if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditLocation))
                 {
-                    if (Files.exists(LOCATIONS_PATH))
+                    if (LocationsObj.removeAll())
                     {
-                        try
-                        {
-                            Files.delete(LOCATIONS_PATH);
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation("removedAllLocations"),
-                                    "cyan.message.removedAllLocations"
-                            );
-                        }
-                        catch (IOException e)
-                        {
-                            throw new RuntimeException(e);
-                        }
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation("removedAllLocations"),
+                                "cyan.message.removedAllLocations"
+                        );
+                    }
+                    else
+                    {
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "noLocations"),
+                                "cyan.message.noLocations"
+                        );
                     }
                 }
             }
@@ -284,53 +230,33 @@ public class LocationCommands
             {
                 String locationName = StringArgumentType.getString(context, "name");
 
-                try
+                if (LocationsObj.locationExists(locationName))
                 {
-                    if (Files.exists(LOCATIONS_PATH) && !Files.readAllLines(LOCATIONS_PATH).isEmpty())
+                    Location loc = LocationsObj.getLocation(locationName);
+
+                    switch (loc.dimension())
                     {
-                        ArrayList<Location> locations = readLocationsFile();
-
-                        if (locationExists(locations, locationName))
-                        {
-                            Location loc = locations.get(getLocationIndex(locations, locationName));
-
-                            switch (loc.dimension())
-                            {
-                                case "overworld" ->
-                                        player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                                case "nether" ->
-                                        player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                                case "end" ->
-                                        player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                            }
-
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation("goToLocation"),
-                                    "cyan.message.goToLocation",
-                                    Formatting.YELLOW + locationName
-                            );
-                        }
-                        else
-                        {
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
-                                    "cyan.message.locationNotFound",
-                                    Formatting.YELLOW + locationName
-                            );
-                        }
+                        case "overworld" ->
+                                player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                        case "nether" ->
+                                player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                        case "end" ->
+                                player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
                     }
-                    else
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
-                                "cyan.message.locationNotFound",
-                                Formatting.YELLOW + locationName
-                        );
-                    }
+
+                    CyanLibUtils.sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation("goToLocation"),
+                            "cyan.message.goToLocation",
+                            Formatting.YELLOW + locationName
+                    );
                 }
-                catch (IOException e)
+                else
                 {
-                    throw new RuntimeException(e);
+                    CyanLibUtils.sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(ERROR + "locationNotFound"),
+                            "cyan.message.locationNotFound",
+                            Formatting.YELLOW + locationName
+                    );
                 }
             }
         }
@@ -348,45 +274,33 @@ public class LocationCommands
 
         if (CyanLibUtils.isPlayer(context.getSource()))
         {
-            if (Files.exists(LOCATIONS_PATH))
+            if (!LocationsObj.isEmpty())
             {
-                ArrayList<Location> locations = readLocationsFile();
+                CyanLibUtils.sendPlayerMessageActionBar(player,
+                        CyanLanguageUtils.getTranslation("dashSeparation"),
+                        "cyan.message.getDescription.dashSeparation",
+                        false
+                );
+                CyanLibUtils.sendPlayerMessageActionBar(player,
+                        CyanLanguageUtils.getTranslation("listLocations"),
+                        "cyan.message.listLocations",
+                        false
+                );
 
-                if (!locations.isEmpty())
-                {
-                    CyanLibUtils.sendPlayerMessageActionBar(player,
-                            CyanLanguageUtils.getTranslation("dashSeparation"),
-                            "cyan.message.getDescription.dashSeparation",
-                            false
-                    );
-                    CyanLibUtils.sendPlayerMessageActionBar(player,
-                            CyanLanguageUtils.getTranslation("listLocations"),
-                            "cyan.message.listLocations",
-                            false
-                    );
+                LocationsObj.getLocations().forEach(location -> CyanLibUtils.sendPlayerMessageActionBar(
+                        player,
+                        CyanLanguageUtils.getTranslation("getLocation"),
+                        "cyan.message.getLocation",
+                        false,
+                        Formatting.YELLOW + location.name(),
+                        Formatting.DARK_AQUA + location.dimension()
+                ));
 
-                    locations.forEach(location -> CyanLibUtils.sendPlayerMessageActionBar(
-                            player,
-                            CyanLanguageUtils.getTranslation("getLocation"),
-                            "cyan.message.getLocation",
-                            false,
-                            Formatting.YELLOW + location.name(),
-                            Formatting.DARK_AQUA + location.dimension()
-                    ));
-
-                    CyanLibUtils.sendPlayerMessageActionBar(player,
-                            CyanLanguageUtils.getTranslation("dashSeparation"),
-                            "cyan.message.getDescription.dashSeparation",
-                            false
-                    );
-                }
-                else
-                {
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "noLocations"),
-                            "cyan.message.noLocations"
-                    );
-                }
+                CyanLibUtils.sendPlayerMessageActionBar(player,
+                        CyanLanguageUtils.getTranslation("dashSeparation"),
+                        "cyan.message.getDescription.dashSeparation",
+                        false
+                );
             }
             else
             {

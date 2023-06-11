@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,26 +36,8 @@ import static fr.aeldit.cyan.util.Utils.*;
 
 public class GsonUtils
 {
-    public static final Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
     public static final Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
 
-    public static ArrayList<Location> readLocationsFile()
-    {
-        try
-        {
-            Gson gsonReader = new Gson();
-            Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-            TypeToken<ArrayList<Location>> locationsType = new TypeToken<>() {};
-            ArrayList<Location> locations = gsonReader.fromJson(reader, locationsType);
-            reader.close();
-
-            return locations;
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static ArrayList<BackTp> readBackTpFile()
     {
@@ -69,28 +50,6 @@ public class GsonUtils
             reader.close();
 
             return locations;
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void writeLocations(@NotNull ArrayList<Location> locations)
-    {
-        try
-        {
-            if (locations.isEmpty())
-            {
-                Files.delete(LOCATIONS_PATH);
-            }
-            else
-            {
-                Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
-                Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
-                gsonWriter.toJson(locations, writer);
-                writer.close();
-            }
         }
         catch (IOException e)
         {
@@ -124,47 +83,23 @@ public class GsonUtils
                 properties.load(fis);
                 fis.close();
 
-                ArrayList<Location> locations = new ArrayList<>();
+                LocationsObj.read();
 
-                if (!Files.exists(LOCATIONS_PATH))
+                for (String locationName : properties.stringPropertyNames())
                 {
-                    for (String key : properties.stringPropertyNames())
+                    if (!LocationsObj.locationExists(locationName))
                     {
-                        locations.add(new Location(
-                                key,
-                                properties.getProperty(key).split(" ")[0],
-                                Double.parseDouble(properties.getProperty(key).split(" ")[1]),
-                                Double.parseDouble(properties.getProperty(key).split(" ")[2]),
-                                Double.parseDouble(properties.getProperty(key).split(" ")[3]),
-                                Float.parseFloat(properties.getProperty(key).split(" ")[4]),
-                                Float.parseFloat(properties.getProperty(key).split(" ")[5])
+                        LocationsObj.add(new Location(
+                                locationName,
+                                properties.getProperty(locationName).split(" ")[0],
+                                Double.parseDouble(properties.getProperty(locationName).split(" ")[1]),
+                                Double.parseDouble(properties.getProperty(locationName).split(" ")[2]),
+                                Double.parseDouble(properties.getProperty(locationName).split(" ")[3]),
+                                Float.parseFloat(properties.getProperty(locationName).split(" ")[4]),
+                                Float.parseFloat(properties.getProperty(locationName).split(" ")[5])
                         ));
                     }
                 }
-                else
-                {
-                    locations = readLocationsFile();
-                    ArrayList<String> existantLocations = new ArrayList<>();
-                    locations.forEach(location -> existantLocations.add(location.name()));
-
-                    for (String key : properties.stringPropertyNames())
-                    {
-                        if (!existantLocations.contains(key))
-                        {
-                            locations.add(new Location(
-                                    key,
-                                    properties.getProperty(key).split(" ")[0],
-                                    Double.parseDouble(properties.getProperty(key).split(" ")[1]),
-                                    Double.parseDouble(properties.getProperty(key).split(" ")[2]),
-                                    Double.parseDouble(properties.getProperty(key).split(" ")[3]),
-                                    Float.parseFloat(properties.getProperty(key).split(" ")[4]),
-                                    Float.parseFloat(properties.getProperty(key).split(" ")[5])
-                            ));
-                        }
-                    }
-                }
-
-                writeLocations(locations);
             }
             catch (IOException e)
             {

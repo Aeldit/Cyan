@@ -107,6 +107,11 @@ public class CyanMidnightConfig extends MidnightConfig
         else if (optionName.equals("useCustomTranslations"))
         {
             CyanLibUtils.setUseCustomTranslations(value);
+
+            if (useCustomTranslations)
+            {
+                CyanLanguageUtils.loadLanguage(getDefaultTranslations());
+            }
         }
     }
 
