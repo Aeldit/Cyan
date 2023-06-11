@@ -13,7 +13,7 @@
 |:--------------------:|:----------:|:------------:|
 |  `1.17.x - 1.18.x`   |     ❌      |   (0.9.3)    |
 |   `1.19 - 1.19.2`    |     ✅      |    latest    |
-|       `1.19.3`       |     ✅      |    latest    |
+|       `1.19.3`       |     ❌      |   (0.9.7)    |
 |       `1.19.4`       |     ✅      |    latest    |
 
 ### 💲`Features`
@@ -31,6 +31,9 @@
    distance in which items will be removed
 
 5. Teleport yourself back to the place you died (`/back` command)
+
+6. Plans for the future :
+    - Claims
 
 ***
 
