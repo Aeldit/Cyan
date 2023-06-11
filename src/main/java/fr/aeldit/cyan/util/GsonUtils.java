@@ -17,61 +17,22 @@
 
 package fr.aeldit.cyan.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import fr.aeldit.cyan.teleportation.BackTp;
+import fr.aeldit.cyan.teleportation.Location;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class GsonUtils
 {
-    public static final Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
-
-
-    public static ArrayList<BackTp> readBackTpFile()
-    {
-        try
-        {
-            Gson gsonReader = new Gson();
-            Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-            TypeToken<ArrayList<BackTp>> backTpType = new TypeToken<>() {};
-            ArrayList<BackTp> locations = gsonReader.fromJson(reader, backTpType);
-            reader.close();
-
-            return locations;
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void writeBackTp(ArrayList<BackTp> backTps)
-    {
-        try
-        {
-            Gson gsonWriter = new GsonBuilder().create();
-            Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
-            gsonWriter.toJson(backTps, writer);
-            writer.close();
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void transferPropertiesToGson()
     {
         if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties")))
@@ -116,43 +77,22 @@ public class GsonUtils
                 properties.load(fis);
                 fis.close();
 
-                ArrayList<BackTp> backTps = new ArrayList<>();
+                BackTpsObj.read();
 
-                if (!Files.exists(BACK_TP_PATH))
+                for (String playerUUID : properties.stringPropertyNames())
                 {
-                    for (String key : properties.stringPropertyNames())
+                    if (!BackTpsObj.backTpExists(playerUUID))
                     {
-                        backTps.add(new BackTp(
-                                key,
-                                properties.getProperty(key).split(" ")[0],
-                                Double.parseDouble(properties.getProperty(key).split(" ")[1]),
-                                Double.parseDouble(properties.getProperty(key).split(" ")[2]),
-                                Double.parseDouble(properties.getProperty(key).split(" ")[3])
+                        BackTpsObj.add(new BackTp(
+                                playerUUID,
+                                properties.getProperty(playerUUID).split(" ")[0],
+                                Double.parseDouble(properties.getProperty(playerUUID).split(" ")[1]),
+                                Double.parseDouble(properties.getProperty(playerUUID).split(" ")[2]),
+                                Double.parseDouble(properties.getProperty(playerUUID).split(" ")[3]),
+                                new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())
                         ));
                     }
                 }
-                else
-                {
-                    backTps = readBackTpFile();
-                    ArrayList<String> existantbackTps = new ArrayList<>();
-                    backTps.forEach(location -> existantbackTps.add(location.playerUUID()));
-
-                    for (String key : properties.stringPropertyNames())
-                    {
-                        if (!existantbackTps.contains(key))
-                        {
-                            backTps.add(new BackTp(
-                                    key,
-                                    properties.getProperty(key).split(" ")[0],
-                                    Double.parseDouble(properties.getProperty(key).split(" ")[1]),
-                                    Double.parseDouble(properties.getProperty(key).split(" ")[2]),
-                                    Double.parseDouble(properties.getProperty(key).split(" ")[3])
-                            ));
-                        }
-                    }
-                }
-
-                writeBackTp(backTps);
             }
             catch (IOException e)
             {

@@ -23,21 +23,15 @@ import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
-import fr.aeldit.cyanlib.util.FileUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.loader.api.FabricLoader;
-
-import java.io.IOException;
-import java.nio.file.Files;
 
 import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
+import static fr.aeldit.cyan.util.EventUtils.onGameStop;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
-import static fr.aeldit.cyan.util.GsonUtils.BACK_TP_PATH;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
-import static fr.aeldit.cyan.util.Locations.LOCATIONS_PATH;
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanClientCore implements ClientModInitializer
@@ -48,8 +42,6 @@ public class CyanClientCore implements ClientModInitializer
         MidnightConfig.init(MODID, CyanMidnightConfig.class);
         LOGGER.info("[Cyan] Successfully initialized config");
 
-        FileUtils.removeEmptyFiles(LOCATIONS_PATH, LANGUAGE_PATH, BACK_TP_PATH);
-
         generateAllOptionsMap();
 
         if (CyanMidnightConfig.useCustomTranslations)
@@ -57,22 +49,8 @@ public class CyanClientCore implements ClientModInitializer
             CyanLanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
-        LocationsObj.read();
-
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
-            if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID)))
-            {
-                try
-                {
-                    Files.delete(FabricLoader.getInstance().getConfigDir().resolve(MODID));
-                }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> onGameStop());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
 
         // Register all the commands

@@ -17,17 +17,20 @@
 
 package fr.aeldit.cyan.util;
 
+import fr.aeldit.cyan.teleportation.BackTp;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-import static fr.aeldit.cyan.util.GsonUtils.*;
-import static fr.aeldit.cyan.util.Utils.backTpExists;
-import static fr.aeldit.cyan.util.Utils.getBackTpIndex;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class EventUtils
 {
@@ -35,43 +38,50 @@ public class EventUtils
     {
         if (entity.isPlayer())
         {
-            try
+            String playerUUID = entity.getUuidAsString();
+
+            if (BackTpsObj.backTpExists(playerUUID))
             {
-                ArrayList<BackTp> backTps = new ArrayList<>();
-
-                if (!Files.exists(BACK_TP_PATH))
-                {
-                    Files.createFile(BACK_TP_PATH);
-                }
-
-                if (!Files.readAllLines(BACK_TP_PATH).isEmpty())
-                {
-                    backTps = readBackTpFile();
-                }
-
-                if (backTpExists(backTps, entity.getUuidAsString()))
-                {
-                    backTps.remove(getBackTpIndex(backTps, entity.getUuidAsString()));
-                }
-
-                if (entity.getWorld() == entity.getServer().getWorld(World.OVERWORLD))
-                {
-                    backTps.add(new BackTp(entity.getUuidAsString(), "overworld", entity.getX(), entity.getY(), entity.getZ()));
-                }
-                else if (entity.getWorld() == entity.getServer().getWorld(World.NETHER))
-                {
-                    backTps.add(new BackTp(entity.getUuidAsString(), "nether", entity.getX(), entity.getY(), entity.getZ()));
-                }
-                else
-                {
-                    backTps.add(new BackTp(entity.getUuidAsString(), "end", entity.getX(), entity.getY(), entity.getZ()));
-                }
-
-                writeBackTp(backTps);
+                LOGGER.info("a");
+                BackTpsObj.remove(playerUUID);
             }
-            catch (IOException e)
+
+            if (entity.getWorld() == entity.getServer().getWorld(World.OVERWORLD))
             {
-                throw new RuntimeException(e);
+                BackTpsObj.add(new BackTp(playerUUID, "overworld", entity.getX(), entity.getY(), entity.getZ(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
+            }
+            else if (entity.getWorld() == entity.getServer().getWorld(World.NETHER))
+            {
+                BackTpsObj.add(new BackTp(playerUUID, "nether", entity.getX(), entity.getY(), entity.getZ(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
+            }
+            else
+            {
+                BackTpsObj.add(new BackTp(playerUUID, "end", entity.getX(), entity.getY(), entity.getZ(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
+            }
+        }
+    }
+
+    public static void onGameStop()
+    {
+        Path modPath = FabricLoader.getInstance().getConfigDir().resolve(MODID);
+
+        if (Files.exists(modPath))
+        {
+            BackTpsObj.removeAllOutdated();
+
+            if (new File(modPath.toUri()).listFiles().length == 0)
+            {
+                try
+                {
+                    Files.delete(modPath);
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

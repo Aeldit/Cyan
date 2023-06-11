@@ -21,7 +21,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.config.CyanMidnightConfig;
-import fr.aeldit.cyan.util.BackTp;
+import fr.aeldit.cyan.teleportation.BackTp;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -29,13 +29,8 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Objects;
 
-import static fr.aeldit.cyan.util.GsonUtils.BACK_TP_PATH;
-import static fr.aeldit.cyan.util.GsonUtils.readBackTpFile;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.util.Constants.ERROR;
 
@@ -75,43 +70,31 @@ public class TeleportationCommands
         {
             if (CyanLibUtils.isOptionAllowed(player, CyanMidnightConfig.allowBackTp, "backTpDisabled"))
             {
-                try
+                if (BackTpsObj.backTpExists(player.getUuidAsString()))
                 {
-                    if (Files.exists(BACK_TP_PATH) || (Files.exists(BACK_TP_PATH) && !Files.readAllLines(BACK_TP_PATH).isEmpty()))
+                    BackTp backTp = BackTpsObj.getBackTp(player.getUuidAsString());
+
+                    switch (backTp.dimension())
                     {
-                        ArrayList<BackTp> backTps = readBackTpFile();
-
-                        if (backTpExists(backTps, player.getUuidAsString()))
-                        {
-                            BackTp backTp = backTps.get(getBackTpIndex(backTps, player.getUuidAsString()));
-
-                            switch (backTp.dimension())
-                            {
-                                case "overworld" ->
-                                        player.teleport(player.getServer().getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                                case "nether" ->
-                                        player.teleport(player.getServer().getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                                case "end" ->
-                                        player.teleport(player.getServer().getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                            }
-
-                            CyanLibUtils.sendPlayerMessage(player,
-                                    CyanLanguageUtils.getTranslation("backTp"),
-                                    "cyan.message.backTp"
-                            );
-                        }
+                        case "overworld" ->
+                                player.teleport(player.getServer().getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0);
+                        case "nether" ->
+                                player.teleport(player.getServer().getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0);
+                        case "end" ->
+                                player.teleport(player.getServer().getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
                     }
-                    else
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "noLastPos"),
-                                "cyan.message.noLastPos"
-                        );
-                    }
+
+                    CyanLibUtils.sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation("backTp"),
+                            "cyan.message.backTp"
+                    );
                 }
-                catch (IOException e)
+                else
                 {
-                    throw new RuntimeException(e);
+                    CyanLibUtils.sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(ERROR + "noLastPos"),
+                            "cyan.message.noLastPos"
+                    );
                 }
             }
         }

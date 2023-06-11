@@ -15,6 +15,6 @@
  * in the repo of this mod (https://github.com/Aeldit/Cyan)
  */
 
-package fr.aeldit.cyan.util;
+package fr.aeldit.cyan.teleportation;
 
 public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}

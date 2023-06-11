@@ -15,6 +15,6 @@
  * in the repo of this mod (https://github.com/Aeldit/Cyan)
  */
 
-package fr.aeldit.cyan.util;
+package fr.aeldit.cyan.teleportation;
 
-public record BackTp(String playerUUID, String dimension, double x, double y, double z) {}
+public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date) {}

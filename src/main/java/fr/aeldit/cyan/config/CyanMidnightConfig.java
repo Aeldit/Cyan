@@ -41,8 +41,6 @@ public class CyanMidnightConfig extends MidnightConfig
     public static boolean allowLocations = true;
     @Entry
     public static boolean allowBackTp = true;
-    @Entry
-    public static boolean allowConsoleEditConfig = false;
 
     @Comment
     public static Comment intOptions;
@@ -54,6 +52,8 @@ public class CyanMidnightConfig extends MidnightConfig
     public static int minOpLevelExeEditConfig = 4;
     @Entry(isSlider = true, min = 0, max = 4)
     public static int minOpLevelExeEditLocation = 4;
+    @Entry(min = 0)
+    public static int daysToRemoveBackTp = 180;
 
     @Comment
     public static Comment boolOptions;
@@ -69,7 +69,6 @@ public class CyanMidnightConfig extends MidnightConfig
         allOptionsMap.put("allowSurface", allowSurface);
         allOptionsMap.put("allowLocations", allowLocations);
         allOptionsMap.put("allowBackTp", allowBackTp);
-        allOptionsMap.put("allowConsoleEditConfig", allowConsoleEditConfig);
         allOptionsMap.put("useCustomTranslations", useCustomTranslations);
         allOptionsMap.put("msgToActionBar", msgToActionBar);
 
@@ -77,6 +76,7 @@ public class CyanMidnightConfig extends MidnightConfig
         allOptionsMap.put("minOpLevelExeKgi", minOpLevelExeKgi);
         allOptionsMap.put("minOpLevelExeEditConfig", minOpLevelExeEditConfig);
         allOptionsMap.put("minOpLevelExeEditLocation", minOpLevelExeEditLocation);
+        allOptionsMap.put("daysToRemoveBackTp", daysToRemoveBackTp);
     }
 
     public static void setBoolOption(@NotNull String optionName, boolean value)
@@ -88,7 +88,6 @@ public class CyanMidnightConfig extends MidnightConfig
             case "allowSurface" -> allowSurface = value;
             case "allowLocations" -> allowLocations = value;
             case "allowBackTp" -> allowBackTp = value;
-            case "allowConsoleEditConfig" -> allowConsoleEditConfig = value;
             case "useCustomTranslations" -> useCustomTranslations = value;
             case "msgToActionBar" -> msgToActionBar = value;
         }
@@ -123,6 +122,7 @@ public class CyanMidnightConfig extends MidnightConfig
             case "minOpLevelExeKgi" -> minOpLevelExeKgi = value;
             case "minOpLevelExeEditConfig" -> minOpLevelExeEditConfig = value;
             case "minOpLevelExeEditLocation" -> minOpLevelExeEditLocation = value;
+            case "daysToRemoveBackTp" -> daysToRemoveBackTp = value;
         }
 
         write(MODID);

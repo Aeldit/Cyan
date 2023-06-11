@@ -15,7 +15,7 @@
  * in the repo of this mod (https://github.com/Aeldit/Cyan)
  */
 
-package fr.aeldit.cyan.util;
+package fr.aeldit.cyan.teleportation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import static fr.aeldit.cyan.util.Utils.MODID;
+import static fr.aeldit.cyan.util.Utils.checkOrCreateModDir;
 
 public class Locations
 {
@@ -38,17 +39,9 @@ public class Locations
     public static final Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
 
 
-    public ArrayList<Location> getLocations()
+    public Locations()
     {
-        return this.locations;
-    }
-
-    public ArrayList<String> getLocationsNames()
-    {
-        ArrayList<String> locationsNames = new ArrayList<>();
-        this.locations.forEach(location -> locationsNames.add(location.name()));
-
-        return locationsNames;
+        read();
     }
 
     public void add(Location location)
@@ -78,6 +71,19 @@ public class Locations
     public boolean isEmpty()
     {
         return this.locations.isEmpty();
+    }
+
+    public ArrayList<Location> getLocations()
+    {
+        return this.locations;
+    }
+
+    public ArrayList<String> getLocationsNames()
+    {
+        ArrayList<String> locationsNames = new ArrayList<>();
+        this.locations.forEach(location -> locationsNames.add(location.name()));
+
+        return locationsNames;
     }
 
     public Location getLocation(String locationName)
@@ -133,6 +139,8 @@ public class Locations
 
     private void write()
     {
+        checkOrCreateModDir();
+
         try
         {
             if (this.locations.isEmpty() && Files.exists(LOCATIONS_PATH))
