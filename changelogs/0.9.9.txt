@@ -1,3 +1,5 @@
+🎴 Update to 1.20
+
 🚧 Fixed :
 - When editing the config via commands (ex: /cyan config allowBed set true), 2 messgages were send, one saying
 `The option ... has been set to ...` + the message from the /cyan getConfig command
