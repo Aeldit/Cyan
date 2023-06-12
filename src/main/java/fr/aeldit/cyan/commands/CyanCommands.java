@@ -55,11 +55,17 @@ public class CyanCommands
                                 .suggests((context, builder) -> ArgumentSuggestion.getOptions(builder))
                                 .then(CommandManager.literal("set")
                                         .then(CommandManager.argument("booleanValue", BoolArgumentType.bool())
-                                                .executes(CyanCommands::setBoolOption)
+                                                .then(CommandManager.argument("redisplayGetConfig", BoolArgumentType.bool())
+                                                        .executes(CyanCommands::setBoolOption)
+                                                )
+                                                .executes(CyanCommands::setBoolOptionFromCommand)
                                         )
                                         .then(CommandManager.argument("integerValue", IntegerArgumentType.integer())
                                                 .suggests((context, builder) -> ArgumentSuggestion.getInts(builder))
-                                                .executes(CyanCommands::setIntOption)
+                                                .then(CommandManager.argument("redisplayGetConfig", BoolArgumentType.bool())
+                                                        .executes(CyanCommands::setIntOption)
+                                                )
+                                                .executes(CyanCommands::setIntOptionFromCommand)
                                         )
                                 )
                                 .executes(CyanCommands::getOptionChatConfig)
@@ -125,7 +131,8 @@ public class CyanCommands
     /**
      * Called by the command {@code /cyan <optionName> set [boolValue]}
      * <p>
-     * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue]
+     * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue] and executes the
+     * * {@code /cyan getConfig} command to see the changed option in the chat
      */
     public static int setBoolOption(@NotNull CommandContext<ServerCommandSource> context)
     {
@@ -146,8 +153,43 @@ public class CyanCommands
                 if (Utils.getOptionsList().get("booleans").contains(option))
                 {
                     CyanMidnightConfig.setBoolOption(option, value);
-
                     source.getServer().getCommandManager().executeWithPrefix(source, "/cyan getConfig");
+                }
+                else
+                {
+                    CyanLibUtils.sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
+                            "cyan.message.error.optionNotFound"
+                    );
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * Called by the command {@code /cyan <optionName> set [boolValue]}
+     * <p>
+     * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue]
+     */
+    public static int setBoolOptionFromCommand(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        if (player == null)
+        {
+            context.getSource().getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
+        }
+        else
+        {
+            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
+            {
+                String option = StringArgumentType.getString(context, "optionName");
+                boolean value = BoolArgumentType.getBool(context, "booleanValue");
+
+                if (Utils.getOptionsList().get("booleans").contains(option))
+                {
+                    CyanMidnightConfig.setBoolOption(option, value);
                     CyanLibUtils.sendPlayerMessage(player,
                             CyanLanguageUtils.getTranslation(SET + option),
                             "cyan.message.set.%s".formatted(option),
@@ -167,9 +209,10 @@ public class CyanCommands
     }
 
     /**
-     * Called by the command {@code /cyan <optionName> set [intValue]}
+     * Called by the command {@code /cyan <optionName> set [intValue] [redisplayGetConfig]}
      * <p>
-     * Changes the option in the {@link CyanMidnightConfig} class to the value [intValue]
+     * Changes the option in the {@link CyanMidnightConfig} class to the value [intValue] and executes the
+     * {@code /cyan getConfig} command to see the changed option in the chat
      */
     public static int setIntOption(@NotNull CommandContext<ServerCommandSource> context)
     {
@@ -214,6 +257,66 @@ public class CyanCommands
                     {
                         CyanMidnightConfig.setIntOption(option, value);
                         source.getServer().getCommandManager().executeWithPrefix(source, "/cyan getConfig");
+                    }
+                }
+                else
+                {
+                    CyanLibUtils.sendPlayerMessage(player,
+                            CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
+                            "cyan.message.error.optionNotFound"
+                    );
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * Called by the command {@code /cyan <optionName> set [intValue]}
+     * <p>
+     * Changes the option in the {@link CyanMidnightConfig} class to the value [intValue]
+     */
+    public static int setIntOptionFromCommand(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        if (player == null)
+        {
+            context.getSource().getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
+        }
+        else
+        {
+            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
+            {
+                String option = StringArgumentType.getString(context, "optionName");
+                int value = IntegerArgumentType.getInteger(context, "integerValue");
+
+                if (Utils.getOptionsList().get("integers").contains(option))
+                {
+                    if (option.equals("distanceToEntitiesKgi") && (value < 1 || value > 128))
+                    {
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "wrongDistanceKgi"),
+                                "cyan.message.wrongDistanceKgi"
+                        );
+                    }
+                    else if (option.equals("daysToRemoveBackTp") && (value < 1))
+                    {
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "daysMustBePositive"),
+                                "cyan.message.daysMustBePositive"
+                        );
+                    }
+                    else if (option.contains("minOpLevelExe") && (value < 0 || value > 4))
+                    {
+                        CyanLibUtils.sendPlayerMessage(player,
+                                CyanLanguageUtils.getTranslation(ERROR + "wrongOPLevel"),
+                                "cyan.message.wrongDistanceKgi"
+                        );
+                    }
+                    else
+                    {
+                        CyanMidnightConfig.setIntOption(option, value);
                         CyanLibUtils.sendPlayerMessage(player,
                                 CyanLanguageUtils.getTranslation(SET + option),
                                 "cyan.message.set.%s".formatted(option),
@@ -410,10 +513,10 @@ public class CyanCommands
                                 false,
                                 value ? Text.literal(Formatting.GREEN + "ON").
                                         setStyle(Style.EMPTY.withClickEvent(
-                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set false".formatted(key)))
+                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set false true".formatted(key)))
                                         ) : Text.literal(Formatting.RED + "OFF").
                                         setStyle(Style.EMPTY.withClickEvent(
-                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set true".formatted(key)))
+                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set true true".formatted(key)))
                                         )
                         );
                     }
