@@ -129,7 +129,7 @@ public class CyanCommands
     // Set functions
 
     /**
-     * Called by the command {@code /cyan <optionName> set [boolValue]}
+     * Called by the command {@code /cyan <optionName> set [boolValue] [redisplayGetConfig]}
      * <p>
      * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue] and executes the
      * * {@code /cyan getConfig} command to see the changed option in the chat
