@@ -145,13 +145,16 @@ public class BackTps
 
         try
         {
-            if (this.backTps.isEmpty() && Files.exists(BACK_TP_PATH))
+            if (this.backTps.isEmpty())
             {
-                Files.delete(BACK_TP_PATH);
+                if (Files.exists(BACK_TP_PATH))
+                {
+                    Files.delete(BACK_TP_PATH);
+                }
             }
             else
             {
-                Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
+                Gson gsonWriter = new GsonBuilder().create();
                 Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
                 gsonWriter.toJson(this.backTps, writer);
                 writer.close();

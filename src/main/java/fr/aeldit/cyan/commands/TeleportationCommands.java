@@ -166,7 +166,7 @@ public class TeleportationCommands
             {
                 int x = player.getBlockPos().getX();
                 int z = player.getBlockPos().getZ();
-                int y = player.world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
+                int y = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
 
                 player.teleport(context.getSource().getWorld(), x, y, z, player.getYaw(), player.getPitch());
                 CyanLibUtils.sendPlayerMessage(player,

@@ -1,0 +1,4 @@
+🚧 Fixed :
+- When editing the config via commands (ex: /cyan config allowBed set true), 2 messgages were send, one saying
+`The option ... has been set to ...` + the message from the /cyan getConfig command
+- When the game stopped and the backTp array was empty, instead of removing the file, an empty file was created

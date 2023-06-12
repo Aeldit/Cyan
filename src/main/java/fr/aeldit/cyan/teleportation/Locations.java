@@ -143,9 +143,12 @@ public class Locations
 
         try
         {
-            if (this.locations.isEmpty() && Files.exists(LOCATIONS_PATH))
+            if (this.locations.isEmpty())
             {
-                Files.delete(LOCATIONS_PATH);
+                if (Files.exists(LOCATIONS_PATH))
+                {
+                    Files.delete(LOCATIONS_PATH);
+                }
             }
             else
             {
