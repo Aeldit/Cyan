@@ -15,6 +15,7 @@
 |   `1.19 - 1.19.2`    |     ✅      |    latest    |
 |       `1.19.3`       |     ❌      |   (0.9.7)    |
 |       `1.19.4`       |     ✅      |    latest    |
+|        `1.20`        |     ✅      |    latest    |
 
 ### 💲`Features`
 
@@ -39,19 +40,24 @@
 
 ### ✅ `List of commands (and their aliases)`
 
-|              Command              |                       Description                        |         Alias         |
-|:---------------------------------:|:--------------------------------------------------------:|:---------------------:|
-|              `/bed`               |       Teleports you to your bed or respawn anchor        |         `/b`          |
-|        `/killgrounditems`         | Kills a items floating on the ground in a certain radius |        `/kgi`         |
-|            `/surface`             |               Teleports you to the surface               |         `/s`          |
-|                                   |                                                          |                       |
-|  `/setlocation <location_name>`   |         Saves the current position as a location         | `/sl <location_name>` |
-| `/removelocation <location_name>` |                Removes the given location                | `/rl <location_name>` |
-|       `/removealllocations`       |                Removes the given location                |           ❌           |
-|    `/location <location_name>`    |           Teleports you to the given location            | `/l <location_name>`  |
-|          `/getlocations`          |             Displays all the saved locations             |         `/gl`         |
-|                                   |                                                          |                       |
-|              `/back`              |         Teleports you to the last place you died         |           ❌           |
+|              Command              |                            Description                             |         Alias         |
+|:---------------------------------:|:------------------------------------------------------------------:|:---------------------:|
+|              `/bed`               |            Teleports you to your bed or respawn anchor             |         `/b`          |
+|        `/killgrounditems`         |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
+|            `/surface`             |                    Teleports you to the surface                    |         `/s`          |
+|                                   |                                                                    |                       |
+|  `/setlocation <location_name>`   |              Saves the current position as a location              | `/sl <location_name>` |
+| `/removelocation <location_name>` |                     Removes the given location                     | `/rl <location_name>` |
+|       `/removealllocations`       |                     Removes the given location                     |           ❌           |
+|    `/location <location_name>`    |                Teleports you to the given location                 | `/l <location_name>`  |
+|          `/getlocations`          |                  Displays all the saved locations                  |         `/gl`         |
+|                                   |                                                                    |                       |
+|              `/back`              |              Teleports you to the last place you died              |           ❌           |
+|                                   |                                                                    |                       |
+|    `/cyan reloadTranslations`     |     Reloads the custom translations (useful when editing them)     |           ❌           |
+|   `/cyan removePropertiesFiles`   |  Transfers the properties files to json files, then deletes them   |           ❌           |
+|                                   |                                                                    |                       |
+|         `/cyan getConfig`         | Displays in the player's chat the current value of all the options |           ❌           |
 
 ***
 
@@ -66,7 +72,7 @@
 How to do this ?
 
 1. Download the file `translations.json`
-   located [here](https://github.com/Aeldit/Cyan/tree/1.19.3/docs) and put it in your Minecraft server folder
+   located [here](https://github.com/Aeldit/Cyan/tree/1.19.4/docs) and put it in your Minecraft server folder
    (`minecraft/config/cyan`)
 2. Then you can translate the file to any language you want
 3. There are some unicode characters in the file (they look like `\u00A7c`). They are used to determine the
