@@ -49,8 +49,8 @@ public final class ArgumentSuggestion
     public static CompletableFuture<Suggestions> getOptions(@NotNull SuggestionsBuilder builder)
     {
         List<String> options = new ArrayList<>();
-        options.addAll(Utils.getOptionsList().get("booleans"));
-        options.addAll(Utils.getOptionsList().get("integers"));
+        options.addAll(Utils.getDefaultOptions().get("booleans"));
+        options.addAll(Utils.getDefaultOptions().get("integers"));
         return CommandSource.suggestMatching(options, builder);
     }
 

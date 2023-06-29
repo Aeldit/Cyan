@@ -17,10 +17,9 @@
 
 package fr.aeldit.cyan.util;
 
-import fr.aeldit.cyan.teleportation.BackTp;
-import fr.aeldit.cyan.teleportation.Location;
+import fr.aeldit.cyan.teleportation.BackTps;
+import fr.aeldit.cyan.teleportation.Locations;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class GsonUtils
                 {
                     if (!LocationsObj.locationExists(locationName))
                     {
-                        LocationsObj.add(new Location(
+                        LocationsObj.add(new Locations.Location(
                                 locationName,
                                 properties.getProperty(locationName).split(" ")[0],
                                 Double.parseDouble(properties.getProperty(locationName).split(" ")[1]),
@@ -83,7 +82,7 @@ public class GsonUtils
                 {
                     if (!BackTpsObj.backTpExists(playerUUID))
                     {
-                        BackTpsObj.add(new BackTp(
+                        BackTpsObj.add(new BackTps.BackTp(
                                 playerUUID,
                                 properties.getProperty(playerUUID).split(" ")[0],
                                 Double.parseDouble(properties.getProperty(playerUUID).split(" ")[1]),
@@ -98,45 +97,6 @@ public class GsonUtils
             {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    public static void removePropertiesFiles(ServerPlayerEntity player)
-    {
-        boolean fileDeleted = false;
-
-        try
-        {
-            if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties")))
-            {
-                Files.delete(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties"));
-                fileDeleted = true;
-            }
-
-            if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties")))
-            {
-                Files.delete(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties"));
-                fileDeleted = true;
-            }
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        if (fileDeleted)
-        {
-            CyanLibUtils.sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation("propertiesFilesDeleted"),
-                    "cyan.message.propertiesFilesDeleted"
-            );
-        }
-        else
-        {
-            CyanLibUtils.sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation("noPropertiesFiles"),
-                    "cyan.message.noPropertiesFiles"
-            );
         }
     }
 }

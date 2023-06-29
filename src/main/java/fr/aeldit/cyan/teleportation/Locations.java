@@ -34,10 +34,11 @@ import static fr.aeldit.cyan.util.Utils.checkOrCreateModDir;
 
 public class Locations
 {
+    public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}
+
     private ArrayList<Location> locations;
     private final TypeToken<ArrayList<Location>> LOCATIONS_TYPE = new TypeToken<>() {};
     public static final Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
-
 
     public Locations()
     {

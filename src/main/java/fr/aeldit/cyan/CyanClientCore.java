@@ -17,18 +17,15 @@
 
 package fr.aeldit.cyan;
 
-import eu.midnightdust.lib.config.MidnightConfig;
 import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 
-import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
 import static fr.aeldit.cyan.util.EventUtils.onGameStop;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
@@ -39,14 +36,9 @@ public class CyanClientCore implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        MidnightConfig.init(MODID, CyanMidnightConfig.class);
-        LOGGER.info("[Cyan] Successfully initialized config");
-
-        generateAllOptionsMap();
-
-        if (CyanMidnightConfig.useCustomTranslations)
+        if (LibConfig.getBoolOption("useCustomTranslations"))
         {
-            CyanLanguageUtils.loadLanguage(getDefaultTranslations());
+            LanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());

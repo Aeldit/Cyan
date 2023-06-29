@@ -21,15 +21,15 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
+import fr.aeldit.cyanlib.lib.CyanLibConfig;
+import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
-import static fr.aeldit.cyan.util.Utils.CyanLibUtils;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class MiscellaneousCommands
 {
@@ -52,22 +52,23 @@ public class MiscellaneousCommands
     /**
      * Called when a player execute the command {@code /killgrounditems} or {@code /kgi}
      * <p>
-     * Kills all the items on the ground in the default radius (defined if {@link CyanMidnightConfig})
+     * Kills all the items on the ground in the default radius (defined if {@link CyanLibConfig})
      */
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (CyanLibUtils.isPlayer(source))
+        if (LibUtils.isPlayer(source))
         {
-            if (CyanLibUtils.isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
+            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowKgi"), "kgiDisabled"))
             {
-                if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
+                if (LibUtils.hasPermission(player, LibConfig.getIntOption("minOpLevelExeKgi")))
                 {
-                    source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]".formatted(CyanMidnightConfig.distanceToEntitiesKgi * 16));
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation("kgi"),
+                    source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]"
+                            .formatted(LibConfig.getIntOption("distanceToEntitiesKgi") * 16));
+                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                            LanguageUtils.getTranslation("kgi"),
                             "cyan.message.kgi"
                     );
                 }
@@ -86,16 +87,16 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (CyanLibUtils.isPlayer(source))
+        if (LibUtils.isPlayer(source))
         {
-            if (CyanLibUtils.isOptionAllowed(player, CyanMidnightConfig.allowKgi, "kgiDisabled"))
+            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowKgi"), "kgiDisabled"))
             {
-                if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeKgi))
+                if (LibUtils.hasPermission(player, LibConfig.getIntOption("minOpLevelExeKgi")))
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
+                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                            LanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
                             "cyan.message.kgir",
                             Formatting.GOLD + Integer.toString(arg)
                     );

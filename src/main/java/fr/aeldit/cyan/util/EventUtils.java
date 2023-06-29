@@ -17,7 +17,7 @@
 
 package fr.aeldit.cyan.util;
 
-import fr.aeldit.cyan.teleportation.BackTp;
+import fr.aeldit.cyan.teleportation.BackTps;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
@@ -48,17 +48,17 @@ public class EventUtils
 
             if (entity.getWorld() == entity.getServer().getWorld(World.OVERWORLD))
             {
-                BackTpsObj.add(new BackTp(playerUUID, "overworld", entity.getX(), entity.getY(), entity.getZ(),
+                BackTpsObj.add(new BackTps.BackTp(playerUUID, "overworld", entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
             }
             else if (entity.getWorld() == entity.getServer().getWorld(World.NETHER))
             {
-                BackTpsObj.add(new BackTp(playerUUID, "nether", entity.getX(), entity.getY(), entity.getZ(),
+                BackTpsObj.add(new BackTps.BackTp(playerUUID, "nether", entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
             }
             else
             {
-                BackTpsObj.add(new BackTp(playerUUID, "end", entity.getX(), entity.getY(), entity.getZ(),
+                BackTpsObj.add(new BackTps.BackTp(playerUUID, "end", entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
             }
         }

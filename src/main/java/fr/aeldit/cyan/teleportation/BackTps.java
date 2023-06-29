@@ -20,7 +20,6 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -34,15 +33,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static fr.aeldit.cyan.util.Utils.MODID;
-import static fr.aeldit.cyan.util.Utils.checkOrCreateModDir;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class BackTps
 {
+    public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date) {}
+
     private ArrayList<BackTp> backTps;
     private final TypeToken<ArrayList<BackTp>> BACK_TYPE = new TypeToken<>() {};
     public static final Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
-
 
     public BackTps()
     {
@@ -72,7 +71,7 @@ public class BackTps
                 Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
                 long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
 
-                if (days >= CyanMidnightConfig.daysToRemoveBackTp)
+                if (days >= LibConfig.getIntOption("daysToRemoveBackTp"))
                 {
                     tmp.add(backTp);
                 }
