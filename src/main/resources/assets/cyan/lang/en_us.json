@@ -24,6 +24,8 @@
   "cyan.msg.optionNotFound": "§cThis option does not exist or you tried to set it to the wrong type of value (int or bool)",
   "cyan.msg.noPropertiesFiles": "§cNo properties files were found",
   "cyan.msg.wrongType": "§cThis option can only be set to the %s §ctype",
+  "cyanlib.msg.rule.opLevels": "§cThe OP level must be between 0 and 4 (both included)",
+  "cyanlib.msg.rule.positiveValue": "§cThe value must be positive",
   "-----------------------------------------------MESSAGES----------------------------------------------------": "",
   "cyan.msg.bed": "§3You have been teleported to your bed",
   "cyan.msg.respawnAnchor": "§3You have been teleported to your respawn anchor",
