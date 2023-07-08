@@ -173,6 +173,7 @@ public class BackTps
                 if (Files.exists(BACK_TP_PATH))
                 {
                     Files.delete(BACK_TP_PATH);
+                    removeEmptyModDir(false);
                 }
             }
             else

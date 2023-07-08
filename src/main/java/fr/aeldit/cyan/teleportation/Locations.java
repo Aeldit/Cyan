@@ -172,6 +172,7 @@ public class Locations
                 if (Files.exists(LOCATIONS_PATH))
                 {
                     Files.delete(LOCATIONS_PATH);
+                    removeEmptyModDir(true);
                 }
             }
             else

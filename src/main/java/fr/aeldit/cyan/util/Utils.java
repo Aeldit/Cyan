@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,6 +120,56 @@ public class Utils
             catch (IOException e)
             {
                 throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void removeEmptyModDir(boolean locations)
+    {
+        Path dir;
+
+        if (locations)
+        {
+            dir = Path.of(LOCATIONS_PATH.toString().replace("locations.json", ""));
+        }
+        else
+        {
+            dir = Path.of(BACK_TP_PATH.toString().replace("back.json", ""));
+        }
+
+        if (Files.exists(dir))
+        {
+            File[] listOfFiles = new File(dir.toUri()).listFiles();
+
+            if (listOfFiles.length == 0)
+            {
+                try
+                {
+                    Files.delete(dir);
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        dir = FabricLoader.getInstance().getConfigDir().resolve(MODID);
+
+        if (Files.exists(dir))
+        {
+            File[] listOfFiles = new File(dir.toUri()).listFiles();
+
+            if (listOfFiles.length == 0)
+            {
+                try
+                {
+                    Files.delete(dir);
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
