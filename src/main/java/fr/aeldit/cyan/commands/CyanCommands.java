@@ -25,7 +25,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.argumentTypes.ArgumentSuggestion;
 import fr.aeldit.cyanlib.lib.CyanLibCommands;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,9 +32,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class CyanCommands
 {
@@ -102,15 +105,19 @@ public class CyanCommands
 
         try
         {
-            if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties")))
+            Path path = Path.of(LOCATIONS_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
             {
-                Files.delete(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties"));
+                Files.delete(path);
                 fileDeleted = true;
             }
 
-            if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties")))
+            path = Path.of(BACK_TP_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
             {
-                Files.delete(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties"));
+                Files.delete(path);
                 fileDeleted = true;
             }
         }
@@ -129,7 +136,7 @@ public class CyanCommands
         else
         {
             LanguageUtils.sendPlayerMessage(player,
-                    LanguageUtils.getTranslation("noPropertiesFiles"),
+                    LanguageUtils.getTranslation(ERROR + "noPropertiesFiles"),
                     "cyan.msg.noPropertiesFiles"
             );
         }

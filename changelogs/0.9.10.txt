@@ -1,3 +1,6 @@
+✏️ Added :
+- The folders created by this mod are now removed if they are empty
+
 🚧 Fixed :
 - The Y and Z coordinates where reversed
 - The locations and death position were saved in the same folder independently of the solo world the player was in
@@ -6,4 +9,4 @@
 
 🫧 Changes :
 - Use CyanLib 0.3.3
-- Remove unnecessary modImplementation of the fabric api and use only the necessary ones
+- Remove unnecessary modImplementation of the fabric api and use only the necessary apis

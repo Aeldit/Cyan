@@ -18,19 +18,17 @@
 package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyan.teleportation.BackTps;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.util.Utils.BackTpsObj;
+import static fr.aeldit.cyan.util.Utils.LOGGER;
 
 public class EventUtils
 {
@@ -66,23 +64,9 @@ public class EventUtils
 
     public static void removeOutdatedBackTps()
     {
-        Path modPath = FabricLoader.getInstance().getConfigDir().resolve(MODID);
-
-        if (Files.exists(modPath))
+        if (Files.exists(BACK_TP_PATH))
         {
             BackTpsObj.removeAllOutdated();
-
-            if (new File(modPath.toUri()).listFiles().length == 0)
-            {
-                try
-                {
-                    Files.delete(modPath);
-                }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
         }
     }
 }

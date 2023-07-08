@@ -19,27 +19,32 @@ package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyan.teleportation.BackTps;
 import fr.aeldit.cyan.teleportation.Locations;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
+import static fr.aeldit.cyan.util.Utils.BackTpsObj;
+import static fr.aeldit.cyan.util.Utils.LocationsObj;
 
 public class GsonUtils
 {
     public static void transferPropertiesToGson()
     {
-        if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties")))
+        Path path = Path.of(LOCATIONS_PATH.toString().replace("json", "properties"));
+
+        if (Files.exists(path))
         {
             try
             {
                 Properties properties = new Properties();
-                FileInputStream fis = new FileInputStream(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.properties").toFile());
+                FileInputStream fis = new FileInputStream(path.toFile());
                 properties.load(fis);
                 fis.close();
 
@@ -65,12 +70,14 @@ public class GsonUtils
             }
         }
 
-        if (Files.exists(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties")))
+        path = Path.of(BACK_TP_PATH.toString().replace("json", "properties"));
+
+        if (Files.exists(path))
         {
             try
             {
                 Properties properties = new Properties();
-                FileInputStream fis = new FileInputStream(FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.properties").toFile());
+                FileInputStream fis = new FileInputStream(path.toFile());
                 properties.load(fis);
                 fis.close();
 
