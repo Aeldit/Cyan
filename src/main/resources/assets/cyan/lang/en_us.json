@@ -85,7 +85,7 @@
   "cyan.msg.getCfg.allowKgi": "§6- §d/kgi §3: %s",
   "cyan.msg.getCfg.allowSurface": "§6- §d/surface §3: %s",
   "cyan.msg.getCfg.allowLocations": "§6- §3Location commands : %s",
-  "cyan.msg.getCfg.allowBackTp": "§6- §d/back : %s",
+  "cyan.msg.getCfg.allowBackTp": "§6- §d/back §3: %s",
   "cyan.msg.getCfg.allowConsoleEditConfig": "§6- §3Edit config via console : %s",
   "cyan.msg.getCfg.useCustomTranslations": "§6- §3Custom translations : %s",
   "cyan.msg.getCfg.msgToActionBar": "§6- §3Messages to action bar : %s",

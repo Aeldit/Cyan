@@ -64,7 +64,7 @@ public class EventUtils
         }
     }
 
-    public static void onGameStop()
+    public static void removeOutdatedBackTps()
     {
         Path modPath = FabricLoader.getInstance().getConfigDir().resolve(MODID);
 

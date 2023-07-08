@@ -28,22 +28,19 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import static fr.aeldit.cyan.util.Utils.MODID;
-import static fr.aeldit.cyan.util.Utils.checkOrCreateModDir;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class Locations
 {
     public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}
 
-    private ArrayList<Location> locations;
-    private final TypeToken<ArrayList<Location>> LOCATIONS_TYPE = new TypeToken<>() {};
-    public static final Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
-
-    public Locations()
-    {
-        read();
-    }
+    private List<Location> locations;
+    private final TypeToken<List<Location>> LOCATIONS_TYPE = new TypeToken<>() {};
+    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
+    private boolean isEditingFile = false;
 
     public void add(Location location)
     {
@@ -74,12 +71,12 @@ public class Locations
         return this.locations.isEmpty();
     }
 
-    public ArrayList<Location> getLocations()
+    public List<Location> getLocations()
     {
         return this.locations;
     }
 
-    public ArrayList<String> getLocationsNames()
+    public List<String> getLocationsNames()
     {
         ArrayList<String> locationsNames = new ArrayList<>();
         this.locations.forEach(location -> locationsNames.add(location.name()));
@@ -116,7 +113,7 @@ public class Locations
         return false;
     }
 
-    public void read()
+    public void readServer()
     {
         if (Files.exists(LOCATIONS_PATH))
         {
@@ -124,7 +121,7 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                this.locations = gsonReader.fromJson(reader, LOCATIONS_TYPE);
+                this.locations.addAll(gsonReader.fromJson(reader, LOCATIONS_TYPE));
                 reader.close();
             }
             catch (IOException e)
@@ -134,13 +131,39 @@ public class Locations
         }
         else
         {
-            this.locations = new ArrayList<>();
+            this.locations = Collections.synchronizedList(new ArrayList<>());
+        }
+    }
+
+    public void readClient(String saveName)
+    {
+        this.locations = Collections.synchronizedList(new ArrayList<>());
+        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/" + saveName + "/locations.json");
+        checkOrCreateModDir(true);
+
+        if (Files.exists(LOCATIONS_PATH))
+        {
+            try
+            {
+                Gson gsonReader = new Gson();
+                Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
+                this.locations.addAll(gsonReader.fromJson(reader, LOCATIONS_TYPE));
+                reader.close();
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        else
+        {
+            this.locations = Collections.synchronizedList(new ArrayList<>());
         }
     }
 
     private void write()
     {
-        checkOrCreateModDir();
+        checkOrCreateModDir(true);
 
         try
         {
@@ -153,10 +176,44 @@ public class Locations
             }
             else
             {
-                Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
-                Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
-                gsonWriter.toJson(this.locations, writer);
-                writer.close();
+                if (!this.isEditingFile)
+                {
+                    this.isEditingFile = true;
+
+                    Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
+                    Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
+                    gsonWriter.toJson(this.locations, writer);
+                    writer.close();
+
+                    this.isEditingFile = false;
+                }
+                else
+                {
+                    long end = System.currentTimeMillis() + 1000; // 1 s
+                    boolean couldWrite = false;
+
+                    while (System.currentTimeMillis() < end)
+                    {
+                        if (!this.isEditingFile)
+                        {
+                            this.isEditingFile = true;
+
+                            Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
+                            Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
+                            gsonWriter.toJson(this.locations, writer);
+                            writer.close();
+
+                            couldWrite = true;
+                            this.isEditingFile = false;
+                            break;
+                        }
+                    }
+
+                    if (!couldWrite)
+                    {
+                        LOGGER.info("[CyanSetHome] Could not write the locations file because it is already being written (for more than 1 sec)");
+                    }
+                }
             }
         }
         catch (IOException e)

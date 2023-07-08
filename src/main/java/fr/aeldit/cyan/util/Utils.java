@@ -34,6 +34,9 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
+
 public class Utils
 {
     public static final String MODID = "cyan";
@@ -46,7 +49,7 @@ public class Utils
     public static CyanLibLanguageUtils LanguageUtils = new CyanLibLanguageUtils(Utils.MODID, LibConfig);
     public static CyanLib LibUtils = new CyanLib(Utils.MODID, LibConfig, LanguageUtils);
 
-    public static HashMap<String, String> defaultTranslations;
+    private static HashMap<String, String> defaultTranslations;
 
     public static @NotNull Map<String, Object> getDefaultOptions()
     {
@@ -82,9 +85,30 @@ public class Utils
         return rules;
     }
 
-    public static void checkOrCreateModDir()
+    public static void checkOrCreateModDir(boolean locations)
     {
         Path dir = FabricLoader.getInstance().getConfigDir().resolve(MODID);
+
+        if (!Files.exists(dir))
+        {
+            try
+            {
+                Files.createDirectory(dir);
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (locations)
+        {
+            dir = Path.of(LOCATIONS_PATH.toString().replace("locations.json", ""));
+        }
+        else
+        {
+            dir = Path.of(BACK_TP_PATH.toString().replace("back.json", ""));
+        }
 
         if (!Files.exists(dir))
         {

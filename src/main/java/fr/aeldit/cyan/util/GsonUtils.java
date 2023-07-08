@@ -43,8 +43,6 @@ public class GsonUtils
                 properties.load(fis);
                 fis.close();
 
-                LocationsObj.read();
-
                 for (String locationName : properties.stringPropertyNames())
                 {
                     if (!LocationsObj.locationExists(locationName))
@@ -76,7 +74,7 @@ public class GsonUtils
                 properties.load(fis);
                 fis.close();
 
-                BackTpsObj.read();
+                BackTpsObj.readServer();
 
                 for (String playerUUID : properties.stringPropertyNames())
                 {

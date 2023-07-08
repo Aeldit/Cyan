@@ -1,5 +1,9 @@
 🚧 Fixed :
 - The Y and Z coordinates where reversed
 - The locations and death position were saved in the same folder independently of the solo world the player was in
+- Locations and BackTp systems now use thread-safe classes (`ConcurrentHashMap()` and `Collections.synchronizedList()`)
+  to prevent any problem with concurrent modifications (basically 2 people editing the homes (which then writes in the files) at the same time)
 
-🫧 Use CyanLib 0.3.3
+🫧 Changes :
+- Use CyanLib 0.3.3
+- Remove unnecessary modImplementation of the fabric api and use only the necessary ones
