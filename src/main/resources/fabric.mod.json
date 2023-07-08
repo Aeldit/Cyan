@@ -30,7 +30,7 @@
     "fabric-entity-events-v1": "*",
     "fabric-networking-api-v1": "*",
     "fabric-command-api-v2": "*",
-    "minecraft": "1.20.x",
+    "minecraft": "1.19.4",
     "java": ">=17"
   },
   "custom": {
