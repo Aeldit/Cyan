@@ -22,6 +22,7 @@ import fr.aeldit.cyan.teleportation.Locations;
 import fr.aeldit.cyanlib.lib.CyanLib;
 import fr.aeldit.cyanlib.lib.CyanLibConfig;
 import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
+import fr.aeldit.cyanlib.lib.utils.RULES;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -41,9 +42,9 @@ public class Utils
     public static Locations LocationsObj = new Locations();
     public static BackTps BackTpsObj = new BackTps();
 
-    public static CyanLibConfig LibConfig = new CyanLibConfig(MODID, getDefaultOptions());
-    public static CyanLibLanguageUtils LanguageUtils = new CyanLibLanguageUtils(Utils.MODID);
-    public static CyanLib LibUtils = new CyanLib(Utils.MODID, LibConfig);
+    public static CyanLibConfig LibConfig = new CyanLibConfig(MODID, getDefaultOptions(), getRules());
+    public static CyanLibLanguageUtils LanguageUtils = new CyanLibLanguageUtils(Utils.MODID, LibConfig);
+    public static CyanLib LibUtils = new CyanLib(Utils.MODID, LibConfig, LanguageUtils);
 
     public static HashMap<String, String> defaultTranslations;
 
@@ -59,13 +60,26 @@ public class Utils
         options.put("useCustomTranslations", false);
         options.put("msgToActionBar", true);
 
-        options.put("distanceToEntitiesKgi", 14);
         options.put("minOpLevelExeKgi", 4);
         options.put("minOpLevelExeEditConfig", 4);
         options.put("minOpLevelExeEditLocation", 4);
+        options.put("distanceToEntitiesKgi", 14);
         options.put("daysToRemoveBackTp", 180);
 
         return options;
+    }
+
+    public static @NotNull Map<String, Object> getRules()
+    {
+        Map<String, Object> rules = new HashMap<>();
+
+        rules.put("minOpLevelExeKgi", RULES.OP_LEVELS);
+        rules.put("minOpLevelExeEditConfig", RULES.OP_LEVELS);
+        rules.put("minOpLevelExeEditLocation", RULES.OP_LEVELS);
+        rules.put("distanceToEntitiesKgi", RULES.POSITIVE_VALUE);
+        rules.put("daysToRemoveBackTp", RULES.POSITIVE_VALUE);
+
+        return rules;
     }
 
     public static void checkOrCreateModDir()
@@ -110,7 +124,7 @@ public class Utils
             defaultTranslations.put("desc.allowSurface", "§3The §eallowSurface §3option toggles the use of the §d/surface §3command");
             defaultTranslations.put("desc.allowLocations", "§3The §eallowLocations §3option toggles the use of the §dlocation §3commands");
             defaultTranslations.put("desc.allowBackTp", "§3The §eallowBackTp §3option toggles the use of the §d/back §3command");
-            defaultTranslations.put("desc.useCustomTranslations", "§3The §euseTranslations §3option toggles the use of custom translations (server-side only)");
+            defaultTranslations.put("desc.useCustomTranslations", "§3The §euseCustomTranslations §3option toggles the use of custom translations");
             defaultTranslations.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
             defaultTranslations.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
             defaultTranslations.put("desc.minOpLevelExeKgi", "§3The §eminOpLevelExeKgi §3option defines the required OP level to use the §d/kgi §3command");
@@ -119,9 +133,9 @@ public class Utils
             defaultTranslations.put("desc.daysToRemoveBackTp", "§3The §edaysToRemoveBackTp §3option defines the number of days the last death location of a player is kept");
 
             defaultTranslations.put("getCfg.header", "§6Cyan - OPTIONS :\n");
-            defaultTranslations.put("getCfg.allowBed", "§6- §d/bed: %s");
-            defaultTranslations.put("getCfg.allowKgi", "§6- §d/kgi : %s");
-            defaultTranslations.put("getCfg.allowSurface", "§6- §d/surface : %s");
+            defaultTranslations.put("getCfg.allowBed", "§6- §d/bed §3: %s");
+            defaultTranslations.put("getCfg.allowKgi", "§6- §d/kgi §3: %s");
+            defaultTranslations.put("getCfg.allowSurface", "§6- §d/surface §3: %s");
             defaultTranslations.put("getCfg.allowLocations", "§6- §3Location commands : %s");
             defaultTranslations.put("getCfg.allowBackTp", "§6- §d/back §3: %s");
             defaultTranslations.put("getCfg.useCustomTranslations", "§6- §3Custom translations : %s");

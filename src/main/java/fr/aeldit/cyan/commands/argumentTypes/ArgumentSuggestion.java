@@ -19,7 +19,6 @@ package fr.aeldit.cyan.commands.argumentTypes;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import fr.aeldit.cyan.util.Utils;
 import net.minecraft.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static fr.aeldit.cyan.util.Utils.LocationsObj;
+import static fr.aeldit.cyan.util.Utils.getDefaultOptions;
 
 public final class ArgumentSuggestion
 {
@@ -48,10 +48,7 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getOptions(@NotNull SuggestionsBuilder builder)
     {
-        List<String> options = new ArrayList<>();
-        options.addAll(Utils.getDefaultOptions().get("booleans"));
-        options.addAll(Utils.getDefaultOptions().get("integers"));
-        return CommandSource.suggestMatching(options, builder);
+        return CommandSource.suggestMatching(getDefaultOptions().keySet(), builder);
     }
 
     /**

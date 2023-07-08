@@ -1,0 +1,5 @@
+🚧 Fixed :
+- The Y and Z coordinates where reversed
+- The locations and death position were saved in the same folder independently of the solo world the player was in
+
+🫧 Use CyanLib 0.3.3

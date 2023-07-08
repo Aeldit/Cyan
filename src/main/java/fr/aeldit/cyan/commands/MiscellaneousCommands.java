@@ -22,7 +22,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyanlib.lib.CyanLibConfig;
-import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -67,9 +66,9 @@ public class MiscellaneousCommands
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]"
                             .formatted(LibConfig.getIntOption("distanceToEntitiesKgi") * 16));
-                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.sendPlayerMessage(player,
                             LanguageUtils.getTranslation("kgi"),
-                            "cyan.message.kgi"
+                            "cyan.msg.kgi"
                     );
                 }
             }
@@ -95,9 +94,9 @@ public class MiscellaneousCommands
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
-                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.sendPlayerMessage(player,
                             LanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
-                            "cyan.message.kgir",
+                            "cyan.msg.kgir",
                             Formatting.GOLD + Integer.toString(arg)
                     );
                 }

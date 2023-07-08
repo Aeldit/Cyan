@@ -25,7 +25,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.argumentTypes.ArgumentSuggestion;
 import fr.aeldit.cyanlib.lib.CyanLibCommands;
-import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -122,16 +121,16 @@ public class CyanCommands
 
         if (fileDeleted)
         {
-            CyanLibLanguageUtils.sendPlayerMessage(player,
+            LanguageUtils.sendPlayerMessage(player,
                     LanguageUtils.getTranslation("propertiesFilesDeleted"),
-                    "cyan.message.propertiesFilesDeleted"
+                    "cyan.msg.propertiesFilesDeleted"
             );
         }
         else
         {
-            CyanLibLanguageUtils.sendPlayerMessage(player,
+            LanguageUtils.sendPlayerMessage(player,
                     LanguageUtils.getTranslation("noPropertiesFiles"),
-                    "cyan.message.noPropertiesFiles"
+                    "cyan.msg.noPropertiesFiles"
             );
         }
         return Command.SINGLE_SUCCESS;
@@ -146,7 +145,7 @@ public class CyanCommands
      */
     public static int setBoolOption(@NotNull CommandContext<ServerCommandSource> context)
     {
-        CyanLibCommands.setBoolOption(context, defaultTranslations, LibUtils,
+        CyanLibCommands.setBoolOption(context, getDefaultTranslations(), LibUtils,
                 StringArgumentType.getString(context, "optionName"), BoolArgumentType.getBool(context, "booleanValue"),
                 false, BoolArgumentType.getBool(context, "mode")
         );
@@ -160,7 +159,7 @@ public class CyanCommands
      */
     public static int setBoolOptionFromCommand(@NotNull CommandContext<ServerCommandSource> context)
     {
-        CyanLibCommands.setBoolOption(context, defaultTranslations, LibUtils,
+        CyanLibCommands.setBoolOption(context, getDefaultTranslations(), LibUtils,
                 StringArgumentType.getString(context, "optionName"), BoolArgumentType.getBool(context, "booleanValue"),
                 true, false
         );

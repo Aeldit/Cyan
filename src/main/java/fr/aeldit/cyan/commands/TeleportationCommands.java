@@ -21,7 +21,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.teleportation.BackTps;
-import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static fr.aeldit.cyan.util.Utils.*;
-import static fr.aeldit.cyanlib.lib.TranslationsPrefixes.ERROR;
+import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class TeleportationCommands
 {
@@ -84,16 +83,16 @@ public class TeleportationCommands
                                 player.teleport(player.getServer().getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
                     }
 
-                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.sendPlayerMessage(player,
                             LanguageUtils.getTranslation("backTp"),
-                            "cyan.message.backTp"
+                            "cyan.msg.backTp"
                     );
                 }
                 else
                 {
-                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.sendPlayerMessage(player,
                             LanguageUtils.getTranslation(ERROR + "noLastPos"),
-                            "cyan.message.noLastPos"
+                            "cyan.msg.noLastPos"
                     );
                 }
             }
@@ -124,9 +123,9 @@ public class TeleportationCommands
                                 player.getSpawnPointPosition().getZ(),
                                 player.getYaw(), player.getPitch()
                         );
-                        CyanLibLanguageUtils.sendPlayerMessage(player,
+                        LanguageUtils.sendPlayerMessage(player,
                                 LanguageUtils.getTranslation("bed"),
-                                "cyan.message.bed"
+                                "cyan.msg.bed"
                         );
                     }
                     else if (player.getSpawnPointDimension() == World.NETHER)
@@ -137,17 +136,17 @@ public class TeleportationCommands
                                 player.getSpawnPointPosition().getZ(),
                                 player.getYaw(), player.getPitch()
                         );
-                        CyanLibLanguageUtils.sendPlayerMessage(player,
+                        LanguageUtils.sendPlayerMessage(player,
                                 LanguageUtils.getTranslation("respawnAnchor"),
-                                "cyan.message.respawnAnchor"
+                                "cyan.msg.respawnAnchor"
                         );
                     }
                 }
                 else
                 {
-                    CyanLibLanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.sendPlayerMessage(player,
                             LanguageUtils.getTranslation(ERROR + "bedNotFound"),
-                            "cyan.message.bedNotFound"
+                            "cyan.msg.bedNotFound"
                     );
                 }
             }
@@ -169,13 +168,14 @@ public class TeleportationCommands
             if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowSurface"), "surfaceDisabled"))
             {
                 player.teleport(context.getSource().getWorld(),
-                        player.getBlockPos().getX(), player.getBlockPos().getZ(),
+                        player.getBlockPos().getX(),
                         player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, player.getBlockPos().getX(), player.getBlockPos().getZ()),
+                        player.getBlockPos().getZ(),
                         player.getYaw(), player.getPitch()
                 );
-                CyanLibLanguageUtils.sendPlayerMessage(player,
+                LanguageUtils.sendPlayerMessage(player,
                         LanguageUtils.getTranslation("surface"),
-                        "cyan.message.surface"
+                        "cyan.msg.surface"
                 );
             }
         }
