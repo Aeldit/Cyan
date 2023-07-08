@@ -3,7 +3,7 @@
   "id": "cyan",
   "version": "${version}",
   "name": "Cyan",
-  "description": "This mod adds a few commands to minecraft",
+  "description": "This mod allows you to save global locations, teleport to your bed / respawn anchor or to the surface, and many more !",
   "authors": [
     "Aeldit"
   ],
@@ -21,15 +21,23 @@
     ],
     "client": [
       "fr.aeldit.cyan.CyanClientCore"
-    ],
-    "modmenu": [
-      "fr.aeldit.cyan.config.ModMenuApiImpl"
     ]
   },
   "depends": {
     "fabricloader": ">=0.14.21",
-    "fabric": "*",
-    "minecraft": "1.19.4",
+    "fabric-resource-loader-v0": "*",
+    "fabric-lifecycle-events-v1": "*",
+    "fabric-entity-events-v1": "*",
+    "fabric-networking-api-v1": "*",
+    "fabric-command-api-v2": "*",
+    "minecraft": "1.20.x",
     "java": ">=17"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/JJMnf62Kuj"
+      }
+    }
   }
 }

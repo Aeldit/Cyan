@@ -17,19 +17,17 @@
 
 package fr.aeldit.cyan;
 
-import eu.midnightdust.lib.config.MidnightConfig;
 import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
-import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
-import static fr.aeldit.cyan.util.EventUtils.onGameStop;
+import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.*;
@@ -39,19 +37,17 @@ public class CyanServerCore implements DedicatedServerModInitializer
     @Override
     public void onInitializeServer()
     {
-        MidnightConfig.init(MODID, CyanMidnightConfig.class);
-        LOGGER.info("[Cyan] Successfully initialized config");
+        LocationsObj.readServer();
+        BackTpsObj.readServer();
 
-        generateAllOptionsMap();
-
-        if (CyanMidnightConfig.useCustomTranslations)
+        if (LibConfig.getBoolOption("useCustomTranslations"))
         {
-            CyanLanguageUtils.loadLanguage(getDefaultTranslations());
+            LanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> transferPropertiesToGson());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> onGameStop());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> removeOutdatedBackTps());
         // TODO -> Block break event for claims
 
         // Register all the commands
@@ -61,7 +57,6 @@ public class CyanServerCore implements DedicatedServerModInitializer
             CyanCommands.register(dispatcher);
             LocationCommands.register(dispatcher);
         });
-        LOGGER.info("[Cyan] Successfully initialized commands");
         LOGGER.info("[Cyan] Successfully completed initialization");
     }
 }

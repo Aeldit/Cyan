@@ -20,7 +20,6 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -31,23 +30,21 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static fr.aeldit.cyan.util.Utils.MODID;
-import static fr.aeldit.cyan.util.Utils.checkOrCreateModDir;
+import static fr.aeldit.cyan.util.Utils.*;
 
 public class BackTps
 {
-    private ArrayList<BackTp> backTps;
-    private final TypeToken<ArrayList<BackTp>> BACK_TYPE = new TypeToken<>() {};
-    public static final Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
+    public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date) {}
 
-
-    public BackTps()
-    {
-        read();
-    }
+    private List<BackTp> backTps;
+    private final TypeToken<List<BackTp>> BACK_TYPE = new TypeToken<>() {};
+    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
+    private boolean isEditingFile = false;
 
     public void add(BackTp backTp)
     {
@@ -72,7 +69,7 @@ public class BackTps
                 Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
                 long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
 
-                if (days >= CyanMidnightConfig.daysToRemoveBackTp)
+                if (days >= LibConfig.getIntOption("daysToRemoveBackTp"))
                 {
                     tmp.add(backTp);
                 }
@@ -117,7 +114,7 @@ public class BackTps
         return false;
     }
 
-    public void read()
+    public void readServer()
     {
         if (Files.exists(BACK_TP_PATH))
         {
@@ -125,7 +122,7 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                this.backTps = gsonReader.fromJson(reader, BACK_TYPE);
+                this.backTps.addAll(gsonReader.fromJson(reader, BACK_TYPE));
                 reader.close();
             }
             catch (IOException e)
@@ -135,13 +132,39 @@ public class BackTps
         }
         else
         {
-            this.backTps = new ArrayList<>();
+            this.backTps = Collections.synchronizedList(new ArrayList<>());
+        }
+    }
+
+    public void readClient(String saveName)
+    {
+        this.backTps = Collections.synchronizedList(new ArrayList<>());
+        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/" + saveName + "/back.json");
+        checkOrCreateModDir(false);
+
+        if (Files.exists(BACK_TP_PATH))
+        {
+            try
+            {
+                Gson gsonReader = new Gson();
+                Reader reader = Files.newBufferedReader(BACK_TP_PATH);
+                this.backTps.addAll(gsonReader.fromJson(reader, BACK_TYPE));
+                reader.close();
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        else
+        {
+            this.backTps = Collections.synchronizedList(new ArrayList<>());
         }
     }
 
     private void write()
     {
-        checkOrCreateModDir();
+        checkOrCreateModDir(false);
 
         try
         {
@@ -150,14 +173,50 @@ public class BackTps
                 if (Files.exists(BACK_TP_PATH))
                 {
                     Files.delete(BACK_TP_PATH);
+                    removeEmptyModDir(false);
                 }
             }
             else
             {
-                Gson gsonWriter = new GsonBuilder().create();
-                Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
-                gsonWriter.toJson(this.backTps, writer);
-                writer.close();
+
+                if (!this.isEditingFile)
+                {
+                    this.isEditingFile = true;
+
+                    Gson gsonWriter = new GsonBuilder().create();
+                    Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
+                    gsonWriter.toJson(this.backTps, writer);
+                    writer.close();
+
+                    this.isEditingFile = false;
+                }
+                else
+                {
+                    long end = System.currentTimeMillis() + 1000; // 1 s
+                    boolean couldWrite = false;
+
+                    while (System.currentTimeMillis() < end)
+                    {
+                        if (!this.isEditingFile)
+                        {
+                            this.isEditingFile = true;
+
+                            Gson gsonWriter = new GsonBuilder().create();
+                            Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
+                            gsonWriter.toJson(this.backTps, writer);
+                            writer.close();
+
+                            couldWrite = true;
+                            this.isEditingFile = false;
+                            break;
+                        }
+                    }
+
+                    if (!couldWrite)
+                    {
+                        LOGGER.info("[Cyan] Could not write the backTps file because it is already being written (for more than 1 sec)");
+                    }
+                }
             }
         }
         catch (IOException e)

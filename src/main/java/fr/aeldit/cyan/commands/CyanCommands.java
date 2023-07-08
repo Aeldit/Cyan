@@ -24,26 +24,21 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.argumentTypes.ArgumentSuggestion;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
-import fr.aeldit.cyan.util.GsonUtils;
-import fr.aeldit.cyan.util.Utils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
+import fr.aeldit.cyanlib.lib.CyanLibCommands;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
-import static fr.aeldit.cyan.util.Utils.CyanLanguageUtils;
-import static fr.aeldit.cyan.util.Utils.CyanLibUtils;
-import static fr.aeldit.cyanlib.util.Constants.*;
+import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class CyanCommands
 {
@@ -55,14 +50,14 @@ public class CyanCommands
                                 .suggests((context, builder) -> ArgumentSuggestion.getOptions(builder))
                                 .then(CommandManager.literal("set")
                                         .then(CommandManager.argument("booleanValue", BoolArgumentType.bool())
-                                                .then(CommandManager.argument("redisplayGetConfig", BoolArgumentType.bool())
+                                                .then(CommandManager.argument("mode", BoolArgumentType.bool())
                                                         .executes(CyanCommands::setBoolOption)
                                                 )
                                                 .executes(CyanCommands::setBoolOptionFromCommand)
                                         )
                                         .then(CommandManager.argument("integerValue", IntegerArgumentType.integer())
                                                 .suggests((context, builder) -> ArgumentSuggestion.getInts(builder))
-                                                .then(CommandManager.argument("redisplayGetConfig", BoolArgumentType.bool())
+                                                .then(CommandManager.argument("mode", BoolArgumentType.bool())
                                                         .executes(CyanCommands::setIntOption)
                                                 )
                                                 .executes(CyanCommands::setIntOptionFromCommand)
@@ -90,21 +85,8 @@ public class CyanCommands
      */
     public static int reloadTranslations(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
+        CyanLibCommands.reloadTranslations(context, getDefaultTranslations(), LibUtils);
 
-        if (player == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            CyanLanguageUtils.loadLanguage(Utils.getDefaultTranslations(true));
-            CyanLibUtils.sendPlayerMessage(player,
-                    CyanLanguageUtils.getTranslation("translationsReloaded"),
-                    "cyan.message.translationsReloaded"
-            );
-        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -119,224 +101,107 @@ public class CyanCommands
 
         transferPropertiesToGson();
 
-        if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
+        boolean fileDeleted = false;
+
+        try
         {
-            GsonUtils.removePropertiesFiles(player);
+            Path path = Path.of(LOCATIONS_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
+            {
+                Files.delete(path);
+                fileDeleted = true;
+            }
+
+            path = Path.of(BACK_TP_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
+            {
+                Files.delete(path);
+                fileDeleted = true;
+            }
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        if (fileDeleted)
+        {
+            LanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.getTranslation("propertiesFilesDeleted"),
+                    "cyan.msg.propertiesFilesDeleted"
+            );
+        }
+        else
+        {
+            LanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.getTranslation(ERROR + "noPropertiesFiles"),
+                    "cyan.msg.noPropertiesFiles"
+            );
         }
         return Command.SINGLE_SUCCESS;
     }
 
-    // Set functions
-
     /**
-     * Called by the command {@code /cyan <optionName> set [boolValue] [redisplayGetConfig]}
+     * Called by the command {@code /cyan <optionName> set [booleanValue] [mode]}
      * <p>
-     * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue] and executes the
-     * * {@code /cyan getConfig} command to see the changed option in the chat
+     * Changes the option in the {@link fr.aeldit.cyanlib.lib.CyanLibConfig} class to the value [booleanValue] and executes the
+     * {@code /cyan getConfig} command if {@code [mode]} is true, and the command {@code /cyan config <optionName>} otherwise.
+     * This allows to see the changed option in the chat
      */
     public static int setBoolOption(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-
-        if (player == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
-            {
-                String option = StringArgumentType.getString(context, "optionName");
-                boolean value = BoolArgumentType.getBool(context, "booleanValue");
-
-                if (Utils.getOptionsList().get("booleans").contains(option))
-                {
-                    CyanMidnightConfig.setBoolOption(option, value);
-                    source.getServer().getCommandManager().executeWithPrefix(source, "/cyan getConfig");
-                }
-                else
-                {
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
-                            "cyan.message.error.optionNotFound"
-                    );
-                }
-            }
-        }
+        CyanLibCommands.setBoolOption(context, getDefaultTranslations(), LibUtils,
+                StringArgumentType.getString(context, "optionName"), BoolArgumentType.getBool(context, "booleanValue"),
+                false, BoolArgumentType.getBool(context, "mode")
+        );
         return Command.SINGLE_SUCCESS;
     }
 
     /**
      * Called by the command {@code /cyan <optionName> set [boolValue]}
      * <p>
-     * Changes the option in the {@link CyanMidnightConfig} class to the value [boolValue]
+     * Changes the option in the {@link fr.aeldit.cyanlib.lib.CyanLibConfig} class to the value [boolValue]
      */
     public static int setBoolOptionFromCommand(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
-        if (player == null)
-        {
-            context.getSource().getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
-            {
-                String option = StringArgumentType.getString(context, "optionName");
-                boolean value = BoolArgumentType.getBool(context, "booleanValue");
-
-                if (Utils.getOptionsList().get("booleans").contains(option))
-                {
-                    CyanMidnightConfig.setBoolOption(option, value);
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(SET + option),
-                            "cyan.message.set.%s".formatted(option),
-                            value ? Formatting.GREEN + "ON" : Formatting.RED + "OFF"
-                    );
-                }
-                else
-                {
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
-                            "cyan.message.error.optionNotFound"
-                    );
-                }
-            }
-        }
+        CyanLibCommands.setBoolOption(context, getDefaultTranslations(), LibUtils,
+                StringArgumentType.getString(context, "optionName"), BoolArgumentType.getBool(context, "booleanValue"),
+                true, false
+        );
         return Command.SINGLE_SUCCESS;
     }
 
     /**
-     * Called by the command {@code /cyan <optionName> set [intValue] [redisplayGetConfig]}
+     * Called by the command {@code /cyan <optionName> set [intValue] [mode]}
      * <p>
-     * Changes the option in the {@link CyanMidnightConfig} class to the value [intValue] and executes the
-     * {@code /cyan getConfig} command to see the changed option in the chat
+     * Changes the option in the {@link fr.aeldit.cyanlib.lib.CyanLibConfig} class to the value [intValue] and executes the
+     * {@code /cyan getConfig} command if {@code [mode]} is true, and the command {@code /cyan config <optionName>} otherwise.
+     * This allows to see the changed option in the chat
      */
     public static int setIntOption(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-
-        if (player == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
-            {
-                String option = StringArgumentType.getString(context, "optionName");
-                int value = IntegerArgumentType.getInteger(context, "integerValue");
-
-                if (Utils.getOptionsList().get("integers").contains(option))
-                {
-                    if (option.equals("distanceToEntitiesKgi") && (value < 1 || value > 128))
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "wrongDistanceKgi"),
-                                "cyan.message.wrongDistanceKgi"
-                        );
-                    }
-                    else if (option.equals("daysToRemoveBackTp") && (value < 1))
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "daysMustBePositive"),
-                                "cyan.message.daysMustBePositive"
-                        );
-                    }
-                    else if (option.contains("minOpLevelExe") && (value < 0 || value > 4))
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "wrongOPLevel"),
-                                "cyan.message.wrongDistanceKgi"
-                        );
-                    }
-                    else
-                    {
-                        CyanMidnightConfig.setIntOption(option, value);
-                        source.getServer().getCommandManager().executeWithPrefix(source, "/cyan getConfig");
-                    }
-                }
-                else
-                {
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
-                            "cyan.message.error.optionNotFound"
-                    );
-                }
-            }
-        }
+        CyanLibCommands.setIntOption(context, LibUtils,
+                StringArgumentType.getString(context, "optionName"), IntegerArgumentType.getInteger(context, "integerValue"),
+                false, BoolArgumentType.getBool(context, "mode")
+        );
         return Command.SINGLE_SUCCESS;
     }
 
     /**
      * Called by the command {@code /cyan <optionName> set [intValue]}
      * <p>
-     * Changes the option in the {@link CyanMidnightConfig} class to the value [intValue]
+     * Changes the option in the {@link fr.aeldit.cyanlib.lib.CyanLibConfig} class to the value [intValue]
      */
     public static int setIntOptionFromCommand(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
-        if (player == null)
-        {
-            context.getSource().getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
-            {
-                String option = StringArgumentType.getString(context, "optionName");
-                int value = IntegerArgumentType.getInteger(context, "integerValue");
-
-                if (Utils.getOptionsList().get("integers").contains(option))
-                {
-                    if (option.equals("distanceToEntitiesKgi") && (value < 1 || value > 128))
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "wrongDistanceKgi"),
-                                "cyan.message.wrongDistanceKgi"
-                        );
-                    }
-                    else if (option.equals("daysToRemoveBackTp") && (value < 1))
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "daysMustBePositive"),
-                                "cyan.message.daysMustBePositive"
-                        );
-                    }
-                    else if (option.contains("minOpLevelExe") && (value < 0 || value > 4))
-                    {
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(ERROR + "wrongOPLevel"),
-                                "cyan.message.wrongDistanceKgi"
-                        );
-                    }
-                    else
-                    {
-                        CyanMidnightConfig.setIntOption(option, value);
-                        CyanLibUtils.sendPlayerMessage(player,
-                                CyanLanguageUtils.getTranslation(SET + option),
-                                "cyan.message.set.%s".formatted(option),
-                                Formatting.GOLD + String.valueOf(value)
-                        );
-                    }
-                }
-                else
-                {
-                    CyanLibUtils.sendPlayerMessage(player,
-                            CyanLanguageUtils.getTranslation(ERROR + "optionNotFound"),
-                            "cyan.message.error.optionNotFound"
-                    );
-                }
-            }
-        }
+        CyanLibCommands.setIntOption(context, LibUtils,
+                StringArgumentType.getString(context, "optionName"), IntegerArgumentType.getInteger(context, "integerValue"),
+                true, false
+        );
         return Command.SINGLE_SUCCESS;
     }
-
-    // Get functions
 
     /**
      * Called by the command {@code /cyan <optionName>}
@@ -345,124 +210,8 @@ public class CyanCommands
      */
     public static int getOptionChatConfig(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
+        CyanLibCommands.getOptionChatConfig(context, LibUtils, StringArgumentType.getString(context, "optionName"));
 
-        if (player == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
-            {
-                String optionName = StringArgumentType.getString(context, "optionName");
-
-                if (Utils.getOptionsList().get("booleans").contains(optionName) || Utils.getOptionsList().get("integers").contains(optionName))
-                {
-                    Object key = CyanMidnightConfig.getAllOptionsMap().get(optionName);
-
-                    CyanLibUtils.sendPlayerMessageActionBar(player,
-                            CyanLanguageUtils.getTranslation("dashSeparation"),
-                            "cyan.message.getDescription.dashSeparation",
-                            false
-                    );
-                    CyanLibUtils.sendPlayerMessageActionBar(player,
-                            CyanLanguageUtils.getTranslation(DESC + optionName),
-                            "cyan.message.getDescription.options.%s".formatted(optionName),
-                            false
-                    );
-
-                    if (key instanceof Boolean currentValue)
-                    {
-                        CyanLibUtils.sendPlayerMessageActionBar(player,
-                                CyanLanguageUtils.getTranslation("currentValue"),
-                                "cyan.message.currentValue",
-                                false,
-                                currentValue ? Text.literal(Formatting.GREEN + "ON (click to change)").
-                                        setStyle(Style.EMPTY.withClickEvent(
-                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set false".formatted(optionName)))
-                                        ) : Text.literal(Formatting.RED + "OFF (click to change)").
-                                        setStyle(Style.EMPTY.withClickEvent(
-                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set true".formatted(optionName)))
-                                        )
-                        );
-                    }
-                    else if (key instanceof Integer currentValue)
-                    {
-                        CyanLibUtils.sendPlayerMessageActionBar(player,
-                                CyanLanguageUtils.getTranslation("currentValue"),
-                                "cyan.message.currentValue",
-                                false,
-                                Formatting.GOLD + String.valueOf(currentValue)
-                        );
-
-                        if (optionName.startsWith("minOpLevelExe"))
-                        {
-                            CyanLibUtils.sendPlayerMessageActionBar(player,
-                                    CyanLanguageUtils.getTranslation("setValue"),
-                                    "cyan.message.setValue",
-                                    false,
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "0")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 0".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "1")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 1".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "2")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 2".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "3")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 3".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "4")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 4".formatted(optionName)))
-                                            )
-                            );
-                        }
-                        else
-                        {
-                            CyanLibUtils.sendPlayerMessageActionBar(player,
-                                    CyanLanguageUtils.getTranslation("setValue"),
-                                    "cyan.message.setValue",
-                                    false,
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "8")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 8".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "16")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 16".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "32")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 32".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "64")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 64".formatted(optionName)))
-                                            ),
-                                    Text.literal(Formatting.DARK_GREEN + (Formatting.BOLD + "128")).
-                                            setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set 128".formatted(optionName)))
-                                            )
-                            );
-                        }
-                    }
-
-                    CyanLibUtils.sendPlayerMessageActionBar(player,
-                            CyanLanguageUtils.getTranslation("dashSeparation"),
-                            "cyan.message.getDescription.dashSeparation",
-                            false
-                    );
-                }
-            }
-        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -473,71 +222,8 @@ public class CyanCommands
      */
     public static int getConfigOptions(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayer();
-        String currentTrad = null;
+        CyanLibCommands.getConfigOptions(context, LibUtils);
 
-        if (player == null)
-        {
-            source.getServer().sendMessage(Text.of(CyanLanguageUtils.getTranslation(ERROR + "playerOnlyCmd")));
-        }
-        else
-        {
-            if (CyanLibUtils.hasPermission(player, CyanMidnightConfig.minOpLevelExeEditConfig))
-            {
-                CyanLibUtils.sendPlayerMessageActionBar(player,
-                        CyanLanguageUtils.getTranslation("dashSeparation"),
-                        "cyan.message.getDescription.dashSeparation",
-                        false
-                );
-                CyanLibUtils.sendPlayerMessageActionBar(player,
-                        CyanLanguageUtils.getTranslation(GETCFG + "header"),
-                        "cyan.message.getCfg.header",
-                        false
-                );
-
-                for (Map.Entry<String, Object> entry : CyanMidnightConfig.getAllOptionsMap().entrySet())
-                {
-                    Object key = entry.getKey();
-
-                    if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
-                    {
-                        currentTrad = CyanLanguageUtils.getTranslation(GETCFG + key);
-                    }
-
-                    if (entry.getValue() instanceof Boolean value)
-                    {
-                        CyanLibUtils.sendPlayerMessageActionBar(player,
-                                currentTrad,
-                                "cyan.message.getCfg.%s".formatted(key),
-                                false,
-                                value ? Text.literal(Formatting.GREEN + "ON").
-                                        setStyle(Style.EMPTY.withClickEvent(
-                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set false true".formatted(key)))
-                                        ) : Text.literal(Formatting.RED + "OFF").
-                                        setStyle(Style.EMPTY.withClickEvent(
-                                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cyan config %s set true true".formatted(key)))
-                                        )
-                        );
-                    }
-                    else if (entry.getValue() instanceof Integer value)
-                    {
-                        CyanLibUtils.sendPlayerMessageActionBar(player,
-                                currentTrad,
-                                "cyan.message.getCfg.%s".formatted(key),
-                                false,
-                                Formatting.GOLD + Integer.toString(value)
-                        );
-                    }
-                }
-
-                CyanLibUtils.sendPlayerMessageActionBar(player,
-                        CyanLanguageUtils.getTranslation("dashSeparation"),
-                        "cyan.message.getDescription.dashSeparation",
-                        false
-                );
-            }
-        }
         return Command.SINGLE_SUCCESS;
     }
 }

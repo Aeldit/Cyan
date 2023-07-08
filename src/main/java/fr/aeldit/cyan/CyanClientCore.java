@@ -17,19 +17,17 @@
 
 package fr.aeldit.cyan;
 
-import eu.midnightdust.lib.config.MidnightConfig;
 import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
-import fr.aeldit.cyan.config.CyanMidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
-import static fr.aeldit.cyan.config.CyanMidnightConfig.generateAllOptionsMap;
-import static fr.aeldit.cyan.util.EventUtils.onGameStop;
+import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.*;
@@ -39,19 +37,22 @@ public class CyanClientCore implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        MidnightConfig.init(MODID, CyanMidnightConfig.class);
-        LOGGER.info("[Cyan] Successfully initialized config");
-
-        generateAllOptionsMap();
-
-        if (CyanMidnightConfig.useCustomTranslations)
+        if (LibConfig.getBoolOption("useCustomTranslations"))
         {
-            CyanLanguageUtils.loadLanguage(getDefaultTranslations());
+            LanguageUtils.loadLanguage(getDefaultTranslations());
         }
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> onGameStop());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            LocationsObj.readClient(server.getIconFile().toString().replace("icon.png]", "")
+                    .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
+            );
+            BackTpsObj.readClient(server.getIconFile().toString().replace("icon.png]", "")
+                    .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
+            );
+            removeOutdatedBackTps();
+        });
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
@@ -60,7 +61,6 @@ public class CyanClientCore implements ClientModInitializer
             CyanCommands.register(dispatcher);
             LocationCommands.register(dispatcher);
         });
-        LOGGER.info("[Cyan] Successfully initialized commands");
         LOGGER.info("[Cyan] Successfully completed initialization");
     }
 }
