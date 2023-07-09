@@ -41,10 +41,15 @@ public class BackTps
 {
     public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date) {}
 
-    private List<BackTp> backTps;
+    private final List<BackTp> backTps;
     private final TypeToken<List<BackTp>> BACK_TYPE = new TypeToken<>() {};
     public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
     private boolean isEditingFile = false;
+
+    public BackTps()
+    {
+        this.backTps = Collections.synchronizedList(new ArrayList<>());
+    }
 
     public void add(BackTp backTp)
     {
@@ -130,15 +135,10 @@ public class BackTps
                 throw new RuntimeException(e);
             }
         }
-        else
-        {
-            this.backTps = Collections.synchronizedList(new ArrayList<>());
-        }
     }
 
     public void readClient(String saveName)
     {
-        this.backTps = Collections.synchronizedList(new ArrayList<>());
         BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/" + saveName + "/back.json");
         checkOrCreateModDir(false);
 
@@ -155,10 +155,6 @@ public class BackTps
             {
                 throw new RuntimeException(e);
             }
-        }
-        else
-        {
-            this.backTps = Collections.synchronizedList(new ArrayList<>());
         }
     }
 
