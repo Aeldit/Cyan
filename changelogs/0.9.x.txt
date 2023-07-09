@@ -1,0 +1,44 @@
+0.9.8 :
+    ✏️ Added :
+    - The date of death locations is now saved, and removed 6 months after (this can be changed with the option `daysToRemoveBackTp`)
+    - The properties files that were previously used to store locations and last death locations will be transferred to json files
+    - A command to remove the properties files (these files will be removed only by this command or by hand, so you can check if the files transferred properly)
+
+    🚧 Fixed :
+    - An unintended way of modifying the files from outside of the game which would change the values in-game, this is no longer possible
+    - The translations were not up to date in the `en_us.json` and `translations.properties` (now `translations.json`) files
+
+    🧪 Dev :
+    - The locations and locations for  the `/back` command are now stored using json files instead of properties
+    - The `Locations` and `BackTp` are now handled with classes instead of using just arrays
+
+0.9.9 :
+    🎴 Update to 1.20
+
+    🚧 Fixed :
+    - When editing the config via commands (ex: /cyan config allowBed set true), 2 messgages were send, one saying
+    `The option ... has been set to ...` + the message from the /cyan getConfig command
+    - When the game stopped and the backTp array was empty, instead of removing the file, an empty file was created
+
+0.9.10 :
+    ✏️ Added :
+    - The folders created by this mod are now removed if they are empty
+
+    🚧 Fixed :
+    - The Y and Z coordinates where reversed
+    - The locations and death position were saved in the same folder independently of the solo world the player was in
+    - Locations and BackTp systems now use thread-safe classes (`ConcurrentHashMap()` and `Collections.synchronizedList()`)
+      to prevent any problem with concurrent modifications (basically 2 people editing the homes (which then writes in the files) at the same time)
+
+    🫧 Changes :
+    - Use CyanLib 0.3.3
+    - Remove unnecessary modImplementation of the fabric api and use only the necessary apis
+
+0.9.11 :
+    🚧 Fixed :
+    - Fixed the translations for the rules
+    - The Locations and BackTps were not initialized on the server side, resulting in a crash on the server launch
+
+0.9.12 :
+    🫧 Changed :
+    - Use CyanLib 0.3.5 (which allows me to remove the config commands from this mod, as they are now handled in the CyanLib)

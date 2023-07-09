@@ -1,3 +1,0 @@
-🚧 Fixed :
-- Fixed the translations for the rules
-- The Locations and BackTps were not initialized on the server side, resulting in a crash on the server launch
