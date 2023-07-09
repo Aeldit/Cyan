@@ -37,15 +37,10 @@ public class Locations
 {
     public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}
 
-    private final List<Location> locations;
+    private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
     private final TypeToken<List<Location>> LOCATIONS_TYPE = new TypeToken<>() {};
-    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
     private boolean isEditingFile = false;
-
-    public Locations()
-    {
-        this.locations = Collections.synchronizedList(new ArrayList<>());
-    }
+    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
 
     public void add(Location location)
     {
@@ -103,7 +98,7 @@ public class Locations
                 return this.locations.indexOf(location);
             }
         }
-        return -1;
+        return 0;
     }
 
     public boolean locationExists(String locationName)

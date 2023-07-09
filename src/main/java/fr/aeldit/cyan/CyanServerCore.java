@@ -17,7 +17,6 @@
 
 package fr.aeldit.cyan;
 
-import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
@@ -54,9 +53,9 @@ public class CyanServerCore implements DedicatedServerModInitializer
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            CyanCommands.register(dispatcher);
+            LibConfigCommands.register(dispatcher);
             LocationCommands.register(dispatcher);
         });
-        LOGGER.info("[Cyan] Successfully completed initialization");
+        LOGGER.info("[Cyan] Successfully initialized");
     }
 }

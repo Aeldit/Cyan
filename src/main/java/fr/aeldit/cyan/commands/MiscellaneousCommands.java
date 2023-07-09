@@ -28,13 +28,21 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
+import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class MiscellaneousCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
-        dispatcher.register(CommandManager.literal("killgrounditems")
+        dispatcher.register(CommandManager.literal("kill-ground-items")
                 .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
                         .executes(MiscellaneousCommands::kgir)
                 )
@@ -46,10 +54,14 @@ public class MiscellaneousCommands
                 )
                 .executes(MiscellaneousCommands::kgi)
         );
+
+        dispatcher.register(CommandManager.literal("remove-properties-files")
+                .executes(MiscellaneousCommands::removePropertiesFiles)
+        );
     }
 
     /**
-     * Called when a player execute the command {@code /killgrounditems} or {@code /kgi}
+     * Called when a player execute the command {@code /kill-ground-items} or {@code /kgi}
      * <p>
      * Kills all the items on the ground in the default radius (defined if {@link CyanLibConfig})
      */
@@ -77,7 +89,7 @@ public class MiscellaneousCommands
     }
 
     /**
-     * Called when a player execute the command {@code /killgrounditems [int]} or {@code /kgi [int]}
+     * Called when a player execute the command {@code /kill-ground-items [int]} or {@code /kgi [int]}
      * <p>
      * Kills all the items on the ground in the specified radius
      */
@@ -101,6 +113,60 @@ public class MiscellaneousCommands
                     );
                 }
             }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+
+    /**
+     * Called by the command {@code /remove-properties-files}
+     * <p>
+     * Removes all the properties files
+     */
+    public static int removePropertiesFiles(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        transferPropertiesToGson();
+
+        boolean fileDeleted = false;
+
+        try
+        {
+            Path path = Path.of(LOCATIONS_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
+            {
+                Files.delete(path);
+                fileDeleted = true;
+            }
+
+            path = Path.of(BACK_TP_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
+            {
+                Files.delete(path);
+                fileDeleted = true;
+            }
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        if (fileDeleted)
+        {
+            LanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.getTranslation("propertiesFilesDeleted"),
+                    "cyan.msg.propertiesFilesDeleted"
+            );
+        }
+        else
+        {
+            LanguageUtils.sendPlayerMessage(player,
+                    LanguageUtils.getTranslation(ERROR + "noPropertiesFiles"),
+                    "cyan.msg.noPropertiesFiles"
+            );
         }
         return Command.SINGLE_SUCCESS;
     }

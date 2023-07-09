@@ -37,7 +37,7 @@ public class LocationCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
-        dispatcher.register(CommandManager.literal("setlocation")
+        dispatcher.register(CommandManager.literal("set-location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
                         .executes(LocationCommands::setLocation)
                 )
@@ -48,7 +48,7 @@ public class LocationCommands
                 )
         );
 
-        dispatcher.register(CommandManager.literal("removelocation")
+        dispatcher.register(CommandManager.literal("remove-location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
                         .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
                         .executes(LocationCommands::removeLocation)
@@ -60,7 +60,7 @@ public class LocationCommands
                         .executes(LocationCommands::removeLocation)
                 )
         );
-        dispatcher.register(CommandManager.literal("removealllocations")
+        dispatcher.register(CommandManager.literal("remove-all-locations")
                 .executes(LocationCommands::removeAllLocations)
         );
 
@@ -79,7 +79,7 @@ public class LocationCommands
                 .executes(LocationCommands::getLocationsList)
         );
 
-        dispatcher.register(CommandManager.literal("getlocations")
+        dispatcher.register(CommandManager.literal("get-locations")
                 .executes(LocationCommands::getLocationsList)
         );
         dispatcher.register(CommandManager.literal("gl")
@@ -88,7 +88,7 @@ public class LocationCommands
     }
 
     /**
-     * Called by the command {@code /setlocation <location_name>} or {@code /sl <location_name>}
+     * Called by the command {@code /set-location <location_name>} or {@code /sl <location_name>}
      * <p>
      * Saves the current player's location (dimension, x, y, z, yaw, pitch) + the player who created the location in
      * the locations file
@@ -140,7 +140,7 @@ public class LocationCommands
     }
 
     /**
-     * Called by the command {@code /removelocation <location_name>} or {@code /rl <location_name>}
+     * Called by the command {@code /remove-location <location_name>} or {@code /rl <location_name>}
      * <p>
      * Removes the given location
      */
@@ -180,7 +180,7 @@ public class LocationCommands
     }
 
     /**
-     * Called by the command {@code /removealllocations}
+     * Called by the command {@code /remove-all-locations}
      * <p>
      * Removes all the locations
      */
@@ -263,7 +263,7 @@ public class LocationCommands
     }
 
     /**
-     * Called by the command {@code /getlocations} or {@code /gl}
+     * Called by the command {@code /get-locations} or {@code /gl}
      * <p>
      * Lists all the locations in the player's chat
      */

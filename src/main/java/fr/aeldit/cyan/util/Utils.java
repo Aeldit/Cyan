@@ -22,6 +22,7 @@ import fr.aeldit.cyan.teleportation.Locations;
 import fr.aeldit.cyanlib.lib.CyanLib;
 import fr.aeldit.cyanlib.lib.CyanLibConfig;
 import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
+import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
 import fr.aeldit.cyanlib.lib.utils.RULES;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,7 @@ public class Utils
     public static CyanLibConfig LibConfig = new CyanLibConfig(MODID, getDefaultOptions(), getRules());
     public static CyanLibLanguageUtils LanguageUtils = new CyanLibLanguageUtils(Utils.MODID, LibConfig);
     public static CyanLib LibUtils = new CyanLib(Utils.MODID, LibConfig, LanguageUtils);
+    public static CyanLibConfigCommands LibConfigCommands = new CyanLibConfigCommands(MODID, LibUtils, getDefaultTranslations());
 
     private static HashMap<String, String> defaultTranslations;
 
@@ -76,6 +78,8 @@ public class Utils
     public static @NotNull Map<String, Object> getRules()
     {
         Map<String, Object> rules = new HashMap<>();
+
+        rules.put("useCustomTranslations", RULES.LOAD_CUSTOM_TRANSLATIONS);
 
         rules.put("minOpLevelExeKgi", RULES.OP_LEVELS);
         rules.put("minOpLevelExeEditConfig", RULES.OP_LEVELS);
@@ -235,8 +239,6 @@ public class Utils
             defaultTranslations.put("set.daysToRemoveBackTp", "§3The number of days to keep the last death locations is now %s");
 
             defaultTranslations.put("error.notOp", "§cYou don't have the required permission to do that");
-            defaultTranslations.put("error.wrongOPLevel", "§cThe OP level must be >= 0 and <= 4");
-            defaultTranslations.put("error.wrongDistanceKgi", "§cThe kgi distance must be >= 1 and <= 128");
             defaultTranslations.put("error.bedDisabled", "§cThe /bed command is disabled");
             defaultTranslations.put("error.kgiDisabled", "§cThe /kgi command is disabled");
             defaultTranslations.put("error.surfaceDisabled", "§cThe /surface command is disabled");
@@ -248,11 +250,13 @@ public class Utils
             defaultTranslations.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
             defaultTranslations.put("error.bedNotFound", "§cYou don't have an attributed bed or respawn anchor");
             defaultTranslations.put("error.playerNotFound", "§cPlayer not found. The player must be online");
-            defaultTranslations.put("error.optionNotFound", "§cThis option does not exist or you tried to set it to the wrong type (int or bool)");
             defaultTranslations.put("error.noLocations", "§cThere is no saved locations");
             defaultTranslations.put("error.noLastPos", "§cYour last death location was not saved");
             defaultTranslations.put("error.noPropertiesFiles", "§cNo properties files were found");
-            defaultTranslations.put("error.daysMustBePositive", "§cThe number of days must be superior to 0");
+            defaultTranslations.put("error.optionNotFound", "§cThis option does not exist");
+            defaultTranslations.put("error.wrongType", "§cThis option can only be set to the %s §ctype");
+            defaultTranslations.put("error.rule.opLevels", "§cThe OP level must be between 0 and 4 (both included)");
+            defaultTranslations.put("error.rule.positiveValue", "§cThe value must be positive");
 
             defaultTranslations.put("bed", "§3You have been teleported to your bed");
             defaultTranslations.put("respawnAnchor", "§3You have been teleported to your respawn anchor");
