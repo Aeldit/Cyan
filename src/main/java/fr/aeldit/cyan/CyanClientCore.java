@@ -20,11 +20,17 @@ package fr.aeldit.cyan;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
+import fr.aeldit.cyan.gui.CyanScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import org.lwjgl.glfw.GLFW;
 
 import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
@@ -51,6 +57,19 @@ public class CyanClientCore implements ClientModInitializer
                     .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
             );
             removeOutdatedBackTps();
+        });
+
+        KeyBinding mainScreenKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "cyan.key.openScreen.locations",
+                InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C,
+                "category.cyan"
+        ));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (mainScreenKey.wasPressed())
+            {
+                CyanScreen.open();
+            }
         });
 
         // Register all the commands

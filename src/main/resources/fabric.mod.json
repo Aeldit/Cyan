@@ -21,6 +21,9 @@
     ],
     "client": [
       "fr.aeldit.cyan.CyanClientCore"
+    ],
+    "modmenu": [
+      "fr.aeldit.cyan.gui.ModMenuScreen"
     ]
   },
   "depends": {
