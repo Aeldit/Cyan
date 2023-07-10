@@ -24,11 +24,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+
+import static fr.aeldit.cyan.util.Utils.LibConfig;
 
 @Environment(EnvType.CLIENT)
 public class ConfigScreen extends Screen
 {
-    public ButtonWidget exitBtn;
     private final Screen parent;
 
     protected ConfigScreen(Screen parent)
@@ -51,11 +53,60 @@ public class ConfigScreen extends Screen
     @Override
     protected void init()
     {
-        exitBtn = ButtonWidget.builder(Text.translatable("cyan.btn.configScreen.exit"), button -> close())
-                .dimensions(width / 2 - 205, 20, 200, 20)
-                .tooltip(Tooltip.of(Text.translatable("cyan.btn.configScreen.exit.tooltip")))
-                .build();
+        int x = width / 2 - 185;
+        int y;
+        int offset = 0;
 
-        addDrawableChild(exitBtn);
+        for (int i = 0; i < LibConfig.getOptions().size(); i++)
+        {
+            if (i == 10)
+            {
+                x = width / 2 + 10;
+                offset = 0;
+            }
+
+            String optionName = LibConfig.getOptions().get(i);
+            Object value = LibConfig.getOption(optionName);
+            String option;
+
+            ButtonWidget btn;
+
+            if (offset >= 5)
+            {
+                y = 2 - 10 - 20 * (offset - 5);
+            }
+            else
+            {
+                y = height / 2 + 10 + 20 * offset;
+            }
+
+            if (value instanceof Boolean)
+            {
+                option = (Boolean) value ? optionName + " : " + Formatting.GREEN + true : optionName + " : " + Formatting.RED + false;
+
+                btn = ButtonWidget.builder(Text.literal(option), button -> {
+                            LibConfig.setOption(optionName, !(Boolean) value);
+                            clearAndInit();
+                        })
+                        .dimensions(x, y, 175, 20)
+                        .tooltip(Tooltip.of(Text.translatable("cyan.msg.getDesc.%s".formatted(optionName))))
+                        .build();
+            }
+            else
+            {
+                option = optionName + " : " + Formatting.GOLD + value;
+
+                btn = ButtonWidget.builder(Text.literal(option), button -> {
+                            LibConfig.setOption(optionName, (Integer) value + 1);
+                            clearAndInit();
+                        })
+                        .dimensions(x, y, 175, 20)
+                        .tooltip(Tooltip.of(Text.translatable("cyan.msg.getDesc.%s".formatted(optionName))))
+                        .build();
+            }
+
+            addDrawableChild(btn);
+            offset++;
+        }
     }
 }

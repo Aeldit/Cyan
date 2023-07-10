@@ -32,8 +32,6 @@ import static fr.aeldit.cyan.util.Utils.MODID;
 @Environment(EnvType.CLIENT)
 public class CyanScreen extends Screen
 {
-    public ButtonWidget locationsBtn;
-    public ButtonWidget configBtn;
     private final Screen parent;
     private static final ResourceTexture BACKGROUND = new ResourceTexture(new Identifier(MODID, "textures/gui/locations.png"));
 
@@ -57,12 +55,12 @@ public class CyanScreen extends Screen
     @Override
     protected void init()
     {
-        locationsBtn = ButtonWidget.builder(Text.translatable("cyan.btn.mainScreen.locations"), button -> LocationsScreen.open())
+        ButtonWidget locationsBtn = ButtonWidget.builder(Text.translatable("cyan.btn.mainScreen.locations"), button -> LocationsScreen.open())
                 .dimensions(width / 2 - 100, height / 2 - 40, 200, 20)
                 .tooltip(Tooltip.of(Text.translatable("cyan.btn.mainScreen.locations.tooltip")))
                 .build();
 
-        configBtn = ButtonWidget.builder(Text.translatable("cyan.btn.mainScreen.config"), button -> ConfigScreen.open())
+        ButtonWidget configBtn = ButtonWidget.builder(Text.translatable("cyan.btn.mainScreen.config"), button -> ConfigScreen.open())
                 .dimensions(width / 2 - 100, height / 2 - 10, 200, 20)
                 .tooltip(Tooltip.of(Text.translatable("cyan.btn.mainScreen.config.tooltip")))
                 .build();
