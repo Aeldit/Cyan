@@ -93,6 +93,8 @@
   "cyan.btn.mainScreen.locations.tooltip": "Open the locations screen",
   "cyan.btn.mainScreen.config": "Config",
   "cyan.btn.mainScreen.config.tooltip": "Open the config screen",
+  "cyan.btn.locationScreen.teleport": "Teleport",
+  "cyan.btn.locationScreen.remove": "Remove",
   "-----------------------------------------------CYAN_LIB----------------------------------------------------": "",
   "cyan.msg.optionNotFound": "§cThis option does not exist or you tried to set it to the wrong type of value (int or bool)",
   "cyan.msg.wrongType": "§cThis option can only be set to the %s §ctype",

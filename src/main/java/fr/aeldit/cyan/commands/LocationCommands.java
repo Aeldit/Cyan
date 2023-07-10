@@ -221,44 +221,8 @@ public class LocationCommands
      */
     public static int goToLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
+        LocationsObj.teleport(context.getSource().getPlayer(), StringArgumentType.getString(context, "name"));
 
-        if (LibUtils.isPlayer(context.getSource()))
-        {
-            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowLocations"), "locationsDisabled"))
-            {
-                String locationName = StringArgumentType.getString(context, "name");
-
-                if (LocationsObj.locationExists(locationName))
-                {
-                    Locations.Location loc = LocationsObj.getLocation(locationName);
-
-                    switch (loc.dimension())
-                    {
-                        case "overworld" ->
-                                player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                        case "nether" ->
-                                player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                        case "end" ->
-                                player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                    }
-
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation("goToLocation"),
-                            "cyan.msg.goToLocation",
-                            Formatting.YELLOW + locationName
-                    );
-                }
-                else
-                {
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation(ERROR + "locationNotFound"),
-                            "cyan.msg.locationNotFound",
-                            Formatting.YELLOW + locationName
-                    );
-                }
-            }
-        }
         return Command.SINGLE_SUCCESS;
     }
 

@@ -25,10 +25,11 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
+import static fr.aeldit.cyan.util.Utils.LocationsObj;
+
 @Environment(EnvType.CLIENT)
 public class LocationsScreen extends Screen
 {
-    public ButtonWidget exitBtn;
     private final Screen parent;
 
     protected LocationsScreen(Screen parent)
@@ -51,11 +52,35 @@ public class LocationsScreen extends Screen
     @Override
     protected void init()
     {
-        exitBtn = ButtonWidget.builder(Text.translatable("cyan.btn.locationsScreen.exit"), button -> close())
-                .dimensions(width / 2 - 205, 20, 200, 20)
-                .tooltip(Tooltip.of(Text.translatable("cyan.btn.locationsScreen.exit.tooltip")))
-                .build();
+        int x = width / 2 - 185;
+        int y;
+        int offset = 0;
 
-        addDrawableChild(exitBtn);
+        for (int i = 0; i < LocationsObj.getLocations().size(); i++)
+        {
+            if (i == 10)
+            {
+                x = width / 2 + 10;
+                offset = 0;
+            }
+
+            if (offset >= 5)
+            {
+                y = 2 - 10 - 20 * (offset - 5);
+            }
+            else
+            {
+                y = height / 2 + 10 + 20 * offset;
+            }
+
+            int finalI = i;
+            ButtonWidget btn = ButtonWidget.builder(Text.literal(LocationsObj.getLocation(i).name()), button -> LocationScreen.open(LocationsObj.getLocation(finalI).name()))
+                    .dimensions(x, y, 150, 20)
+                    .tooltip(Tooltip.of(Text.translatable("cyan.btn.locationsScreen.location.tooltip")))
+                    .build();
+
+            addDrawableChild(btn);
+            offset++;
+        }
     }
 }

@@ -21,6 +21,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Formatting;
+import net.minecraft.world.World;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -32,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class Locations
 {
@@ -89,6 +93,11 @@ public class Locations
         return this.locations.get(getLocationIndex(locationName));
     }
 
+    public Location getLocation(int locationIndex)
+    {
+        return this.locations.get(locationIndex);
+    }
+
     public int getLocationIndex(String locationName)
     {
         for (Location location : this.locations)
@@ -111,6 +120,41 @@ public class Locations
             }
         }
         return false;
+    }
+
+    public void teleport(ServerPlayerEntity player, String location)
+    {
+        if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowLocations"), "locationsDisabled"))
+        {
+            if (LocationsObj.locationExists(location))
+            {
+                Locations.Location loc = LocationsObj.getLocation(location);
+
+                switch (loc.dimension())
+                {
+                    case "overworld" ->
+                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                    case "nether" ->
+                            player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                    case "end" ->
+                            player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                }
+
+                LanguageUtils.sendPlayerMessage(player,
+                        LanguageUtils.getTranslation("goToLocation"),
+                        "cyan.msg.goToLocation",
+                        Formatting.YELLOW + location
+                );
+            }
+            else
+            {
+                LanguageUtils.sendPlayerMessage(player,
+                        LanguageUtils.getTranslation(ERROR + "locationNotFound"),
+                        "cyan.msg.locationNotFound",
+                        Formatting.YELLOW + location
+                );
+            }
+        }
     }
 
     public void readServer()
