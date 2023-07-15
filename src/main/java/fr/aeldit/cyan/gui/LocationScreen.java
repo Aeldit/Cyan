@@ -56,7 +56,7 @@ public class LocationScreen extends Screen
                 .build();
 
         ButtonWidget teleport = ButtonWidget.builder(Text.translatable("cyan.btn.locationScreen.teleport"), button -> {
-                            //LocationsObj.teleport(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayer(selfUUID), this.locationName);
+                            LocationsObj.teleport(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayer(selfUUID), this.locationName);
                             close();
                         }
                 )
