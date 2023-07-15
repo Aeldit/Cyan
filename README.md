@@ -38,6 +38,16 @@
 
 ***
 
+> If you find any issue, please make sure to report it on github or create a post on my discord server in
+> issues-and-suggestions so I can fix it.
+>
+> If want to suggest a feature, you can do it in my discord server too
+>
+> [![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)](https://github.com/Aeldit/Cyan/issues)
+> [![discord_badge](https://img.shields.io/discord/750243612473819188?color=7289da&label=DISCORD&logo=discord&logoColor=7289da&style=for-the-badge)](https://discord.gg/PcYPpqzhKS)
+
+***
+
 ### ✅ `List of commands (and their aliases)`
 
 |              Command               |                            Description                             |         Alias         |
@@ -88,12 +98,3 @@ If you are not using this mod on client but only on server side, download the re
 
 📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
 it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
-
-
-***
-
-> If you find any issue, please make sure to report it on github or create a post on my discord server in
-> issues-and-suggestions so I can fix it
->
-> [![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)](https://github.com/Aeldit/Cyan/issues)
-> [![discord_badge](https://img.shields.io/discord/750243612473819188?color=7289da&label=DISCORD&logo=discord&logoColor=7289da&style=for-the-badge)](https://discord.gg/PcYPpqzhKS)
