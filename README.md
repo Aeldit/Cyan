@@ -40,24 +40,24 @@
 
 ### ✅ `List of commands (and their aliases)`
 
-|              Command              |                            Description                             |         Alias         |
-|:---------------------------------:|:------------------------------------------------------------------:|:---------------------:|
-|              `/bed`               |            Teleports you to your bed or respawn anchor             |         `/b`          |
-|        `/killgrounditems`         |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
-|            `/surface`             |                    Teleports you to the surface                    |         `/s`          |
-|                                   |                                                                    |                       |
-|  `/setlocation <location_name>`   |              Saves the current position as a location              | `/sl <location_name>` |
-| `/removelocation <location_name>` |                     Removes the given location                     | `/rl <location_name>` |
-|       `/removealllocations`       |                     Removes the given location                     |           ❌           |
-|    `/location <location_name>`    |                Teleports you to the given location                 | `/l <location_name>`  |
-|          `/getlocations`          |                  Displays all the saved locations                  |         `/gl`         |
-|                                   |                                                                    |                       |
-|              `/back`              |              Teleports you to the last place you died              |           ❌           |
-|                                   |                                                                    |                       |
-|    `/cyan reloadTranslations`     |     Reloads the custom translations (useful when editing them)     |           ❌           |
-|   `/cyan removePropertiesFiles`   |  Transfers the properties files to json files, then deletes them   |           ❌           |
-|                                   |                                                                    |                       |
-|         `/cyan getConfig`         | Displays in the player's chat the current value of all the options |           ❌           |
+|              Command               |                            Description                             |         Alias         |
+|:----------------------------------:|:------------------------------------------------------------------:|:---------------------:|
+|               `/bed`               |            Teleports you to your bed or respawn anchor             |         `/b`          |
+|         `/killgrounditems`         |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
+|             `/surface`             |                    Teleports you to the surface                    |         `/s`          |
+|                                    |                                                                    |                       |
+|  `/set-location <location_name>`   |              Saves the current position as a location              | `/sl <location_name>` |
+| `/remove-location <location_name>` |                     Removes the given location                     | `/rl <location_name>` |
+|      `/remove-all-locations`       |                     Removes the given location                     |           ❌           |
+|    `/location <location_name>`     |                Teleports you to the given location                 | `/l <location_name>`  |
+|          `/get-locations`          |                  Displays all the saved locations                  |         `/gl`         |
+|                                    |                                                                    |                       |
+|              `/back`               |              Teleports you to the last place you died              |           ❌           |
+|                                    |                                                                    |                       |
+|    `/cyan reload-translations`     |     Reloads the custom translations (useful when editing them)     |           ❌           |
+|  `/cyan remove-properties-files`   |  Transfers the properties files to json files, then deletes them   |           ❌           |
+|                                    |                                                                    |                       |
+|         `/cyan get-config`         | Displays in the player's chat the current value of all the options |           ❌           |
 
 ***
 
