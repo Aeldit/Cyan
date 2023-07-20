@@ -40,5 +40,8 @@
     - The Locations and BackTps were not initialized on the server side, resulting in a crash on the server launch
 
 0.9.12 :
+    ✏️ Added :
+    - The `/rename-location`, that allows you to rename a location
+
     🫧 Changed :
     - Use CyanLib 0.3.5 (which allows me to remove the config commands from this mod, as they are now handled in the CyanLib)

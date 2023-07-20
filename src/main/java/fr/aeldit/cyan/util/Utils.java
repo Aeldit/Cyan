@@ -267,6 +267,7 @@ public class Utils
             defaultTranslations.put("goToLocation", "§3You have been teleported to %s");
             defaultTranslations.put("removeLocation", "§3The location %s §3have been removed");
             defaultTranslations.put("removedAllLocations", "§3All the locations have been removed");
+            defaultTranslations.put("renameLocation", "§3The location %s have been renamed to %s");
             defaultTranslations.put("getLocation", "%s §3(%s§3)");
             defaultTranslations.put("translationsReloaded", "§3The translations have been reloaded");
             defaultTranslations.put("backTp", "§3You have been teleported to the place you died");

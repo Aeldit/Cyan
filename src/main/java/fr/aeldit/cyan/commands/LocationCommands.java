@@ -64,6 +64,14 @@ public class LocationCommands
                 .executes(LocationCommands::removeAllLocations)
         );
 
+        dispatcher.register(CommandManager.literal("rename-location")
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .then(CommandManager.argument("new_name", StringArgumentType.string())
+                                .executes(LocationCommands::renameLocation)
+                        )
+                )
+        );
+
         dispatcher.register(CommandManager.literal("location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
                         .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
@@ -159,6 +167,7 @@ public class LocationCommands
                     if (LocationsObj.locationExists(locationName))
                     {
                         LocationsObj.remove(locationName);
+
                         LanguageUtils.sendPlayerMessage(player,
                                 LanguageUtils.getTranslation("removeLocation"),
                                 "cyan.msg.removeLocation",
@@ -215,6 +224,49 @@ public class LocationCommands
     }
 
     /**
+     * Called by the command {@code /rename-location <name> <new_name>}
+     * <p>
+     * Renames the location
+     */
+    public static int renameLocation(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        if (LibUtils.isPlayer(context.getSource()))
+        {
+            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowLocations"), "locationsDisabled"))
+            {
+                if (LibUtils.hasPermission(player, LibConfig.getIntOption("minOpLevelExeEditLocation")))
+                {
+                    String locationName = StringArgumentType.getString(context, "name");
+                    String newLocationName = StringArgumentType.getString(context, "new_name");
+
+                    if (LocationsObj.locationExists(locationName))
+                    {
+                        LocationsObj.rename(locationName, newLocationName);
+
+                        LanguageUtils.sendPlayerMessage(player,
+                                LanguageUtils.getTranslation("renameLocation"),
+                                "cyan.msg.renameLocation",
+                                Formatting.YELLOW + locationName,
+                                Formatting.YELLOW + newLocationName
+                        );
+                    }
+                    else
+                    {
+                        LanguageUtils.sendPlayerMessage(player,
+                                LanguageUtils.getTranslation(ERROR + "locationNotFound"),
+                                "cyan.msg.locationNotFound",
+                                locationName
+                        );
+                    }
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
      * Called by the command {@code /location <location_name>} or {@code /l <location_name>}
      * <p>
      * Teleports the player to the given location
@@ -255,8 +307,8 @@ public class LocationCommands
                         LanguageUtils.getTranslation("getLocation"),
                         "cyan.msg.getLocation",
                         false,
-                        Formatting.YELLOW + location.name(),
-                        Formatting.DARK_AQUA + location.dimension()
+                        Formatting.YELLOW + location.getName(),
+                        Formatting.DARK_AQUA + location.getDimension()
                 ));
 
                 LanguageUtils.sendPlayerMessageActionBar(player,

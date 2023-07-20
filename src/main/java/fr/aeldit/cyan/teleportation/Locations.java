@@ -39,7 +39,67 @@ import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class Locations
 {
-    public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}
+    public static class Location
+    {
+        private String name;
+        private final String dimension;
+        private final double x;
+        private final double y;
+        private final double z;
+        private final float yaw;
+        private final float pitch;
+
+        public Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
+        {
+            this.name = name;
+            this.dimension = dimension;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.yaw = yaw;
+            this.pitch = pitch;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+
+        public String getDimension()
+        {
+            return dimension;
+        }
+
+        public double getX()
+        {
+            return x;
+        }
+
+        public double getY()
+        {
+            return y;
+        }
+
+        public double getZ()
+        {
+            return z;
+        }
+
+        public float getYaw()
+        {
+            return yaw;
+        }
+
+        public float getPitch()
+        {
+            return pitch;
+        }
+    }
 
     private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
     private final TypeToken<List<Location>> LOCATIONS_TYPE = new TypeToken<>() {};
@@ -52,6 +112,9 @@ public class Locations
         write();
     }
 
+    /**
+     * Can only be called if the result of {@link Locations#locationExists} is true
+     */
     public void remove(String location)
     {
         this.locations.remove(getLocationIndex(location));
@@ -70,6 +133,18 @@ public class Locations
         return false;
     }
 
+    public void rename(String locationName, String newLocationName)
+    {
+        for (Location location : this.locations)
+        {
+            if (location.getName().equals(locationName))
+            {
+                location.setName(newLocationName);
+                break;
+            }
+        }
+    }
+
     public boolean isEmpty()
     {
         return this.locations.isEmpty();
@@ -83,7 +158,7 @@ public class Locations
     public List<String> getLocationsNames()
     {
         ArrayList<String> locationsNames = new ArrayList<>();
-        this.locations.forEach(location -> locationsNames.add(location.name()));
+        this.locations.forEach(location -> locationsNames.add(location.getName()));
 
         return locationsNames;
     }
@@ -93,16 +168,11 @@ public class Locations
         return this.locations.get(getLocationIndex(locationName));
     }
 
-    public Location getLocation(int locationIndex)
-    {
-        return this.locations.get(locationIndex);
-    }
-
     public int getLocationIndex(String locationName)
     {
         for (Location location : this.locations)
         {
-            if (location.name().equals(locationName))
+            if (location.getName().equals(locationName))
             {
                 return this.locations.indexOf(location);
             }
@@ -114,7 +184,7 @@ public class Locations
     {
         for (Location location : this.locations)
         {
-            if (location.name().equals(locationName))
+            if (location.getName().equals(locationName))
             {
                 return true;
             }
@@ -130,14 +200,14 @@ public class Locations
             {
                 Locations.Location loc = LocationsObj.getLocation(location);
 
-                switch (loc.dimension())
+                switch (loc.getDimension())
                 {
                     case "overworld" ->
-                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                     case "nether" ->
-                            player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                            player.teleport(player.getServer().getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                     case "end" ->
-                            player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                            player.teleport(player.getServer().getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                 }
 
                 LanguageUtils.sendPlayerMessage(player,
