@@ -2,6 +2,8 @@
 
 > If you fork this repo, make sure to state clearly that your repo is a fork of this one, and make a link to this one
 
+> I do NOT allow this mod to be ported on the Forge loader
+
 ***
 
 ![java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)

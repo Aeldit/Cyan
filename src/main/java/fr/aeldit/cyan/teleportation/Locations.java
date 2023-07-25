@@ -140,6 +140,7 @@ public class Locations
             if (location.getName().equals(locationName))
             {
                 location.setName(newLocationName);
+                write();
                 break;
             }
         }
