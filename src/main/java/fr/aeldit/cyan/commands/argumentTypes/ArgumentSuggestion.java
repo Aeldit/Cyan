@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-import static fr.aeldit.cyan.util.Utils.LocationsObj;
+import static fr.aeldit.cyan.util.Utils.LOCATIONS;
 
 public final class ArgumentSuggestion
 {
@@ -35,6 +35,6 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder)
     {
-        return CommandSource.suggestMatching(LocationsObj.getLocationsNames(), builder);
+        return CommandSource.suggestMatching(LOCATIONS.getLocationsNames(), builder);
     }
 }

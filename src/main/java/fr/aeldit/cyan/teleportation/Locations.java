@@ -20,6 +20,7 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import fr.aeldit.cyan.config.Config;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
@@ -102,9 +103,9 @@ public class Locations
     }
 
     private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
-    private final TypeToken<List<Location>> LOCATIONS_TYPE = new TypeToken<>() {};
+    private final TypeToken<List<Location>> locationsType = new TypeToken<>() {};
     private boolean isEditingFile = false;
-    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/locations.json");
+    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/locations.json");
 
     public void add(Location location)
     {
@@ -195,11 +196,11 @@ public class Locations
 
     public void teleport(ServerPlayerEntity player, String location)
     {
-        if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowLocations"), "locationsDisabled"))
+        if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
         {
-            if (LocationsObj.locationExists(location))
+            if (LOCATIONS.locationExists(location))
             {
-                Locations.Location loc = LocationsObj.getLocation(location);
+                Locations.Location loc = LOCATIONS.getLocation(location);
 
                 switch (loc.getDimension())
                 {
@@ -211,16 +212,16 @@ public class Locations
                             player.teleport(player.getServer().getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                 }
 
-                LanguageUtils.sendPlayerMessage(player,
-                        LanguageUtils.getTranslation("goToLocation"),
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                        CYAN_LANGUAGE_UTILS.getTranslation("goToLocation"),
                         "cyan.msg.goToLocation",
                         Formatting.YELLOW + location
                 );
             }
             else
             {
-                LanguageUtils.sendPlayerMessage(player,
-                        LanguageUtils.getTranslation(ERROR + "locationNotFound"),
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                        CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
                         "cyan.msg.locationNotFound",
                         Formatting.YELLOW + location
                 );
@@ -236,7 +237,7 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                this.locations.addAll(gsonReader.fromJson(reader, LOCATIONS_TYPE));
+                this.locations.addAll(gsonReader.fromJson(reader, locationsType));
                 reader.close();
             }
             catch (IOException e)
@@ -248,7 +249,7 @@ public class Locations
 
     public void readClient(String saveName)
     {
-        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/" + saveName + "/locations.json");
+        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/locations.json");
         checkOrCreateModDir(true);
 
         if (Files.exists(LOCATIONS_PATH))
@@ -257,7 +258,7 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                this.locations.addAll(gsonReader.fromJson(reader, LOCATIONS_TYPE));
+                this.locations.addAll(gsonReader.fromJson(reader, locationsType));
                 reader.close();
             }
             catch (IOException e)
@@ -318,7 +319,7 @@ public class Locations
 
                     if (!couldWrite)
                     {
-                        LOGGER.info("[CyanSetHome] Could not write the locations file because it is already being written (for more than 1 sec)");
+                        CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already being written (for more than 1 sec)");
                     }
                 }
             }

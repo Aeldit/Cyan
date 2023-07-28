@@ -30,8 +30,8 @@ import java.util.Properties;
 
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
-import static fr.aeldit.cyan.util.Utils.BackTpsObj;
-import static fr.aeldit.cyan.util.Utils.LocationsObj;
+import static fr.aeldit.cyan.util.Utils.BACK_TPS;
+import static fr.aeldit.cyan.util.Utils.LOCATIONS;
 
 public class GsonUtils
 {
@@ -50,9 +50,9 @@ public class GsonUtils
 
                 for (String locationName : properties.stringPropertyNames())
                 {
-                    if (!LocationsObj.locationExists(locationName))
+                    if (!LOCATIONS.locationExists(locationName))
                     {
-                        LocationsObj.add(new Locations.Location(
+                        LOCATIONS.add(new Locations.Location(
                                 locationName,
                                 properties.getProperty(locationName).split(" ")[0],
                                 Double.parseDouble(properties.getProperty(locationName).split(" ")[1]),
@@ -81,13 +81,13 @@ public class GsonUtils
                 properties.load(fis);
                 fis.close();
 
-                BackTpsObj.readServer();
+                BACK_TPS.readServer();
 
                 for (String playerUUID : properties.stringPropertyNames())
                 {
-                    if (!BackTpsObj.backTpExists(playerUUID))
+                    if (!BACK_TPS.backTpExists(playerUUID))
                     {
-                        BackTpsObj.add(new BackTps.BackTp(
+                        BACK_TPS.add(new BackTps.BackTp(
                                 playerUUID,
                                 properties.getProperty(playerUUID).split(" ")[0],
                                 Double.parseDouble(properties.getProperty(playerUUID).split(" ")[1]),

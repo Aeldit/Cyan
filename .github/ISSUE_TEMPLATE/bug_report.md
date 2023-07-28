@@ -11,8 +11,12 @@ assignees: Aeldit
 A clear and concise description of what the bug is.
 
 **Your version**
+
 Minecraft (ex: 1.19.4) :
+
 Cyan (ex: 0.0.5+1.19.4) :
+
+Environment (Can be : Client, Server, Both) :
 
 **To Reproduce**
 Steps to reproduce the behavior:

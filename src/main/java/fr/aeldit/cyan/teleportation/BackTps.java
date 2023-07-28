@@ -20,6 +20,7 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import fr.aeldit.cyan.config.Config;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class BackTps
     private final List<BackTp> backTps = Collections.synchronizedList(new ArrayList<>());
     private final TypeToken<List<BackTp>> BACK_TYPE = new TypeToken<>() {};
     private boolean isEditingFile = false;
-    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/back.json");
+    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/back.json");
 
     public void add(BackTp backTp)
     {
@@ -69,7 +70,7 @@ public class BackTps
                 Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
                 long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
 
-                if (days >= LibConfig.getIntOption("daysToRemoveBackTp"))
+                if (days >= Config.DAYS_TO_REMOVE_BACK_TP.getValue())
                 {
                     tmp.add(backTp);
                 }
@@ -133,7 +134,7 @@ public class BackTps
 
     public void readClient(String saveName)
     {
-        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(MODID + "/" + saveName + "/back.json");
+        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/back.json");
         checkOrCreateModDir(false);
 
         if (Files.exists(BACK_TP_PATH))
@@ -204,7 +205,7 @@ public class BackTps
 
                     if (!couldWrite)
                     {
-                        LOGGER.info("[Cyan] Could not write the backTps file because it is already being written (for more than 1 sec)");
+                        CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written (for more than 1 sec)");
                     }
                 }
             }
