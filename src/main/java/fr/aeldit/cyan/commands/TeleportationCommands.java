@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import static fr.aeldit.cyan.config.Config.*;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
@@ -65,13 +66,13 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
 
-        if (LibUtils.isPlayer(context.getSource()))
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowBackTp"), "backTpDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BACK_TP.getValue(), "backTpDisabled"))
             {
-                if (BackTpsObj.backTpExists(player.getUuidAsString()))
+                if (BACK_TPS.backTpExists(player.getUuidAsString()))
                 {
-                    BackTps.BackTp backTp = BackTpsObj.getBackTp(player.getUuidAsString());
+                    BackTps.BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
 
                     switch (backTp.dimension())
                     {
@@ -83,15 +84,15 @@ public class TeleportationCommands
                                 player.teleport(player.getServer().getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
                     }
 
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation("backTp"),
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("backTp"),
                             "cyan.msg.backTp"
                     );
                 }
                 else
                 {
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation(ERROR + "noLastPos"),
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noLastPos"),
                             "cyan.msg.noLastPos"
                     );
                 }
@@ -109,9 +110,9 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
 
-        if (LibUtils.isPlayer(context.getSource()))
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowBed"), "bedDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BED.getValue(), "bedDisabled"))
             {
                 if (player.getSpawnPointPosition() != null)
                 {
@@ -123,8 +124,8 @@ public class TeleportationCommands
                                 player.getSpawnPointPosition().getZ(),
                                 player.getYaw(), player.getPitch()
                         );
-                        LanguageUtils.sendPlayerMessage(player,
-                                LanguageUtils.getTranslation("bed"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                                CYAN_LANGUAGE_UTILS.getTranslation("bed"),
                                 "cyan.msg.bed"
                         );
                     }
@@ -136,16 +137,16 @@ public class TeleportationCommands
                                 player.getSpawnPointPosition().getZ(),
                                 player.getYaw(), player.getPitch()
                         );
-                        LanguageUtils.sendPlayerMessage(player,
-                                LanguageUtils.getTranslation("respawnAnchor"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                                CYAN_LANGUAGE_UTILS.getTranslation("respawnAnchor"),
                                 "cyan.msg.respawnAnchor"
                         );
                     }
                 }
                 else
                 {
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation(ERROR + "bedNotFound"),
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "bedNotFound"),
                             "cyan.msg.bedNotFound"
                     );
                 }
@@ -163,9 +164,9 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
 
-        if (LibUtils.isPlayer(context.getSource()))
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowSurface"), "surfaceDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_SURFACE.getValue(), "surfaceDisabled"))
             {
                 player.teleport(context.getSource().getWorld(),
                         player.getBlockPos().getX(),
@@ -173,8 +174,8 @@ public class TeleportationCommands
                         player.getBlockPos().getZ(),
                         player.getYaw(), player.getPitch()
                 );
-                LanguageUtils.sendPlayerMessage(player,
-                        LanguageUtils.getTranslation("surface"),
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                        CYAN_LANGUAGE_UTILS.getTranslation("surface"),
                         "cyan.msg.surface"
                 );
             }

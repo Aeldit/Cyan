@@ -17,10 +17,10 @@
 
 package fr.aeldit.cyan;
 
-import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
+import fr.aeldit.cyan.config.Config;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -37,18 +37,15 @@ public class CyanClientCore implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        if (LibConfig.getBoolOption("useCustomTranslations"))
-        {
-            LanguageUtils.loadLanguage(getDefaultTranslations());
-        }
+        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE, Config.class);
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            LocationsObj.readClient(server.getIconFile().toString().replace("icon.png]", "")
+            LOCATIONS.readClient(server.getIconFile().toString().replace("icon.png]", "")
                     .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
             );
-            BackTpsObj.readClient(server.getIconFile().toString().replace("icon.png]", "")
+            BACK_TPS.readClient(server.getIconFile().toString().replace("icon.png]", "")
                     .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
             );
             removeOutdatedBackTps();
@@ -58,9 +55,9 @@ public class CyanClientCore implements ClientModInitializer
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            CyanCommands.register(dispatcher);
+            CYAN_CONFIG_COMMANDS.register(dispatcher);
             LocationCommands.register(dispatcher);
         });
-        LOGGER.info("[Cyan] Successfully completed initialization");
+        CYAN_LOGGER.info("[Cyan] Successfully initialized");
     }
 }

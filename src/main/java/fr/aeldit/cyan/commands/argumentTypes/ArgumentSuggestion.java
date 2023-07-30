@@ -22,12 +22,9 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static fr.aeldit.cyan.util.Utils.LocationsObj;
-import static fr.aeldit.cyan.util.Utils.getDefaultOptions;
+import static fr.aeldit.cyan.util.Utils.LOCATIONS;
 
 public final class ArgumentSuggestion
 {
@@ -38,32 +35,6 @@ public final class ArgumentSuggestion
      */
     public static CompletableFuture<Suggestions> getLocations(@NotNull SuggestionsBuilder builder)
     {
-        return CommandSource.suggestMatching(LocationsObj.getLocationsNames(), builder);
-    }
-
-    /**
-     * Called for the command {@code /cyan optionName}
-     *
-     * @return a suggestion with all the available options
-     */
-    public static CompletableFuture<Suggestions> getOptions(@NotNull SuggestionsBuilder builder)
-    {
-        return CommandSource.suggestMatching(getDefaultOptions().keySet(), builder);
-    }
-
-    /**
-     * Called for the command {@code /cyan optionName [integer]}
-     *
-     * @return a suggestion with all the available integers for the configurations
-     */
-    public static CompletableFuture<Suggestions> getInts(@NotNull SuggestionsBuilder builder)
-    {
-        List<String> ints = new ArrayList<>();
-        ints.add("0");
-        ints.add("1");
-        ints.add("2");
-        ints.add("3");
-        ints.add("4");
-        return CommandSource.suggestMatching(ints, builder);
+        return CommandSource.suggestMatching(LOCATIONS.getLocationsNames(), builder);
     }
 }

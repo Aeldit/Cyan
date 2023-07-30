@@ -17,10 +17,10 @@
 
 package fr.aeldit.cyan;
 
-import fr.aeldit.cyan.commands.CyanCommands;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
+import fr.aeldit.cyan.config.Config;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -37,13 +37,10 @@ public class CyanServerCore implements DedicatedServerModInitializer
     @Override
     public void onInitializeServer()
     {
-        LocationsObj.readServer();
-        BackTpsObj.readServer();
+        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE, Config.class);
 
-        if (LibConfig.getBoolOption("useCustomTranslations"))
-        {
-            LanguageUtils.loadLanguage(getDefaultTranslations());
-        }
+        LOCATIONS.readServer();
+        BACK_TPS.readServer();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
@@ -54,9 +51,9 @@ public class CyanServerCore implements DedicatedServerModInitializer
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
-            CyanCommands.register(dispatcher);
+            CYAN_CONFIG_COMMANDS.register(dispatcher);
             LocationCommands.register(dispatcher);
         });
-        LOGGER.info("[Cyan] Successfully completed initialization");
+        CYAN_LOGGER.info("[Cyan] Successfully initialized");
     }
 }

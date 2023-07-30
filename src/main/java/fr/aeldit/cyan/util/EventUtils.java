@@ -27,8 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
-import static fr.aeldit.cyan.util.Utils.BackTpsObj;
-import static fr.aeldit.cyan.util.Utils.LOGGER;
+import static fr.aeldit.cyan.util.Utils.BACK_TPS;
 
 public class EventUtils
 {
@@ -38,25 +37,24 @@ public class EventUtils
         {
             String playerUUID = entity.getUuidAsString();
 
-            if (BackTpsObj.backTpExists(playerUUID))
+            if (BACK_TPS.backTpExists(playerUUID))
             {
-                LOGGER.info("a");
-                BackTpsObj.remove(playerUUID);
+                BACK_TPS.remove(playerUUID);
             }
 
             if (entity.getWorld() == entity.getServer().getWorld(World.OVERWORLD))
             {
-                BackTpsObj.add(new BackTps.BackTp(playerUUID, "overworld", entity.getX(), entity.getY(), entity.getZ(),
+                BACK_TPS.add(new BackTps.BackTp(playerUUID, "overworld", entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
             }
             else if (entity.getWorld() == entity.getServer().getWorld(World.NETHER))
             {
-                BackTpsObj.add(new BackTps.BackTp(playerUUID, "nether", entity.getX(), entity.getY(), entity.getZ(),
+                BACK_TPS.add(new BackTps.BackTp(playerUUID, "nether", entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
             }
             else
             {
-                BackTpsObj.add(new BackTps.BackTp(playerUUID, "end", entity.getX(), entity.getY(), entity.getZ(),
+                BACK_TPS.add(new BackTps.BackTp(playerUUID, "end", entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
             }
         }
@@ -66,7 +64,7 @@ public class EventUtils
     {
         if (Files.exists(BACK_TP_PATH))
         {
-            BackTpsObj.removeAllOutdated();
+            BACK_TPS.removeAllOutdated();
         }
     }
 }

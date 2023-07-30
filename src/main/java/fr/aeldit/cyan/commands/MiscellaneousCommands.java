@@ -21,20 +21,29 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyanlib.lib.CyanLibConfig;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static fr.aeldit.cyan.config.Config.*;
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
+import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
+import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
+import static fr.aeldit.cyan.util.Utils.CYAN_LANGUAGE_UTILS;
+import static fr.aeldit.cyan.util.Utils.CYAN_LIB_UTILS;
+import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class MiscellaneousCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
-        dispatcher.register(CommandManager.literal("killgrounditems")
+        dispatcher.register(CommandManager.literal("kill-ground-items")
                 .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
                         .executes(MiscellaneousCommands::kgir)
                 )
@@ -46,28 +55,32 @@ public class MiscellaneousCommands
                 )
                 .executes(MiscellaneousCommands::kgi)
         );
+
+        dispatcher.register(CommandManager.literal("remove-properties-files")
+                .executes(MiscellaneousCommands::removePropertiesFiles)
+        );
     }
 
     /**
-     * Called when a player execute the command {@code /killgrounditems} or {@code /kgi}
+     * Called when a player execute the command {@code /kill-ground-items} or {@code /kgi}
      * <p>
-     * Kills all the items on the ground in the default radius (defined if {@link CyanLibConfig})
+     * Kills all the items on the ground in the default radius (defined if {@link fr.aeldit.cyan.config.Config})
      */
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (LibUtils.isPlayer(source))
+        if (CYAN_LIB_UTILS.isPlayer(source))
         {
-            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowKgi"), "kgiDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_KGI.getValue(), "kgiDisabled"))
             {
-                if (LibUtils.hasPermission(player, LibConfig.getIntOption("minOpLevelExeKgi")))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]"
-                            .formatted(LibConfig.getIntOption("distanceToEntitiesKgi") * 16));
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation("kgi"),
+                            .formatted(DISTANCE_TO_ENTITIES_KGI.getValue() * 16));
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("kgi"),
                             "cyan.msg.kgi"
                     );
                 }
@@ -77,7 +90,7 @@ public class MiscellaneousCommands
     }
 
     /**
-     * Called when a player execute the command {@code /killgrounditems [int]} or {@code /kgi [int]}
+     * Called when a player execute the command {@code /kill-ground-items [int]} or {@code /kgi [int]}
      * <p>
      * Kills all the items on the ground in the specified radius
      */
@@ -86,21 +99,75 @@ public class MiscellaneousCommands
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        if (LibUtils.isPlayer(source))
+        if (CYAN_LIB_UTILS.isPlayer(source))
         {
-            if (LibUtils.isOptionAllowed(player, LibConfig.getBoolOption("allowKgi"), "kgiDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_KGI.getValue(), "kgiDisabled"))
             {
-                if (LibUtils.hasPermission(player, LibConfig.getIntOption("minOpLevelExeKgi")))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));
-                    LanguageUtils.sendPlayerMessage(player,
-                            LanguageUtils.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("kgir").formatted(Formatting.GOLD + Integer.toString(arg)),
                             "cyan.msg.kgir",
                             Formatting.GOLD + Integer.toString(arg)
                     );
                 }
             }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+
+    /**
+     * Called by the command {@code /remove-properties-files}
+     * <p>
+     * Removes all the properties files
+     */
+    public static int removePropertiesFiles(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        transferPropertiesToGson();
+
+        boolean fileDeleted = false;
+
+        try
+        {
+            Path path = Path.of(LOCATIONS_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
+            {
+                Files.delete(path);
+                fileDeleted = true;
+            }
+
+            path = Path.of(BACK_TP_PATH.toString().replace("json", "properties"));
+
+            if (Files.exists(path))
+            {
+                Files.delete(path);
+                fileDeleted = true;
+            }
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        if (fileDeleted)
+        {
+            CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                    CYAN_LANGUAGE_UTILS.getTranslation("propertiesFilesDeleted"),
+                    "cyan.msg.propertiesFilesDeleted"
+            );
+        }
+        else
+        {
+            CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                    CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noPropertiesFiles"),
+                    "cyan.msg.noPropertiesFiles"
+            );
         }
         return Command.SINGLE_SUCCESS;
     }
