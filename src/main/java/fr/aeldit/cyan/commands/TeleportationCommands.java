@@ -20,7 +20,6 @@ package fr.aeldit.cyan.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.config.Config;
 import fr.aeldit.cyan.teleportation.BackTps;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import static fr.aeldit.cyan.config.Config.*;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
@@ -68,7 +68,7 @@ public class TeleportationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_BACK_TP.getValue(), "backTpDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BACK_TP.getValue(), "backTpDisabled"))
             {
                 if (BACK_TPS.backTpExists(player.getUuidAsString()))
                 {
@@ -112,7 +112,7 @@ public class TeleportationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_BED.getValue(), "bedDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BED.getValue(), "bedDisabled"))
             {
                 if (player.getSpawnPointPosition() != null)
                 {
@@ -166,7 +166,7 @@ public class TeleportationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_SURFACE.getValue(), "surfaceDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_SURFACE.getValue(), "surfaceDisabled"))
             {
                 player.teleport(context.getSource().getWorld(),
                         player.getBlockPos().getX(),

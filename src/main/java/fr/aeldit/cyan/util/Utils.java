@@ -42,6 +42,7 @@ public class Utils
 {
     public static final String CYAN_MODID = "cyan";
     public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(CYAN_MODID);
+    private static final HashMap<String, String> CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
 
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();
@@ -50,8 +51,6 @@ public class Utils
     public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(CYAN_MODID, CYAN_OPTIONS_STORAGE, getDefaultTranslations());
     public static CyanLib CYAN_LIB_UTILS = new CyanLib(CYAN_MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
     public static CyanLibConfigCommands CYAN_CONFIG_COMMANDS = new CyanLibConfigCommands(CYAN_MODID, CYAN_LIB_UTILS);
-
-    private static HashMap<String, String> CYAN_DEFAULT_TRANSLATIONS;
 
     public static void checkOrCreateModDir(boolean locations)
     {
@@ -143,10 +142,8 @@ public class Utils
 
     public static Map<String, String> getDefaultTranslations()
     {
-        if (CYAN_DEFAULT_TRANSLATIONS == null)
+        if (CYAN_DEFAULT_TRANSLATIONS.isEmpty())
         {
-            CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
-
             CYAN_DEFAULT_TRANSLATIONS.put("dashSeparation", "§6------------------------------------");
             CYAN_DEFAULT_TRANSLATIONS.put("listLocations", "§6Cyan - LOCATIONS :\n");
             CYAN_DEFAULT_TRANSLATIONS.put("headerDescCmd", "§6Cyan - DESCRIPTION (commands) :\n");
@@ -169,9 +166,8 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("desc.useCustomTranslations", "§3The §euseCustomTranslations §3option toggles the use of custom translations");
             CYAN_DEFAULT_TRANSLATIONS.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
             CYAN_DEFAULT_TRANSLATIONS.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLevelExeKgi", "§3The §eminOpLevelExeKgi §3option defines the required OP level to use the §d/kgi §3command");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLevelExeEditConfig", "§3The §eminOpLevelExeEditConfig §3option defines the required OP level to edit config");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLevelExeEditLocation", "§3The §eminOpLevelExeEditLocation §3option defines the required OP level to edit the locations");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLvlKgi", "§3The §eminOpLvlKgi §3option defines the required OP level to use the §d/kgi §3command");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLvlEditLocation", "§3The §eminOpLvlEditLocation §3option defines the required OP level to edit the locations");
             CYAN_DEFAULT_TRANSLATIONS.put("desc.daysToRemoveBackTp", "§3The §edaysToRemoveBackTp §3option defines the number of days the last death location of a player is kept");
 
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.header", "§6Cyan - OPTIONS :\n");
@@ -183,9 +179,8 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.useCustomTranslations", "§6- §3Custom translations : %s");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.msgToActionBar", "§6- §3Messages to action bar : %s");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLevelExeKgi", "§6- §3Minimum OP level for §d/kgi §3: %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLevelExeEditConfig", "§6- §3Minimum OP level to edit config : %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLevelExeEditLocation", "§6- §3Minimum OP level to edit locations: %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLvlKgi", "§6- §3Minimum OP level for §d/kgi §3: %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLvlEditLocation", "§6- §3Minimum OP level to edit locations: %s");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.daysToRemoveBackTp", "§6- §3Days to keep the death location: %s");
 
             CYAN_DEFAULT_TRANSLATIONS.put("set.allowBed", "§3Toggled §d/bed §3command %s");
@@ -196,9 +191,8 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("set.useCustomTranslations", "§3Toggled custom translations %s");
             CYAN_DEFAULT_TRANSLATIONS.put("set.msgToActionBar", "§3Toggled messages to action bar %s");
             CYAN_DEFAULT_TRANSLATIONS.put("set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLevelExeKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLevelExeEditConfig", "§3The minimum OP level to edit the config is now %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLevelExeEditLocation", "§3The minimum OP level to edit locations is now %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLvlKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLvlEditLocation", "§3The minimum OP level to edit locations is now %s");
             CYAN_DEFAULT_TRANSLATIONS.put("set.daysToRemoveBackTp", "§3The number of days to keep the last death locations is now %s");
 
             CYAN_DEFAULT_TRANSLATIONS.put("error.notOp", "§cYou don't have the required permission to do that");

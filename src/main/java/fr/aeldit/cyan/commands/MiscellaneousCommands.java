@@ -21,7 +21,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.config.Config;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,6 +31,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static fr.aeldit.cyan.config.Config.*;
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
@@ -73,12 +73,12 @@ public class MiscellaneousCommands
 
         if (CYAN_LIB_UTILS.isPlayer(source))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_KGI.getValue(), "kgiDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_KGI.getValue(), "kgiDisabled"))
             {
-                if (CYAN_LIB_UTILS.hasPermission(player, Config.MIN_OP_LVL_KGI.getValue()))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
                 {
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=minecraft:item,distance=..%d]"
-                            .formatted(Config.DISTANCE_TO_ENTITIES_KGI.getValue() * 16));
+                            .formatted(DISTANCE_TO_ENTITIES_KGI.getValue() * 16));
                     CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                             CYAN_LANGUAGE_UTILS.getTranslation("kgi"),
                             "cyan.msg.kgi"
@@ -101,9 +101,9 @@ public class MiscellaneousCommands
 
         if (CYAN_LIB_UTILS.isPlayer(source))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_KGI.getValue(), "kgiDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_KGI.getValue(), "kgiDisabled"))
             {
-                if (CYAN_LIB_UTILS.hasPermission(player, Config.MIN_OP_LVL_KGI.getValue()))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
                 {
                     int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
                     source.getServer().getCommandManager().executeWithPrefix(source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16));

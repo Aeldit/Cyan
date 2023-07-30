@@ -22,7 +22,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.argumentTypes.ArgumentSuggestion;
-import fr.aeldit.cyan.config.Config;
 import fr.aeldit.cyan.teleportation.Locations;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -31,6 +30,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.aeldit.cyan.config.Config.ALLOW_LOCATIONS;
+import static fr.aeldit.cyan.config.Config.MIN_OP_LVL_EDIT_LOCATIONS;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
@@ -110,9 +111,9 @@ public class LocationCommands
         {
             String locationName = StringArgumentType.getString(context, "name");
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
-                if (CYAN_LIB_UTILS.hasPermission(player, Config.MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
                     if (!LOCATIONS.locationExists(locationName))
                     {
@@ -159,9 +160,9 @@ public class LocationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
-                if (CYAN_LIB_UTILS.hasPermission(player, Config.MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
 
@@ -200,9 +201,9 @@ public class LocationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
-                if (CYAN_LIB_UTILS.hasPermission(player, Config.MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
                     if (LOCATIONS.removeAll())
                     {
@@ -235,9 +236,9 @@ public class LocationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
-                if (CYAN_LIB_UTILS.hasPermission(player, Config.MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
+                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
                     String newLocationName = StringArgumentType.getString(context, "new_name");
@@ -290,40 +291,43 @@ public class LocationCommands
 
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (!LOCATIONS.isEmpty())
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
-                CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("dashSeparation"),
-                        "cyan.msg.dashSeparation",
-                        false
-                );
-                CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("listLocations"),
-                        "cyan.msg.listLocations",
-                        false
-                );
+                if (!LOCATIONS.isEmpty())
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("dashSeparation"),
+                            "cyan.msg.dashSeparation",
+                            false
+                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("listLocations"),
+                            "cyan.msg.listLocations",
+                            false
+                    );
 
-                LOCATIONS.getLocations().forEach(location -> CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
-                        player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("getLocation"),
-                        "cyan.msg.getLocation",
-                        false,
-                        Formatting.YELLOW + location.getName(),
-                        Formatting.DARK_AQUA + location.getDimension()
-                ));
+                    LOCATIONS.getLocations().forEach(location -> CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
+                            player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("getLocation"),
+                            "cyan.msg.getLocation",
+                            false,
+                            Formatting.YELLOW + location.getName(),
+                            Formatting.DARK_AQUA + location.getDimension()
+                    ));
 
-                CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("dashSeparation"),
-                        "cyan.msg.dashSeparation",
-                        false
-                );
-            }
-            else
-            {
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noLocations"),
-                        "cyan.msg.noLocations"
-                );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("dashSeparation"),
+                            "cyan.msg.dashSeparation",
+                            false
+                    );
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noLocations"),
+                            "cyan.msg.noLocations"
+                    );
+                }
             }
         }
         return Command.SINGLE_SUCCESS;

@@ -43,7 +43,7 @@ public class BackTps
     public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date) {}
 
     private final List<BackTp> backTps = Collections.synchronizedList(new ArrayList<>());
-    private final TypeToken<List<BackTp>> BACK_TYPE = new TypeToken<>() {};
+    private final TypeToken<List<BackTp>> backTpType = new TypeToken<>() {};
     private boolean isEditingFile = false;
     public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/back.json");
 
@@ -122,7 +122,7 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                this.backTps.addAll(gsonReader.fromJson(reader, BACK_TYPE));
+                this.backTps.addAll(gsonReader.fromJson(reader, backTpType));
                 reader.close();
             }
             catch (IOException e)
@@ -143,7 +143,7 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                this.backTps.addAll(gsonReader.fromJson(reader, BACK_TYPE));
+                this.backTps.addAll(gsonReader.fromJson(reader, backTpType));
                 reader.close();
             }
             catch (IOException e)

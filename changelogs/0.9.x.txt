@@ -43,5 +43,9 @@
     ✏️ Added :
     - The `/rename-location`, that allows you to rename a location
 
+    🚧 Fixed :
+    - The `get-locations` command was not checking for the value of `ALLOW_LOCATIONS`, so it was executed even if the option was set to OFF
+
     🫧 Changed :
     - Use CyanLib 0.3.5 (which allows me to remove the config commands from this mod, as they are now handled in the CyanLib)
+    - Use CyanLib 0.4.1 (which adds screen for the configuration on the client, only in solo for now)

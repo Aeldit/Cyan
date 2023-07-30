@@ -28,7 +28,6 @@ import java.util.Calendar;
 
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.util.Utils.BACK_TPS;
-import static fr.aeldit.cyan.util.Utils.CYAN_LOGGER;
 
 public class EventUtils
 {
@@ -40,7 +39,6 @@ public class EventUtils
 
             if (BACK_TPS.backTpExists(playerUUID))
             {
-                CYAN_LOGGER.info("a");
                 BACK_TPS.remove(playerUUID);
             }
 

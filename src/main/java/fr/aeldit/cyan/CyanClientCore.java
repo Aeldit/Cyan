@@ -37,7 +37,7 @@ public class CyanClientCore implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        CYAN_LIB_UTILS.init(CYAN_MODID, Config.class, CYAN_OPTIONS_STORAGE);
+        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE, Config.class);
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
