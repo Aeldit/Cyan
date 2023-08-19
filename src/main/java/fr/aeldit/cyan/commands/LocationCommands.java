@@ -30,8 +30,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.config.Config.ALLOW_LOCATIONS;
-import static fr.aeldit.cyan.config.Config.MIN_OP_LVL_EDIT_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanConfig.ALLOW_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanConfig.MIN_OP_LVL_EDIT_LOCATIONS;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 

@@ -20,7 +20,7 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.aeldit.cyan.config.Config;
+import fr.aeldit.cyan.config.CyanConfig;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class BackTps
                 Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
                 long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
 
-                if (days >= Config.DAYS_TO_REMOVE_BACK_TP.getValue())
+                if (days >= CyanConfig.DAYS_TO_REMOVE_BACK_TP.getValue())
                 {
                     tmp.add(backTp);
                 }

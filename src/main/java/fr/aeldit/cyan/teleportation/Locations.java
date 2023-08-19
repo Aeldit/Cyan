@@ -20,7 +20,7 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.aeldit.cyan.config.Config;
+import fr.aeldit.cyan.config.CyanConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
@@ -196,7 +196,7 @@ public class Locations
 
     public void teleport(ServerPlayerEntity player, String location)
     {
-        if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+        if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
         {
             if (LOCATIONS.locationExists(location))
             {

@@ -21,6 +21,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fr.aeldit.cyan.config.CyanConfig;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,7 +32,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static fr.aeldit.cyan.config.Config.*;
+import static fr.aeldit.cyan.config.CyanConfig.*;
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
 import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
@@ -64,7 +65,7 @@ public class MiscellaneousCommands
     /**
      * Called when a player execute the command {@code /kill-ground-items} or {@code /kgi}
      * <p>
-     * Kills all the items on the ground in the default radius (defined if {@link fr.aeldit.cyan.config.Config})
+     * Kills all the items on the ground in the default radius (defined if {@link CyanConfig})
      */
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {

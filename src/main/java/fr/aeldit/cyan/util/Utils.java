@@ -17,7 +17,7 @@
 
 package fr.aeldit.cyan.util;
 
-import fr.aeldit.cyan.config.Config;
+import fr.aeldit.cyan.config.CyanConfig;
 import fr.aeldit.cyan.teleportation.BackTps;
 import fr.aeldit.cyan.teleportation.Locations;
 import fr.aeldit.cyanlib.lib.CyanLib;
@@ -47,7 +47,7 @@ public class Utils
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();
 
-    public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(CYAN_MODID, Config.class);
+    public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(CYAN_MODID, CyanConfig.class);
     public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(CYAN_MODID, CYAN_OPTIONS_STORAGE, getDefaultTranslations());
     public static CyanLib CYAN_LIB_UTILS = new CyanLib(CYAN_MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
     public static CyanLibConfigCommands CYAN_CONFIG_COMMANDS = new CyanLibConfigCommands(CYAN_MODID, CYAN_LIB_UTILS);
