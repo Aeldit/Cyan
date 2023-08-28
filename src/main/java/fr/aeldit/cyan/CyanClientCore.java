@@ -20,7 +20,7 @@ package fr.aeldit.cyan;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
-import fr.aeldit.cyan.config.Config;
+import fr.aeldit.cyan.config.CyanConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -37,7 +37,7 @@ public class CyanClientCore implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE, Config.class);
+        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE, CyanConfig.class);
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));

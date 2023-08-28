@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static fr.aeldit.cyan.config.Config.*;
+import static fr.aeldit.cyan.config.CyanConfig.*;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 

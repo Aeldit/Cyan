@@ -21,7 +21,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.commands.argumentTypes.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.Locations;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -30,8 +29,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.config.Config.ALLOW_LOCATIONS;
-import static fr.aeldit.cyan.config.Config.MIN_OP_LVL_EDIT_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanConfig.ALLOW_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanConfig.MIN_OP_LVL_EDIT_LOCATIONS;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
@@ -52,13 +51,13 @@ public class LocationCommands
 
         dispatcher.register(CommandManager.literal("remove-location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
-                        .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                         .executes(LocationCommands::removeLocation)
                 )
         );
         dispatcher.register(CommandManager.literal("rl")
                 .then(CommandManager.argument("name", StringArgumentType.string())
-                        .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                         .executes(LocationCommands::removeLocation)
                 )
         );
@@ -69,6 +68,7 @@ public class LocationCommands
         dispatcher.register(CommandManager.literal("rename-location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
                         .then(CommandManager.argument("new_name", StringArgumentType.string())
+                                .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                                 .executes(LocationCommands::renameLocation)
                         )
                 )
@@ -76,14 +76,14 @@ public class LocationCommands
 
         dispatcher.register(CommandManager.literal("location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
-                        .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                         .executes(LocationCommands::goToLocation)
                 )
                 .executes(LocationCommands::getLocationsList)
         );
         dispatcher.register(CommandManager.literal("l")
                 .then(CommandManager.argument("name", StringArgumentType.string())
-                        .suggests((context4, builder4) -> ArgumentSuggestion.getLocations(builder4))
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                         .executes(LocationCommands::goToLocation)
                 )
                 .executes(LocationCommands::getLocationsList)

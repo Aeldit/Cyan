@@ -20,11 +20,15 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.aeldit.cyan.config.Config;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import fr.aeldit.cyan.config.CyanConfig;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.command.CommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -34,6 +38,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
@@ -157,12 +163,11 @@ public class Locations
         return this.locations;
     }
 
-    public List<String> getLocationsNames()
+    public @NotNull CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
     {
-        ArrayList<String> locationsNames = new ArrayList<>();
-        this.locations.forEach(location -> locationsNames.add(location.getName()));
+        ArrayList<String> locationsNames = locations.stream().map(Location::getName).collect(Collectors.toCollection(ArrayList::new));
 
-        return locationsNames;
+        return CommandSource.suggestMatching(locationsNames, builder);
     }
 
     public Location getLocation(String locationName)
@@ -172,31 +177,17 @@ public class Locations
 
     public int getLocationIndex(String locationName)
     {
-        for (Location location : this.locations)
-        {
-            if (location.getName().equals(locationName))
-            {
-                return this.locations.indexOf(location);
-            }
-        }
-        return 0;
+        return this.locations.stream().filter(location -> location.getName().equals(locationName)).findFirst().map(this.locations::indexOf).orElse(0);
     }
 
     public boolean locationExists(String locationName)
     {
-        for (Location location : this.locations)
-        {
-            if (location.getName().equals(locationName))
-            {
-                return true;
-            }
-        }
-        return false;
+        return this.locations.stream().anyMatch(location -> location.getName().equals(locationName));
     }
 
     public void teleport(ServerPlayerEntity player, String location)
     {
-        if (CYAN_LIB_UTILS.isOptionAllowed(player, Config.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+        if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
         {
             if (LOCATIONS.locationExists(location))
             {

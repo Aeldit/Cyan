@@ -22,7 +22,7 @@ import fr.aeldit.cyanlib.lib.utils.RULES;
 
 import static fr.aeldit.cyan.util.Utils.CYAN_OPTIONS_STORAGE;
 
-public class Config
+public class CyanConfig
 {
     public static final CyanLibOptionsStorage.BooleanOption ALLOW_BED = CYAN_OPTIONS_STORAGE.new BooleanOption("allowBed", true);
     public static final CyanLibOptionsStorage.BooleanOption ALLOW_KGI = CYAN_OPTIONS_STORAGE.new BooleanOption("allowKgi", true);

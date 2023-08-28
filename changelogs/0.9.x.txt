@@ -48,4 +48,15 @@
 
     🫧 Changed :
     - Use CyanLib 0.3.5 (which allows me to remove the config commands from this mod, as they are now handled in the CyanLib)
-    - Use CyanLib 0.4.1 (which adds screen for the configuration on the client, only in solo for now)
+    - *(Only uses the last version, it's just to separate the features of each version)* Use CyanLib 0.4.1
+      (which adds screen for the configuration on the client, only in solo for now)
+
+0.9.14 :
+    ✏️ Added :
+    - Suggestions for the `rename-location`
+
+    🚧 Fixed :
+    - The message when renaming a location had weird colors
+
+    🧪 Dev :
+    - The function to get the locations names suggestion is now part of the Locations class, allowing the removing of the ArgumentSuggestion class
