@@ -29,7 +29,7 @@
   "cyan.msg.removeLocation": "§3The location %s §3have been removed",
   "cyan.msg.listLocations": "§6Cyan - LOCATIONS :\n",
   "cyan.msg.removedAllLocations": "§3All the locations have been removed",
-  "cyan.msg.renameLocation": "§3The location %s have been renamed to %s",
+  "cyan.msg.renameLocation": "§3The location %s §3have been renamed to %s",
   "cyan.msg.getLocation": "%s §3(%s§3)",
   "cyan.msg.translationsReloaded": "§3The translations have been reloaded",
   "cyan.msg.backTp": "§3You have been teleported to the place you died",

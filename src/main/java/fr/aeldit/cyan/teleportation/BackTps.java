@@ -92,26 +92,12 @@ public class BackTps
 
     public int getBackTpIndex(String playerUUID)
     {
-        for (BackTp backTp : this.backTps)
-        {
-            if (backTp.playerUUID().equals(playerUUID))
-            {
-                return this.backTps.indexOf(backTp);
-            }
-        }
-        return -1;
+        return this.backTps.stream().filter(backTp -> backTp.playerUUID().equals(playerUUID)).findFirst().map(this.backTps::indexOf).orElse(-1);
     }
 
     public boolean backTpExists(String playerUUID)
     {
-        for (BackTp backTp : this.backTps)
-        {
-            if (backTp.playerUUID().equals(playerUUID))
-            {
-                return true;
-            }
-        }
-        return false;
+        return this.backTps.stream().anyMatch(backTp -> backTp.playerUUID().equals(playerUUID));
     }
 
     public void readServer()
