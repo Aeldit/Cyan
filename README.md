@@ -49,7 +49,7 @@ or
 >
 > [![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)](https://github.com/Aeldit/Cyan/issues)
 >
-> If you have a suggestion, you can go on my discord server and create a post in 🖍️-suggestion
+> If you have a suggestion, you can go on my discord server and create a post in 🗽-suggestions-forum
 >
 > [![discord_badge](https://img.shields.io/discord/750243612473819188?color=7289da&label=DISCORD&logo=discord&logoColor=7289da&style=for-the-badge)](https://discord.gg/PcYPpqzhKS)
 
