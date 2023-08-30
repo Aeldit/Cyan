@@ -6,18 +6,23 @@
 or
 [![quilted-fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/quilted-fabric-api_vector.svg)](https://modrinth.com/mod/qsl)
 [![cyanlib_badge_use](https://raw.githubusercontent.com/Aeldit/Aeldit/e84549f8cef529270bd41775357d577e1f71978a/images/cyanlib-cozy.svg)](https://modrinth.com/mod/cyanlib)
+<details>
+<summary>🎴 Show available versions</summary>
 
-| Supported MC Version | Up to date | Last version |
+| Supported MC Version | Up To Date | Last Version |
 |:--------------------:|:----------:|:------------:|
-|   1.17.x - 1.18.x    |     ❌      |    0.9.3     |
-|    1.19 - 1.19.2     |     ❌      |    0.9.13    |
-|        1.19.3        |     ❌      |    0.9.7     |
+|   1.17.x - 1.18.x    |     ❌      |   (0.9.3)    |
+|    1.19 - 1.19.2     |     ✅      |    latest    |
+|        1.19.3        |     ❌      |   (0.9.7)    |
 |        1.19.4        |     ✅      |    latest    |
 |        1.20.x        |     ✅      |    latest    |
 
+</details>
+
+
 ***
 
-### 💲`Features`
+### 💲Features
 
 1. Teleport yourself to :
     - your bed / respawn anchor
@@ -36,53 +41,51 @@ or
 6. Plans for the future :
     - Claims
 
-***
+### ✅ List of commands (and their aliases)
 
-### ✅ `List of commands (and their aliases)`
+<details>
+<summary>✅ List of commands (and their aliases)</summary>
 
-|                    Command                    |                            Description                             |         Alias         |
-|:---------------------------------------------:|:------------------------------------------------------------------:|:---------------------:|
-|                    `/bed`                     |            Teleports you to your bed or respawn anchor             |         `/b`          |
-|              `/killgrounditems`               |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
-|                  `/surface`                   |                    Teleports you to the surface                    |         `/s`          |
-|                                               |                                                                    |                       |
-|        `/set-location <location_name>`        |              Saves the current position as a location              | `/sl <location_name>` |
-|      `/remove-location <location_name>`       |                     Removes the given location                     | `/rl <location_name>` |
-|            `/remove-all-locations`            |                     Removes the given location                     |           ❌           |
-|          `/location <location_name>`          |                Teleports you to the given location                 | `/l <location_name>`  |
-|               `/get-locations`                |                  Displays all the saved locations                  |         `/gl`         |
-| `/rename-location <location_name> <new_name>` |            Renames the given location to the given name            |           ❌           |
-|                                               |                                                                    |                       |
-|                    `/back`                    |              Teleports you to the last place you died              |           ❌           |
-|                                               |                                                                    |                       |
-|          `/cyan reload-translations`          |     Reloads the custom translations (useful when editing them)     |           ❌           |
-|        `/cyan remove-properties-files`        |  Transfers the properties files to json files, then deletes them   |           ❌           |
-|                                               |                                                                    |                       |
-|              `/cyan get-config`               | Displays in the player's chat the current value of all the options |           ❌           |
+|              Command               |                            Description                             |         Alias         |
+|:----------------------------------:|:------------------------------------------------------------------:|:---------------------:|
+|               `/bed`               |            Teleports you to your bed or respawn anchor             |         `/b`          |
+|         `/killgrounditems`         |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
+|             `/surface`             |                    Teleports you to the surface                    |         `/s`          |
+|                                    |                                                                    |                       |
+|  `/set-location <location_name>`   |              Saves the current position as a location              | `/sl <location_name>` |
+| `/remove-location <location_name>` |                     Removes the given location                     | `/rl <location_name>` |
+|      `/remove-all-locations`       |                     Removes the given location                     |           ❌           |
+|    `/location <location_name>`     |                Teleports you to the given location                 | `/l <location_name>`  |
+|          `/get-locations`          |                  Displays all the saved locations                  |         `/gl`         |
+|                                    |                                                                    |                       |
+|              `/back`               |              Teleports you to the last place you died              |           ❌           |
+|                                    |                                                                    |                       |
+|    `/cyan reload-translations`     |     Reloads the custom translations (useful when editing them)     |           ❌           |
+|  `/cyan remove-properties-files`   |  Transfers the properties files to json files, then deletes them   |           ❌           |
+|                                    |                                                                    |                       |
+|         `/cyan get-config`         | Displays in the player's chat the current value of all the options |           ❌           |
 
-***
+</details>
 
-### 🌐 `Default Translations`
+### 🌐 Default Translations
 
-> If you have set the option `useTranslations` to false, the default language was english. But with the latest
-> update
-> (0.9.3), you can put a file in the config directory with the translations in the language you want (you will have to
-> translate the file by yourself,
-> but this way you can also customize the messages)
+This mod allows you to create and use custom translations, instead of the default messages.
 
-How to do this ?
+To do this :
 
 1. Download the file `translations.json`
-   located [here](https://github.com/Aeldit/Cyan/tree/1.19.4/docs) and put it in your Minecraft server folder
-   (`minecraft/config/cyan`)
+   located [here](https://github.com/Aeldit/Cyan/tree/1.20.x/docs) and put it in your Minecraft server
+   folder (`minecraft/config/cyan`)
 2. Then you can translate the file to any language you want
 3. There are some unicode characters in the file (they look like `\u00A7c`). They are used to determine the
    color of the text so don't delete them unless you don't want the colors. If you want to change the colors, here
    is a link where you can find the [unicode colors](https://minecraft.tools/en/color-code.php)
+4. There are translations that contains one or more `%s`. You must keep these in your translations, as they are the
+   place the variables passed from functions are shown (ex: For the
+   command `/kgi 16`, the message will be `Ground items have been removed in a radius of 16 chunks`. Here we have
+   16 in the message, but because it was the argument of the command)
 
-***
-
-### ❗ Important :
+### ❗ Important
 
 If you are not using this mod on client but only on server side, download the resource pack for messages translations
 (Cyan 1.1X.x located in this mod's github repository)
@@ -92,7 +95,7 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
 
 ***
 
-> If you find any issue, please make sure to report it on github so I can fix it (both badges can be clicked on to
+> If you find any issue, please make sure to report it on GitHub so I can fix it (both badges can be clicked on to
 > follow the link)
 >
 > [![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)](https://github.com/Aeldit/Cyan/issues)
