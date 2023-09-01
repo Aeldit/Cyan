@@ -1,7 +1,7 @@
-![banner](images/banner.png)
-
+![banner](https://github.com/Aeldit/Cyan/blob/1.20.x/images/banner_small.png?raw=true)
+<!-- modrinth_exclude.start -->
 > ❌ I do NOT allow this mod to be ported on the Forge loader, nor to be uploaded on Curseforge
-
+<!-- modrinth_exclude.end -->
 [![fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/fabric-api_vector.svg)](https://modrinth.com/mod/fabric-api)
 or
 [![quilted-fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/quilted-fabric-api_vector.svg)](https://modrinth.com/mod/qsl)
@@ -40,8 +40,6 @@ or
 
 6. Plans for the future :
     - Claims
-
-### ✅ List of commands (and their aliases)
 
 <details>
 <summary>✅ List of commands (and their aliases)</summary>
@@ -103,8 +101,6 @@ it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
 > If you have a suggestion, you can go on my discord server and create a post in 🗽-suggestions-forum
 >
 > [![discord_badge](https://img.shields.io/discord/750243612473819188?color=7289da&label=DISCORD&logo=discord&logoColor=7289da&style=for-the-badge)](https://discord.gg/PcYPpqzhKS)
-
-***
 
 ### Check out the rest of my projects !
 
