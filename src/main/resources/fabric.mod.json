@@ -3,7 +3,7 @@
   "id": "cyan",
   "version": "${version}",
   "name": "Cyan",
-  "description": "This mod allows you to save global locations, teleport to your bed / respawn anchor or to the surface, and many more !",
+  "description": "This mod allows you to save global locations, teleport to your bed / respawn anchor or to the surface, and some more !",
   "authors": [
     "Aeldit"
   ],
@@ -28,7 +28,6 @@
   },
   "depends": {
     "fabricloader": ">=0.14.21",
-    "fabric-resource-loader-v0": "*",
     "fabric-lifecycle-events-v1": "*",
     "fabric-entity-events-v1": "*",
     "fabric-networking-api-v1": "*",

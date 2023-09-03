@@ -26,7 +26,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.config.CyanConfig.ALLOW_LOCATIONS;
@@ -67,8 +66,8 @@ public class LocationCommands
 
         dispatcher.register(CommandManager.literal("rename-location")
                 .then(CommandManager.argument("name", StringArgumentType.string())
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                         .then(CommandManager.argument("new_name", StringArgumentType.string())
-                                .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
                                 .executes(LocationCommands::renameLocation)
                         )
                 )
@@ -117,18 +116,10 @@ public class LocationCommands
                 {
                     if (!LOCATIONS.locationExists(locationName))
                     {
-                        if (player.getWorld() == player.getServer().getWorld(World.OVERWORLD))
-                        {
-                            LOCATIONS.add(new Locations.Location(locationName, "overworld", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
-                        }
-                        else if (player.getWorld() == player.getServer().getWorld(World.NETHER))
-                        {
-                            LOCATIONS.add(new Locations.Location(locationName, "nether", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
-                        }
-                        else
-                        {
-                            LOCATIONS.add(new Locations.Location(locationName, "end", player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch()));
-                        }
+                        LOCATIONS.add(new Locations.Location(locationName,
+                                player.getWorld().getDimensionKey().getValue().toString().replace("minecraft:", "").replace("the_", ""),
+                                player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch())
+                        );
 
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                                 CYAN_LANGUAGE_UTILS.getTranslation("setLocation"),

@@ -42,7 +42,7 @@ public class Utils
 {
     public static final String CYAN_MODID = "cyan";
     public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(CYAN_MODID);
-    private static final HashMap<String, String> CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
+    private static final Map<String, String> CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
 
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();

@@ -115,7 +115,7 @@ public class Locations
 
     public void add(Location location)
     {
-        this.locations.add(location);
+        locations.add(location);
         write();
     }
 
@@ -124,15 +124,15 @@ public class Locations
      */
     public void remove(String location)
     {
-        this.locations.remove(getLocationIndex(location));
+        locations.remove(getLocationIndex(location));
         write();
     }
 
     public boolean removeAll()
     {
-        if (!this.locations.isEmpty())
+        if (!locations.isEmpty())
         {
-            this.locations.clear();
+            locations.clear();
             write();
 
             return true;
@@ -142,7 +142,7 @@ public class Locations
 
     public void rename(String locationName, String newLocationName)
     {
-        for (Location location : this.locations)
+        for (Location location : locations)
         {
             if (location.getName().equals(locationName))
             {
@@ -155,12 +155,12 @@ public class Locations
 
     public boolean isEmpty()
     {
-        return this.locations.isEmpty();
+        return locations.isEmpty();
     }
 
     public List<Location> getLocations()
     {
-        return this.locations;
+        return locations;
     }
 
     public @NotNull CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
@@ -170,19 +170,20 @@ public class Locations
         return CommandSource.suggestMatching(locationsNames, builder);
     }
 
-    public Location getLocation(String locationName)
+    private Location getLocation(String locationName)
     {
-        return this.locations.get(getLocationIndex(locationName));
+        return locations.get(getLocationIndex(locationName));
     }
 
-    public int getLocationIndex(String locationName)
+    private int getLocationIndex(String locationName)
     {
-        return this.locations.stream().filter(location -> location.getName().equals(locationName)).findFirst().map(this.locations::indexOf).orElse(0);
+        return locations.stream().filter(location -> location.getName().equals(locationName))
+                .findFirst().map(locations::indexOf).orElse(0);
     }
 
     public boolean locationExists(String locationName)
     {
-        return this.locations.stream().anyMatch(location -> location.getName().equals(locationName));
+        return locations.stream().anyMatch(location -> location.getName().equals(locationName));
     }
 
     public void teleport(ServerPlayerEntity player, String location)
@@ -228,7 +229,7 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                this.locations.addAll(gsonReader.fromJson(reader, locationsType));
+                locations.addAll(gsonReader.fromJson(reader, locationsType));
                 reader.close();
             }
             catch (IOException e)
@@ -249,7 +250,7 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                this.locations.addAll(gsonReader.fromJson(reader, locationsType));
+                locations.addAll(gsonReader.fromJson(reader, locationsType));
                 reader.close();
             }
             catch (IOException e)
@@ -265,7 +266,7 @@ public class Locations
 
         try
         {
-            if (this.locations.isEmpty())
+            if (locations.isEmpty())
             {
                 if (Files.exists(LOCATIONS_PATH))
                 {
@@ -275,16 +276,16 @@ public class Locations
             }
             else
             {
-                if (!this.isEditingFile)
+                if (!isEditingFile)
                 {
-                    this.isEditingFile = true;
+                    isEditingFile = true;
 
                     Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
                     Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
-                    gsonWriter.toJson(this.locations, writer);
+                    gsonWriter.toJson(locations, writer);
                     writer.close();
 
-                    this.isEditingFile = false;
+                    isEditingFile = false;
                 }
                 else
                 {
@@ -293,17 +294,17 @@ public class Locations
 
                     while (System.currentTimeMillis() < end)
                     {
-                        if (!this.isEditingFile)
+                        if (!isEditingFile)
                         {
-                            this.isEditingFile = true;
+                            isEditingFile = true;
 
                             Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
                             Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
-                            gsonWriter.toJson(this.locations, writer);
+                            gsonWriter.toJson(locations, writer);
                             writer.close();
 
                             couldWrite = true;
-                            this.isEditingFile = false;
+                            isEditingFile = false;
                             break;
                         }
                     }

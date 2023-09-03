@@ -49,13 +49,16 @@ public class BackTps
 
     public void add(BackTp backTp)
     {
-        this.backTps.add(backTp);
+        backTps.add(backTp);
         write();
     }
 
+    /**
+     * Can only be called if the result of {@link BackTps#backTpExists(String)} is true
+     */
     public void remove(String playerUUID)
     {
-        this.backTps.remove(getBackTpIndex(playerUUID));
+        backTps.remove(getBackTpIndex(playerUUID));
         write();
     }
 
@@ -65,7 +68,7 @@ public class BackTps
         {
             ArrayList<BackTp> tmp = new ArrayList<>();
 
-            for (BackTp backTp : this.backTps)
+            for (BackTp backTp : backTps)
             {
                 Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
                 long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
@@ -76,7 +79,7 @@ public class BackTps
                 }
             }
 
-            this.backTps.removeAll(tmp);
+            backTps.removeAll(tmp);
             write();
         }
         catch (ParseException e)
@@ -87,17 +90,18 @@ public class BackTps
 
     public BackTp getBackTp(String playerUUID)
     {
-        return this.backTps.get(getBackTpIndex(playerUUID));
+        return backTps.get(getBackTpIndex(playerUUID));
     }
 
-    public int getBackTpIndex(String playerUUID)
+    private int getBackTpIndex(String playerUUID)
     {
-        return this.backTps.stream().filter(backTp -> backTp.playerUUID().equals(playerUUID)).findFirst().map(this.backTps::indexOf).orElse(-1);
+        return backTps.stream().filter(backTp -> backTp.playerUUID().equals(playerUUID))
+                .findFirst().map(backTps::indexOf).orElse(0);
     }
 
     public boolean backTpExists(String playerUUID)
     {
-        return this.backTps.stream().anyMatch(backTp -> backTp.playerUUID().equals(playerUUID));
+        return backTps.stream().anyMatch(backTp -> backTp.playerUUID().equals(playerUUID));
     }
 
     public void readServer()
@@ -108,7 +112,7 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                this.backTps.addAll(gsonReader.fromJson(reader, backTpType));
+                backTps.addAll(gsonReader.fromJson(reader, backTpType));
                 reader.close();
             }
             catch (IOException e)
@@ -129,7 +133,7 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                this.backTps.addAll(gsonReader.fromJson(reader, backTpType));
+                backTps.addAll(gsonReader.fromJson(reader, backTpType));
                 reader.close();
             }
             catch (IOException e)
@@ -145,7 +149,7 @@ public class BackTps
 
         try
         {
-            if (this.backTps.isEmpty())
+            if (backTps.isEmpty())
             {
                 if (Files.exists(BACK_TP_PATH))
                 {
@@ -156,16 +160,16 @@ public class BackTps
             else
             {
 
-                if (!this.isEditingFile)
+                if (!isEditingFile)
                 {
-                    this.isEditingFile = true;
+                    isEditingFile = true;
 
                     Gson gsonWriter = new GsonBuilder().create();
                     Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
-                    gsonWriter.toJson(this.backTps, writer);
+                    gsonWriter.toJson(backTps, writer);
                     writer.close();
 
-                    this.isEditingFile = false;
+                    isEditingFile = false;
                 }
                 else
                 {
@@ -174,17 +178,17 @@ public class BackTps
 
                     while (System.currentTimeMillis() < end)
                     {
-                        if (!this.isEditingFile)
+                        if (!isEditingFile)
                         {
-                            this.isEditingFile = true;
+                            isEditingFile = true;
 
                             Gson gsonWriter = new GsonBuilder().create();
                             Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
-                            gsonWriter.toJson(this.backTps, writer);
+                            gsonWriter.toJson(backTps, writer);
                             writer.close();
 
                             couldWrite = true;
-                            this.isEditingFile = false;
+                            isEditingFile = false;
                             break;
                         }
                     }
