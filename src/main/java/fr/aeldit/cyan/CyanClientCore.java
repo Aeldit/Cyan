@@ -42,12 +42,8 @@ public class CyanClientCore implements ClientModInitializer
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            LOCATIONS.readClient(server.getIconFile().toString().replace("icon.png]", "")
-                    .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
-            );
-            BACK_TPS.readClient(server.getIconFile().toString().replace("icon.png]", "")
-                    .split("\\\\")[server.getIconFile().toString().split("\\\\").length - 2]
-            );
+            LOCATIONS.readClient(server.getSaveProperties().getLevelName());
+            BACK_TPS.readClient(server.getSaveProperties().getLevelName());
             removeOutdatedBackTps();
         });
 

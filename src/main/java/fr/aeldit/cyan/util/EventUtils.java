@@ -19,7 +19,6 @@ package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyan.teleportation.BackTps;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
@@ -42,21 +41,11 @@ public class EventUtils
                 BACK_TPS.remove(playerUUID);
             }
 
-            if (entity.getWorld() == entity.getServer().getWorld(World.OVERWORLD))
-            {
-                BACK_TPS.add(new BackTps.BackTp(playerUUID, "overworld", entity.getX(), entity.getY(), entity.getZ(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
-            }
-            else if (entity.getWorld() == entity.getServer().getWorld(World.NETHER))
-            {
-                BACK_TPS.add(new BackTps.BackTp(playerUUID, "nether", entity.getX(), entity.getY(), entity.getZ(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
-            }
-            else
-            {
-                BACK_TPS.add(new BackTps.BackTp(playerUUID, "end", entity.getX(), entity.getY(), entity.getZ(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())));
-            }
+            BACK_TPS.add(new BackTps.BackTp(playerUUID,
+                    entity.getWorld().getDimensionKey().getValue().toString().replace("minecraft:", "").replace("the_", ""),
+                    entity.getX(), entity.getY(), entity.getZ(),
+                    new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()))
+            );
         }
     }
 

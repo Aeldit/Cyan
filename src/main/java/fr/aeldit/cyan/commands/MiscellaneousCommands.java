@@ -119,7 +119,6 @@ public class MiscellaneousCommands
         return Command.SINGLE_SUCCESS;
     }
 
-
     /**
      * Called by the command {@code /remove-properties-files}
      * <p>

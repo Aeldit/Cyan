@@ -170,12 +170,12 @@ public class Locations
         return CommandSource.suggestMatching(locationsNames, builder);
     }
 
-    public Location getLocation(String locationName)
+    private Location getLocation(String locationName)
     {
         return locations.get(getLocationIndex(locationName));
     }
 
-    public int getLocationIndex(String locationName)
+    private int getLocationIndex(String locationName)
     {
         return locations.stream().filter(location -> location.getName().equals(locationName))
                 .findFirst().map(locations::indexOf).orElse(0);

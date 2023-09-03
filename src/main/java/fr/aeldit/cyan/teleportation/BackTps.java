@@ -93,7 +93,7 @@ public class BackTps
         return backTps.get(getBackTpIndex(playerUUID));
     }
 
-    public int getBackTpIndex(String playerUUID)
+    private int getBackTpIndex(String playerUUID)
     {
         return backTps.stream().filter(backTp -> backTp.playerUUID().equals(playerUUID))
                 .findFirst().map(backTps::indexOf).orElse(0);
