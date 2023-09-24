@@ -302,8 +302,8 @@ public class LocationCommands
                             CYAN_LANGUAGE_UTILS.getTranslation("getLocation"),
                             "cyan.msg.getLocation",
                             false,
-                            Formatting.YELLOW + location.getName(),
-                            Formatting.DARK_AQUA + location.getDimension()
+                            Formatting.YELLOW + location.name(),
+                            Formatting.DARK_AQUA + location.dimension()
                     ));
 
                     CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,

@@ -46,67 +46,7 @@ import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class Locations
 {
-    public static class Location
-    {
-        private String name;
-        private final String dimension;
-        private final double x;
-        private final double y;
-        private final double z;
-        private final float yaw;
-        private final float pitch;
-
-        public Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
-        {
-            this.name = name;
-            this.dimension = dimension;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.yaw = yaw;
-            this.pitch = pitch;
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
-        }
-
-        public String getDimension()
-        {
-            return dimension;
-        }
-
-        public double getX()
-        {
-            return x;
-        }
-
-        public double getY()
-        {
-            return y;
-        }
-
-        public double getZ()
-        {
-            return z;
-        }
-
-        public float getYaw()
-        {
-            return yaw;
-        }
-
-        public float getPitch()
-        {
-            return pitch;
-        }
-    }
+    public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}
 
     private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
     private final TypeToken<List<Location>> locationsType = new TypeToken<>() {};
@@ -120,11 +60,13 @@ public class Locations
     }
 
     /**
-     * Can only be called if the result of {@link Locations#locationExists} is true
+     * Removes the location named {@code locationName}
+     *
+     * @implNote Can only be called if the result of {@link Locations#locationExists} is {@code true}
      */
-    public void remove(String location)
+    public void remove(String locationName)
     {
-        locations.remove(getLocationIndex(location));
+        locations.remove(getLocationIndex(locationName));
         write();
     }
 
@@ -140,17 +82,19 @@ public class Locations
         return false;
     }
 
+    /**
+     * Renames the location named {@code locationName} to {@code newLocationName}
+     *
+     * @implNote Can only be called if the result of {@link #locationExists} is {@code true}
+     */
     public void rename(String locationName, String newLocationName)
     {
-        for (Location location : locations)
-        {
-            if (location.getName().equals(locationName))
-            {
-                location.setName(newLocationName);
-                write();
-                break;
-            }
-        }
+        Location tmpLocation = locations.get(getLocationIndex(locationName));
+        locations.add(new Location(newLocationName,
+                tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z, tmpLocation.yaw, tmpLocation.pitch
+        ));
+        locations.remove(tmpLocation);
+        write();
     }
 
     public boolean isEmpty()
@@ -165,49 +109,55 @@ public class Locations
 
     public @NotNull CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
     {
-        ArrayList<String> locationsNames = locations.stream().map(Location::getName).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> locationsNames = locations.stream().map(Location::name).collect(Collectors.toCollection(ArrayList::new));
 
         return CommandSource.suggestMatching(locationsNames, builder);
     }
 
+    /**
+     * @implNote Can only be called if the result of {@link #locationExists} is {@code true}
+     */
     private Location getLocation(String locationName)
     {
         return locations.get(getLocationIndex(locationName));
     }
 
+    /**
+     * Returns the index of the location with the name {@code locationName} | 0 if the location doesn't exists
+     */
     private int getLocationIndex(String locationName)
     {
-        return locations.stream().filter(location -> location.getName().equals(locationName))
+        return locations.stream().filter(location -> location.name().equals(locationName))
                 .findFirst().map(locations::indexOf).orElse(0);
     }
 
     public boolean locationExists(String locationName)
     {
-        return locations.stream().anyMatch(location -> location.getName().equals(locationName));
+        return locations.stream().anyMatch(location -> location.name().equals(locationName));
     }
 
-    public void teleport(ServerPlayerEntity player, String location)
+    public void teleport(ServerPlayerEntity player, String locationName)
     {
         if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
         {
-            if (LOCATIONS.locationExists(location))
+            if (LOCATIONS.locationExists(locationName))
             {
-                Locations.Location loc = LOCATIONS.getLocation(location);
+                Locations.Location loc = LOCATIONS.getLocation(locationName);
 
-                switch (loc.getDimension())
+                switch (loc.dimension())
                 {
                     case "overworld" ->
-                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
                     case "nether" ->
-                            player.teleport(player.getServer().getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                            player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
                     case "end" ->
-                            player.teleport(player.getServer().getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                            player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
                 }
 
                 CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                         CYAN_LANGUAGE_UTILS.getTranslation("goToLocation"),
                         "cyan.msg.goToLocation",
-                        Formatting.YELLOW + location
+                        Formatting.YELLOW + locationName
                 );
             }
             else
@@ -215,7 +165,7 @@ public class Locations
                 CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                         CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
                         "cyan.msg.locationNotFound",
-                        Formatting.YELLOW + location
+                        Formatting.YELLOW + locationName
                 );
             }
         }

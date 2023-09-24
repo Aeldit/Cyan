@@ -54,7 +54,7 @@ public class BackTps
     }
 
     /**
-     * Can only be called if the result of {@link BackTps#backTpExists(String)} is true
+     * @implNote Can only be called if the result of {@link BackTps#backTpExists} is {@code true}
      */
     public void remove(String playerUUID)
     {
