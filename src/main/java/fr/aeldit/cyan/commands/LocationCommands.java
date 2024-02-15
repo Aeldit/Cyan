@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
  *              GNU LESSER GENERAL PUBLIC LICENSE
  *                  Version 3, 29 June 2007
@@ -234,10 +234,8 @@ public class LocationCommands
                     String locationName = StringArgumentType.getString(context, "name");
                     String newLocationName = StringArgumentType.getString(context, "new_name");
 
-                    if (LOCATIONS.locationExists(locationName))
+                    if (LOCATIONS.rename(locationName, newLocationName))
                     {
-                        LOCATIONS.rename(locationName, newLocationName);
-
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                                 CYAN_LANGUAGE_UTILS.getTranslation("renameLocation"),
                                 "cyan.msg.renameLocation",

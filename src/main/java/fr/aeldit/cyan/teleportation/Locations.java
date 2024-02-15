@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
  *              GNU LESSER GENERAL PUBLIC LICENSE
  *                  Version 3, 29 June 2007
@@ -29,6 +29,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
@@ -66,8 +66,12 @@ public class Locations
      */
     public void remove(String locationName)
     {
-        locations.remove(getLocationIndex(locationName));
-        write();
+        int idx = getLocationIndex(locationName);
+        if (idx != -1)
+        {
+            locations.remove(idx);
+            write();
+        }
     }
 
     public boolean removeAll()
@@ -85,16 +89,22 @@ public class Locations
     /**
      * Renames the location named {@code locationName} to {@code newLocationName}
      *
-     * @implNote Can only be called if the result of {@link #locationExists} is {@code true}
+     * @return {@code true} on success | {@code false} otherwise
      */
-    public void rename(String locationName, String newLocationName)
+    public boolean rename(String locationName, String newLocationName)
     {
-        Location tmpLocation = locations.get(getLocationIndex(locationName));
-        locations.add(new Location(newLocationName,
-                tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z, tmpLocation.yaw, tmpLocation.pitch
-        ));
-        locations.remove(tmpLocation);
-        write();
+        int idx = getLocationIndex(locationName);
+        if (idx != -1)
+        {
+            Location tmpLocation = locations.get(idx);
+            locations.add(new Location(newLocationName,
+                    tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z, tmpLocation.yaw, tmpLocation.pitch
+            ));
+            locations.remove(tmpLocation);
+            write();
+            return true;
+        }
+        return false;
     }
 
     public boolean isEmpty()
@@ -109,7 +119,11 @@ public class Locations
 
     public @NotNull CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
     {
-        ArrayList<String> locationsNames = locations.stream().map(Location::name).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> locationsNames = new ArrayList<>();
+        for (Location location : locations)
+        {
+            locationsNames.add(location.name);
+        }
 
         return CommandSource.suggestMatching(locationsNames, builder);
     }
@@ -117,18 +131,26 @@ public class Locations
     /**
      * @implNote Can only be called if the result of {@link #locationExists} is {@code true}
      */
-    private Location getLocation(String locationName)
+    private @Nullable Location getLocation(String locationName)
     {
-        return locations.get(getLocationIndex(locationName));
+        int idx = getLocationIndex(locationName);
+
+        return idx == -1 ? null : locations.get(idx);
     }
 
     /**
-     * Returns the index of the location with the name {@code locationName} | 0 if the location doesn't exists
+     * Returns the index of the location with the name {@code locationName} | {@code -1} if the location doesn't exists
      */
     private int getLocationIndex(String locationName)
     {
-        return locations.stream().filter(location -> location.name().equals(locationName))
-                .findFirst().map(locations::indexOf).orElse(0);
+        for (Location location : locations)
+        {
+            if (location.name().equals(locationName))
+            {
+                return locations.indexOf(location);
+            }
+        }
+        return -1;
     }
 
     public boolean locationExists(String locationName)

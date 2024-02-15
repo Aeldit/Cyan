@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
  *              GNU LESSER GENERAL PUBLIC LICENSE
  *                  Version 3, 29 June 2007
@@ -70,10 +70,9 @@ public class TeleportationCommands
         {
             if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BACK_TP.getValue(), "backTpDisabled"))
             {
-                if (BACK_TPS.backTpExists(player.getUuidAsString()))
+                BackTps.BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
+                if (backTp != null)
                 {
-                    BackTps.BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
-
                     switch (backTp.dimension())
                     {
                         case "overworld" ->

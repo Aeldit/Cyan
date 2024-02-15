@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
  *              GNU LESSER GENERAL PUBLIC LICENSE
  *                  Version 3, 29 June 2007
@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fr.aeldit.cyan.config.CyanConfig;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -58,8 +59,12 @@ public class BackTps
      */
     public void remove(String playerUUID)
     {
-        backTps.remove(getBackTpIndex(playerUUID));
-        write();
+        int idx = getBackTpIndex(playerUUID);
+        if (idx != -1)
+        {
+            backTps.remove(idx);
+            write();
+        }
     }
 
     public void removeAllOutdated()
@@ -88,20 +93,39 @@ public class BackTps
         }
     }
 
-    public BackTp getBackTp(String playerUUID)
+    public @Nullable BackTp getBackTp(String playerUUID)
     {
-        return backTps.get(getBackTpIndex(playerUUID));
+        int idx = getBackTpIndex(playerUUID);
+
+        return idx == -1 ? null : backTps.get(idx);
     }
 
+    /**
+     * @param playerUUID The UUID of the player
+     * @return The index of the object if it exists | {@code -1} otherwise
+     */
     private int getBackTpIndex(String playerUUID)
     {
-        return backTps.stream().filter(backTp -> backTp.playerUUID().equals(playerUUID))
-                .findFirst().map(backTps::indexOf).orElse(0);
+        for (BackTp backTp : backTps)
+        {
+            if (backTp.playerUUID().equals(playerUUID))
+            {
+                return backTps.indexOf(backTp);
+            }
+        }
+        return -1;
     }
 
     public boolean backTpExists(String playerUUID)
     {
-        return backTps.stream().anyMatch(backTp -> backTp.playerUUID().equals(playerUUID));
+        for (BackTp backTp : backTps)
+        {
+            if (backTp.playerUUID().equals(playerUUID))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void readServer()
@@ -159,7 +183,7 @@ public class BackTps
             }
             else
             {
-
+                // Checks if the file is already being written, and waits 1 second before writing if so
                 if (!isEditingFile)
                 {
                     isEditingFile = true;
