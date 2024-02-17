@@ -28,8 +28,6 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import static fr.aeldit.cyan.config.CyanConfig.*;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
@@ -115,27 +113,23 @@ public class TeleportationCommands
             {
                 if (player.getSpawnPointPosition() != null)
                 {
+                    player.teleport(
+                            player.getServer().getWorld(player.getSpawnPointDimension()),
+                            player.getSpawnPointPosition().getX(),
+                            player.getSpawnPointPosition().getY(),
+                            player.getSpawnPointPosition().getZ(),
+                            player.getYaw(), player.getPitch()
+                    );
+
                     if (player.getSpawnPointDimension() == World.OVERWORLD)
                     {
-                        player.teleport(Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD),
-                                player.getSpawnPointPosition().getX(),
-                                player.getSpawnPointPosition().getY(),
-                                player.getSpawnPointPosition().getZ(),
-                                player.getYaw(), player.getPitch()
-                        );
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                                 CYAN_LANGUAGE_UTILS.getTranslation("bed"),
                                 "cyan.msg.bed"
                         );
                     }
-                    else if (player.getSpawnPointDimension() == World.NETHER)
+                    else
                     {
-                        player.teleport(Objects.requireNonNull(player.getServer()).getWorld(World.NETHER),
-                                player.getSpawnPointPosition().getX(),
-                                player.getSpawnPointPosition().getY(),
-                                player.getSpawnPointPosition().getZ(),
-                                player.getYaw(), player.getPitch()
-                        );
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                                 CYAN_LANGUAGE_UTILS.getTranslation("respawnAnchor"),
                                 "cyan.msg.respawnAnchor"
