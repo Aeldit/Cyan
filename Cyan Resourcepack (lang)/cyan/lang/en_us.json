@@ -29,7 +29,7 @@
   "cyan.msg.removeLocation": "§3The location %s §3have been removed",
   "cyan.msg.listLocations": "§6Cyan - LOCATIONS :\n",
   "cyan.msg.removedAllLocations": "§3All the locations have been removed",
-  "cyan.msg.renameLocation": "§3The location %s have been renamed to %s",
+  "cyan.msg.renameLocation": "§3The location %s §3have been renamed to %s",
   "cyan.msg.getLocation": "%s §3(%s§3)",
   "cyan.msg.translationsReloaded": "§3The translations have been reloaded",
   "cyan.msg.backTp": "§3You have been teleported to the place you died",
@@ -84,5 +84,18 @@
   "cyan.msg.optionNotFound": "§cThis option does not exist or you tried to set it to the wrong type of value (int or bool)",
   "cyan.msg.wrongType": "§cThis option can only be set to the %s §ctype",
   "cyan.msg.rule.opLevels": "§cThe OP level must be between 0 and 4 (both included)",
-  "cyan.msg.rule.positiveValue": "§cThe value must be positive"
+  "cyan.msg.rule.positiveValue": "§cThe value must be positive",
+  "-----------------------------------------------CONFIG_SCREEN-----------------------------------------------": "",
+  "cyan.cyanlib.screen": "Cyan",
+  "cyan.screen.options.title": "Cyan Options",
+  "cyan.config.option.allowBed": "AllowBed",
+  "cyan.config.option.allowKgi": "AllowKgi",
+  "cyan.config.option.allowSurface": "AllowSurface",
+  "cyan.config.option.allowLocations": "AllowLocations",
+  "cyan.config.option.allowBackTp": "AllowBackTp",
+  "cyan.config.option.minOpLvlKgi": "MinOpLvlKgi",
+  "cyan.config.option.minOpLvlEditLocation": "MinOpLvlEditLocation",
+  "cyan.config.option.distanceToEntitiesKgi": "DistanceToEntitiesKgi",
+  "cyan.config.option.daysToRemoveBackTp": "DaysToRemoveBackTp",
+  "cyan.config.option.useCustomTranslations": "UseCustomTranslations"
 }
