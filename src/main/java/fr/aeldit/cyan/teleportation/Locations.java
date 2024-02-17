@@ -22,12 +22,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import fr.aeldit.cyan.config.CyanConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +38,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static fr.aeldit.cyan.util.Utils.*;
-import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class Locations
 {
@@ -53,25 +48,34 @@ public class Locations
     private boolean isEditingFile = false;
     public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/locations.json");
 
-    public void add(Location location)
+    public boolean add(@NotNull Location location)
     {
-        locations.add(location);
-        write();
+        if (!locationExists(location.name()))
+        {
+            locations.add(location);
+            write();
+
+            return true;
+        }
+        return false;
     }
 
     /**
      * Removes the location named {@code locationName}
      *
-     * @implNote Can only be called if the result of {@link Locations#locationExists} is {@code true}
+     * @return {@code true} on success |{@code false} on failure
      */
-    public void remove(String locationName)
+    public boolean remove(String locationName)
     {
         int idx = getLocationIndex(locationName);
         if (idx != -1)
         {
             locations.remove(idx);
             write();
+
+            return true;
         }
+        return false;
     }
 
     public boolean removeAll()
@@ -89,7 +93,7 @@ public class Locations
     /**
      * Renames the location named {@code locationName} to {@code newLocationName}
      *
-     * @return {@code true} on success | {@code false} otherwise
+     * @return {@code true} on success | {@code false} on failure
      */
     public boolean rename(String locationName, String newLocationName)
     {
@@ -102,6 +106,7 @@ public class Locations
             ));
             locations.remove(tmpLocation);
             write();
+
             return true;
         }
         return false;
@@ -129,9 +134,10 @@ public class Locations
     }
 
     /**
-     * @implNote Can only be called if the result of {@link #locationExists} is {@code true}
+     * @param locationName The name of the location
+     * @return The location with the given name if it exists | {@code null} otherwise
      */
-    private @Nullable Location getLocation(String locationName)
+    public @Nullable Location getLocation(String locationName)
     {
         int idx = getLocationIndex(locationName);
 
@@ -155,42 +161,14 @@ public class Locations
 
     public boolean locationExists(String locationName)
     {
-        return locations.stream().anyMatch(location -> location.name().equals(locationName));
-    }
-
-    public void teleport(ServerPlayerEntity player, String locationName)
-    {
-        if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+        for (Location location : locations)
         {
-            if (LOCATIONS.locationExists(locationName))
+            if (location.name().equals(locationName))
             {
-                Locations.Location loc = LOCATIONS.getLocation(locationName);
-
-                switch (loc.dimension())
-                {
-                    case "overworld" ->
-                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                    case "nether" ->
-                            player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                    case "end" ->
-                            player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                }
-
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("goToLocation"),
-                        "cyan.msg.goToLocation",
-                        Formatting.YELLOW + locationName
-                );
-            }
-            else
-            {
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
-                        "cyan.msg.locationNotFound",
-                        Formatting.YELLOW + locationName
-                );
+                return true;
             }
         }
+        return false;
     }
 
     public void readServer()

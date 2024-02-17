@@ -21,11 +21,13 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fr.aeldit.cyan.config.CyanConfig;
 import fr.aeldit.cyan.teleportation.Locations;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.config.CyanConfig.ALLOW_LOCATIONS;
@@ -114,13 +116,12 @@ public class LocationCommands
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
-                    if (!LOCATIONS.locationExists(locationName))
+                    if (LOCATIONS.add(new Locations.Location(locationName,
+                            player.getWorld().getDimensionKey().getValue().toString()
+                                    .replace("minecraft:", "").replace("the_", ""),
+                            player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch())
+                    ))
                     {
-                        LOCATIONS.add(new Locations.Location(locationName,
-                                player.getWorld().getDimensionKey().getValue().toString().replace("minecraft:", "").replace("the_", ""),
-                                player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch())
-                        );
-
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                                 CYAN_LANGUAGE_UTILS.getTranslation("setLocation"),
                                 "cyan.msg.setLocation",
@@ -157,10 +158,8 @@ public class LocationCommands
                 {
                     String locationName = StringArgumentType.getString(context, "name");
 
-                    if (LOCATIONS.locationExists(locationName))
+                    if (LOCATIONS.remove(locationName))
                     {
-                        LOCATIONS.remove(locationName);
-
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
                                 CYAN_LANGUAGE_UTILS.getTranslation("removeLocation"),
                                 "cyan.msg.removeLocation",
@@ -264,7 +263,40 @@ public class LocationCommands
      */
     public static int goToLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        LOCATIONS.teleport(context.getSource().getPlayer(), StringArgumentType.getString(context, "name"));
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        String locationName = StringArgumentType.getString(context, "name");
+
+        if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+        {
+            if (LOCATIONS.locationExists(locationName))
+            {
+                Locations.Location loc = LOCATIONS.getLocation(locationName);
+
+                switch (loc.dimension())
+                {
+                    case "overworld" ->
+                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                    case "nether" ->
+                            player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                    case "end" ->
+                            player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
+                }
+
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                        CYAN_LANGUAGE_UTILS.getTranslation("goToLocation"),
+                        "cyan.msg.goToLocation",
+                        Formatting.YELLOW + locationName
+                );
+            }
+            else
+            {
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                        CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
+                        "cyan.msg.locationNotFound",
+                        Formatting.YELLOW + locationName
+                );
+            }
+        }
 
         return Command.SINGLE_SUCCESS;
     }
