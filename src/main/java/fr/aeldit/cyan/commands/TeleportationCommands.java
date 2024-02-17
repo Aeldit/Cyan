@@ -121,20 +121,11 @@ public class TeleportationCommands
                             player.getYaw(), player.getPitch()
                     );
 
-                    if (player.getSpawnPointDimension() == World.OVERWORLD)
-                    {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation("bed"),
-                                "cyan.msg.bed"
-                        );
-                    }
-                    else
-                    {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation("respawnAnchor"),
-                                "cyan.msg.respawnAnchor"
-                        );
-                    }
+                    String key = player.getSpawnPointDimension() == World.OVERWORLD ? "bed" : "respawnAnchor";
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                            CYAN_LANGUAGE_UTILS.getTranslation(key),
+                            "cyan.msg.%s".formatted(key)
+                    );
                 }
                 else
                 {
