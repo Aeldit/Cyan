@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
  *              GNU LESSER GENERAL PUBLIC LICENSE
  *                  Version 3, 29 June 2007
@@ -17,24 +17,23 @@
 
 package fr.aeldit.cyan.config;
 
-import fr.aeldit.cyanlib.lib.config.CyanLibOptionsStorage;
+import fr.aeldit.cyanlib.lib.config.BooleanOption;
+import fr.aeldit.cyanlib.lib.config.IntegerOption;
 import fr.aeldit.cyanlib.lib.utils.RULES;
-
-import static fr.aeldit.cyan.util.Utils.CYAN_OPTIONS_STORAGE;
 
 public class CyanConfig
 {
-    public static final CyanLibOptionsStorage.BooleanOption ALLOW_BED = CYAN_OPTIONS_STORAGE.new BooleanOption("allowBed", true);
-    public static final CyanLibOptionsStorage.BooleanOption ALLOW_KGI = CYAN_OPTIONS_STORAGE.new BooleanOption("allowKgi", true);
-    public static final CyanLibOptionsStorage.BooleanOption ALLOW_SURFACE = CYAN_OPTIONS_STORAGE.new BooleanOption("allowSurface", true);
-    public static final CyanLibOptionsStorage.BooleanOption ALLOW_LOCATIONS = CYAN_OPTIONS_STORAGE.new BooleanOption("allowLocations", true);
-    public static final CyanLibOptionsStorage.BooleanOption ALLOW_BACK_TP = CYAN_OPTIONS_STORAGE.new BooleanOption("allowBackTp", true);
+    public static final BooleanOption ALLOW_BED = new BooleanOption("allowBed", true);
+    public static final BooleanOption ALLOW_KGI = new BooleanOption("allowKgi", true);
+    public static final BooleanOption ALLOW_SURFACE = new BooleanOption("allowSurface", true);
+    public static final BooleanOption ALLOW_LOCATIONS = new BooleanOption("allowLocations", true);
+    public static final BooleanOption ALLOW_BACK_TP = new BooleanOption("allowBackTp", true);
 
-    public static final CyanLibOptionsStorage.IntegerOption MIN_OP_LVL_KGI = CYAN_OPTIONS_STORAGE.new IntegerOption("minOpLvlKgi", 4, RULES.OP_LEVELS);
-    public static final CyanLibOptionsStorage.IntegerOption MIN_OP_LVL_EDIT_LOCATIONS = CYAN_OPTIONS_STORAGE.new IntegerOption("minOpLvlEditLocation", 4, RULES.OP_LEVELS);
-    public static final CyanLibOptionsStorage.IntegerOption DISTANCE_TO_ENTITIES_KGI = CYAN_OPTIONS_STORAGE.new IntegerOption("distanceToEntitiesKgi", 12, RULES.POSITIVE_VALUE);
-    public static final CyanLibOptionsStorage.IntegerOption DAYS_TO_REMOVE_BACK_TP = CYAN_OPTIONS_STORAGE.new IntegerOption("daysToRemoveBackTp", 180, RULES.POSITIVE_VALUE);
+    public static final IntegerOption MIN_OP_LVL_KGI = new IntegerOption("minOpLvlKgi", 4, RULES.OP_LEVELS);
+    public static final IntegerOption MIN_OP_LVL_EDIT_LOCATIONS = new IntegerOption("minOpLvlEditLocation", 4, RULES.OP_LEVELS);
+    public static final IntegerOption DISTANCE_TO_ENTITIES_KGI = new IntegerOption("distanceToEntitiesKgi", 12, RULES.POSITIVE_VALUE);
+    public static final IntegerOption DAYS_TO_REMOVE_BACK_TP = new IntegerOption("daysToRemoveBackTp", 180, RULES.POSITIVE_VALUE);
 
     // CyanLib Required Options
-    public static final CyanLibOptionsStorage.BooleanOption USE_CUSTOM_TRANSLATIONS = CYAN_OPTIONS_STORAGE.new BooleanOption("useCustomTranslations", false, RULES.LOAD_CUSTOM_TRANSLATIONS);
+    public static final BooleanOption USE_CUSTOM_TRANSLATIONS = new BooleanOption("useCustomTranslations", false, RULES.LOAD_CUSTOM_TRANSLATIONS);
 }
