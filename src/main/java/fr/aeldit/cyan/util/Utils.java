@@ -44,6 +44,8 @@ public class Utils
     public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(CYAN_MODID);
     private static final Map<String, String> CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
 
+    public static int XP_TP_BASE_DISTANCE = 200; // 1 level for every 200 blocks (2 levels for 400 blocks, ...)
+
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();
 
@@ -61,8 +63,7 @@ public class Utils
             try
             {
                 Files.createDirectory(dir);
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
@@ -71,8 +72,7 @@ public class Utils
         if (locations)
         {
             dir = Path.of(LOCATIONS_PATH.toString().replace("locations.json", ""));
-        }
-        else
+        } else
         {
             dir = Path.of(BACK_TP_PATH.toString().replace("back.json", ""));
         }
@@ -82,8 +82,7 @@ public class Utils
             try
             {
                 Files.createDirectory(dir);
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
@@ -97,8 +96,7 @@ public class Utils
         if (locations)
         {
             dir = Path.of(LOCATIONS_PATH.toString().replace("locations.json", ""));
-        }
-        else
+        } else
         {
             dir = Path.of(BACK_TP_PATH.toString().replace("back.json", ""));
         }
@@ -112,8 +110,7 @@ public class Utils
                 try
                 {
                     Files.delete(dir);
-                }
-                catch (IOException e)
+                } catch (IOException e)
                 {
                     throw new RuntimeException(e);
                 }
@@ -131,8 +128,7 @@ public class Utils
                 try
                 {
                     Files.delete(dir);
-                }
-                catch (IOException e)
+                } catch (IOException e)
                 {
                     throw new RuntimeException(e);
                 }

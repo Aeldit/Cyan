@@ -24,11 +24,13 @@ import fr.aeldit.cyan.teleportation.BackTps;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.config.CyanConfig.*;
+import static fr.aeldit.cyan.teleportation.TPUtils.getRequiredXpLevelsToTp;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
@@ -111,6 +113,23 @@ public class TeleportationCommands
         {
             if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BED.getValue(), "bedDisabled"))
             {
+                int requiredXpLevel = 0;
+
+                if (USE_XP_TO_TELEPORT.getValue())
+                {
+                    requiredXpLevel = getRequiredXpLevelsToTp(player);
+
+                    if (player.experienceLevel < requiredXpLevel)
+                    {
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                                CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXp"),
+                                "cyan.msg.notEnoughXp",
+                                Formatting.GOLD + String.valueOf(requiredXpLevel)
+                        );
+                        return Command.SINGLE_SUCCESS;
+                    }
+                }
+
                 if (player.getSpawnPointPosition() != null)
                 {
                     player.teleport(
@@ -126,6 +145,8 @@ public class TeleportationCommands
                             CYAN_LANGUAGE_UTILS.getTranslation(key),
                             "cyan.msg.%s".formatted(key)
                     );
+
+                    player.addExperienceLevels(-1 * requiredXpLevel);
                 }
                 else
                 {

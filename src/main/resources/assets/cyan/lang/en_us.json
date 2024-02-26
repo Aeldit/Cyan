@@ -18,6 +18,7 @@
   "cyan.msg.bedNotFound": "§cYou don't have an attributed bed or respawn anchor",
   "cyan.msg.playerNotFound": "§cPlayer not found. The player must be online",
   "cyan.msg.noPropertiesFiles": "§cNo properties files were found",
+  "cyan.msg.notEnoughXp": "§cYou don't have enough XP (%s §clevels are required)",
   "-----------------------------------------------MESSAGES----------------------------------------------------": "",
   "cyan.msg.bed": "§3You have been teleported to your bed",
   "cyan.msg.respawnAnchor": "§3You have been teleported to your respawn anchor",
