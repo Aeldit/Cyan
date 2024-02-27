@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.config.CyanConfig.*;
+import static fr.aeldit.cyan.teleportation.TPUtils.XP_TP_BASE_DISTANCE_Y;
 import static fr.aeldit.cyan.teleportation.TPUtils.getRequiredXpLevelsToTp;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
@@ -117,7 +118,7 @@ public class TeleportationCommands
 
                 if (USE_XP_TO_TELEPORT.getValue())
                 {
-                    requiredXpLevel = getRequiredXpLevelsToTp(player);
+                    requiredXpLevel = getRequiredXpLevelsToTp(player, player.getSpawnPointPosition());
 
                     if (player.experienceLevel < requiredXpLevel)
                     {
@@ -173,9 +174,51 @@ public class TeleportationCommands
         {
             if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_SURFACE.getValue(), "surfaceDisabled"))
             {
+                int requiredXpLevel = 0;
+                double topY = player.getWorld().getTopY(
+                        Heightmap.Type.WORLD_SURFACE,
+                        player.getBlockPos().getX(), player.getBlockPos().getZ()
+                );
+
+                if (USE_XP_TO_TELEPORT.getValue())
+                {
+                    int distanceY = (int) player.getY() - (int) topY;
+                    System.out.println(distanceY);
+
+                    // Converts to a positive distance
+                    if (distanceY < 0)
+                    {
+                        distanceY *= -1;
+                    }
+                    // Minecraft doesn't center the position to the middle of the block but in 1 corner,
+                    // so this allows for a better centering
+                    distanceY += 1;
+
+                    int coordinatesDistance = (int) distanceY;
+
+                    if (coordinatesDistance < XP_TP_BASE_DISTANCE_Y)
+                    {
+                        requiredXpLevel = 1;
+                    }
+                    else
+                    {
+                        requiredXpLevel = 1 + coordinatesDistance / XP_TP_BASE_DISTANCE_Y;
+                    }
+
+                    if (player.experienceLevel < requiredXpLevel)
+                    {
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
+                                CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXp"),
+                                "cyan.msg.notEnoughXp",
+                                Formatting.GOLD + String.valueOf(requiredXpLevel)
+                        );
+                        return Command.SINGLE_SUCCESS;
+                    }
+                }
+
                 player.teleport(context.getSource().getWorld(),
                         player.getBlockPos().getX(),
-                        player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, player.getBlockPos().getX(), player.getBlockPos().getZ()),
+                        topY,
                         player.getBlockPos().getZ(),
                         player.getYaw(), player.getPitch()
                 );
@@ -183,6 +226,8 @@ public class TeleportationCommands
                         CYAN_LANGUAGE_UTILS.getTranslation("surface"),
                         "cyan.msg.surface"
                 );
+
+                player.addExperienceLevels(-1 * requiredXpLevel);
             }
         }
         return Command.SINGLE_SUCCESS;

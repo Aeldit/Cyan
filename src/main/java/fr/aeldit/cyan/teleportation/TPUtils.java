@@ -1,16 +1,18 @@
 package fr.aeldit.cyan.teleportation;
 
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
-
-import static fr.aeldit.cyan.util.Utils.XP_TP_BASE_DISTANCE;
 
 public class TPUtils
 {
-    public static int getRequiredXpLevelsToTp(@NotNull ServerPlayerEntity player)
+    public static int XP_TP_BASE_DISTANCE = 200; // 1 level for every 200 blocks (2 levels for 400 blocks, ...)
+    public static int XP_TP_BASE_DISTANCE_Y = 50; // 1 level for every 50 blocks vertically (2 levels for 100 blocks, ...)
+
+    public static int getRequiredXpLevelsToTp(@NotNull ServerPlayerEntity player, @NotNull BlockPos tpPos)
     {
-        double distanceX = player.getX() - player.getSpawnPointPosition().getX();
-        double distanceZ = player.getZ() - player.getSpawnPointPosition().getZ();
+        double distanceX = player.getX() - tpPos.getX();
+        double distanceZ = player.getZ() - tpPos.getZ();
 
         // Converts to a positive distance
         if (distanceX < 0)
