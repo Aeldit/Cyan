@@ -19,15 +19,24 @@ package fr.aeldit.cyan.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTps;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import static fr.aeldit.cyan.config.CyanConfig.*;
 import static fr.aeldit.cyan.teleportation.TPUtils.getRequiredXpLevelsToTp;
@@ -54,6 +63,20 @@ public class TeleportationCommands
         );
         dispatcher.register(CommandManager.literal("s")
                 .executes(TeleportationCommands::surface)
+        );
+
+        dispatcher.register(CommandManager.literal("tpa")
+                .then(CommandManager.argument("player_name", StringArgumentType.string())
+                        .suggests((context, builder) -> ArgumentSuggestion.getOnlinePlayersName(builder, context.getSource()))
+                        .executes(TeleportationCommands::tpa)
+                )
+        );
+        dispatcher.register(CommandManager.literal("tpa-from-server")
+                .then(CommandManager.argument("player_name", StringArgumentType.string())
+                        .then(CommandManager.argument("destination_player_name", StringArgumentType.string())
+                                .executes(TeleportationCommands::tpaPlayer)
+                        )
+                )
         );
     }
 
@@ -227,6 +250,105 @@ public class TeleportationCommands
                 );
 
                 player.addExperienceLevels(-1 * requiredXpLevel);
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int tpaPlayer(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+        PlayerManager playerManager = context.getSource().getServer().getPlayerManager();
+
+        if (player == null)
+        {
+            if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+            {
+                String destinationPlayerName = StringArgumentType.getString(context, "destination_player_name");
+                String playerNameToTp = StringArgumentType.getString(context, "player_name_to_tp");
+
+                ServerPlayerEntity destinationPlayer = null;
+                ServerPlayerEntity playerToTp = null;
+
+                for (String s : playerManager.getPlayerNames())
+                {
+                    if (s.equals(playerNameToTp))
+                    {
+                        playerToTp = playerManager.getPlayer(s);
+                    }
+                    else if (s.equals(destinationPlayerName))
+                    {
+                        destinationPlayer = playerManager.getPlayer(destinationPlayerName);
+                    }
+
+                    if (destinationPlayer != null && playerToTp != null)
+                    {
+                        break;
+                    }
+                }
+
+                if (destinationPlayer != null && playerToTp != null)
+                {
+                    ServerWorld serverWorld = destinationPlayer.getServerWorld();
+                    double x = destinationPlayer.getX();
+                    double y = destinationPlayer.getY();
+                    double z = destinationPlayer.getZ();
+                    playerToTp.teleport(serverWorld, x, y, z, 0, 0);
+
+                    int requiredXpLevel = 0;
+
+                    if (USE_XP_TO_TELEPORT.getValue())
+                    {
+                        requiredXpLevel = getRequiredXpLevelsToTp(playerToTp, destinationPlayer.getBlockPos());
+
+                        if (playerToTp.experienceLevel < requiredXpLevel)
+                        {
+                            CYAN_LANGUAGE_UTILS.sendPlayerMessage(playerToTp,
+                                    CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXp"),
+                                    "cyan.msg.notEnoughXp",
+                                    Formatting.GOLD + String.valueOf(requiredXpLevel)
+                            );
+                            return Command.SINGLE_SUCCESS;
+                        }
+                    }
+
+                    playerToTp.addExperienceLevels(-1 * requiredXpLevel);
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int tpa(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        {
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_TPA.getValue(), "tpaDisabled"))
+            {
+                String playerName = StringArgumentType.getString(context, "player_name");
+
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                        Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName)),
+                        CYAN_LANGUAGE_UTILS.getTranslation("tpaRequest"),
+                        "cyan.msg.tpaRequest",
+                        player.getName().getString()
+                );
+                Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName)).sendMessage(
+                        Text.of(Text.literal(Formatting.GREEN + "[Accept]").
+                                setStyle(Style.EMPTY.withClickEvent(
+                                        new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpa-from-server %s %s".formatted(playerName, player.getName().getString())))
+                                ).toString()
+                                +
+                                Text.literal(Formatting.GREEN + "[Refuse]").
+                                        setStyle(Style.EMPTY.withClickEvent(
+                                                        new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/title %s actionbar %s"
+                                                                .formatted(playerName, Text.translatable("cyan.msg.tpaRefused")))
+                                                )
+                                        ).toString()
+                        )
+                );
             }
         }
         return Command.SINGLE_SUCCESS;

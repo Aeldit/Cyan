@@ -39,6 +39,8 @@ public class CyanConfig
     public static final IntegerOption XP_REQUIRED_TO_TP_BASE_DISTANCE = new IntegerOption("xpRequiredToTpBaseDistance", 200, RULES.POSITIVE_VALUE);
     public static final IntegerOption XP_REQUIRED_TO_TP_BASE_DISTANCE_Y = new IntegerOption("xpRequiredToTpBaseDistanceY", 50, RULES.POSITIVE_VALUE);
 
+    public static final BooleanOption ALLOW_TPA = new BooleanOption("allowTpa", true);
+
     // CyanLib Required Options
     public static final BooleanOption USE_CUSTOM_TRANSLATIONS = new BooleanOption("useCustomTranslations", false, RULES.LOAD_CUSTOM_TRANSLATIONS);
 }
