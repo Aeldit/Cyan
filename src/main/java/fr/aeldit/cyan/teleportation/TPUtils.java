@@ -4,11 +4,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.aeldit.cyan.config.CyanConfig.XP_REQUIRED_TO_TP_BASE_DISTANCE;
+
 public class TPUtils
 {
-    public static int XP_TP_BASE_DISTANCE = 200; // 1 level for every 200 blocks (2 levels for 400 blocks, ...)
-    public static int XP_TP_BASE_DISTANCE_Y = 50; // 1 level for every 50 blocks vertically (2 levels for 100 blocks, ...)
-
     public static int getRequiredXpLevelsToTp(@NotNull ServerPlayerEntity player, @NotNull BlockPos tpPos)
     {
         double distanceX = player.getX() - tpPos.getX();
@@ -30,13 +29,13 @@ public class TPUtils
 
         int coordinatesDistance = (int) (distanceX + distanceZ) / 2;
 
-        if (coordinatesDistance < XP_TP_BASE_DISTANCE)
+        if (coordinatesDistance < XP_REQUIRED_TO_TP_BASE_DISTANCE.getValue())
         {
             return 1;
         }
         else
         {
-            return 1 + coordinatesDistance / XP_TP_BASE_DISTANCE;
+            return 1 + coordinatesDistance / XP_REQUIRED_TO_TP_BASE_DISTANCE.getValue();
         }
     }
 }

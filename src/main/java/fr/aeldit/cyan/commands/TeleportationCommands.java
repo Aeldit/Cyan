@@ -30,7 +30,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.config.CyanConfig.*;
-import static fr.aeldit.cyan.teleportation.TPUtils.XP_TP_BASE_DISTANCE_Y;
 import static fr.aeldit.cyan.teleportation.TPUtils.getRequiredXpLevelsToTp;
 import static fr.aeldit.cyan.util.Utils.*;
 import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
@@ -196,13 +195,13 @@ public class TeleportationCommands
 
                     int coordinatesDistance = (int) distanceY;
 
-                    if (coordinatesDistance < XP_TP_BASE_DISTANCE_Y)
+                    if (coordinatesDistance < XP_REQUIRED_TO_TP_BASE_DISTANCE_Y.getValue())
                     {
                         requiredXpLevel = 1;
                     }
                     else
                     {
-                        requiredXpLevel = 1 + coordinatesDistance / XP_TP_BASE_DISTANCE_Y;
+                        requiredXpLevel = 1 + coordinatesDistance / XP_REQUIRED_TO_TP_BASE_DISTANCE_Y.getValue();
                     }
 
                     if (player.experienceLevel < requiredXpLevel)
