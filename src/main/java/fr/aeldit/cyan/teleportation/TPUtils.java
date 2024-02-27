@@ -4,10 +4,43 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static fr.aeldit.cyan.config.CyanConfig.XP_REQUIRED_TO_TP_BASE_DISTANCE;
 
 public class TPUtils
 {
+    private static final ConcurrentHashMap<String, List<String>> PLAYERS_TPA_QUEUES = new ConcurrentHashMap<>();
+
+    public static void addPlayerToQueue(String playerToAdd, String destinationPlayerQueue)
+    {
+        if (!PLAYERS_TPA_QUEUES.containsKey(destinationPlayerQueue))
+        {
+            PLAYERS_TPA_QUEUES.put(destinationPlayerQueue, Collections.synchronizedList(new ArrayList<>()));
+        }
+
+        if (!PLAYERS_TPA_QUEUES.get(destinationPlayerQueue).contains(playerToAdd))
+        {
+            PLAYERS_TPA_QUEUES.get(destinationPlayerQueue).add(playerToAdd);
+        }
+    }
+
+    public static void removePlayerToQueue(String playerToRemove, String destinationPlayerQueue)
+    {
+        if (PLAYERS_TPA_QUEUES.containsKey(destinationPlayerQueue))
+        {
+            PLAYERS_TPA_QUEUES.get(destinationPlayerQueue).remove(playerToRemove);
+        }
+    }
+
+    public static List<String> getRequestingPlayers(String requestedPlayer)
+    {
+        return PLAYERS_TPA_QUEUES.getOrDefault(requestedPlayer, null);
+    }
+
     public static int getRequiredXpLevelsToTp(@NotNull ServerPlayerEntity player, @NotNull BlockPos tpPos)
     {
         double distanceX = player.getX() - tpPos.getX();

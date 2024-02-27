@@ -45,10 +45,11 @@ public class CyanServerCore implements DedicatedServerModInitializer
         ServerLifecycleEvents.SERVER_STARTED.register(server -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> removeOutdatedBackTps());
-        // TODO -> Block break event for claims
+        // TODO -> Event to remove the tpa requests from a player when it disconnects from the server
 
         // Register all the commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->
+        {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
             CYAN_CONFIG_COMMANDS.register(dispatcher);
