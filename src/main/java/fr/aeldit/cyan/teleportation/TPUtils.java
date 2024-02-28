@@ -28,12 +28,21 @@ public class TPUtils
         }
     }
 
-    public static void removePlayerToQueue(String playerToRemove, String destinationPlayerQueue)
+    public static void removePlayerFromQueue(String playerToRemove, String destinationPlayerQueue)
     {
         if (PLAYERS_TPA_QUEUES.containsKey(destinationPlayerQueue))
         {
             PLAYERS_TPA_QUEUES.get(destinationPlayerQueue).remove(playerToRemove);
         }
+    }
+
+    public static boolean isPlayerRequesting(String requestingPlayerName, String requestedPlayerName)
+    {
+        if (PLAYERS_TPA_QUEUES.containsKey(requestedPlayerName))
+        {
+            return PLAYERS_TPA_QUEUES.get(requestedPlayerName).contains(requestingPlayerName);
+        }
+        return false;
     }
 
     public static List<String> getRequestingPlayers(String requestedPlayer)

@@ -23,6 +23,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTps;
+import fr.aeldit.cyan.teleportation.TPUtils;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -66,7 +67,7 @@ public class TeleportationCommands
                         .executes(TeleportationCommands::tpa)
                 )
         );
-        dispatcher.register(CommandManager.literal("acceptTpa")
+        dispatcher.register(CommandManager.literal("tpaAccept")
                 .then(CommandManager.argument("player_name", StringArgumentType.string())
                         .suggests((context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(builder, context.getSource()))
                         .executes(TeleportationCommands::acceptTpa)
@@ -295,30 +296,32 @@ public class TeleportationCommands
 
                 if (requestingPlayer != null)
                 {
-                    int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos());
-
-                    if (requestingPlayer.experienceLevel < requiredXpLevel)
+                    if (TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                requestingPlayer,
-                                CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXpTpa"),
-                                "cyan.msg.notEnoughXpTpa",
-                                player.getName().getString()
-                        );
-                    }
-                    else
-                    {
-                        System.out.println(requiredXpLevel);
-                        requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
-                        requestingPlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
-                        removePlayerToQueue(requestingPlayerName, player.getName().getString());
+                        int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos());
 
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                requestingPlayer,
-                                CYAN_LANGUAGE_UTILS.getTranslation("tpaSuccessful"),
-                                "cyan.msg.tpaSuccessful",
-                                player.getName().getString()
-                        );
+                        if (requestingPlayer.experienceLevel < requiredXpLevel)
+                        {
+                            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                    requestingPlayer,
+                                    CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXpTpa"),
+                                    "cyan.msg.notEnoughXpTpa",
+                                    player.getName().getString()
+                            );
+                        }
+                        else
+                        {
+                            requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
+                            requestingPlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
+                            removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+
+                            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                    requestingPlayer,
+                                    CYAN_LANGUAGE_UTILS.getTranslation("tpaSuccessful"),
+                                    "cyan.msg.tpaSuccessful",
+                                    player.getName().getString()
+                            );
+                        }
                     }
                 }
                 else
