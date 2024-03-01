@@ -42,7 +42,7 @@
   "cyan.msg.noRequestingPlayers": "No player requested to teleport to you",
   "cyan.msg.notEnoughXpTpa": "You don't have enough XP to be teleported to %s",
   "cyan.msg.tpaSuccessful": "You have been teleported to %s",
-  "cyan.msg.tpaRequest": "%s has requested to teleport to you\n§a[Accept] §c[Refuse]",
+  "cyan.msg.tpaRequest": "%s has requested to teleport to you.\nEnter '§a/tpaAccept <playerName>' §rto accept or '§a/tpaRefuse <playerName>' §rto refuse",
   "cyan.msg.tpaRefused": "§c%s refused your teleportation request",
   "-------------------------------------------------SETS------------------------------------------------------": "",
   "cyan.msg.set.allowBed": "§3Toggled §d/bed §3command %s",

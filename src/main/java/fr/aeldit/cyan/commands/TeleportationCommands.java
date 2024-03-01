@@ -73,8 +73,11 @@ public class TeleportationCommands
                         .executes(TeleportationCommands::acceptTpa)
                 )
         );
-        dispatcher.register(CommandManager.literal("refuseTpa")
-                .executes(TeleportationCommands::acceptTpa)
+        dispatcher.register(CommandManager.literal("tpaRefuse")
+                .then(CommandManager.argument("player_name", StringArgumentType.string())
+                        .suggests((context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(builder, context.getSource()))
+                        .executes(TeleportationCommands::refuseTpa)
+                )
         );
     }
 
@@ -96,12 +99,12 @@ public class TeleportationCommands
                 {
                     switch (backTp.dimension())
                     {
-                        case "overworld" ->
-                                player.teleport(player.getServer().getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                        case "nether" ->
-                                player.teleport(player.getServer().getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                        case "end" ->
-                                player.teleport(player.getServer().getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
+                        case "overworld" -> player.teleport(Objects.requireNonNull(player.getServer())
+                                .getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0);
+                        case "nether" -> player.teleport(Objects.requireNonNull(player.getServer())
+                                .getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0);
+                        case "end" -> player.teleport(Objects.requireNonNull(player.getServer()).
+                                getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
                     }
 
                     CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
@@ -138,7 +141,7 @@ public class TeleportationCommands
 
                 if (USE_XP_TO_TELEPORT.getValue())
                 {
-                    requiredXpLevel = getRequiredXpLevelsToTp(player, player.getSpawnPointPosition());
+                    requiredXpLevel = getRequiredXpLevelsToTp(player, Objects.requireNonNull(player.getSpawnPointPosition()));
 
                     if (player.experienceLevel < requiredXpLevel)
                     {
@@ -147,14 +150,14 @@ public class TeleportationCommands
                                 "cyan.msg.notEnoughXp",
                                 Formatting.GOLD + String.valueOf(requiredXpLevel)
                         );
-                        return Command.SINGLE_SUCCESS;
+                        return 0;
                     }
                 }
 
                 if (player.getSpawnPointPosition() != null)
                 {
                     player.teleport(
-                            player.getServer().getWorld(player.getSpawnPointDimension()),
+                            Objects.requireNonNull(player.getServer()).getWorld(player.getSpawnPointDimension()),
                             player.getSpawnPointPosition().getX(),
                             player.getSpawnPointPosition().getY(),
                             player.getSpawnPointPosition().getZ(),
@@ -214,7 +217,7 @@ public class TeleportationCommands
                     // so this allows for a better centering
                     distanceY += 1;
 
-                    int coordinatesDistance = (int) distanceY;
+                    int coordinatesDistance = distanceY;
 
                     if (coordinatesDistance < XP_REQUIRED_TO_TP_BASE_DISTANCE_Y.getValue())
                     {
@@ -232,7 +235,7 @@ public class TeleportationCommands
                                 "cyan.msg.notEnoughXp",
                                 Formatting.GOLD + String.valueOf(requiredXpLevel)
                         );
-                        return Command.SINGLE_SUCCESS;
+                        return 0;
                     }
                 }
 
@@ -294,8 +297,10 @@ public class TeleportationCommands
                 String requestingPlayerName = StringArgumentType.getString(context, "player_name");
                 ServerPlayerEntity requestingPlayer = context.getSource().getServer().getPlayerManager().getPlayer(requestingPlayerName);
 
+                // If the player is online
                 if (requestingPlayer != null)
                 {
+                    // If the player has requested a teleportation to the player running the command
                     if (TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
                     {
                         int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos());
@@ -322,6 +327,46 @@ public class TeleportationCommands
                                     player.getName().getString()
                             );
                         }
+                    }
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("noRequestingPlayers"),
+                            "cyan.msg.noRequestingPlayers"
+                    );
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int refuseTpa(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        ServerPlayerEntity player = context.getSource().getPlayer();
+
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        {
+            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_TPA.getValue(), "tpaDisabled"))
+            {
+                String requestingPlayerName = StringArgumentType.getString(context, "player_name");
+                ServerPlayerEntity requestingPlayer = context.getSource().getServer().getPlayerManager().getPlayer(requestingPlayerName);
+
+                // If the player is online
+                if (requestingPlayer != null)
+                {
+                    // If the player has requested a teleportation to the player running the command
+                    if (TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
+                    {
+                        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                requestingPlayer,
+                                CYAN_LANGUAGE_UTILS.getTranslation("tpaRefused"),
+                                "cyan.msg.tpaRefused",
+                                player.getName().getString()
+                        );
                     }
                 }
                 else
