@@ -291,10 +291,11 @@ public class TeleportationCommands
                                     )
                     );
 
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
                             Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName)),
                             CYAN_LANGUAGE_UTILS.getTranslation("tpaRequest"),
                             "cyan.msg.tpaRequest",
+                            false,
                             player.getName().getString()
                     );
                 }
@@ -323,35 +324,39 @@ public class TeleportationCommands
                 ServerPlayerEntity requestingPlayer = context.getSource().getServer().getPlayerManager().getPlayer(requestingPlayerName);
 
                 // If the player is online
-                if (requestingPlayer != null)
+                // &&
+                // If the player has requested a teleportation to the player running the command
+                if (requestingPlayer != null && TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
                 {
-                    // If the player has requested a teleportation to the player running the command
-                    if (TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
+                    int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos());
+
+                    if (requestingPlayer.experienceLevel < requiredXpLevel)
                     {
-                        int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos());
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                requestingPlayer,
+                                CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXpTpa"),
+                                "cyan.msg.notEnoughXpTpa",
+                                player.getName().getString()
+                        );
+                    }
+                    else
+                    {
+                        requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
+                        requestingPlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
+                        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
-                        if (requestingPlayer.experienceLevel < requiredXpLevel)
-                        {
-                            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                    requestingPlayer,
-                                    CYAN_LANGUAGE_UTILS.getTranslation("notEnoughXpTpa"),
-                                    "cyan.msg.notEnoughXpTpa",
-                                    player.getName().getString()
-                            );
-                        }
-                        else
-                        {
-                            requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
-                            requestingPlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
-                            removePlayerFromQueue(requestingPlayerName, player.getName().getString());
-
-                            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                    requestingPlayer,
-                                    CYAN_LANGUAGE_UTILS.getTranslation("tpaSuccessful"),
-                                    "cyan.msg.tpaSuccessful",
-                                    player.getName().getString()
-                            );
-                        }
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                requestingPlayer,
+                                CYAN_LANGUAGE_UTILS.getTranslation("tpaSuccessful"),
+                                "cyan.msg.tpaSuccessful",
+                                player.getName().getString()
+                        );
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
+                                CYAN_LANGUAGE_UTILS.getTranslation("tpaAcceptedSelf"),
+                                "cyan.msg.tpaAcceptedSelf",
+                                requestingPlayer.getName().getString()
+                        );
                     }
                 }
                 else
@@ -379,20 +384,24 @@ public class TeleportationCommands
                 ServerPlayerEntity requestingPlayer = context.getSource().getServer().getPlayerManager().getPlayer(requestingPlayerName);
 
                 // If the player is online
-                if (requestingPlayer != null)
+                // &&
+                // If the player has requested a teleportation to the player running the command
+                if (requestingPlayer != null && TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
                 {
-                    // If the player has requested a teleportation to the player running the command
-                    if (TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
-                    {
-                        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+                    removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                requestingPlayer,
-                                CYAN_LANGUAGE_UTILS.getTranslation("tpaRefused"),
-                                "cyan.msg.tpaRefused",
-                                player.getName().getString()
-                        );
-                    }
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            requestingPlayer,
+                            CYAN_LANGUAGE_UTILS.getTranslation("tpaRefused"),
+                            "cyan.msg.tpaRefused",
+                            player.getName().getString()
+                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("tpaRefusedSelf"),
+                            "cyan.msg.tpaRefusedSelf",
+                            requestingPlayer.getName().getString()
+                    );
                 }
                 else
                 {
