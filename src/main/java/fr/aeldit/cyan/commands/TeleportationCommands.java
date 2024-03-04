@@ -27,6 +27,9 @@ import fr.aeldit.cyan.teleportation.TPUtils;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -266,21 +269,43 @@ public class TeleportationCommands
             {
                 String playerName = StringArgumentType.getString(context, "player_name");
 
-                addPlayerToQueue(player.getName().getString(), playerName);
+                if (!TPUtils.isPlayerRequesting(player.getName().getString(), playerName))
+                {
+                    addPlayerToQueue(player.getName().getString(), playerName);
 
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                        player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("tpaRequestSend"),
-                        "cyan.msg.tpaRequestSend",
-                        player.getName().getString()
-                );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("tpaRequestSend"),
+                            "cyan.msg.tpaRequestSend",
+                            player.getName().getString()
+                    );
 
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                        Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName)),
-                        CYAN_LANGUAGE_UTILS.getTranslation("tpaRequest"),
-                        "cyan.msg.tpaRequest",
-                        player.getName().getString()
-                );
+                    Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName)).sendMessage(
+                            Text.literal(Formatting.GREEN + "[Accept]").
+                                    setStyle(Style.EMPTY.withClickEvent(
+                                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaAccept %s".formatted(player.getName().getString())))
+                                    ).append(Text.literal(Formatting.RED + "    [Refuse]").
+                                            setStyle(Style.EMPTY.withClickEvent(
+                                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaRefuse %s".formatted(player.getName().getString())))
+                                            )
+                                    )
+                    );
+
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName)),
+                            CYAN_LANGUAGE_UTILS.getTranslation("tpaRequest"),
+                            "cyan.msg.tpaRequest",
+                            player.getName().getString()
+                    );
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            CYAN_LANGUAGE_UTILS.getTranslation("tpaAlreadyRequested"),
+                            "cyan.msg.tpaAlreadyRequested"
+                    );
+                }
             }
         }
         return Command.SINGLE_SUCCESS;

@@ -44,6 +44,7 @@
   "cyan.msg.tpaSuccessful": "You have been teleported to %s",
   "cyan.msg.tpaRequest": "%s has requested to teleport to you.\nEnter '§a/tpaAccept <playerName>' §rto accept or '§a/tpaRefuse <playerName>' §rto refuse",
   "cyan.msg.tpaRefused": "§c%s refused your teleportation request",
+  "cyan.msg.tpaAlreadyRequested": "You already send a request to this player",
   "-------------------------------------------------SETS------------------------------------------------------": "",
   "cyan.msg.set.allowBed": "§3Toggled §d/bed §3command %s",
   "cyan.msg.set.allowKgi": "§3Toggled §d/kgi §3command %s",
