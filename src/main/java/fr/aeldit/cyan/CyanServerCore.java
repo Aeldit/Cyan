@@ -21,6 +21,7 @@ import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanConfig;
+import fr.aeldit.cyan.teleportation.TPUtils;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -45,7 +46,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
         ServerLifecycleEvents.SERVER_STARTED.register(server -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> removeOutdatedBackTps());
-        // TODO -> Event to remove the tpa requests from a player when it disconnects from the server
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> TPUtils.removePlayerOnQuit(handler.getPlayer().getName().getString()));
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->

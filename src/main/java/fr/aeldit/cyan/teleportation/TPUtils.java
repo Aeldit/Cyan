@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static fr.aeldit.cyan.config.CyanConfig.XP_REQUIRED_TO_TP_BASE_DISTANCE;
@@ -15,16 +16,22 @@ public class TPUtils
 {
     private static final ConcurrentHashMap<String, List<String>> PLAYERS_TPA_QUEUES = new ConcurrentHashMap<>();
 
-    public static void addPlayerToQueue(String playerToAdd, String destinationPlayerQueue)
+    /**
+     * Adds {@code playerToAdd} to the list of players that requested to tp to {@code destinationPlayerName}
+     *
+     * @param playerToAdd           The player that requested the teleportation
+     * @param destinationPlayerName The destination player
+     */
+    public static void addPlayerToQueue(String playerToAdd, String destinationPlayerName)
     {
-        if (!PLAYERS_TPA_QUEUES.containsKey(destinationPlayerQueue))
+        if (!PLAYERS_TPA_QUEUES.containsKey(destinationPlayerName))
         {
-            PLAYERS_TPA_QUEUES.put(destinationPlayerQueue, Collections.synchronizedList(new ArrayList<>()));
+            PLAYERS_TPA_QUEUES.put(destinationPlayerName, Collections.synchronizedList(new ArrayList<>()));
         }
 
-        if (!PLAYERS_TPA_QUEUES.get(destinationPlayerQueue).contains(playerToAdd))
+        if (!PLAYERS_TPA_QUEUES.get(destinationPlayerName).contains(playerToAdd))
         {
-            PLAYERS_TPA_QUEUES.get(destinationPlayerQueue).add(playerToAdd);
+            PLAYERS_TPA_QUEUES.get(destinationPlayerName).add(playerToAdd);
         }
     }
 
@@ -78,6 +85,14 @@ public class TPUtils
         else
         {
             return 1 + coordinatesDistance / XP_REQUIRED_TO_TP_BASE_DISTANCE.getValue();
+        }
+    }
+
+    public static void removePlayerOnQuit(String playerName)
+    {
+        for (Map.Entry<String, List<String>> entry : PLAYERS_TPA_QUEUES.entrySet())
+        {
+            entry.getValue().remove(playerName);
         }
     }
 }

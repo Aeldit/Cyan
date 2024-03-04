@@ -21,6 +21,7 @@ import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.config.CyanConfig;
+import fr.aeldit.cyan.teleportation.TPUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -41,14 +42,18 @@ public class CyanClientCore implements ClientModInitializer
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            LOCATIONS.readClient(server.getSaveProperties().getLevelName());
-            BACK_TPS.readClient(server.getSaveProperties().getLevelName());
-            removeOutdatedBackTps();
-        });
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
+                {
+                    LOCATIONS.readClient(server.getSaveProperties().getLevelName());
+                    BACK_TPS.readClient(server.getSaveProperties().getLevelName());
+                    removeOutdatedBackTps();
+                }
+        );
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> TPUtils.removePlayerOnQuit(handler.getPlayer().getName().getString()));
 
         // Register all the commands
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated, environment) ->
+        {
             TeleportationCommands.register(dispatcher);
             MiscellaneousCommands.register(dispatcher);
             CYAN_CONFIG_COMMANDS.register(dispatcher);
