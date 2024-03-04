@@ -35,7 +35,6 @@ public class CyanConfig
     public static final IntegerOption DAYS_TO_REMOVE_BACK_TP = new IntegerOption("daysToRemoveBackTp", 180, RULES.POSITIVE_VALUE);
 
     public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption("useXpToTeleport", true);
-    // Base distance is 100 blocks
     public static final IntegerOption XP_REQUIRED_TO_TP_BASE_DISTANCE = new IntegerOption("xpRequiredToTpBaseDistance", 200, RULES.POSITIVE_VALUE);
     public static final IntegerOption XP_REQUIRED_TO_TP_BASE_DISTANCE_Y = new IntegerOption("xpRequiredToTpBaseDistanceY", 50, RULES.POSITIVE_VALUE);
 

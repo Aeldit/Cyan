@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static fr.aeldit.cyan.config.CyanConfig.XP_REQUIRED_TO_TP_BASE_DISTANCE;
@@ -90,9 +89,9 @@ public class TPUtils
 
     public static void removePlayerOnQuit(String playerName)
     {
-        for (Map.Entry<String, List<String>> entry : PLAYERS_TPA_QUEUES.entrySet())
+        for (List<String> queue : PLAYERS_TPA_QUEUES.values())
         {
-            entry.getValue().remove(playerName);
+            queue.remove(playerName);
         }
     }
 }
