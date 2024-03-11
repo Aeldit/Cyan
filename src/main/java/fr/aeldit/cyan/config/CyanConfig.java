@@ -35,8 +35,9 @@ public class CyanConfig
     public static final IntegerOption DAYS_TO_REMOVE_BACK_TP = new IntegerOption("daysToRemoveBackTp", 180, RULES.POSITIVE_VALUE);
 
     public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption("useXpToTeleport", true);
-    public static final IntegerOption XP_REQUIRED_TO_TP_BASE_DISTANCE = new IntegerOption("xpRequiredToTpBaseDistance", 200, RULES.POSITIVE_VALUE);
-    public static final IntegerOption XP_REQUIRED_TO_TP_BASE_DISTANCE_Y = new IntegerOption("xpRequiredToTpBaseDistanceY", 50, RULES.POSITIVE_VALUE);
+    public static final IntegerOption XP_TO_TP_BED = new IntegerOption("xpToTpBed", 200, RULES.POSITIVE_VALUE);
+    public static final IntegerOption XP_TO_TP_SURFACE = new IntegerOption("xpToTpSurface", 50, RULES.POSITIVE_VALUE);
+    public static final IntegerOption XP_TO_TP_TPA = new IntegerOption("xpToTpTpa", 200, RULES.POSITIVE_VALUE);
 
     public static final BooleanOption ALLOW_TPA = new BooleanOption("allowTpa", true);
 

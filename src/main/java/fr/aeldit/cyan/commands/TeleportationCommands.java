@@ -144,7 +144,11 @@ public class TeleportationCommands
 
                 if (USE_XP_TO_TELEPORT.getValue())
                 {
-                    requiredXpLevel = getRequiredXpLevelsToTp(player, Objects.requireNonNull(player.getSpawnPointPosition()));
+                    requiredXpLevel = getRequiredXpLevelsToTp(
+                            player,
+                            Objects.requireNonNull(player.getSpawnPointPosition()),
+                            XP_TO_TP_BED
+                    );
 
                     if (player.experienceLevel < requiredXpLevel)
                     {
@@ -222,13 +226,13 @@ public class TeleportationCommands
 
                     int coordinatesDistance = distanceY;
 
-                    if (coordinatesDistance < XP_REQUIRED_TO_TP_BASE_DISTANCE_Y.getValue())
+                    if (coordinatesDistance < XP_TO_TP_SURFACE.getValue())
                     {
                         requiredXpLevel = 1;
                     }
                     else
                     {
-                        requiredXpLevel = 1 + coordinatesDistance / XP_REQUIRED_TO_TP_BASE_DISTANCE_Y.getValue();
+                        requiredXpLevel = 1 + coordinatesDistance / XP_TO_TP_SURFACE.getValue();
                     }
 
                     if (player.experienceLevel < requiredXpLevel)
@@ -328,7 +332,7 @@ public class TeleportationCommands
                 // If the player has requested a teleportation to the player running the command
                 if (requestingPlayer != null && TPUtils.isPlayerRequesting(requestingPlayerName, player.getName().getString()))
                 {
-                    int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos());
+                    int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos(), XP_TO_TP_TPA);
 
                     if (requestingPlayer.experienceLevel < requiredXpLevel)
                     {

@@ -1,5 +1,6 @@
 package fr.aeldit.cyan.teleportation;
 
+import fr.aeldit.cyanlib.lib.config.IntegerOption;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -8,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static fr.aeldit.cyan.config.CyanConfig.XP_REQUIRED_TO_TP_BASE_DISTANCE;
 
 public class TPUtils
 {
@@ -56,7 +55,7 @@ public class TPUtils
         return PLAYERS_TPA_QUEUES.getOrDefault(requestedPlayer, null);
     }
 
-    public static int getRequiredXpLevelsToTp(@NotNull ServerPlayerEntity player, @NotNull BlockPos tpPos)
+    public static int getRequiredXpLevelsToTp(@NotNull ServerPlayerEntity player, @NotNull BlockPos tpPos, IntegerOption opt)
     {
         double distanceX = player.getX() - tpPos.getX();
         double distanceZ = player.getZ() - tpPos.getZ();
@@ -77,13 +76,13 @@ public class TPUtils
 
         int coordinatesDistance = (int) (distanceX + distanceZ) / 2;
 
-        if (coordinatesDistance < XP_REQUIRED_TO_TP_BASE_DISTANCE.getValue())
+        if (coordinatesDistance < opt.getValue())
         {
             return 1;
         }
         else
         {
-            return 1 + coordinatesDistance / XP_REQUIRED_TO_TP_BASE_DISTANCE.getValue();
+            return 1 + coordinatesDistance / opt.getValue();
         }
     }
 
