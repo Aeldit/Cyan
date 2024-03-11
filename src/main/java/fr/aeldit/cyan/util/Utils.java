@@ -34,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
@@ -49,7 +50,8 @@ public class Utils
     public static BackTps BACK_TPS = new BackTps();
 
     public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(CYAN_MODID, CyanConfig.class);
-    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(CYAN_MODID, CYAN_OPTIONS_STORAGE, getDefaultTranslations());
+    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(CYAN_MODID,
+            getDefaultTranslations());
     public static CyanLib CYAN_LIB_UTILS = new CyanLib(CYAN_MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
     public static CyanLibConfigCommands CYAN_CONFIG_COMMANDS = new CyanLibConfigCommands(CYAN_MODID, CYAN_LIB_UTILS);
 
@@ -108,7 +110,7 @@ public class Utils
         {
             File[] listOfFiles = new File(dir.toUri()).listFiles();
 
-            if (listOfFiles.length == 0)
+            if (Objects.requireNonNull(listOfFiles).length == 0)
             {
                 try
                 {
@@ -127,7 +129,7 @@ public class Utils
         {
             File[] listOfFiles = new File(dir.toUri()).listFiles();
 
-            if (listOfFiles.length == 0)
+            if (Objects.requireNonNull(listOfFiles).length == 0)
             {
                 try
                 {
@@ -150,26 +152,39 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("headerDescCmd", "§6Cyan - DESCRIPTION (commands) :\n");
             CYAN_DEFAULT_TRANSLATIONS.put("headerDescOptions", "§6Cyan - DESCRIPTION (options) :\n");
 
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.bed", "§3The §d/bed §3command teleports you to your bed or respawn anchor");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.bed", "§3The §d/bed §3command teleports you to your bed or respawn " +
+                    "anchor");
             CYAN_DEFAULT_TRANSLATIONS.put("desc.kgi",
                     """
                             §3The §d/kgi §3command kills every item that is on the ground in a specific radius
                             §d - /kgi §3to kill items in the default radius (defined in the config, can be changed)
                             §d - /kgi [distance_in_chunks] §3to kill items in the specified radius"""
             );
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.surface", "§3The §d/surface §3command teleports you to the highest block located at your position");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.surface", "§3The §d/surface §3command teleports you to the highest " +
+                    "block located at your position");
 
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowBed", "§3The §eallowBed §3option toggles the use of the §d/bed §3command");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowKgi", "§3The §eallowKgi §3option toggles the use of the §d/kgi §3command");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowSurface", "§3The §eallowSurface §3option toggles the use of the §d/surface §3command");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowLocations", "§3The §eallowLocations §3option toggles the use of the §dlocation §3commands");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowBackTp", "§3The §eallowBackTp §3option toggles the use of the §d/back §3command");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.useCustomTranslations", "§3The §euseCustomTranslations §3option toggles the use of custom translations");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if messages are send to the chat or the player's action bar");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground items will be removed");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLvlKgi", "§3The §eminOpLvlKgi §3option defines the required OP level to use the §d/kgi §3command");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLvlEditLocation", "§3The §eminOpLvlEditLocation §3option defines the required OP level to edit the locations");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.daysToRemoveBackTp", "§3The §edaysToRemoveBackTp §3option defines the number of days the last death location of a player is kept");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowBed", "§3The §eallowBed §3option toggles the use of the §d/bed " +
+                    "§3command");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowKgi", "§3The §eallowKgi §3option toggles the use of the §d/kgi " +
+                    "§3command");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowSurface", "§3The §eallowSurface §3option toggles the use of the " +
+                    "§d/surface §3command");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowLocations", "§3The §eallowLocations §3option toggles the use of " +
+                    "the §dlocation §3commands");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.allowBackTp", "§3The §eallowBackTp §3option toggles the use of the " +
+                    "§d/back §3command");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.useCustomTranslations", "§3The §euseCustomTranslations §3option " +
+                    "toggles the use of custom translations");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.msgToActionBar", "§3The §emsgToActionBar §3option determines if " +
+                    "messages are send to the chat or the player's action bar");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.distanceToEntitiesKgi", "§3The §edistanceToEntitiesKgi §3option " +
+                    "defines distance (in chunks) in which the ground items will be removed");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLvlKgi", "§3The §eminOpLvlKgi §3option defines the required OP " +
+                    "level to use the §d/kgi §3command");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.minOpLvlEditLocation", "§3The §eminOpLvlEditLocation §3option defines" +
+                    " the required OP level to edit the locations");
+            CYAN_DEFAULT_TRANSLATIONS.put("desc.daysToRemoveBackTp", "§3The §edaysToRemoveBackTp §3option defines the" +
+                    " number of days the last death location of a player is kept");
 
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.header", "§6Cyan - OPTIONS :\n");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.allowBed", "§6- §d/bed §3: %s");
@@ -181,7 +196,8 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.msgToActionBar", "§6- §3Messages to action bar : %s");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLvlKgi", "§6- §3Minimum OP level for §d/kgi §3: %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLvlEditLocation", "§6- §3Minimum OP level to edit locations: %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("getCfg.minOpLvlEditLocation", "§6- §3Minimum OP level to edit locations: " +
+                    "%s");
             CYAN_DEFAULT_TRANSLATIONS.put("getCfg.daysToRemoveBackTp", "§6- §3Days to keep the death location: %s");
 
             CYAN_DEFAULT_TRANSLATIONS.put("set.allowBed", "§3Toggled §d/bed §3command %s");
@@ -193,8 +209,10 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("set.msgToActionBar", "§3Toggled messages to action bar %s");
             CYAN_DEFAULT_TRANSLATIONS.put("set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s");
             CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLvlKgi", "§3The minimum OP level to execute §d/kgi §3is now %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLvlEditLocation", "§3The minimum OP level to edit locations is now %s");
-            CYAN_DEFAULT_TRANSLATIONS.put("set.daysToRemoveBackTp", "§3The number of days to keep the last death locations is now %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("set.minOpLvlEditLocation", "§3The minimum OP level to edit locations is " +
+                    "now %s");
+            CYAN_DEFAULT_TRANSLATIONS.put("set.daysToRemoveBackTp", "§3The number of days to keep the last death " +
+                    "locations is now %s");
 
             CYAN_DEFAULT_TRANSLATIONS.put("error.notOp", "§cYou don't have the required permission to do that");
             CYAN_DEFAULT_TRANSLATIONS.put("error.bedDisabled", "§cThe /bed command is disabled");
@@ -205,7 +223,8 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("error.servOnly", "§cThis command can only be used on servers");
             CYAN_DEFAULT_TRANSLATIONS.put("error.playerOnlyCmd", "§cThis command can only be executed by a player");
             CYAN_DEFAULT_TRANSLATIONS.put("error.locationAlreadyExists", "§cA location with this name already exists");
-            CYAN_DEFAULT_TRANSLATIONS.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you spelled it correctly)");
+            CYAN_DEFAULT_TRANSLATIONS.put("error.locationNotFound", "§cThe location %s §cdoesn't exist (check if you " +
+                    "spelled it correctly)");
             CYAN_DEFAULT_TRANSLATIONS.put("error.bedNotFound", "§cYou don't have an attributed bed or respawn anchor");
             CYAN_DEFAULT_TRANSLATIONS.put("error.playerNotFound", "§cPlayer not found. The player must be online");
             CYAN_DEFAULT_TRANSLATIONS.put("error.noLocations", "§cThere is no saved locations");
@@ -213,7 +232,8 @@ public class Utils
             CYAN_DEFAULT_TRANSLATIONS.put("error.noPropertiesFiles", "§cNo properties files were found");
             CYAN_DEFAULT_TRANSLATIONS.put("error.optionNotFound", "§cThis option does not exist");
             CYAN_DEFAULT_TRANSLATIONS.put("error.wrongType", "§cThis option can only be set to the %s §ctype");
-            CYAN_DEFAULT_TRANSLATIONS.put("error.rule.opLevels", "§cThe OP level must be between 0 and 4 (both included)");
+            CYAN_DEFAULT_TRANSLATIONS.put("error.rule.opLevels", "§cThe OP level must be between 0 and 4 (both " +
+                    "included)");
             CYAN_DEFAULT_TRANSLATIONS.put("error.rule.positiveValue", "§cThe value must be positive");
 
             CYAN_DEFAULT_TRANSLATIONS.put("bed", "§3You have been teleported to your bed");
