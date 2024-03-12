@@ -1,18 +1,18 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
+ *               GNU LESSER GENERAL PUBLIC LICENSE
+ *                   Version 3, 29 June 2007
  *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
+ *   Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ *   Everyone is permitted to copy and distribute verbatim copies
+ *   of this license document, but changing it is not allowed.
  *
  *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
+ *  This version of the GNU Lesser General Public License incorporates
+ *  the terms and conditions of version 3 of the GNU General Public
+ *  License, supplemented by the additional permissions listed in the LICENSE.txt file
+ *  in the repo of this mod (https://github.com/Aeldit/Cyan)
  */
 
 package fr.aeldit.cyan.util;
@@ -50,16 +50,18 @@ public class GsonUtils
 
                 for (String locationName : properties.stringPropertyNames())
                 {
-                    if (!LOCATIONS.locationExists(locationName))
+                    if (LOCATIONS.locationNotFound(locationName))
                     {
+                        String[] splitProperty = properties.getProperty(locationName).split(" ");
+
                         LOCATIONS.add(new Locations.Location(
                                 locationName,
-                                properties.getProperty(locationName).split(" ")[0],
-                                Double.parseDouble(properties.getProperty(locationName).split(" ")[1]),
-                                Double.parseDouble(properties.getProperty(locationName).split(" ")[2]),
-                                Double.parseDouble(properties.getProperty(locationName).split(" ")[3]),
-                                Float.parseFloat(properties.getProperty(locationName).split(" ")[4]),
-                                Float.parseFloat(properties.getProperty(locationName).split(" ")[5])
+                                splitProperty[0],
+                                Double.parseDouble(splitProperty[1]),
+                                Double.parseDouble(splitProperty[2]),
+                                Double.parseDouble(splitProperty[3]),
+                                Float.parseFloat(splitProperty[4]),
+                                Float.parseFloat(splitProperty[5])
                         ));
                     }
                 }
@@ -87,12 +89,14 @@ public class GsonUtils
                 {
                     if (!BACK_TPS.backTpExists(playerUUID))
                     {
+                        String[] splitProperty = properties.getProperty(playerUUID).split(" ");
+
                         BACK_TPS.add(new BackTps.BackTp(
                                 playerUUID,
-                                properties.getProperty(playerUUID).split(" ")[0],
-                                Double.parseDouble(properties.getProperty(playerUUID).split(" ")[1]),
-                                Double.parseDouble(properties.getProperty(playerUUID).split(" ")[2]),
-                                Double.parseDouble(properties.getProperty(playerUUID).split(" ")[3]),
+                                splitProperty[0],
+                                Double.parseDouble(splitProperty[1]),
+                                Double.parseDouble(splitProperty[2]),
+                                Double.parseDouble(splitProperty[3]),
                                 new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())
                         ));
                     }

@@ -1,18 +1,18 @@
 /*
- * Copyright (c) 2023  -  Made by Aeldit
+ * Copyright (c) 2023-2024  -  Made by Aeldit
  *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
+ *               GNU LESSER GENERAL PUBLIC LICENSE
+ *                   Version 3, 29 June 2007
  *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
+ *   Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ *   Everyone is permitted to copy and distribute verbatim copies
+ *   of this license document, but changing it is not allowed.
  *
  *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
+ *  This version of the GNU Lesser General Public License incorporates
+ *  the terms and conditions of version 3 of the GNU General Public
+ *  License, supplemented by the additional permissions listed in the LICENSE.txt file
+ *  in the repo of this mod (https://github.com/Aeldit/Cyan)
  */
 
 package fr.aeldit.cyan.util;
@@ -45,13 +45,14 @@ public class Utils
     public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(CYAN_MODID);
     private static final Map<String, String> CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
 
-
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();
 
     public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(CYAN_MODID, CyanConfig.class);
-    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(CYAN_MODID,
-            getDefaultTranslations());
+    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(
+            CYAN_MODID,
+            getDefaultTranslations()
+    );
     public static CyanLib CYAN_LIB_UTILS = new CyanLib(CYAN_MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
     public static CyanLibConfigCommands CYAN_CONFIG_COMMANDS = new CyanLibConfigCommands(CYAN_MODID, CYAN_LIB_UTILS);
 
@@ -154,7 +155,8 @@ public class Utils
 
             CYAN_DEFAULT_TRANSLATIONS.put("desc.bed", "§3The §d/bed §3command teleports you to your bed or respawn " +
                     "anchor");
-            CYAN_DEFAULT_TRANSLATIONS.put("desc.kgi",
+            CYAN_DEFAULT_TRANSLATIONS.put(
+                    "desc.kgi",
                     """
                             §3The §d/kgi §3command kills every item that is on the ground in a specific radius
                             §d - /kgi §3to kill items in the default radius (defined in the config, can be changed)
