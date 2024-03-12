@@ -25,12 +25,10 @@ import fr.aeldit.cyan.teleportation.TPUtils;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
-import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.*;
 
 public class CyanServerCore implements DedicatedServerModInitializer
@@ -43,7 +41,6 @@ public class CyanServerCore implements DedicatedServerModInitializer
         LOCATIONS.readServer();
         BACK_TPS.readServer();
 
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> transferPropertiesToGson());
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> removeOutdatedBackTps());
         ServerPlayConnectionEvents.DISCONNECT.register(

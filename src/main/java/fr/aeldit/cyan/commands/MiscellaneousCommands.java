@@ -28,17 +28,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import static fr.aeldit.cyan.config.CyanConfig.*;
-import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
-import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
-import static fr.aeldit.cyan.util.GsonUtils.transferPropertiesToGson;
 import static fr.aeldit.cyan.util.Utils.CYAN_LANGUAGE_UTILS;
 import static fr.aeldit.cyan.util.Utils.CYAN_LIB_UTILS;
-import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class MiscellaneousCommands
 {
@@ -55,11 +47,6 @@ public class MiscellaneousCommands
                                                   .executes(MiscellaneousCommands::kgir)
                                     )
                                     .executes(MiscellaneousCommands::kgi)
-        );
-
-        // TODO -> Remove
-        dispatcher.register(CommandManager.literal("remove-properties-files")
-                                    .executes(MiscellaneousCommands::removePropertiesFiles)
         );
     }
 
@@ -128,60 +115,6 @@ public class MiscellaneousCommands
                     );
                 }
             }
-        }
-        return Command.SINGLE_SUCCESS;
-    }
-
-    /**
-     * Called by the command {@code /remove-properties-files}
-     * <p>
-     * Removes all the properties files
-     */
-    public static int removePropertiesFiles(@NotNull CommandContext<ServerCommandSource> context)
-    {
-        transferPropertiesToGson();
-        boolean fileDeleted = false;
-
-        try
-        {
-            Path path = Path.of(LOCATIONS_PATH.toString().replace("json", "properties"));
-
-            if (Files.exists(path))
-            {
-                Files.delete(path);
-                fileDeleted = true;
-            }
-
-            path = Path.of(BACK_TP_PATH.toString().replace("json", "properties"));
-
-            if (Files.exists(path))
-            {
-                Files.delete(path);
-                fileDeleted = true;
-            }
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
-        if (fileDeleted)
-        {
-            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                    player,
-                    CYAN_LANGUAGE_UTILS.getTranslation("propertiesFilesDeleted"),
-                    "cyan.msg.propertiesFilesDeleted"
-            );
-        }
-        else
-        {
-            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                    player,
-                    CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noPropertiesFiles"),
-                    "cyan.msg.noPropertiesFiles"
-            );
         }
         return Command.SINGLE_SUCCESS;
     }
