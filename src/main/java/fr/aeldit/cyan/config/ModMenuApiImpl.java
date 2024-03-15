@@ -4,7 +4,7 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import fr.aeldit.cyanlib.lib.gui.CyanLibConfigScreen;
 
-import static fr.aeldit.cyan.util.Utils.CYAN_MODID;
+import static fr.aeldit.cyan.CyanCore.CYAN_MODID;
 import static fr.aeldit.cyanlib.lib.CyanLib.CONFIG_CLASS_INSTANCES;
 
 public class ModMenuApiImpl implements ModMenuApi

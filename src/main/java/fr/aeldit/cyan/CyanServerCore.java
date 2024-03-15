@@ -12,7 +12,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.CyanCore.*;
 
 public class CyanServerCore implements DedicatedServerModInitializer
 {

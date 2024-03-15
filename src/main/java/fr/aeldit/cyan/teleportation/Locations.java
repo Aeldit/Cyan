@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.CyanCore.*;
 
 public class Locations
 {

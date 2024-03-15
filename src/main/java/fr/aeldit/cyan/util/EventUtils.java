@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
-import static fr.aeldit.cyan.util.Utils.BACK_TPS;
+import static fr.aeldit.cyan.CyanCore.BACK_TPS;
 
 public class EventUtils
 {
