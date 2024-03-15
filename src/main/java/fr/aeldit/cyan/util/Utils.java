@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *               GNU LESSER GENERAL PUBLIC LICENSE
- *                   Version 3, 29 June 2007
- *
- *   Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *   Everyone is permitted to copy and distribute verbatim copies
- *   of this license document, but changing it is not allowed.
- *
- *
- *  This version of the GNU Lesser General Public License incorporates
- *  the terms and conditions of version 3 of the GNU General Public
- *  License, supplemented by the additional permissions listed in the LICENSE.txt file
- *  in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.util;
 
 import fr.aeldit.cyan.config.CyanConfig;
@@ -22,7 +5,6 @@ import fr.aeldit.cyan.teleportation.BackTps;
 import fr.aeldit.cyan.teleportation.Locations;
 import fr.aeldit.cyanlib.lib.CyanLib;
 import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
-import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
 import fr.aeldit.cyanlib.lib.config.CyanLibOptionsStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
@@ -54,7 +36,6 @@ public class Utils
             getDefaultTranslations()
     );
     public static CyanLib CYAN_LIB_UTILS = new CyanLib(CYAN_MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
-    public static CyanLibConfigCommands CYAN_CONFIG_COMMANDS = new CyanLibConfigCommands(CYAN_MODID, CYAN_LIB_UTILS);
 
     public static void checkOrCreateModDir(boolean locations)
     {

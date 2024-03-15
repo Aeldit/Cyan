@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
- *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
- *
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.commands;
 
 import com.mojang.brigadier.Command;
@@ -41,61 +24,61 @@ public class LocationCommands
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("set-location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .executes(LocationCommands::setLocation)
-                                    )
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .executes(LocationCommands::setLocation)
+                )
         );
         dispatcher.register(CommandManager.literal("sl")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .executes(LocationCommands::setLocation)
-                                    )
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .executes(LocationCommands::setLocation)
+                )
         );
 
         dispatcher.register(CommandManager.literal("remove-location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::removeLocation)
-                                    )
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                        .executes(LocationCommands::removeLocation)
+                )
         );
         dispatcher.register(CommandManager.literal("rl")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::removeLocation)
-                                    )
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                        .executes(LocationCommands::removeLocation)
+                )
         );
         dispatcher.register(CommandManager.literal("remove-all-locations")
-                                    .executes(LocationCommands::removeAllLocations)
+                .executes(LocationCommands::removeAllLocations)
         );
 
         dispatcher.register(CommandManager.literal("rename-location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .then(CommandManager.argument("new_name", StringArgumentType.string())
-                                                                .executes(LocationCommands::renameLocation)
-                                                  )
-                                    )
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                        .then(CommandManager.argument("new_name", StringArgumentType.string())
+                                .executes(LocationCommands::renameLocation)
+                        )
+                )
         );
 
         dispatcher.register(CommandManager.literal("location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::goToLocation)
-                                    )
-                                    .executes(LocationCommands::getLocationsList)
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                        .executes(LocationCommands::goToLocation)
+                )
+                .executes(LocationCommands::getLocationsList)
         );
         dispatcher.register(CommandManager.literal("l")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::goToLocation)
-                                    )
-                                    .executes(LocationCommands::getLocationsList)
+                .then(CommandManager.argument("name", StringArgumentType.string())
+                        .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                        .executes(LocationCommands::goToLocation)
+                )
+                .executes(LocationCommands::getLocationsList)
         );
 
         dispatcher.register(CommandManager.literal("get-locations")
-                                    .executes(LocationCommands::getLocationsList)
+                .executes(LocationCommands::getLocationsList)
         );
         dispatcher.register(CommandManager.literal("gl")
-                                    .executes(LocationCommands::getLocationsList)
+                .executes(LocationCommands::getLocationsList)
         );
     }
 
@@ -111,19 +94,19 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
                     String locationName = StringArgumentType.getString(context, "name");
 
                     if (LOCATIONS.add(new Locations.Location(
-                                              locationName,
-                                              player.getWorld().getDimensionKey().getValue().toString()
-                                                      .replace("minecraft:", "").replace("the_", ""),
-                                              player.getX(), player.getY(), player.getZ(),
-                                              player.getYaw(), player.getPitch()
-                                      )
+                                    locationName,
+                                    player.getWorld().getDimensionKey().getValue().toString()
+                                            .replace("minecraft:", "").replace("the_", ""),
+                                    player.getX(), player.getY(), player.getZ(),
+                                    player.getYaw(), player.getPitch()
+                            )
                     ))
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
@@ -158,7 +141,7 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
@@ -199,7 +182,7 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
@@ -236,7 +219,7 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
@@ -279,7 +262,7 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 String locationName = StringArgumentType.getString(context, "name");
                 Locations.Location loc = LOCATIONS.getLocation(locationName);
@@ -339,7 +322,7 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (!LOCATIONS.isEmpty())
                 {

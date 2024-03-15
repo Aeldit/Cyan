@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *               GNU LESSER GENERAL PUBLIC LICENSE
- *                   Version 3, 29 June 2007
- *
- *   Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *   Everyone is permitted to copy and distribute verbatim copies
- *   of this license document, but changing it is not allowed.
- *
- *
- *  This version of the GNU Lesser General Public License incorporates
- *  the terms and conditions of version 3 of the GNU General Public
- *  License, supplemented by the additional permissions listed in the LICENSE.txt file
- *  in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.commands;
 
 import com.mojang.brigadier.Command;
@@ -37,16 +20,16 @@ public class MiscellaneousCommands
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("kill-ground-items")
-                                    .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
-                                                  .executes(MiscellaneousCommands::kgir)
-                                    )
-                                    .executes(MiscellaneousCommands::kgi)
+                .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
+                        .executes(MiscellaneousCommands::kgir)
+                )
+                .executes(MiscellaneousCommands::kgi)
         );
         dispatcher.register(CommandManager.literal("kgi")
-                                    .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
-                                                  .executes(MiscellaneousCommands::kgir)
-                                    )
-                                    .executes(MiscellaneousCommands::kgi)
+                .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
+                        .executes(MiscellaneousCommands::kgir)
+                )
+                .executes(MiscellaneousCommands::kgi)
         );
     }
 
@@ -63,7 +46,7 @@ public class MiscellaneousCommands
         {
             ServerPlayerEntity player = source.getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_KGI.getValue(), "kgiDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_KGI.getValue(), "kgiDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
                 {
@@ -96,7 +79,7 @@ public class MiscellaneousCommands
         {
             ServerPlayerEntity player = source.getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_KGI.getValue(), "kgiDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_KGI.getValue(), "kgiDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
                 {

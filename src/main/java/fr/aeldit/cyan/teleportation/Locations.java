@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *               GNU LESSER GENERAL PUBLIC LICENSE
- *                   Version 3, 29 June 2007
- *
- *   Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *   Everyone is permitted to copy and distribute verbatim copies
- *   of this license document, but changing it is not allowed.
- *
- *
- *  This version of the GNU Lesser General Public License incorporates
- *  the terms and conditions of version 3 of the GNU General Public
- *  License, supplemented by the additional permissions listed in the LICENSE.txt file
- *  in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.teleportation;
 
 import com.google.gson.Gson;
@@ -107,9 +90,9 @@ public class Locations
         {
             Location tmpLocation = locations.get(idx);
             locations.add(new Location(newLocationName,
-                                       tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z,
-                                       tmpLocation.yaw,
-                                       tmpLocation.pitch
+                    tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z,
+                    tmpLocation.yaw,
+                    tmpLocation.pitch
             ));
             locations.remove(tmpLocation);
             write();
@@ -199,7 +182,7 @@ public class Locations
     public void readClient(String saveName)
     {
         LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/locations" +
-                                                                                   ".json");
+                ".json");
         checkOrCreateModDir(true);
 
         if (Files.exists(LOCATIONS_PATH))
@@ -270,7 +253,7 @@ public class Locations
                     if (!couldWrite)
                     {
                         CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
-                                                 "being written (for more than 1 sec)");
+                                "being written (for more than 1 sec)");
                     }
                 }
             }

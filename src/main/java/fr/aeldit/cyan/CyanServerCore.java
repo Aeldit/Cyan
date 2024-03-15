@@ -1,27 +1,10 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *               GNU LESSER GENERAL PUBLIC LICENSE
- *                   Version 3, 29 June 2007
- *
- *   Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *   Everyone is permitted to copy and distribute verbatim copies
- *   of this license document, but changing it is not allowed.
- *
- *
- *  This version of the GNU Lesser General Public License incorporates
- *  the terms and conditions of version 3 of the GNU General Public
- *  License, supplemented by the additional permissions listed in the LICENSE.txt file
- *  in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan;
 
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
-import fr.aeldit.cyan.config.CyanConfig;
 import fr.aeldit.cyan.teleportation.TPUtils;
+import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -36,7 +19,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
     @Override
     public void onInitializeServer()
     {
-        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE, CyanConfig.class);
+        CYAN_LIB_UTILS.init(CYAN_MODID, CYAN_OPTIONS_STORAGE);
 
         LOCATIONS.readServer();
         BACK_TPS.readServer();
@@ -52,7 +35,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
                 (dispatcher, dedicated, environment) -> {
                     TeleportationCommands.register(dispatcher);
                     MiscellaneousCommands.register(dispatcher);
-                    CYAN_CONFIG_COMMANDS.register(dispatcher);
+                    new CyanLibConfigCommands(CYAN_MODID, CYAN_LIB_UTILS).register(dispatcher);
                     LocationCommands.register(dispatcher);
                 }
         );
