@@ -1,36 +1,31 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
- *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
- *
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTps;
+import fr.aeldit.cyan.teleportation.TPUtils;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
+import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanConfig.*;
-import static fr.aeldit.cyan.util.Utils.*;
-import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
+import static fr.aeldit.cyan.teleportation.TPUtils.*;
 
 public class TeleportationCommands
 {
@@ -53,6 +48,31 @@ public class TeleportationCommands
         dispatcher.register(CommandManager.literal("s")
                 .executes(TeleportationCommands::surface)
         );
+
+        dispatcher.register(CommandManager.literal("tpa")
+                .then(CommandManager.argument("player_name", StringArgumentType.string())
+                        .suggests(
+                                (context, builder) -> ArgumentSuggestion.getOnlinePlayersName(
+                                        builder, context.getSource()))
+                        .executes(TeleportationCommands::tpa)
+                )
+        );
+        dispatcher.register(CommandManager.literal("tpaAccept")
+                .then(CommandManager.argument("player_name", StringArgumentType.string())
+                        .suggests(
+                                (context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(
+                                        builder, context.getSource()))
+                        .executes(TeleportationCommands::acceptTpa)
+                )
+        );
+        dispatcher.register(CommandManager.literal("tpaRefuse")
+                .then(CommandManager.argument("player_name", StringArgumentType.string())
+                        .suggests(
+                                (context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(
+                                        builder, context.getSource()))
+                        .executes(TeleportationCommands::refuseTpa)
+                )
+        );
     }
 
     /**
@@ -62,36 +82,39 @@ public class TeleportationCommands
      */
     public static int back(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BACK_TP.getValue(), "backTpDisabled"))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BACK_TP.getValue(), "backTpDisabled"))
             {
                 BackTps.BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
+
                 if (backTp != null)
                 {
-                    switch (backTp.dimension())
-                    {
-                        case "overworld" ->
-                                player.teleport(player.getServer().getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                        case "nether" ->
-                                player.teleport(player.getServer().getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                        case "end" ->
-                                player.teleport(player.getServer().getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0);
-                    }
+                    MinecraftServer server = player.getServer();
 
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation("backTp"),
-                            "cyan.msg.backTp"
-                    );
+                    if (server != null)
+                    {
+                        switch (backTp.dimension())
+                        {
+                            case "overworld" -> player.teleport(
+                                    server.getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0
+                            );
+                            case "nether" -> player.teleport(
+                                    server.getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0
+                            );
+                            case "end" -> player.teleport(
+                                    server.getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0
+                            );
+                        }
+
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.backTp");
+                    }
                 }
                 else
                 {
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noLastPos"),
-                            "cyan.msg.noLastPos"
-                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.noLastPos");
                 }
             }
         }
@@ -105,34 +128,55 @@ public class TeleportationCommands
      */
     public static int bed(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_BED.getValue(), "bedDisabled"))
-            {
-                if (player.getSpawnPointPosition() != null)
-                {
-                    player.teleport(
-                            player.getServer().getWorld(player.getSpawnPointDimension()),
-                            player.getSpawnPointPosition().getX(),
-                            player.getSpawnPointPosition().getY(),
-                            player.getSpawnPointPosition().getZ(),
-                            player.getYaw(), player.getPitch()
-                    );
+            ServerPlayerEntity player = context.getSource().getPlayer();
 
-                    String key = player.getSpawnPointDimension() == World.OVERWORLD ? "bed" : "respawnAnchor";
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation(key),
-                            "cyan.msg.%s".formatted(key)
-                    );
-                }
-                else
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BED.getValue(), "bedDisabled"))
+            {
+                int requiredXpLevel = 0;
+                BlockPos spawnPos = player.getSpawnPointPosition();
+
+                if (spawnPos != null)
                 {
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "bedNotFound"),
-                            "cyan.msg.bedNotFound"
-                    );
+                    if (USE_XP_TO_TELEPORT.getValue())
+                    {
+                        requiredXpLevel = getRequiredXpLevelsToTp(player, spawnPos, BLOCKS_PER_XP_LEVEL_BED);
+
+                        if (player.experienceLevel < requiredXpLevel)
+                        {
+                            CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                    player,
+                                    "cyan.msg.notEnoughXp",
+                                    Formatting.GOLD + String.valueOf(requiredXpLevel)
+                            );
+                            return 0;
+                        }
+                    }
+
+                    MinecraftServer server = player.getServer();
+
+                    if (server != null)
+                    {
+                        RegistryKey<World> spawnDim = player.getSpawnPointDimension();
+
+                        player.teleport(
+                                server.getWorld(spawnDim),
+                                spawnPos.getX(),
+                                spawnPos.getY(),
+                                spawnPos.getZ(),
+                                player.getYaw(), player.getPitch()
+                        );
+
+                        String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.%s".formatted(key));
+
+                        player.addExperienceLevels(-1 * requiredXpLevel);
+                    }
+                    else
+                    {
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.bedNotFound");
+                    }
                 }
             }
         }
@@ -146,22 +190,219 @@ public class TeleportationCommands
      */
     public static int surface(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_SURFACE.getValue(), "surfaceDisabled"))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_SURFACE.getValue(), "surfaceDisabled"))
             {
-                player.teleport(context.getSource().getWorld(),
-                        player.getBlockPos().getX(),
-                        player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, player.getBlockPos().getX(), player.getBlockPos().getZ()),
-                        player.getBlockPos().getZ(),
+                int requiredXpLevel = 0;
+                BlockPos blockPos = player.getBlockPos();
+                double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
+
+                if (USE_XP_TO_TELEPORT.getValue())
+                {
+                    int distanceY = (int) player.getY() - (int) topY;
+
+                    // Converts to a positive distance
+                    if (distanceY < 0)
+                    {
+                        distanceY *= -1;
+                    }
+                    // Minecraft doesn't center the position to the middle of the block but in 1 corner,
+                    // so this allows for a better centering
+                    distanceY += 1;
+
+                    int coordinatesDistance = distanceY;
+
+                    if (coordinatesDistance < BLOCKS_PER_XP_LEVEL_SURFACE.getValue())
+                    {
+                        requiredXpLevel = 1;
+                    }
+                    else
+                    {
+                        requiredXpLevel = 1 + coordinatesDistance / BLOCKS_PER_XP_LEVEL_SURFACE.getValue();
+                    }
+
+                    if (player.experienceLevel < requiredXpLevel)
+                    {
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
+                                "cyan.msg.notEnoughXp",
+                                Formatting.GOLD + String.valueOf(requiredXpLevel)
+                        );
+                        return 0;
+                    }
+                }
+
+                player.teleport(
+                        context.getSource().getWorld(),
+                        blockPos.getX(),
+                        topY,
+                        blockPos.getZ(),
                         player.getYaw(), player.getPitch()
                 );
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("surface"),
+                CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                        player,
                         "cyan.msg.surface"
                 );
+
+                player.addExperienceLevels(-1 * requiredXpLevel);
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int tpa(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        {
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled"))
+            {
+                String playerName = StringArgumentType.getString(context, "player_name");
+
+                if (!TPUtils.isPlayerRequesting(player.getName().getString(), playerName))
+                {
+                    addPlayerToQueue(player.getName().getString(), playerName);
+
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            "cyan.msg.tpaRequestSend",
+                            player.getName().getString()
+                    );
+
+                    Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName))
+                            .sendMessage(Text.literal(Formatting.GREEN + "[Accept]")
+                                    .setStyle(Style.EMPTY.withClickEvent(
+                                            new ClickEvent(
+                                                    ClickEvent.Action.RUN_COMMAND,
+                                                    "/tpaAccept %s".formatted(
+                                                            player.getName().getString())
+                                            )))
+                                    .append(Text.literal(Formatting.RED + "    [Refuse]")
+                                            .setStyle(Style.EMPTY.withClickEvent(
+                                                    new ClickEvent(
+                                                            ClickEvent.Action.RUN_COMMAND,
+                                                            "/tpaRefuse %s".formatted(
+                                                                    player.getName()
+                                                                            .getString())
+                                                    ))
+                                            )
+                                    )
+                            );
+
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
+                            Objects.requireNonNull(
+                                    context.getSource().getServer().getPlayerManager().getPlayer(playerName)),
+                            "cyan.msg.tpaRequest",
+                            false,
+                            player.getName().getString()
+                    );
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.tpaAlreadyRequested");
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int acceptTpa(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        {
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled"))
+            {
+                String requestingPlayerName = StringArgumentType.getString(context, "player_name");
+                ServerPlayerEntity requestingPlayer = context.getSource().getServer().getPlayerManager().getPlayer(
+                        requestingPlayerName);
+
+                // If the player is online
+                // &&
+                // If the player has requested a teleportation to the player running the command
+                if (requestingPlayer != null && TPUtils.isPlayerRequesting(
+                        requestingPlayerName, player.getName().getString()))
+                {
+                    int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos(),
+                            BLOCKS_PER_XP_LEVEL_TPA
+                    );
+
+                    if (requestingPlayer.experienceLevel < requiredXpLevel)
+                    {
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                requestingPlayer,
+                                "cyan.msg.notEnoughXpTpa",
+                                player.getName().getString()
+                        );
+                    }
+                    else
+                    {
+                        requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
+                        requestingPlayer.teleport(
+                                player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
+                        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                requestingPlayer,
+                                "cyan.msg.tpaSuccessful",
+                                player.getName().getString()
+                        );
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
+                                "cyan.msg.tpaAcceptedSelf",
+                                requestingPlayer.getName().getString()
+                        );
+                    }
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.noRequestingPlayers");
+                }
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public static int refuseTpa(@NotNull CommandContext<ServerCommandSource> context)
+    {
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        {
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled"))
+            {
+                String requestingPlayerName = StringArgumentType.getString(context, "player_name");
+                ServerPlayerEntity requestingPlayer = context.getSource().getServer().getPlayerManager().getPlayer(
+                        requestingPlayerName);
+
+                // If the player is online
+                // &&
+                // If the player has requested a teleportation to the player running the command
+                if (requestingPlayer != null && TPUtils.isPlayerRequesting(
+                        requestingPlayerName, player.getName().getString()))
+                {
+                    removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            requestingPlayer,
+                            "cyan.msg.tpaRefused",
+                            player.getName().getString()
+                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            "cyan.msg.tpaRefusedSelf",
+                            requestingPlayer.getName().getString()
+                    );
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.noRequestingPlayers");
+                }
             }
         }
         return Command.SINGLE_SUCCESS;

@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
- *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
- *
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.teleportation;
 
 import com.google.gson.Gson;
@@ -37,20 +20,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.CyanCore.*;
 
 public class Locations
 {
-    public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch) {}
+    public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
+    {
+    }
 
     private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
-    private final TypeToken<List<Location>> locationsType = new TypeToken<>() {};
+    private final TypeToken<List<Location>> locationsType = new TypeToken<>()
+    {
+    };
     private boolean isEditingFile = false;
-    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/locations.json");
+    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(
+            CYAN_MODID + "/locations" + ".json");
 
     public boolean add(@NotNull Location location)
     {
-        if (!locationExists(location.name()))
+        if (locationNotFound(location.name()))
         {
             locations.add(location);
             write();
@@ -102,7 +90,9 @@ public class Locations
         {
             Location tmpLocation = locations.get(idx);
             locations.add(new Location(newLocationName,
-                    tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z, tmpLocation.yaw, tmpLocation.pitch
+                    tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z,
+                    tmpLocation.yaw,
+                    tmpLocation.pitch
             ));
             locations.remove(tmpLocation);
             write();
@@ -145,7 +135,7 @@ public class Locations
     }
 
     /**
-     * Returns the index of the location with the name {@code locationName} | {@code -1} if the location doesn't exists
+     * Returns the index of the location with the name {@code locationName} | {@code -1} if the location doesn't exist
      */
     private int getLocationIndex(String locationName)
     {
@@ -159,16 +149,16 @@ public class Locations
         return -1;
     }
 
-    public boolean locationExists(String locationName)
+    public boolean locationNotFound(String locationName)
     {
         for (Location location : locations)
         {
             if (location.name().equals(locationName))
             {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public void readServer()
@@ -191,7 +181,8 @@ public class Locations
 
     public void readClient(String saveName)
     {
-        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/locations.json");
+        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/locations" +
+                ".json");
         checkOrCreateModDir(true);
 
         if (Files.exists(LOCATIONS_PATH))
@@ -261,7 +252,8 @@ public class Locations
 
                     if (!couldWrite)
                     {
-                        CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already being written (for more than 1 sec)");
+                        CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
+                                "being written (for more than 1 sec)");
                     }
                 }
             }

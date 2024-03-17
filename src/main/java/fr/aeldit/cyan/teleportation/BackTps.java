@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
- *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
- *
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.teleportation;
 
 import com.google.gson.Gson;
@@ -37,14 +20,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static fr.aeldit.cyan.util.Utils.*;
+import static fr.aeldit.cyan.CyanCore.*;
 
 public class BackTps
 {
-    public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date) {}
+    public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date)
+    {
+    }
 
     private final List<BackTp> backTps = Collections.synchronizedList(new ArrayList<>());
-    private final TypeToken<List<BackTp>> backTpType = new TypeToken<>() {};
+    private final TypeToken<List<BackTp>> backTpType = new TypeToken<>()
+    {
+    };
     private boolean isEditingFile = false;
     public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/back.json");
 
@@ -76,7 +63,8 @@ public class BackTps
             for (BackTp backTp : backTps)
             {
                 Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
-                long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
+                long days = TimeUnit.DAYS.convert(
+                        Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
 
                 if (days >= CyanConfig.DAYS_TO_REMOVE_BACK_TP.getValue())
                 {
@@ -219,7 +207,9 @@ public class BackTps
 
                     if (!couldWrite)
                     {
-                        CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written (for more than 1 sec)");
+                        CYAN_LOGGER.info(
+                                "[Cyan] Could not write the backTps file because it is already being written (for " +
+                                        "more than 1 sec)");
                     }
                 }
             }

@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2023-2024  -  Made by Aeldit
- *
- *              GNU LESSER GENERAL PUBLIC LICENSE
- *                  Version 3, 29 June 2007
- *
- *  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *  Everyone is permitted to copy and distribute verbatim copies
- *  of this license document, but changing it is not allowed.
- *
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License, supplemented by the additional permissions listed in the LICENSE.txt file
- * in the repo of this mod (https://github.com/Aeldit/Cyan)
- */
-
 package fr.aeldit.cyan.commands;
 
 import com.mojang.brigadier.Command;
@@ -23,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.config.CyanConfig;
 import fr.aeldit.cyan.teleportation.Locations;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -30,10 +14,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanConfig.ALLOW_LOCATIONS;
 import static fr.aeldit.cyan.config.CyanConfig.MIN_OP_LVL_EDIT_LOCATIONS;
-import static fr.aeldit.cyan.util.Utils.*;
-import static fr.aeldit.cyanlib.lib.utils.TranslationsPrefixes.ERROR;
 
 public class LocationCommands
 {
@@ -106,34 +89,34 @@ public class LocationCommands
      */
     public static int setLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            String locationName = StringArgumentType.getString(context, "name");
+            ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
-                    if (LOCATIONS.add(new Locations.Location(locationName,
-                            player.getWorld().getDimensionKey().getValue().toString()
-                                    .replace("minecraft:", "").replace("the_", ""),
-                            player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch())
+                    String locationName = StringArgumentType.getString(context, "name");
+
+                    if (LOCATIONS.add(new Locations.Location(
+                                    locationName,
+                                    player.getWorld().getDimensionKey().getValue().toString()
+                                            .replace("minecraft:", "").replace("the_", ""),
+                                    player.getX(), player.getY(), player.getZ(),
+                                    player.getYaw(), player.getPitch()
+                            )
                     ))
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation("setLocation"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.setLocation",
                                 Formatting.YELLOW + locationName
                         );
                     }
                     else
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationAlreadyExists"),
-                                "cyan.msg.locationAlreadyExists"
-                        );
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.locationAlreadyExists");
                     }
                 }
             }
@@ -148,11 +131,11 @@ public class LocationCommands
      */
     public static int removeLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
@@ -160,16 +143,16 @@ public class LocationCommands
 
                     if (LOCATIONS.remove(locationName))
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation("removeLocation"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.removeLocation",
                                 Formatting.YELLOW + locationName
                         );
                     }
                     else
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.locationNotFound",
                                 Formatting.YELLOW + locationName
                         );
@@ -187,25 +170,25 @@ public class LocationCommands
      */
     public static int removeAllLocations(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
                     if (LOCATIONS.removeAll())
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation("removedAllLocations"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.removedAllLocations"
                         );
                     }
                     else
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noLocations"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.noLocations"
                         );
                     }
@@ -222,11 +205,11 @@ public class LocationCommands
      */
     public static int renameLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue()))
                 {
@@ -235,8 +218,8 @@ public class LocationCommands
 
                     if (LOCATIONS.rename(locationName, newLocationName))
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation("renameLocation"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.renameLocation",
                                 Formatting.YELLOW + locationName,
                                 Formatting.YELLOW + newLocationName
@@ -244,8 +227,8 @@ public class LocationCommands
                     }
                     else
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                                CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
                                 "cyan.msg.locationNotFound",
                                 locationName
                         );
@@ -263,41 +246,53 @@ public class LocationCommands
      */
     public static int goToLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-        String locationName = StringArgumentType.getString(context, "name");
-
-        if (CYAN_LIB_UTILS.isOptionAllowed(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (LOCATIONS.locationExists(locationName))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
+                String locationName = StringArgumentType.getString(context, "name");
                 Locations.Location loc = LOCATIONS.getLocation(locationName);
 
-                switch (loc.dimension())
+                if (loc != null)
                 {
-                    case "overworld" ->
-                            player.teleport(player.getServer().getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                    case "nether" ->
-                            player.teleport(player.getServer().getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                    case "end" ->
-                            player.teleport(player.getServer().getWorld(World.END), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch());
-                }
+                    MinecraftServer server = player.getServer();
 
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation("goToLocation"),
-                        "cyan.msg.goToLocation",
-                        Formatting.YELLOW + locationName
-                );
-            }
-            else
-            {
-                CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                        CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "locationNotFound"),
-                        "cyan.msg.locationNotFound",
-                        Formatting.YELLOW + locationName
-                );
+                    if (server != null)
+                    {
+                        switch (loc.dimension())
+                        {
+                            case "overworld" -> player.teleport(
+                                    server.getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(),
+                                    loc.pitch()
+                            );
+                            case "nether" -> player.teleport(
+                                    server.getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch()
+                            );
+                            case "end" -> player.teleport(
+                                    server.getWorld(World.END), loc.x(), loc.y(), loc.z(),
+                                    loc.yaw(), loc.pitch()
+                            );
+                        }
+
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                                player,
+                                "cyan.msg.goToLocation",
+                                Formatting.YELLOW + locationName
+                        );
+                    }
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            "cyan.msg.locationNotFound",
+                            Formatting.YELLOW + locationName
+                    );
+                }
             }
         }
-
         return Command.SINGLE_SUCCESS;
     }
 
@@ -308,46 +303,30 @@ public class LocationCommands
      */
     public static int getLocationsList(@NotNull CommandContext<ServerCommandSource> context)
     {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-
         if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
         {
-            if (CYAN_LIB_UTILS.isOptionAllowed(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            ServerPlayerEntity player = context.getSource().getPlayer();
+
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
             {
                 if (!LOCATIONS.isEmpty())
                 {
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation("dashSeparation"),
-                            "cyan.msg.dashSeparation",
-                            false
-                    );
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation("listLocations"),
-                            "cyan.msg.listLocations",
-                            false
-                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyan.msg.listLocations", false);
 
                     LOCATIONS.getLocations().forEach(location -> CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
                             player,
-                            CYAN_LANGUAGE_UTILS.getTranslation("getLocation"),
                             "cyan.msg.getLocation",
                             false,
                             Formatting.YELLOW + location.name(),
                             Formatting.DARK_AQUA + location.dimension()
                     ));
 
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation("dashSeparation"),
-                            "cyan.msg.dashSeparation",
-                            false
-                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);
                 }
                 else
                 {
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player,
-                            CYAN_LANGUAGE_UTILS.getTranslation(ERROR + "noLocations"),
-                            "cyan.msg.noLocations"
-                    );
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.noLocations");
                 }
             }
         }

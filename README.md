@@ -1,4 +1,4 @@
-![banner](https://github.com/Aeldit/Cyan/blob/1.20.x/images/banner_small.png?raw=true)
+![banner](https://github.com/Aeldit/Aeldit/blob/main/cyan/banner_small.png?raw=true)
 <!-- modrinth_exclude.start -->
 > ❌ I do NOT allow this mod to be ported on the Forge loader, nor to be uploaded on Curseforge
 <!-- modrinth_exclude.end -->
@@ -18,7 +18,6 @@ or
 |    1.20 - 1.20.4     |     ✅      |    latest    |
 
 </details>
-
 
 ***
 
@@ -73,7 +72,7 @@ This mod allows you to create and use custom translations, instead of the defaul
 To do this :
 
 1. Download the file `translations.json`
-   located [here](https://github.com/Aeldit/Cyan/tree/1.20.x/docs) and put it in your Minecraft server
+   located [here](https://github.com/Aeldit/Cyan/tree/master/docs) and put it in your Minecraft server
    folder (`minecraft/config/cyan`)
 2. Then you can translate the file to any language you want
 3. There are some unicode characters in the file (they look like `\u00A7c`). They are used to determine the
