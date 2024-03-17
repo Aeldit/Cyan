@@ -344,7 +344,7 @@ public class TeleportationCommands
                     {
                         requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
                         requestingPlayer.teleport(
-                                player.getWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
+                                player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
                         removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
