@@ -14,8 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
@@ -25,7 +23,6 @@ public class CyanCore
 {
     public static final String CYAN_MODID = "cyan";
     public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(CYAN_MODID);
-    private static final Map<String, String> CYAN_DEFAULT_TRANSLATIONS = new HashMap<>();
 
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();
