@@ -67,7 +67,7 @@ modrinth {
 
     uploadFile = remapJar
 
-    gameVersions = ["1.20.4"]
+    gameVersions = ["1.20.2"]
     loaders = ["fabric"]
 
     dependencies {
@@ -79,6 +79,6 @@ modrinth {
     changelog = file("changelogs/latest.md").exists() ? file("changelogs/latest.md").getText() : "No changelog provided"
     syncBodyFrom = rootProject.file("README.md").text
 
-    debugMode = false // Stops version from being published
+    debugMode = false
 }
 tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
