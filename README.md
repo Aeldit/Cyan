@@ -71,35 +71,20 @@ or
 
 </details>
 
-### 🌐 Default Translations
+### 🌐 Translations
 
-This mod allows you to create and use custom translations, instead of the default messages.
+This mod allows you to create and use custom translations or another language than english, instead of the default
+messages.
 
-To do this :
+To do this, go in the `config/cyan` folder of your minecraft instance / server and add the `fr_fr.json` file that
+can be found [here](https://github.com/Aeldit/CyanLib/tree/1.20.4/custom_languages)
 
-1. Download the file `translations.json`
-   located [here](https://github.com/Aeldit/Cyan/tree/master/docs) and put it in your Minecraft server
-   folder (`minecraft/config/cyan`)
-2. Then you can translate the file to any language you want
-3. There are some unicode characters in the file (they look like `\u00A7c`). They are used to determine the
-   color of the text so don't delete them unless you don't want the colors. If you want to change the colors, here
-   is a link where you can find the [unicode colors](https://minecraft.tools/en/color-code.php)
-4. There are translations that contains one or more `%s`. You must keep these in your translations, as they are the
-   place the variables passed from functions are shown (ex: For the
-   command `/kgi 16`, the message will be `Ground items have been removed in a radius of 16 chunks`. Here we have
-   16 in the message, but because it was the argument of the command)
-
-### ❗ Important
-
-If you are not using this mod on client but only on server side, download the resource pack for messages translations
-(Cyan 1.1X.x located in this mod's github repository)
-
-📖 If you launch the mod on server side, it will use the latest version of minecraft, but if you use it on client side,
-it will allow you to play any version of the same number (ex: 1.17, 1.17.1 ...)
+Once this is done, make sure to rename the file to `custom_lang.json` (for now, only one language can be loaded so every
+player of the server will have the same language, but I might add multi-language support at some point)
 
 ***
 
-> If you find any issue, please make sure to report it on GitHub so I can fix it (both badges can be clicked on to
+> If you find an issue, please make sure to report it on GitHub so I can fix it (both badges can be clicked on to
 > follow the link)
 >
 > [![github_issues](https://img.shields.io/github/issues/Aeldit/Cyan?color=red&style=for-the-badge&logo=github)](https://github.com/Aeldit/Cyan/issues)
