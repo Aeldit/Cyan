@@ -1,17 +1,1 @@
-✏️ Added :
-
-- `/tpa` command : Allows players to ask for teleportation to another player
-- `allowTpa` option : toggles the `/tpa` command
-- `useXpToTeleport` option : consumes XP when the player uses teleportation commands (`/bed`, `/surface` and `/tpa`)
-    - An option is available for each tp command (`blocksPerXpLevel...`, `...` being the command) to specify the amount
-      of blocks that will consume 1 XP level
-
-🌈 Changed :
-
-The custom translations are now handled differently :
-
-- if you want custom translations, you can simply put a file named `custom_lang.json` inside a folder named `cyan` in
-  the config folder
-- the way to use another language is also by using this file, but by translating the default translations
-
-⚠️ For now, only one language can be used, but support for multiple languages might come at some point
+Use CyanLib 0.4.7 to fix the config not being written when modified from the chat
