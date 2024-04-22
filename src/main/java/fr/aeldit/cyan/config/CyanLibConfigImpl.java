@@ -8,7 +8,7 @@ import fr.aeldit.cyanlib.lib.utils.RULES;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CyanConfig implements CyanLibConfig
+public class CyanLibConfigImpl implements CyanLibConfig
 {
     public static final BooleanOption ALLOW_BED = new BooleanOption("allowBed", true);
     public static final BooleanOption ALLOW_KGI = new BooleanOption("allowKgi", true);

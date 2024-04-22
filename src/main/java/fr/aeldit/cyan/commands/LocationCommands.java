@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.config.CyanConfig;
+import fr.aeldit.cyan.config.CyanLibConfigImpl;
 import fr.aeldit.cyan.teleportation.Locations;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.CyanCore.*;
-import static fr.aeldit.cyan.config.CyanConfig.ALLOW_LOCATIONS;
-import static fr.aeldit.cyan.config.CyanConfig.MIN_OP_LVL_EDIT_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.ALLOW_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.MIN_OP_LVL_EDIT_LOCATIONS;
 
 public class LocationCommands
 {
@@ -250,7 +250,8 @@ public class LocationCommands
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
-            if (CYAN_LIB_UTILS.isOptionEnabled(player, CyanConfig.ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+            if (CYAN_LIB_UTILS.isOptionEnabled(player, CyanLibConfigImpl.ALLOW_LOCATIONS.getValue(),
+                    "locationsDisabled"))
             {
                 String locationName = StringArgumentType.getString(context, "name");
                 Locations.Location loc = LOCATIONS.getLocation(locationName);

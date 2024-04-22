@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.config.CyanConfig;
+import fr.aeldit.cyan.config.CyanLibConfigImpl;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static fr.aeldit.cyan.CyanCore.CYAN_LANGUAGE_UTILS;
 import static fr.aeldit.cyan.CyanCore.CYAN_LIB_UTILS;
-import static fr.aeldit.cyan.config.CyanConfig.*;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
 
 public class MiscellaneousCommands
 {
@@ -36,7 +36,7 @@ public class MiscellaneousCommands
     /**
      * Called when a player execute the command {@code /kill-ground-items} or {@code /kgi}
      * <p>
-     * Kills all the items on the ground in the default radius (defined if {@link CyanConfig})
+     * Kills all the items on the ground in the default radius (defined if {@link CyanLibConfigImpl})
      */
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {

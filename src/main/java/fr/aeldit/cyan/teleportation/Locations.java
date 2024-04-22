@@ -33,8 +33,8 @@ public class Locations
     {
     };
     private boolean isEditingFile = false;
-    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(
-            CYAN_MODID + "/locations" + ".json");
+    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID +
+            "/locations.json"));
 
     public boolean add(@NotNull Location location)
     {
@@ -114,12 +114,11 @@ public class Locations
 
     public @NotNull CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
     {
-        ArrayList<String> locationsNames = new ArrayList<>();
+        ArrayList<String> locationsNames = new ArrayList<>(locations.size());
         for (Location location : locations)
         {
             locationsNames.add(location.name);
         }
-
         return CommandSource.suggestMatching(locationsNames, builder);
     }
 
@@ -130,7 +129,6 @@ public class Locations
     public @Nullable Location getLocation(String locationName)
     {
         int idx = getLocationIndex(locationName);
-
         return idx == -1 ? null : locations.get(idx);
     }
 
@@ -181,8 +179,8 @@ public class Locations
 
     public void readClient(String saveName)
     {
-        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/locations" +
-                ".json");
+        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID + "/" + saveName +
+                "/locations.json"));
         checkOrCreateModDir(true);
 
         if (Files.exists(LOCATIONS_PATH))

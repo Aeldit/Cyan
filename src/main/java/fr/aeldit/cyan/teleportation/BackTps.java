@@ -3,7 +3,7 @@ package fr.aeldit.cyan.teleportation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import fr.aeldit.cyan.config.CyanConfig;
+import fr.aeldit.cyan.config.CyanLibConfigImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +33,8 @@ public class BackTps
     {
     };
     private boolean isEditingFile = false;
-    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/back.json");
+    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID + "/back" +
+            ".json"));
 
     public void add(BackTp backTp)
     {
@@ -66,7 +67,7 @@ public class BackTps
                 long days = TimeUnit.DAYS.convert(
                         Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
 
-                if (days >= CyanConfig.DAYS_TO_REMOVE_BACK_TP.getValue())
+                if (days >= CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue())
                 {
                     tmp.add(backTp);
                 }
@@ -84,7 +85,6 @@ public class BackTps
     public @Nullable BackTp getBackTp(String playerUUID)
     {
         int idx = getBackTpIndex(playerUUID);
-
         return idx == -1 ? null : backTps.get(idx);
     }
 
@@ -136,7 +136,8 @@ public class BackTps
 
     public void readClient(String saveName)
     {
-        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID + "/" + saveName + "/back.json");
+        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID + "/" + saveName + "/back" +
+                ".json"));
         checkOrCreateModDir(false);
 
         if (Files.exists(BACK_TP_PATH))
@@ -207,9 +208,8 @@ public class BackTps
 
                     if (!couldWrite)
                     {
-                        CYAN_LOGGER.info(
-                                "[Cyan] Could not write the backTps file because it is already being written (for " +
-                                        "more than 1 sec)");
+                        CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written" +
+                                " (for more than 1 sec)");
                     }
                 }
             }

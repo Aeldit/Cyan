@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static fr.aeldit.cyan.CyanCore.*;
-import static fr.aeldit.cyan.config.CyanConfig.*;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
 import static fr.aeldit.cyan.teleportation.TPUtils.*;
 
 public class TeleportationCommands
