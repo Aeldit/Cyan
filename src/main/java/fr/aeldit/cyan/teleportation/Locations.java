@@ -7,6 +7,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandSource;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +25,67 @@ import static fr.aeldit.cyan.CyanCore.*;
 
 public class Locations
 {
-    public record Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
+    public static class Location
     {
+        private String name;
+        private final String dimension;
+        private final double x;
+        private final double y;
+        private final double z;
+        private final float yaw;
+        private final float pitch;
+
+        @Contract(pure = true)
+        public Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
+        {
+            this.name = name;
+            this.dimension = dimension;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.yaw = yaw;
+            this.pitch = pitch;
+        }
+
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public String getDimension()
+        {
+            return dimension;
+        }
+
+        public double getX()
+        {
+            return x;
+        }
+
+        public double getY()
+        {
+            return y;
+        }
+
+        public double getZ()
+        {
+            return z;
+        }
+
+        public float getYaw()
+        {
+            return yaw;
+        }
+
+        public float getPitch()
+        {
+            return pitch;
+        }
     }
 
     private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
@@ -38,7 +98,7 @@ public class Locations
 
     public boolean add(@NotNull Location location)
     {
-        if (locationNotFound(location.name()))
+        if (locationNotFound(location.getName()))
         {
             locations.add(location);
             write();
@@ -55,10 +115,10 @@ public class Locations
      */
     public boolean remove(String locationName)
     {
-        int idx = getLocationIndex(locationName);
-        if (idx != -1)
+        Location location = getLocation(locationName);
+        if (location != null)
         {
-            locations.remove(idx);
+            locations.remove(location);
             write();
 
             return true;
@@ -85,16 +145,10 @@ public class Locations
      */
     public boolean rename(String locationName, String newLocationName)
     {
-        int idx = getLocationIndex(locationName);
-        if (idx != -1)
+        Location location = getLocation(locationName);
+        if (location != null)
         {
-            Location tmpLocation = locations.get(idx);
-            locations.add(new Location(newLocationName,
-                    tmpLocation.dimension, tmpLocation.x, tmpLocation.y, tmpLocation.z,
-                    tmpLocation.yaw,
-                    tmpLocation.pitch
-            ));
-            locations.remove(tmpLocation);
+            location.setName(newLocationName);
             write();
 
             return true;
@@ -117,46 +171,26 @@ public class Locations
         ArrayList<String> locationsNames = new ArrayList<>(locations.size());
         for (Location location : locations)
         {
-            locationsNames.add(location.name);
+            locationsNames.add(location.getName());
         }
         return CommandSource.suggestMatching(locationsNames, builder);
     }
 
-    /**
-     * @param locationName The name of the location
-     * @return The location with the given name if it exists | {@code null} otherwise
-     */
-    public @Nullable Location getLocation(String locationName)
-    {
-        int idx = getLocationIndex(locationName);
-        return idx == -1 ? null : locations.get(idx);
-    }
-
-    /**
-     * Returns the index of the location with the name {@code locationName} | {@code -1} if the location doesn't exist
-     */
-    private int getLocationIndex(String locationName)
-    {
-        for (Location location : locations)
-        {
-            if (location.name().equals(locationName))
-            {
-                return locations.indexOf(location);
-            }
-        }
-        return -1;
-    }
-
     public boolean locationNotFound(String locationName)
     {
+        return getLocation(locationName) == null;
+    }
+
+    public @Nullable Location getLocation(String locationName)
+    {
         for (Location location : locations)
         {
-            if (location.name().equals(locationName))
+            if (location.getName().equals(locationName))
             {
-                return false;
+                return location;
             }
         }
-        return true;
+        return null;
     }
 
     public void readServer()

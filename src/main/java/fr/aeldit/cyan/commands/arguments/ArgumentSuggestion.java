@@ -2,7 +2,7 @@ package fr.aeldit.cyan.commands.arguments;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import fr.aeldit.cyan.teleportation.TPUtils;
+import fr.aeldit.cyan.teleportation.TPa;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -34,6 +34,6 @@ public final class ArgumentSuggestion
             @NotNull SuggestionsBuilder builder, @NotNull ServerCommandSource source
     )
     {
-        return CommandSource.suggestMatching(TPUtils.getRequestingPlayers(source.getName()), builder);
+        return CommandSource.suggestMatching(TPa.getRequestingPlayers(source.getName()), builder);
     }
 }

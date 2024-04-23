@@ -251,7 +251,8 @@ public class LocationCommands
             ServerPlayerEntity player = context.getSource().getPlayer();
 
             if (CYAN_LIB_UTILS.isOptionEnabled(player, CyanLibConfigImpl.ALLOW_LOCATIONS.getValue(),
-                    "locationsDisabled"))
+                    "locationsDisabled"
+            ))
             {
                 String locationName = StringArgumentType.getString(context, "name");
                 Locations.Location loc = LOCATIONS.getLocation(locationName);
@@ -262,18 +263,19 @@ public class LocationCommands
 
                     if (server != null)
                     {
-                        switch (loc.dimension())
+                        switch (loc.getDimension())
                         {
                             case "overworld" -> player.teleport(
-                                    server.getWorld(World.OVERWORLD), loc.x(), loc.y(), loc.z(), loc.yaw(),
-                                    loc.pitch()
+                                    server.getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
+                                    loc.getPitch()
                             );
                             case "nether" -> player.teleport(
-                                    server.getWorld(World.NETHER), loc.x(), loc.y(), loc.z(), loc.yaw(), loc.pitch()
+                                    server.getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
+                                    loc.getPitch()
                             );
                             case "end" -> player.teleport(
-                                    server.getWorld(World.END), loc.x(), loc.y(), loc.z(),
-                                    loc.yaw(), loc.pitch()
+                                    server.getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(),
+                                    loc.getYaw(), loc.getPitch()
                             );
                         }
 
@@ -319,8 +321,8 @@ public class LocationCommands
                             player,
                             "cyan.msg.getLocation",
                             false,
-                            Formatting.YELLOW + location.name(),
-                            Formatting.DARK_AQUA + location.dimension()
+                            Formatting.YELLOW + location.getName(),
+                            Formatting.DARK_AQUA + location.getDimension()
                     ));
 
                     CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);

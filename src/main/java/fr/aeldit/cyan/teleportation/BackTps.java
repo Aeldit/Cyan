@@ -47,10 +47,10 @@ public class BackTps
      */
     public void remove(String playerUUID)
     {
-        int idx = getBackTpIndex(playerUUID);
-        if (idx != -1)
+        BackTp backTp = getBackTp(playerUUID);
+        if (backTp != null)
         {
-            backTps.remove(idx);
+            backTps.remove(backTp);
             write();
         }
     }
@@ -82,38 +82,25 @@ public class BackTps
         }
     }
 
-    public @Nullable BackTp getBackTp(String playerUUID)
-    {
-        int idx = getBackTpIndex(playerUUID);
-        return idx == -1 ? null : backTps.get(idx);
-    }
-
     /**
      * @param playerUUID The UUID of the player
      * @return The index of the object if it exists | {@code -1} otherwise
      */
-    private int getBackTpIndex(String playerUUID)
+    private @Nullable BackTp getBackTp(String playerUUID)
     {
         for (BackTp backTp : backTps)
         {
             if (backTp.playerUUID().equals(playerUUID))
             {
-                return backTps.indexOf(backTp);
+                return backTp;
             }
         }
-        return -1;
+        return null;
     }
 
     public boolean backTpExists(String playerUUID)
     {
-        for (BackTp backTp : backTps)
-        {
-            if (backTp.playerUUID().equals(playerUUID))
-            {
-                return true;
-            }
-        }
-        return false;
+        return getBackTp(playerUUID) != null;
     }
 
     public void readServer()

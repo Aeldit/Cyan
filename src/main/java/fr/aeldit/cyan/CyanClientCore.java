@@ -3,16 +3,16 @@ package fr.aeldit.cyan;
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
-import fr.aeldit.cyan.teleportation.TPUtils;
+import fr.aeldit.cyan.teleportation.TPa;
 import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
+import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
-import static fr.aeldit.cyan.CyanCore.*;
 
 public class CyanClientCore implements ClientModInitializer
 {
@@ -30,7 +30,7 @@ public class CyanClientCore implements ClientModInitializer
                 }
         );
         ServerPlayConnectionEvents.DISCONNECT.register(
-                (handler, server) -> TPUtils.removePlayerOnQuit(handler.getPlayer().getName().getString())
+                (handler, server) -> TPa.removePlayerOnQuit(handler.getPlayer().getName().getString())
         );
 
         // Register all the commands

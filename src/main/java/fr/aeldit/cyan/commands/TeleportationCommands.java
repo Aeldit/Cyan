@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTps;
-import fr.aeldit.cyan.teleportation.TPUtils;
+import fr.aeldit.cyan.teleportation.TPa;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -25,8 +25,8 @@ import java.util.Objects;
 
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
-import static fr.aeldit.cyan.teleportation.TPUtils.addPlayerToQueue;
-import static fr.aeldit.cyan.teleportation.TPUtils.removePlayerFromQueue;
+import static fr.aeldit.cyan.teleportation.TPa.addPlayerToQueue;
+import static fr.aeldit.cyan.teleportation.TPa.removePlayerFromQueue;
 import static fr.aeldit.cyanlib.lib.utils.TPUtils.getRequiredXpLevelsToTp;
 
 public class TeleportationCommands
@@ -265,7 +265,7 @@ public class TeleportationCommands
             {
                 String playerName = StringArgumentType.getString(context, "player_name");
 
-                if (!TPUtils.isPlayerRequesting(player.getName().getString(), playerName))
+                if (!TPa.isPlayerRequesting(player.getName().getString(), playerName))
                 {
                     addPlayerToQueue(player.getName().getString(), playerName);
 
@@ -327,7 +327,7 @@ public class TeleportationCommands
                 // If the player is online
                 // &&
                 // If the player has requested a teleportation to the player running the command
-                if (requestingPlayer != null && TPUtils.isPlayerRequesting(
+                if (requestingPlayer != null && TPa.isPlayerRequesting(
                         requestingPlayerName, player.getName().getString()))
                 {
                     int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos(),
@@ -385,7 +385,7 @@ public class TeleportationCommands
                 // If the player is online
                 // &&
                 // If the player has requested a teleportation to the player running the command
-                if (requestingPlayer != null && TPUtils.isPlayerRequesting(
+                if (requestingPlayer != null && TPa.isPlayerRequesting(
                         requestingPlayerName, player.getName().getString()))
                 {
                     removePlayerFromQueue(requestingPlayerName, player.getName().getString());
