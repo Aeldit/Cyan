@@ -86,7 +86,8 @@ public class BackTps
      * @param playerUUID The UUID of the player
      * @return The index of the object if it exists | {@code -1} otherwise
      */
-    private @Nullable BackTp getBackTp(String playerUUID)
+    @Nullable
+    public BackTp getBackTp(String playerUUID)
     {
         for (BackTp backTp : backTps)
         {
