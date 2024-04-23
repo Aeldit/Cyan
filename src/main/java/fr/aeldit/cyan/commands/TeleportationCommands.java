@@ -25,7 +25,9 @@ import java.util.Objects;
 
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
-import static fr.aeldit.cyan.teleportation.TPUtils.*;
+import static fr.aeldit.cyan.teleportation.TPUtils.addPlayerToQueue;
+import static fr.aeldit.cyan.teleportation.TPUtils.removePlayerFromQueue;
+import static fr.aeldit.cyanlib.lib.utils.TPUtils.getRequiredXpLevelsToTp;
 
 public class TeleportationCommands
 {
