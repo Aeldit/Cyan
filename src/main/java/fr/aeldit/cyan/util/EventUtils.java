@@ -8,8 +8,8 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.CyanCore.BACK_TPS;
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 
 public class EventUtils
 {
@@ -25,10 +25,7 @@ public class EventUtils
             }
 
             BACK_TPS.add(new BackTps.BackTp(playerUUID,
-                            entity.getWorld()
-                                    .getDimensionKey()
-                                    .getValue()
-                                    .toString()
+                            entity.getWorld().getDimensionEntry().getIdAsString()
                                     .replace("minecraft:", "")
                                     .replace("the_", ""),
                             entity.getX(), entity.getY(), entity.getZ(),

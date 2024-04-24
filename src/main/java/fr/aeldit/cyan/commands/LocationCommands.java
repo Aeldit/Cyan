@@ -101,7 +101,7 @@ public class LocationCommands
 
                     if (LOCATIONS.add(new Locations.Location(
                                     locationName,
-                                    player.getWorld().getDimensionKey().getValue().toString()
+                                    player.getWorld().getDimensionEntry().getIdAsString()
                                             .replace("minecraft:", "").replace("the_", ""),
                                     player.getX(), player.getY(), player.getZ(),
                                     player.getYaw(), player.getPitch()

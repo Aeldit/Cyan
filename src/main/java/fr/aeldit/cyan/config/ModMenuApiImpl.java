@@ -12,7 +12,7 @@ public class ModMenuApiImpl implements ModMenuApi
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory()
     {
-        return parent -> new CyanLibConfigScreen(
+        return parent -> new CyanLibConfigScreen(null,
                 CONFIG_CLASS_INSTANCES.get(CYAN_MODID).getOptionsStorage(),
                 parent,
                 CONFIG_CLASS_INSTANCES.get(CYAN_MODID).getOptionsStorage().getConfigClass()
