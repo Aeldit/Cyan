@@ -116,7 +116,7 @@ public class LocationCommands
                     }
                     else
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.locationAlreadyExists");
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.locationAlreadyExists");
                     }
                 }
             }
@@ -153,7 +153,7 @@ public class LocationCommands
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                                 player,
-                                "cyan.msg.locationNotFound",
+                                "cyan.error.locationNotFound",
                                 Formatting.YELLOW + locationName
                         );
                     }
@@ -189,7 +189,7 @@ public class LocationCommands
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                                 player,
-                                "cyan.msg.noLocations"
+                                "cyan.error.noLocations"
                         );
                     }
                 }
@@ -229,7 +229,7 @@ public class LocationCommands
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                                 player,
-                                "cyan.msg.locationNotFound",
+                                "cyan.error.locationNotFound",
                                 locationName
                         );
                     }
@@ -290,7 +290,7 @@ public class LocationCommands
                 {
                     CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                             player,
-                            "cyan.msg.locationNotFound",
+                            "cyan.error.locationNotFound",
                             Formatting.YELLOW + locationName
                     );
                 }
@@ -329,7 +329,7 @@ public class LocationCommands
                 }
                 else
                 {
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.noLocations");
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.noLocations");
                 }
             }
         }
