@@ -1,1 +1,1 @@
-Update to 1.20.5
+Use CyanLib 0.4.7 to fix the config not being written when modified from the chat
