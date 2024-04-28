@@ -93,7 +93,7 @@ public class Locations
     {
     };
     private boolean isEditingFile = false;
-    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID +
+    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(MODID +
             "/locations.json"));
 
     public boolean add(@NotNull Location location)
@@ -213,7 +213,7 @@ public class Locations
 
     public void readClient(String saveName)
     {
-        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID + "/" + saveName +
+        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(MODID + "/" + saveName +
                 "/locations.json"));
         checkOrCreateModDir(true);
 

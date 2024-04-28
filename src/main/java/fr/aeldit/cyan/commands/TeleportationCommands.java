@@ -202,7 +202,7 @@ public class TeleportationCommands
                 BlockPos blockPos = player.getBlockPos();
                 double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
 
-                if (USE_XP_TO_TELEPORT.getValue())
+                if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
                 {
                     int distanceY = (int) player.getY() - (int) topY;
 
@@ -230,7 +230,7 @@ public class TeleportationCommands
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                                 player,
-                                "cyan.msg.notEnoughXp",
+                                "cyan.error.notEnoughXp",
                                 Formatting.GOLD + String.valueOf(requiredXpLevel)
                         );
                         return 0;

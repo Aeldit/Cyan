@@ -21,20 +21,21 @@ import static fr.aeldit.cyan.teleportation.Locations.LOCATIONS_PATH;
 
 public class CyanCore
 {
-    public static final String CYAN_MODID = "cyan";
-    public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(CYAN_MODID);
+    public static final String MODID = "cyan";
+    public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(MODID);
 
     public static Locations LOCATIONS = new Locations();
     public static BackTps BACK_TPS = new BackTps();
 
-    public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(CYAN_MODID,
-            new CyanLibConfigImpl());
-    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(CYAN_MODID);
-    public static CyanLib CYAN_LIB_UTILS = new CyanLib(CYAN_MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
+    public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(MODID,
+            new CyanLibConfigImpl()
+    );
+    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(MODID);
+    public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
 
     public static void checkOrCreateModDir(boolean locations)
     {
-        Path dir = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID);
+        Path dir = FabricLoader.getInstance().getConfigDir().resolve(MODID);
 
         if (!Files.exists(dir))
         {
@@ -100,7 +101,7 @@ public class CyanCore
             }
         }
 
-        dir = FabricLoader.getInstance().getConfigDir().resolve(CYAN_MODID);
+        dir = FabricLoader.getInstance().getConfigDir().resolve(MODID);
 
         if (Files.exists(dir))
         {

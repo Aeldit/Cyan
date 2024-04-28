@@ -33,7 +33,7 @@ public class BackTps
     {
     };
     private boolean isEditingFile = false;
-    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID + "/back" +
+    public static Path BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(MODID + "/back" +
             ".json"));
 
     public void add(BackTp backTp)
@@ -124,7 +124,7 @@ public class BackTps
 
     public void readClient(String saveName)
     {
-        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(CYAN_MODID + "/" + saveName + "/back" +
+        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(MODID + "/" + saveName + "/back" +
                 ".json"));
         checkOrCreateModDir(false);
 
