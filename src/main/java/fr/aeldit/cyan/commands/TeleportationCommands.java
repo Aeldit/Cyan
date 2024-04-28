@@ -141,7 +141,7 @@ public class TeleportationCommands
 
                 if (spawnPos != null)
                 {
-                    if (USE_XP_TO_TELEPORT.getValue())
+                    if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
                     {
                         requiredXpLevel = getRequiredXpLevelsToTp(player, spawnPos, BLOCKS_PER_XP_LEVEL_BED);
 
@@ -149,7 +149,7 @@ public class TeleportationCommands
                         {
                             CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                                     player,
-                                    "cyan.msg.notEnoughXp",
+                                    "cyan.error.notEnoughXp",
                                     Formatting.GOLD + String.valueOf(requiredXpLevel)
                             );
                             return 0;
@@ -179,6 +179,10 @@ public class TeleportationCommands
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.bedNotFound");
                     }
+                }
+                else
+                {
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.bedNotFound");
                 }
             }
         }
@@ -338,7 +342,7 @@ public class TeleportationCommands
                     {
                         CYAN_LANGUAGE_UTILS.sendPlayerMessage(
                                 requestingPlayer,
-                                "cyan.msg.notEnoughXpTpa",
+                                "cyan.error.notEnoughXpTpa",
                                 player.getName().getString()
                         );
                     }
