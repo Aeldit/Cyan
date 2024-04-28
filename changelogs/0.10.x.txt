@@ -16,3 +16,6 @@
     - the way to use another language is also by using this file, but by translating the default translations
 
     ⚠️ For now, only one language can be used, but support for multiple languages might come at some point
+
+0.10.1 :
+    Use CyanLib 0.4.7 to fix the config not being written when modified from the chat
