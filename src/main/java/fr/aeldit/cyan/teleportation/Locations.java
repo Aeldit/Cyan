@@ -29,11 +29,8 @@ public class Locations
     {
         private String name;
         private final String dimension;
-        private final double x;
-        private final double y;
-        private final double z;
-        private final float yaw;
-        private final float pitch;
+        private final double x, y, z;
+        private final float yaw, pitch;
 
         @Contract(pure = true)
         public Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
