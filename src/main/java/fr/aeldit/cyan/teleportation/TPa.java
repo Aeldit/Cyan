@@ -1,5 +1,7 @@
 package fr.aeldit.cyan.teleportation;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,9 +47,13 @@ public class TPa
         return false;
     }
 
-    public static List<String> getRequestingPlayers(String requestedPlayer)
+    public static @Nullable List<String> getRequestingPlayers(String requestedPlayer)
     {
-        return PLAYERS_TPA_QUEUES.getOrDefault(requestedPlayer, null);
+        if (PLAYERS_TPA_QUEUES.containsKey(requestedPlayer))
+        {
+            return PLAYERS_TPA_QUEUES.get(requestedPlayer);
+        }
+        return null;
     }
 
     public static void removePlayerOnQuit(String playerName)
