@@ -60,14 +60,16 @@ public class BackTps
         try
         {
             ArrayList<BackTp> tmp = new ArrayList<>();
+            int maxTime = CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue();
 
             for (BackTp backTp : backTps)
             {
-                Date backTpDate = new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date());
-                long days = TimeUnit.DAYS.convert(
-                        Math.abs(new Date().getTime() - backTpDate.getTime()), TimeUnit.MILLISECONDS);
+                long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime()
+                                - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
+                        TimeUnit.MILLISECONDS
+                );
 
-                if (days >= CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue())
+                if (days >= maxTime)
                 {
                     tmp.add(backTp);
                 }
@@ -86,8 +88,7 @@ public class BackTps
      * @param playerUUID The UUID of the player
      * @return The index of the object if it exists | {@code -1} otherwise
      */
-    @Nullable
-    public BackTp getBackTp(String playerUUID)
+    public @Nullable BackTp getBackTp(String playerUUID)
     {
         for (BackTp backTp : backTps)
         {
