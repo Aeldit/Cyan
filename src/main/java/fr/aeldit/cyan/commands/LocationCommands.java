@@ -14,6 +14,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.ALLOW_LOCATIONS;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.MIN_OP_LVL_EDIT_LOCATIONS;
@@ -256,35 +258,31 @@ public class LocationCommands
             {
                 String locationName = StringArgumentType.getString(context, "name");
                 Locations.Location loc = LOCATIONS.getLocation(locationName);
+                MinecraftServer server = player.getServer();
 
-                if (loc != null)
+                if (loc != null && server != null)
                 {
-                    MinecraftServer server = player.getServer();
-
-                    if (server != null)
+                    switch (loc.getDimension())
                     {
-                        switch (loc.getDimension())
-                        {
-                            case "overworld" -> player.teleport(
-                                    server.getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                                    loc.getPitch()
-                            );
-                            case "nether" -> player.teleport(
-                                    server.getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                                    loc.getPitch()
-                            );
-                            case "end" -> player.teleport(
-                                    server.getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(),
-                                    loc.getYaw(), loc.getPitch()
-                            );
-                        }
-
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                player,
-                                "cyan.msg.goToLocation",
-                                Formatting.YELLOW + locationName
+                        case "overworld" -> player.teleport(
+                                server.getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
+                                loc.getPitch()
+                        );
+                        case "nether" -> player.teleport(
+                                server.getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
+                                loc.getPitch()
+                        );
+                        case "end" -> player.teleport(
+                                server.getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(),
+                                loc.getYaw(), loc.getPitch()
                         );
                     }
+
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                            player,
+                            "cyan.msg.goToLocation",
+                            Formatting.YELLOW + locationName
+                    );
                 }
                 else
                 {
@@ -316,14 +314,21 @@ public class LocationCommands
                 {
                     CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);
                     CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyan.msg.listLocations", false);
+                    List<Locations.Location> locations = LOCATIONS.getLocations();
 
-                    LOCATIONS.getLocations().forEach(location -> CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
-                            player,
-                            "cyan.msg.getLocation",
-                            false,
-                            Formatting.YELLOW + location.getName(),
-                            Formatting.DARK_AQUA + location.getDimension()
-                    ));
+                    if (locations != null)
+                    {
+                        for (Locations.Location location : locations)
+                        {
+                            CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
+                                    player,
+                                    "cyan.msg.getLocation",
+                                    false,
+                                    Formatting.YELLOW + location.getName(),
+                                    Formatting.DARK_AQUA + location.getDimension()
+                            );
+                        }
+                    }
 
                     CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);
                 }

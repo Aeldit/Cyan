@@ -15,24 +15,21 @@ public class EventUtils
 {
     public static void saveDeadPlayersPos(@NotNull LivingEntity entity)
     {
-        if (entity.isPlayer())
+        String playerUUID = entity.getUuidAsString();
+
+        if (BACK_TPS.backTpExists(playerUUID))
         {
-            String playerUUID = entity.getUuidAsString();
-
-            if (BACK_TPS.backTpExists(playerUUID))
-            {
-                BACK_TPS.remove(playerUUID);
-            }
-
-            BACK_TPS.add(new BackTps.BackTp(playerUUID,
-                            entity.getWorld().getDimensionEntry().getIdAsString()
-                                    .replace("minecraft:", "")
-                                    .replace("the_", ""),
-                            entity.getX(), entity.getY(), entity.getZ(),
-                            new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())
-                    )
-            );
+            BACK_TPS.remove(playerUUID);
         }
+
+        BACK_TPS.add(new BackTps.BackTp(playerUUID,
+                        entity.getWorld().getDimensionEntry().getIdAsString()
+                                .replace("minecraft:", "")
+                                .replace("the_", ""),
+                        entity.getX(), entity.getY(), entity.getZ(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())
+                )
+        );
     }
 
     public static void removeOutdatedBackTps()

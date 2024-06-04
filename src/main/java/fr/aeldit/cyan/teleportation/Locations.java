@@ -85,21 +85,28 @@ public class Locations
         }
     }
 
-    private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
+    private List<Location> locations = null;
     private final TypeToken<List<Location>> locationsType = new TypeToken<>()
     {
     };
     private boolean isEditingFile = false;
-    public static Path LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(MODID +
-            "/locations.json"));
+    public static Path LOCATIONS_PATH =
+            FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/locations.json".formatted(MODID)));
 
     public boolean add(@NotNull Location location)
     {
+        if (locations == null)
+        {
+            locations = Collections.synchronizedList(new ArrayList<>());
+            locations.add(location);
+            write();
+            return true;
+        }
+
         if (locationNotFound(location.getName()))
         {
             locations.add(location);
             write();
-
             return true;
         }
         return false;
@@ -108,7 +115,7 @@ public class Locations
     /**
      * Removes the location named {@code locationName}
      *
-     * @return {@code true} on success |{@code false} on failure
+     * @return {@code true} on success | {@code false} on failure
      */
     public boolean remove(String locationName)
     {
@@ -116,6 +123,10 @@ public class Locations
         if (location != null)
         {
             locations.remove(location);
+            if (locations.isEmpty())
+            {
+                locations = null;
+            }
             write();
 
             return true;
@@ -128,6 +139,7 @@ public class Locations
         if (!locations.isEmpty())
         {
             locations.clear();
+            locations = null;
             write();
 
             return true;
@@ -155,22 +167,26 @@ public class Locations
 
     public boolean isEmpty()
     {
-        return locations.isEmpty();
+        return locations == null || locations.isEmpty();
     }
 
-    public List<Location> getLocations()
+    public @Nullable List<Location> getLocations()
     {
         return locations;
     }
 
-    public @NotNull CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
+    public CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
     {
-        ArrayList<String> locationsNames = new ArrayList<>(locations.size());
-        for (Location location : locations)
+        if (locations != null)
         {
-            locationsNames.add(location.getName());
+            ArrayList<String> locationsNames = new ArrayList<>(locations.size());
+            for (Location location : locations)
+            {
+                locationsNames.add(location.getName());
+            }
+            return CommandSource.suggestMatching(locationsNames, builder);
         }
-        return CommandSource.suggestMatching(locationsNames, builder);
+        return new CompletableFuture<>();
     }
 
     public boolean locationNotFound(String locationName)
@@ -180,11 +196,14 @@ public class Locations
 
     public @Nullable Location getLocation(String locationName)
     {
-        for (Location location : locations)
+        if (locations != null)
         {
-            if (location.getName().equals(locationName))
+            for (Location location : locations)
             {
-                return location;
+                if (location.getName().equals(locationName))
+                {
+                    return location;
+                }
             }
         }
         return null;
@@ -198,6 +217,10 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
+                if (locations == null)
+                {
+                    locations = Collections.synchronizedList(new ArrayList<>());
+                }
                 locations.addAll(gsonReader.fromJson(reader, locationsType));
                 reader.close();
             }
@@ -220,6 +243,10 @@ public class Locations
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
+                if (locations == null)
+                {
+                    locations = Collections.synchronizedList(new ArrayList<>());
+                }
                 locations.addAll(gsonReader.fromJson(reader, locationsType));
                 reader.close();
             }
@@ -236,7 +263,7 @@ public class Locations
 
         try
         {
-            if (locations.isEmpty())
+            if (locations == null || locations.isEmpty())
             {
                 if (Files.exists(LOCATIONS_PATH))
                 {

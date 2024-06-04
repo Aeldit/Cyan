@@ -21,7 +21,12 @@ public class CyanClientCore implements ClientModInitializer
     {
         CYAN_LIB_UTILS.init(MODID, CYAN_OPTIONS_STORAGE);
 
-        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
+            if (entity.isPlayer())
+            {
+                saveDeadPlayersPos(entity);
+            }
+        });
         ServerPlayConnectionEvents.JOIN.register(
                 (handler, sender, server) -> {
                     LOCATIONS.readClient(server.getSaveProperties().getLevelName());

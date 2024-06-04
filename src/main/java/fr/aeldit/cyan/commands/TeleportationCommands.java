@@ -91,28 +91,23 @@ public class TeleportationCommands
             if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BACK_TP.getValue(), "backTpDisabled"))
             {
                 BackTps.BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
+                MinecraftServer server = player.getServer();
 
-                if (backTp != null)
+                if (backTp != null && server != null)
                 {
-                    MinecraftServer server = player.getServer();
-
-                    if (server != null)
+                    switch (backTp.dimension())
                     {
-                        switch (backTp.dimension())
-                        {
-                            case "overworld" -> player.teleport(
-                                    server.getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0
-                            );
-                            case "nether" -> player.teleport(
-                                    server.getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0
-                            );
-                            case "end" -> player.teleport(
-                                    server.getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0
-                            );
-                        }
-
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.backTp");
+                        case "overworld" -> player.teleport(
+                                server.getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0
+                        );
+                        case "nether" -> player.teleport(
+                                server.getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0
+                        );
+                        case "end" -> player.teleport(
+                                server.getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0
+                        );
                     }
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.backTp");
                 }
                 else
                 {
@@ -138,8 +133,9 @@ public class TeleportationCommands
             {
                 int requiredXpLevel = 0;
                 BlockPos spawnPos = player.getSpawnPointPosition();
+                MinecraftServer server = player.getServer();
 
-                if (spawnPos != null)
+                if (spawnPos != null && server != null)
                 {
                     if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
                     {
@@ -155,30 +151,20 @@ public class TeleportationCommands
                             return 0;
                         }
                     }
+                    RegistryKey<World> spawnDim = player.getSpawnPointDimension();
 
-                    MinecraftServer server = player.getServer();
+                    player.teleport(
+                            server.getWorld(spawnDim),
+                            spawnPos.getX(),
+                            spawnPos.getY(),
+                            spawnPos.getZ(),
+                            player.getYaw(), player.getPitch()
+                    );
 
-                    if (server != null)
-                    {
-                        RegistryKey<World> spawnDim = player.getSpawnPointDimension();
+                    String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
+                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.%s".formatted(key));
 
-                        player.teleport(
-                                server.getWorld(spawnDim),
-                                spawnPos.getX(),
-                                spawnPos.getY(),
-                                spawnPos.getZ(),
-                                player.getYaw(), player.getPitch()
-                        );
-
-                        String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.%s".formatted(key));
-
-                        player.addExperienceLevels(-1 * requiredXpLevel);
-                    }
-                    else
-                    {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.bedNotFound");
-                    }
+                    player.addExperienceLevels(-1 * requiredXpLevel);
                 }
                 else
                 {
@@ -299,13 +285,17 @@ public class TeleportationCommands
                                     )
                             );
 
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
-                            Objects.requireNonNull(
-                                    context.getSource().getServer().getPlayerManager().getPlayer(playerName)),
-                            "cyan.msg.tpaRequest",
-                            false,
-                            player.getName().getString()
-                    );
+                    ServerPlayerEntity playerToSendMessage =
+                            context.getSource().getServer().getPlayerManager().getPlayer(playerName);
+                    if (playerToSendMessage != null)
+                    {
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(
+                                playerToSendMessage,
+                                "cyan.msg.tpaRequest",
+                                false,
+                                player.getName().getString()
+                        );
+                    }
                 }
                 else
                 {

@@ -24,7 +24,12 @@ public class CyanServerCore implements DedicatedServerModInitializer
         LOCATIONS.readServer();
         BACK_TPS.readServer();
 
-        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> saveDeadPlayersPos(entity));
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
+            if (entity.isPlayer())
+            {
+                saveDeadPlayersPos(entity);
+            }
+        });
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> removeOutdatedBackTps());
         ServerPlayConnectionEvents.DISCONNECT.register(
                 (handler, server) -> TPa.removePlayerOnQuit(handler.getPlayer().getName().getString())
