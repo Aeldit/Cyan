@@ -139,7 +139,7 @@ public class TeleportationCommands
                 {
                     if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
                     {
-                        requiredXpLevel = getRequiredXpLevelsToTp(player, spawnPos, BLOCKS_PER_XP_LEVEL_BED);
+                        requiredXpLevel = getRequiredXpLevelsToTp(player, spawnPos, BLOCKS_PER_XP_LEVEL_BED.getValue());
 
                         if (player.experienceLevel < requiredXpLevel)
                         {
@@ -325,7 +325,7 @@ public class TeleportationCommands
                         requestingPlayerName, player.getName().getString()))
                 {
                     int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos(),
-                            BLOCKS_PER_XP_LEVEL_TPA
+                            BLOCKS_PER_XP_LEVEL_TPA.getValue()
                     );
 
                     if (requestingPlayer.experienceLevel < requiredXpLevel)
