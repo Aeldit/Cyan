@@ -233,8 +233,9 @@ public class Locations
 
     public void readClient(String saveName)
     {
-        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of(MODID + "/" + saveName +
-                "/locations.json"));
+        LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(
+                Path.of("%s/%s/locations.json".formatted(MODID, saveName))
+        );
         checkOrCreateModDir(true);
 
         if (Files.exists(LOCATIONS_PATH))

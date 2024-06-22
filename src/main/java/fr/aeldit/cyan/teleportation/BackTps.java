@@ -130,6 +130,10 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
+                if (backTps == null)
+                {
+                    backTps = Collections.synchronizedList(new ArrayList<>());
+                }
                 backTps.addAll(gsonReader.fromJson(reader, backTpType));
                 reader.close();
             }
@@ -142,9 +146,9 @@ public class BackTps
 
     public void readClient(String saveName)
     {
-        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/%s/back.json".formatted(MODID,
-                saveName
-        )));
+        BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(
+                Path.of("%s/%s/back.json".formatted(MODID, saveName))
+        );
         checkOrCreateModDir(false);
 
         if (Files.exists(BACK_TP_PATH))
@@ -153,6 +157,10 @@ public class BackTps
             {
                 Gson gsonReader = new Gson();
                 Reader reader = Files.newBufferedReader(BACK_TP_PATH);
+                if (backTps == null)
+                {
+                    backTps = Collections.synchronizedList(new ArrayList<>());
+                }
                 backTps.addAll(gsonReader.fromJson(reader, backTpType));
                 reader.close();
             }
@@ -167,20 +175,27 @@ public class BackTps
     {
         checkOrCreateModDir(false);
 
-        try
+        if (backTps.isEmpty())
         {
-            if (backTps.isEmpty())
+            if (Files.exists(BACK_TP_PATH))
             {
-                if (Files.exists(BACK_TP_PATH))
+                try
                 {
                     Files.delete(BACK_TP_PATH);
-                    removeEmptyModDir(false);
                 }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+                removeEmptyModDir(false);
             }
-            else
+        }
+        else
+        {
+            // Checks if the file is already being written, and waits 1 second before writing if so
+            if (!isEditingFile)
             {
-                // Checks if the file is already being written, and waits 1 second before writing if so
-                if (!isEditingFile)
+                try
                 {
                     isEditingFile = true;
 
@@ -191,14 +206,21 @@ public class BackTps
 
                     isEditingFile = false;
                 }
-                else
+                catch (IOException e)
                 {
-                    long end = System.currentTimeMillis() + 1000; // 1 s
-                    boolean couldWrite = false;
+                    throw new RuntimeException(e);
+                }
+            }
+            else
+            {
+                long end = System.currentTimeMillis() + 1000; // 1 s
+                boolean couldWrite = false;
 
-                    while (System.currentTimeMillis() < end)
+                while (System.currentTimeMillis() < end)
+                {
+                    if (!isEditingFile)
                     {
-                        if (!isEditingFile)
+                        try
                         {
                             isEditingFile = true;
 
@@ -209,21 +231,21 @@ public class BackTps
 
                             couldWrite = true;
                             isEditingFile = false;
-                            break;
                         }
-                    }
-
-                    if (!couldWrite)
-                    {
-                        CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written" +
-                                " (for more than 1 sec)");
+                        catch (IOException e)
+                        {
+                            throw new RuntimeException(e);
+                        }
+                        break;
                     }
                 }
+
+                if (!couldWrite)
+                {
+                    CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written" +
+                            " (for more than 1 sec)");
+                }
             }
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
         }
     }
 }
