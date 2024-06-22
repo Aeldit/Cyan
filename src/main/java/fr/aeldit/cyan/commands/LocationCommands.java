@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -91,7 +92,7 @@ public class LocationCommands
      */
     public static int setLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -101,10 +102,13 @@ public class LocationCommands
                 {
                     String locationName = StringArgumentType.getString(context, "name");
 
-                    if (LOCATIONS.add(new Locations.Location(
-                                    locationName,
-                                    player.getWorld().getDimensionEntry().getIdAsString()
-                                            .replace("minecraft:", "").replace("the_", ""),
+                    if (LOCATIONS.add(new Locations.Location(locationName, player.getWorld()
+                                    //? if <1.20.6 {
+                                    /*.getDimensionKey().getValue().toString()
+                                     *///?} else {
+                                    .getDimensionEntry().getIdAsString()
+                                    //?}
+                                    .replace("minecraft:", "").replace("the_", ""),
                                     player.getX(), player.getY(), player.getZ(),
                                     player.getYaw(), player.getPitch()
                             )
@@ -133,7 +137,7 @@ public class LocationCommands
      */
     public static int removeLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -172,7 +176,7 @@ public class LocationCommands
      */
     public static int removeAllLocations(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -182,17 +186,11 @@ public class LocationCommands
                 {
                     if (LOCATIONS.removeAll())
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                player,
-                                "cyan.msg.removedAllLocations"
-                        );
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.removedAllLocations");
                     }
                     else
                     {
-                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(
-                                player,
-                                "cyan.error.noLocations"
-                        );
+                        CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.error.noLocations");
                     }
                 }
             }
@@ -207,7 +205,7 @@ public class LocationCommands
      */
     public static int renameLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -248,7 +246,7 @@ public class LocationCommands
      */
     public static int goToLocation(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -304,7 +302,7 @@ public class LocationCommands
      */
     public static int getLocationsList(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -312,7 +310,7 @@ public class LocationCommands
             {
                 if (!LOCATIONS.isEmpty())
                 {
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);
+                    player.sendMessage(Text.of("§6------------------------------------"), false);
                     CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyan.msg.listLocations", false);
                     List<Locations.Location> locations = LOCATIONS.getLocations();
 
@@ -329,8 +327,7 @@ public class LocationCommands
                             );
                         }
                     }
-
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessageActionBar(player, "cyanlib.msg.dashSeparation", false);
+                    player.sendMessage(Text.of("§6------------------------------------"), false);
                 }
                 else
                 {

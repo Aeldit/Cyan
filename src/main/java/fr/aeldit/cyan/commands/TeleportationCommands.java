@@ -84,7 +84,7 @@ public class TeleportationCommands
      */
     public static int back(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -108,6 +108,7 @@ public class TeleportationCommands
                         );
                     }
                     CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.backTp");
+                    BACK_TPS.remove(player.getUuidAsString());
                 }
                 else
                 {
@@ -125,7 +126,7 @@ public class TeleportationCommands
      */
     public static int bed(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -182,7 +183,7 @@ public class TeleportationCommands
      */
     public static int surface(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -247,7 +248,7 @@ public class TeleportationCommands
 
     public static int tpa(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -308,7 +309,7 @@ public class TeleportationCommands
 
     public static int acceptTpa(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 
@@ -366,7 +367,7 @@ public class TeleportationCommands
 
     public static int refuseTpa(@NotNull CommandContext<ServerCommandSource> context)
     {
-        if (CYAN_LIB_UTILS.isPlayer(context.getSource()))
+        if (context.getSource().getPlayer() != null)
         {
             ServerPlayerEntity player = context.getSource().getPlayer();
 

@@ -4,12 +4,10 @@ import fr.aeldit.cyan.teleportation.BackTps;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static fr.aeldit.cyan.CyanCore.BACK_TPS;
-import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 
 public class EventUtils
 {
@@ -30,13 +28,5 @@ public class EventUtils
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())
                 )
         );
-    }
-
-    public static void removeOutdatedBackTps()
-    {
-        if (Files.exists(BACK_TP_PATH))
-        {
-            BACK_TPS.removeAllOutdated();
-        }
     }
 }

@@ -41,8 +41,7 @@ public class MiscellaneousCommands
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
-
-        if (CYAN_LIB_UTILS.isPlayer(source))
+        if (source.getPlayer() != null)
         {
             ServerPlayerEntity player = source.getPlayer();
 
@@ -70,8 +69,7 @@ public class MiscellaneousCommands
     public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
-
-        if (CYAN_LIB_UTILS.isPlayer(source))
+        if (source.getPlayer() != null)
         {
             ServerPlayerEntity player = source.getPlayer();
 

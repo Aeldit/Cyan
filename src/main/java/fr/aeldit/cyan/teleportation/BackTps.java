@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fr.aeldit.cyan.config.CyanLibConfigImpl;
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class BackTps
     {
     }
 
-    private final List<BackTp> backTps = Collections.synchronizedList(new ArrayList<>());
+    private List<BackTp> backTps = null;
     private final TypeToken<List<BackTp>> backTpType = new TypeToken<>()
     {
     };
@@ -36,8 +37,16 @@ public class BackTps
     public static Path BACK_TP_PATH =
             FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/back.json".formatted(MODID)));
 
-    public void add(BackTp backTp)
+    public void add(@NotNull BackTp backTp)
     {
+        if (backTps == null)
+        {
+            backTps = Collections.synchronizedList(new ArrayList<>());
+        }
+        else
+        {
+            backTps.remove(backTp); // Makes sure there is only one backTp at a time per player
+        }
         backTps.add(backTp);
         write();
     }
@@ -45,7 +54,7 @@ public class BackTps
     public void remove(String playerUUID)
     {
         BackTp backTp = getBackTp(playerUUID);
-        if (backTp != null)
+        if (backTp != null && backTps != null)
         {
             backTps.remove(backTp);
             write();
@@ -54,44 +63,45 @@ public class BackTps
 
     public void removeAllOutdated()
     {
-        try
+        if (backTps != null)
         {
-            ArrayList<BackTp> tmp = new ArrayList<>();
-            int maxTime = CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue();
-
-            for (BackTp backTp : backTps)
+            try
             {
-                long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime()
-                                - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
-                        TimeUnit.MILLISECONDS
-                );
+                ArrayList<BackTp> tmp = new ArrayList<>();
+                int maxTime = CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue();
 
-                if (days >= maxTime)
+                for (BackTp backTp : backTps)
                 {
-                    tmp.add(backTp);
-                }
-            }
+                    long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime()
+                                    - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
+                            TimeUnit.MILLISECONDS
+                    );
 
-            backTps.removeAll(tmp);
-            write();
-        }
-        catch (ParseException e)
-        {
-            throw new RuntimeException(e);
+                    if (days >= maxTime)
+                    {
+                        tmp.add(backTp);
+                    }
+                }
+                backTps.removeAll(tmp);
+                write();
+            }
+            catch (ParseException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    /**
-     * @param playerUUID The UUID of the player
-     * @return The index of the object if it exists | {@code -1} otherwise
-     */
     public @Nullable BackTp getBackTp(String playerUUID)
     {
-        for (BackTp backTp : backTps)
+        if (backTps != null)
         {
-            if (backTp.playerUUID().equals(playerUUID))
+            for (BackTp backTp : backTps)
             {
-                return backTp;
+                if (backTp.playerUUID().equals(playerUUID))
+                {
+                    return backTp;
+                }
             }
         }
         return null;
@@ -99,7 +109,17 @@ public class BackTps
 
     public boolean backTpExists(String playerUUID)
     {
-        return getBackTp(playerUUID) != null;
+        if (backTps != null)
+        {
+            for (BackTp backTp : backTps)
+            {
+                if (backTp.playerUUID().equals(playerUUID))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void readServer()
@@ -123,7 +143,8 @@ public class BackTps
     public void readClient(String saveName)
     {
         BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/%s/back.json".formatted(MODID,
-                saveName)));
+                saveName
+        )));
         checkOrCreateModDir(false);
 
         if (Files.exists(BACK_TP_PATH))

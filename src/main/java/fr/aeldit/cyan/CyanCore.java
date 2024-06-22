@@ -24,14 +24,14 @@ public class CyanCore
     public static final String MODID = "cyan";
     public static final Logger CYAN_LOGGER = LoggerFactory.getLogger(MODID);
 
-    public static Locations LOCATIONS = new Locations();
-    public static BackTps BACK_TPS = new BackTps();
+    public static final Locations LOCATIONS = new Locations();
+    public static final BackTps BACK_TPS = new BackTps();
 
-    public static CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(MODID,
+    public static final CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(MODID,
             new CyanLibConfigImpl()
     );
-    public static CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(MODID);
-    public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
+    public static final CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(MODID);
+    public static final CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
 
     public static void checkOrCreateModDir(boolean locations)
     {

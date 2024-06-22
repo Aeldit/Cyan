@@ -112,15 +112,10 @@ public class Locations
         return false;
     }
 
-    /**
-     * Removes the location named {@code locationName}
-     *
-     * @return {@code true} on success | {@code false} on failure
-     */
     public boolean remove(String locationName)
     {
         Location location = getLocation(locationName);
-        if (location != null)
+        if (location != null && locations != null)
         {
             locations.remove(location);
             if (locations.isEmpty())
@@ -147,11 +142,6 @@ public class Locations
         return false;
     }
 
-    /**
-     * Renames the location named {@code locationName} to {@code newLocationName}
-     *
-     * @return {@code true} on success | {@code false} on failure
-     */
     public boolean rename(String locationName, String newLocationName)
     {
         Location location = getLocation(locationName);
@@ -191,7 +181,17 @@ public class Locations
 
     public boolean locationNotFound(String locationName)
     {
-        return getLocation(locationName) == null;
+        if (locations != null)
+        {
+            for (Location location : locations)
+            {
+                if (location.getName().equals(locationName))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public @Nullable Location getLocation(String locationName)
@@ -261,19 +261,26 @@ public class Locations
     {
         checkOrCreateModDir(true);
 
-        try
+        if (locations == null || locations.isEmpty())
         {
-            if (locations == null || locations.isEmpty())
+            if (Files.exists(LOCATIONS_PATH))
             {
-                if (Files.exists(LOCATIONS_PATH))
+                try
                 {
                     Files.delete(LOCATIONS_PATH);
-                    removeEmptyModDir(true);
                 }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+                removeEmptyModDir(true);
             }
-            else
+        }
+        else
+        {
+            if (!isEditingFile)
             {
-                if (!isEditingFile)
+                try
                 {
                     isEditingFile = true;
 
@@ -284,11 +291,18 @@ public class Locations
 
                     isEditingFile = false;
                 }
-                else
+                catch (IOException e)
                 {
-                    long end = System.currentTimeMillis() + 1000; // 1 s
-                    boolean couldWrite = false;
+                    throw new RuntimeException(e);
+                }
+            }
+            else
+            {
+                long end = System.currentTimeMillis() + 1000; // 1 s
+                boolean couldWrite = false;
 
+                try
+                {
                     while (System.currentTimeMillis() < end)
                     {
                         if (!isEditingFile)
@@ -305,18 +319,18 @@ public class Locations
                             break;
                         }
                     }
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
 
-                    if (!couldWrite)
-                    {
-                        CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
-                                "being written (for more than 1 sec)");
-                    }
+                if (!couldWrite)
+                {
+                    CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
+                            "being written (for more than 1 sec)");
                 }
             }
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
         }
     }
 }

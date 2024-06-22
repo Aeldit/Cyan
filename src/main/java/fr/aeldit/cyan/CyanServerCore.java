@@ -10,8 +10,10 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
+import java.nio.file.Files;
+
 import static fr.aeldit.cyan.CyanCore.*;
-import static fr.aeldit.cyan.util.EventUtils.removeOutdatedBackTps;
+import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 
 public class CyanServerCore implements DedicatedServerModInitializer
@@ -30,7 +32,14 @@ public class CyanServerCore implements DedicatedServerModInitializer
                 saveDeadPlayersPos(entity);
             }
         });
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> removeOutdatedBackTps());
+
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            if (Files.exists(BACK_TP_PATH))
+            {
+                BACK_TPS.removeAllOutdated();
+            }
+        });
+
         ServerPlayConnectionEvents.DISCONNECT.register(
                 (handler, server) -> TPa.removePlayerOnQuit(handler.getPlayer().getName().getString())
         );
