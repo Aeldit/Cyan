@@ -341,7 +341,7 @@ public class TeleportationCommands
                     {
                         requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
                         requestingPlayer.teleport(player
-                                        //? if <1.20.6 {
+                                        //? if <1.20.2 {
                                         /*.getWorld(),
                                 *///?} else {
                                 .getServerWorld(),
