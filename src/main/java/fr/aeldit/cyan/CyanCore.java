@@ -27,11 +27,9 @@ public class CyanCore
     public static final Locations LOCATIONS = new Locations();
     public static final BackTps BACK_TPS = new BackTps();
 
-    public static final CyanLibOptionsStorage CYAN_OPTIONS_STORAGE = new CyanLibOptionsStorage(MODID,
-            new CyanLibConfigImpl()
-    );
-    public static final CyanLibLanguageUtils CYAN_LANGUAGE_UTILS = new CyanLibLanguageUtils(MODID);
-    public static final CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, CYAN_OPTIONS_STORAGE, CYAN_LANGUAGE_UTILS);
+    public static CyanLibOptionsStorage CYAN_OPTS_STORAGE = new CyanLibOptionsStorage(MODID, new CyanLibConfigImpl());
+    public static CyanLibLanguageUtils CYAN_LANG_UTILS = new CyanLibLanguageUtils(MODID);
+    public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, CYAN_OPTS_STORAGE, CYAN_LANG_UTILS);
 
     public static void checkOrCreateModDir(boolean locations)
     {

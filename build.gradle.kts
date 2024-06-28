@@ -19,7 +19,7 @@ object Constants {
     const val ARCHIVES_BASE_NAME: String = "cyan"
     const val MOD_VERSION: String = "0.10.3"
     const val LOADER_VERSION: String = "0.15.11"
-    const val CYANLIB_VERSION: String = "0.4.14"
+    const val CYANLIB_VERSION: String = "0.4.15"
 }
 
 class ModData {
@@ -53,12 +53,14 @@ dependencies {
         val module = fabricApi.module(name, mod.fabricVersion)
         modImplementation(module)
     }
+    // ModMenu dependencies
+    addFabricModule("fabric-resource-loader-v0")
+    addFabricModule("fabric-key-binding-api-v1")
+
     addFabricModule("fabric-lifecycle-events-v1")
     addFabricModule("fabric-entity-events-v1")
     addFabricModule("fabric-networking-api-v1")
     addFabricModule("fabric-command-api-v2")
-    addFabricModule("fabric-resource-loader-v0")
-    addFabricModule("fabric-key-binding-api-v1")
     addFabricModule("fabric-screen-api-v1")
 
     // ModMenu
@@ -67,7 +69,7 @@ dependencies {
     // CyanLib
     val debug = false
     if (debug) {
-        modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-0.4.12-3+1.21.jar")))
+        modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-0.4.15-beta2+1.21.jar")))
     } else {
         modImplementation("maven.modrinth:cyanlib:${mod.cyanlibVersion}")
         include("maven.modrinth:cyanlib:${mod.cyanlibVersion}")

@@ -20,10 +20,13 @@ public class EventUtils
             BACK_TPS.remove(playerUUID);
         }
 
-        BACK_TPS.add(new BackTps.BackTp(playerUUID,
-                        entity.getWorld().getDimensionEntry().getIdAsString()
-                                .replace("minecraft:", "")
-                                .replace("the_", ""),
+        BACK_TPS.add(new BackTps.BackTp(playerUUID, entity.getWorld()
+                        //? if <1.20.6 {
+                        /*.getDimensionKey().getValue().toString()
+                         *///?} else {
+                        .getDimensionEntry().getIdAsString()
+                        //?}
+                        .replace("minecraft:", "").replace("the_", ""),
                         entity.getX(), entity.getY(), entity.getZ(),
                         new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime())
                 )

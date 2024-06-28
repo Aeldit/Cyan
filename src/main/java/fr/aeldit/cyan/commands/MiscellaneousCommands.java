@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import static fr.aeldit.cyan.CyanCore.CYAN_LANGUAGE_UTILS;
+import static fr.aeldit.cyan.CyanCore.CYAN_LANG_UTILS;
 import static fr.aeldit.cyan.CyanCore.CYAN_LIB_UTILS;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
 
@@ -54,7 +54,7 @@ public class MiscellaneousCommands
                                     .formatted(DISTANCE_TO_ENTITIES_KGI.getValue() * 16)
                     );
 
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(player, "cyan.msg.kgi");
+                    CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.kgi");
                 }
             }
         }
@@ -83,7 +83,7 @@ public class MiscellaneousCommands
                             source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16)
                     );
 
-                    CYAN_LANGUAGE_UTILS.sendPlayerMessage(
+                    CYAN_LANG_UTILS.sendPlayerMessage(
                             player,
                             "cyan.msg.kgir",
                             Formatting.GOLD + Integer.toString(arg)

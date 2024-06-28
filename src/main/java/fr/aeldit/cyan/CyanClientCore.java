@@ -21,7 +21,7 @@ public class CyanClientCore implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
-        CYAN_LIB_UTILS.init(MODID, CYAN_OPTIONS_STORAGE);
+        CYAN_LIB_UTILS.init(MODID, CYAN_OPTS_STORAGE);
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity.isPlayer())
@@ -49,9 +49,9 @@ public class CyanClientCore implements ClientModInitializer
         // Register all the commands
         CommandRegistrationCallback.EVENT.register(
                 (dispatcher, dedicated, environment) -> {
+                    new CyanLibConfigCommands(MODID, CYAN_LIB_UTILS).register(dispatcher);
                     TeleportationCommands.register(dispatcher);
                     MiscellaneousCommands.register(dispatcher);
-                    new CyanLibConfigCommands(MODID, CYAN_LIB_UTILS).register(dispatcher);
                     LocationCommands.register(dispatcher);
                 }
         );

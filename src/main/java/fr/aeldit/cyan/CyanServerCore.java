@@ -21,7 +21,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
     @Override
     public void onInitializeServer()
     {
-        CYAN_LIB_UTILS.init(MODID, CYAN_OPTIONS_STORAGE);
+        CYAN_LIB_UTILS.init(MODID, CYAN_OPTS_STORAGE);
 
         LOCATIONS.readServer();
         BACK_TPS.readServer();
@@ -47,9 +47,9 @@ public class CyanServerCore implements DedicatedServerModInitializer
         // Register all the commands
         CommandRegistrationCallback.EVENT.register(
                 (dispatcher, dedicated, environment) -> {
+                    new CyanLibConfigCommands(MODID, CYAN_LIB_UTILS).register(dispatcher);
                     TeleportationCommands.register(dispatcher);
                     MiscellaneousCommands.register(dispatcher);
-                    new CyanLibConfigCommands(MODID, CYAN_LIB_UTILS).register(dispatcher);
                     LocationCommands.register(dispatcher);
                 }
         );
