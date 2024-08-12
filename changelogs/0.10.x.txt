@@ -19,3 +19,6 @@
 
 0.10.1 :
     Use CyanLib 0.4.7 to fix the config not being written when modified from the chat
+
+0.10.3 :
+    Fix multiple translation errors with the cyanlib
