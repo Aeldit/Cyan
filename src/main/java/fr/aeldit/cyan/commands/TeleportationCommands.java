@@ -21,8 +21,6 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
 import static fr.aeldit.cyan.teleportation.TPa.addPlayerToQueue;
@@ -34,46 +32,46 @@ public class TeleportationCommands
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register(CommandManager.literal("back")
-                .executes(TeleportationCommands::back)
+                                    .executes(TeleportationCommands::back)
         );
 
         dispatcher.register(CommandManager.literal("bed")
-                .executes(TeleportationCommands::bed)
+                                    .executes(TeleportationCommands::bed)
         );
         dispatcher.register(CommandManager.literal("b")
-                .executes(TeleportationCommands::bed)
+                                    .executes(TeleportationCommands::bed)
         );
 
         dispatcher.register(CommandManager.literal("surface")
-                .executes(TeleportationCommands::surface)
+                                    .executes(TeleportationCommands::surface)
         );
         dispatcher.register(CommandManager.literal("s")
-                .executes(TeleportationCommands::surface)
+                                    .executes(TeleportationCommands::surface)
         );
 
         dispatcher.register(CommandManager.literal("tpa")
-                .then(CommandManager.argument("player_name", StringArgumentType.string())
-                        .suggests(
-                                (context, builder) -> ArgumentSuggestion.getOnlinePlayersName(
-                                        builder, context.getSource()))
-                        .executes(TeleportationCommands::tpa)
-                )
+                                    .then(CommandManager.argument("player_name", StringArgumentType.string())
+                                                  .suggests(
+                                                          (context, builder) -> ArgumentSuggestion.getOnlinePlayersName(
+                                                                  builder, context.getSource()))
+                                                  .executes(TeleportationCommands::tpa)
+                                    )
         );
         dispatcher.register(CommandManager.literal("tpaAccept")
-                .then(CommandManager.argument("player_name", StringArgumentType.string())
-                        .suggests(
-                                (context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(
-                                        builder, context.getSource()))
-                        .executes(TeleportationCommands::acceptTpa)
-                )
+                                    .then(CommandManager.argument("player_name", StringArgumentType.string())
+                                                  .suggests(
+                                                          (context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(
+                                                                  builder, context.getSource()))
+                                                  .executes(TeleportationCommands::acceptTpa)
+                                    )
         );
         dispatcher.register(CommandManager.literal("tpaRefuse")
-                .then(CommandManager.argument("player_name", StringArgumentType.string())
-                        .suggests(
-                                (context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(
-                                        builder, context.getSource()))
-                        .executes(TeleportationCommands::refuseTpa)
-                )
+                                    .then(CommandManager.argument("player_name", StringArgumentType.string())
+                                                  .suggests(
+                                                          (context, builder) -> ArgumentSuggestion.getRequestingPlayersNames(
+                                                                  builder, context.getSource()))
+                                                  .executes(TeleportationCommands::refuseTpa)
+                                    )
         );
     }
 
@@ -266,35 +264,35 @@ public class TeleportationCommands
                             player.getName().getString()
                     );
 
-                    Objects.requireNonNull(context.getSource().getServer().getPlayerManager().getPlayer(playerName))
-                            .sendMessage(Text.literal(Formatting.GREEN + "[Accept]")
-                                    .setStyle(Style.EMPTY.withClickEvent(
-                                            new ClickEvent(
-                                                    ClickEvent.Action.RUN_COMMAND,
-                                                    "/tpaAccept %s".formatted(
-                                                            player.getName().getString())
-                                            )))
-                                    .append(Text.literal(Formatting.RED + "    [Refuse]")
-                                            .setStyle(Style.EMPTY.withClickEvent(
-                                                    new ClickEvent(
-                                                            ClickEvent.Action.RUN_COMMAND,
-                                                            "/tpaRefuse %s".formatted(
-                                                                    player.getName()
-                                                                            .getString())
-                                                    ))
-                                            )
-                                    )
-                            );
-
                     ServerPlayerEntity playerToSendMessage =
                             context.getSource().getServer().getPlayerManager().getPlayer(playerName);
                     if (playerToSendMessage != null)
                     {
                         CYAN_LANG_UTILS.sendPlayerMessageActionBar(
                                 playerToSendMessage,
-                                "cyan.msg.tpaRequest",
+                                "cyan.msg.tpaRequested",
                                 false,
                                 player.getName().getString()
+                        );
+
+                        playerToSendMessage.sendMessage(
+                                Text.literal(Formatting.GREEN + "[Accept]")
+                                        .setStyle(Style.EMPTY.withClickEvent(
+                                                new ClickEvent(
+                                                        ClickEvent.Action.RUN_COMMAND,
+                                                        "/tpaAccept %s".formatted(
+                                                                player.getName().getString())
+                                                )))
+                                        .append(Text.literal(Formatting.RED + "    [Refuse]")
+                                                        .setStyle(Style.EMPTY.withClickEvent(
+                                                                new ClickEvent(
+                                                                        ClickEvent.Action.RUN_COMMAND,
+                                                                        "/tpaRefuse %s".formatted(
+                                                                                player.getName()
+                                                                                        .getString())
+                                                                ))
+                                                        )
+                                        )
                         );
                     }
                 }
@@ -322,45 +320,51 @@ public class TeleportationCommands
                 // If the player is online
                 // &&
                 // If the player has requested a teleportation to the player running the command
-                if (requestingPlayer != null && TPa.isPlayerRequesting(
-                        requestingPlayerName, player.getName().getString()))
+                if (requestingPlayer != null
+                        && TPa.isPlayerRequesting(requestingPlayerName, player.getName().getString())
+                )
                 {
-                    int requiredXpLevel = getRequiredXpLevelsToTp(requestingPlayer, player.getBlockPos(),
-                            BLOCKS_PER_XP_LEVEL_TPA.getValue()
+                    int requiredXpLevel = 0;
+
+                    if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
+                    {
+                        requiredXpLevel = getRequiredXpLevelsToTp(
+                                requestingPlayer, player.getBlockPos(),
+                                BLOCKS_PER_XP_LEVEL_TPA.getValue()
+                        );
+
+                        if (requestingPlayer.experienceLevel < requiredXpLevel)
+                        {
+                            CYAN_LANG_UTILS.sendPlayerMessage(
+                                    player,
+                                    "cyan.error.notEnoughXpTpa",
+                                    requestingPlayerName
+                            );
+                            return 0;
+                        }
+                    }
+
+                    requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
+                    requestingPlayer.teleport(player
+                                                      //? if <1.20.2 {
+                                                      /*.getWorld(),
+                                                       *///?} else {
+                                                      .getServerWorld(),
+                                              //?}
+                                              player.getX(), player.getY(), player.getZ(), 0, 0
                     );
+                    removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
-                    if (requestingPlayer.experienceLevel < requiredXpLevel)
-                    {
-                        CYAN_LANG_UTILS.sendPlayerMessage(
-                                requestingPlayer,
-                                "cyan.error.notEnoughXpTpa",
-                                player.getName().getString()
-                        );
-                    }
-                    else
-                    {
-                        requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
-                        requestingPlayer.teleport(player
-                                        //? if <1.20.2 {
-                                        /*.getWorld(),
-                                *///?} else {
-                                .getServerWorld(),
-                                 //?}
-                                player.getX(), player.getY(), player.getZ(), 0, 0
-                        );
-                        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
-
-                        CYAN_LANG_UTILS.sendPlayerMessage(
-                                requestingPlayer,
-                                "cyan.msg.tpaSuccessful",
-                                player.getName().getString()
-                        );
-                        CYAN_LANG_UTILS.sendPlayerMessage(
-                                player,
-                                "cyan.msg.tpaAcceptedSelf",
-                                requestingPlayer.getName().getString()
-                        );
-                    }
+                    CYAN_LANG_UTILS.sendPlayerMessage(
+                            requestingPlayer,
+                            "cyan.msg.tpaSuccessful",
+                            player.getName().getString()
+                    );
+                    CYAN_LANG_UTILS.sendPlayerMessage(
+                            player,
+                            "cyan.msg.tpaAcceptedSelf",
+                            requestingPlayer.getName().getString()
+                    );
                 }
                 else
                 {

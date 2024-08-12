@@ -30,13 +30,13 @@ public class CyanLibConfigImpl implements ICyanLibConfig
 
     public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption("useXpToTeleport", true);
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_BED = new IntegerOption("blocksPerXpLevelBed", 200,
-            RULES.POSITIVE_VALUE
+                                                                                  RULES.POSITIVE_VALUE
     );
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_SURFACE = new IntegerOption("blocksPerXpLevelSurface", 50,
-            RULES.POSITIVE_VALUE
+                                                                                      RULES.POSITIVE_VALUE
     );
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_TPA = new IntegerOption("blocksPerXpLevelTpa", 200,
-            RULES.POSITIVE_VALUE
+                                                                                  RULES.POSITIVE_VALUE
     );
 
     @Override
@@ -51,7 +51,8 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("cyan.error.locationAlreadyExists", "§cA location with this name already exists"),
                 entry("cyan.error.locationsDisabled", "§cThe locations commands are disabled"),
                 entry("cyan.error.noLocations", "§cThere is no saved locations"),
-                entry("cyan.error.locationNotFound",
+                entry(
+                        "cyan.error.locationNotFound",
                         "§cThe location %s §cdoesn't exist (check if you spelled it correctly)"
                 ),
                 entry("cyan.error.noLastPos", "§cYour last death location was not saved"),
@@ -59,6 +60,8 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("cyan.error.playerNotFound", "§cPlayer not found. The player must be online"),
                 entry("cyan.error.noPropertiesFiles", "§cNo properties files were found"),
                 entry("cyan.error.notEnoughXp", "§cYou don't have enough XP (%s §clevels are required)"),
+                entry("cyan.error.notEnoughXpTpa", "You don't have enough XP to be teleported to %s"),
+                entry("cyan.error.tpaAlreadyRequested", "§cYou already send a request to this player"),
 
                 // MESSAGES
                 entry("cyan.msg.bed", "§3You have been teleported to your bed"),
@@ -78,14 +81,11 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("cyan.msg.tpaRequestSend", "Your tpa request have been send"),
                 entry("cyan.msg.listRequestingPlayers", "The players that requested to teleport to you are :"),
                 entry("cyan.msg.noRequestingPlayers", "No player requested to teleport to you"),
-                entry("cyan.msg.notEnoughXpTpa", "You don't have enough XP to be teleported to %s"),
-                entry("cyan.msg.tpaRequest", "§6%s§r has requested to teleport to you.\nEnter '§a/tpaAccept " +
-                        "<playerName>' §rto accept or '§a/tpaRefuse <playerName>' §rto refuse"),
                 entry("cyan.msg.tpaSuccessful", "§6%s§r accepted your tpa request"),
                 entry("cyan.msg.tpaRefused", "§6%s§c refused your teleportation request"),
-                entry("cyan.msg.tpaAlreadyRequested", "§cYou already send a request to this player"),
                 entry("cyan.msg.tpaAcceptedSelf", "You accepted §6%s§r's tpa request"),
                 entry("cyan.msg.tpaRefusedSelf", "You refuse §6%s§r's tpa request"),
+                entry("cyan.msg.tpaRequested", "%s§r wants to teleport to you"),
 
                 // SETS
                 entry("cyan.msg.set.allowBed", "§3Toggled §d/bed §3command %s"),
@@ -97,17 +97,21 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("cyan.msg.set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s"),
                 entry("cyan.msg.set.minOpLvlKgi", "§3The minimum OP level to execute §d/kgi §3is now %s"),
                 entry("cyan.msg.set.minOpLvlEditLocation", "§3The minimum OP level to edit locations is now %s"),
-                entry("cyan.msg.set.daysToRemoveBackTp",
+                entry(
+                        "cyan.msg.set.daysToRemoveBackTp",
                         "§3The number of days to keep the last death locations is now %s"
                 ),
                 entry("cyan.msg.set.useXpToTeleport", "§3Toggled the use of XP to teleport %s"),
-                entry("cyan.msg.set.blocksPerXpLevelBed",
+                entry(
+                        "cyan.msg.set.blocksPerXpLevelBed",
                         "§3The number of blocks to consume 1 XP level for /bed is now %s"
                 ),
-                entry("cyan.msg.set.blocksPerXpLevelSurface",
+                entry(
+                        "cyan.msg.set.blocksPerXpLevelSurface",
                         "§3The number of blocks to consume 1 XP level for /surface is now %s"
                 ),
-                entry("cyan.msg.set.blocksPerXpLevelTpa",
+                entry(
+                        "cyan.msg.set.blocksPerXpLevelTpa",
                         "§3The number of blocks to consume 1 XP level for /tpa is now %s"
                 ),
 
@@ -116,52 +120,66 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("cyan.msg.headerDescOptions", "§6Cyan - DESCRIPTION (options) :\n"),
 
                 // CONFIG
-                entry("cyan.msg.getDesc.allowBed",
+                entry(
+                        "cyan.msg.getDesc.allowBed",
                         "§3The §eallowBed §3option toggles the use of the §d/bed §3command"
                 ),
-                entry("cyan.msg.getDesc.allowKgi",
+                entry(
+                        "cyan.msg.getDesc.allowKgi",
                         "§3The §eallowKgi §3option toggles the use of the §d/kgi §3command"
                 ),
-                entry("cyan.msg.getDesc.allowSurface",
+                entry(
+                        "cyan.msg.getDesc.allowSurface",
                         "§3The §eallowSurface §3option toggles the use of the §d/surface §3command"
                 ),
-                entry("cyan.msg.getDesc.allowLocations",
+                entry(
+                        "cyan.msg.getDesc.allowLocations",
                         "§3The §eallowLocations §3option toggles the use of the §dlocation §3commands"
                 ),
-                entry("cyan.msg.getDesc.allowBackTp",
+                entry(
+                        "cyan.msg.getDesc.allowBackTp",
                         "§3The §eallowBackTp §3option toggles the use of the §d/back §3command"
                 ),
-                entry("cyan.msg.getDesc.allowTpa",
+                entry(
+                        "cyan.msg.getDesc.allowTpa",
                         "§3The §eallowTpa §3option toggles the use of the §d/tpa §3command"
                 ),
-                entry("cyan.msg.getDesc.distanceToEntitiesKgi",
+                entry(
+                        "cyan.msg.getDesc.distanceToEntitiesKgi",
                         "§3The §edistanceToEntitiesKgi §3option defines distance (in chunks) in which the ground " +
                                 "items will be removed"
                 ),
-                entry("cyan.msg.getDesc.minOpLvlKgi",
+                entry(
+                        "cyan.msg.getDesc.minOpLvlKgi",
                         "§3The §eminOpLvlKgi §3option defines the required OP level to use the §d/kgi §3command"
                 ),
-                entry("cyan.msg.getDesc.minOpLvlEditLocation",
+                entry(
+                        "cyan.msg.getDesc.minOpLvlEditLocation",
                         "§3The §eminOpLvlEditLocation §3determines the " +
                                 "minimum OP level required to edit locations"
                 ),
-                entry("cyan.msg.getDesc.daysToRemoveBackTp",
+                entry(
+                        "cyan.msg.getDesc.daysToRemoveBackTp",
                         "§3The §edaysToRemoveBackTp §3option defines the " +
                                 "number of days the last death location of a player is kept)"
                 ),
-                entry("cyan.msg.getDesc.useXpToTeleport",
+                entry(
+                        "cyan.msg.getDesc.useXpToTeleport",
                         "§3The §euseXpToTeleport §3option defines whether XP is " +
                                 "required to use teleportation commands such as /bed, /surface or /tpa"
                 ),
-                entry("cyan.msg.getDesc.blocksPerXpLevelBed",
+                entry(
+                        "cyan.msg.getDesc.blocksPerXpLevelBed",
                         "§3The §eblocksPerXpLevelTpa §3option defines the how many blocks will consume 1 level when " +
                                 "using the /bed command (iff the §euseXpToTeleport §3option is set to true)"
                 ),
-                entry("cyan.msg.getDesc.blocksPerXpLevelSurface",
+                entry(
+                        "cyan.msg.getDesc.blocksPerXpLevelSurface",
                         "§3The §eblocksPerXpLevelTpa §3option defines the how many blocks will consume 1 level when " +
                                 "using the /surface command (iff the §euseXpToTeleport §3option is set to true)"
                 ),
-                entry("cyan.msg.getDesc.blocksPerXpLevelTpa",
+                entry(
+                        "cyan.msg.getDesc.blocksPerXpLevelTpa",
                         "§3The §eblocksPerXpLevelTpa §3option defines the how many blocks will consume 1 level when " +
                                 "using the /tpa command (iff the §euseXpToTeleport §3options is set to true)"
                 ),
