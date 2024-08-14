@@ -24,63 +24,67 @@ public class LocationCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
-        dispatcher.register(CommandManager.literal("set-location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .executes(LocationCommands::setLocation)
-                                    )
+        dispatcher.register(
+                CommandManager.literal("set-location")
+                        .then(CommandManager.argument("name", StringArgumentType.string())
+                                      .executes(LocationCommands::setLocation)
+                        )
         );
-        dispatcher.register(CommandManager.literal("sl")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .executes(LocationCommands::setLocation)
-                                    )
-        );
-
-        dispatcher.register(CommandManager.literal("remove-location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::removeLocation)
-                                    )
-        );
-        dispatcher.register(CommandManager.literal("rl")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::removeLocation)
-                                    )
-        );
-        dispatcher.register(CommandManager.literal("remove-all-locations")
-                                    .executes(LocationCommands::removeAllLocations)
+        dispatcher.register(
+                CommandManager.literal("sl")
+                        .then(CommandManager.argument("name", StringArgumentType.string())
+                                      .executes(LocationCommands::setLocation)
+                        )
         );
 
-        dispatcher.register(CommandManager.literal("rename-location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .then(CommandManager.argument("new_name", StringArgumentType.string())
-                                                                .executes(LocationCommands::renameLocation)
-                                                  )
-                                    )
+        dispatcher.register(
+                CommandManager.literal("remove-location")
+                        .then(CommandManager.argument("name", StringArgumentType.string())
+                                      .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                                      .executes(LocationCommands::removeLocation)
+                        )
+        );
+        dispatcher.register(
+                CommandManager.literal("rl")
+                        .then(CommandManager.argument("name", StringArgumentType.string())
+                                      .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                                      .executes(LocationCommands::removeLocation)
+                        )
+        );
+        dispatcher.register(
+                CommandManager.literal("remove-all-locations")
+                        .executes(LocationCommands::removeAllLocations)
         );
 
-        dispatcher.register(CommandManager.literal("location")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::goToLocation)
-                                    )
-                                    .executes(LocationCommands::getLocationsList)
-        );
-        dispatcher.register(CommandManager.literal("l")
-                                    .then(CommandManager.argument("name", StringArgumentType.string())
-                                                  .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
-                                                  .executes(LocationCommands::goToLocation)
-                                    )
-                                    .executes(LocationCommands::getLocationsList)
+        dispatcher.register(
+                CommandManager.literal("rename-location").then(
+                        CommandManager.argument("name", StringArgumentType.string())
+                                .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                                .then(CommandManager.argument("new_name", StringArgumentType.string())
+                                              .executes(LocationCommands::renameLocation)
+                                )
+                )
         );
 
-        dispatcher.register(CommandManager.literal("get-locations")
-                                    .executes(LocationCommands::getLocationsList)
+        dispatcher.register(
+                CommandManager.literal("location")
+                        .then(CommandManager.argument("name", StringArgumentType.string())
+                                      .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                                      .executes(LocationCommands::goToLocation)
+                        )
+                        .executes(LocationCommands::getLocationsList)
         );
-        dispatcher.register(CommandManager.literal("gl")
-                                    .executes(LocationCommands::getLocationsList)
+        dispatcher.register(
+                CommandManager.literal("l")
+                        .then(CommandManager.argument("name", StringArgumentType.string())
+                                      .suggests((context, builder) -> LOCATIONS.getLocationsNames(builder))
+                                      .executes(LocationCommands::goToLocation)
+                        )
+                        .executes(LocationCommands::getLocationsList)
         );
+
+        dispatcher.register(CommandManager.literal("get-locations").executes(LocationCommands::getLocationsList));
+        dispatcher.register(CommandManager.literal("gl").executes(LocationCommands::getLocationsList));
     }
 
     /**

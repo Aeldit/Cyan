@@ -19,17 +19,19 @@ public class MiscellaneousCommands
 {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
-        dispatcher.register(CommandManager.literal("kill-ground-items")
-                .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
-                        .executes(MiscellaneousCommands::kgir)
-                )
-                .executes(MiscellaneousCommands::kgi)
+        dispatcher.register(
+                CommandManager.literal("kill-ground-items")
+                        .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
+                                      .executes(MiscellaneousCommands::kgir)
+                        )
+                        .executes(MiscellaneousCommands::kgi)
         );
-        dispatcher.register(CommandManager.literal("kgi")
-                .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
-                        .executes(MiscellaneousCommands::kgir)
-                )
-                .executes(MiscellaneousCommands::kgi)
+        dispatcher.register(
+                CommandManager.literal("kgi")
+                        .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
+                                      .executes(MiscellaneousCommands::kgir)
+                        )
+                        .executes(MiscellaneousCommands::kgi)
         );
     }
 
@@ -41,23 +43,21 @@ public class MiscellaneousCommands
     public static int kgi(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
-        if (source.getPlayer() != null)
+        ServerPlayerEntity player = source.getPlayer();
+        if (player == null
+                || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue())
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_KGI.getValue(), "kgiDisabled")
+        )
         {
-            ServerPlayerEntity player = source.getPlayer();
-
-            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_KGI.getValue(), "kgiDisabled"))
-            {
-                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
-                {
-                    source.getServer().getCommandManager().executeWithPrefix(
-                            source, "/kill @e[type=minecraft:item,distance=..%d]"
-                                    .formatted(DISTANCE_TO_ENTITIES_KGI.getValue() * 16)
-                    );
-
-                    CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.kgi");
-                }
-            }
+            return 0;
         }
+
+        source.getServer().getCommandManager().executeWithPrefix(
+                source, "/kill @e[type=minecraft:item,distance=..%d]"
+                        .formatted(DISTANCE_TO_ENTITIES_KGI.getValue() * 16)
+        );
+
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.kgi");
         return Command.SINGLE_SUCCESS;
     }
 
@@ -69,28 +69,22 @@ public class MiscellaneousCommands
     public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
-        if (source.getPlayer() != null)
+        ServerPlayerEntity player = source.getPlayer();
+        if (player == null
+                || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue())
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_KGI.getValue(), "kgiDisabled")
+        )
         {
-            ServerPlayerEntity player = source.getPlayer();
-
-            if (CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_KGI.getValue(), "kgiDisabled"))
-            {
-                if (CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_KGI.getValue()))
-                {
-                    int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
-
-                    source.getServer().getCommandManager().executeWithPrefix(
-                            source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16)
-                    );
-
-                    CYAN_LANG_UTILS.sendPlayerMessage(
-                            player,
-                            "cyan.msg.kgir",
-                            Formatting.GOLD + Integer.toString(arg)
-                    );
-                }
-            }
+            return 0;
         }
+
+        int arg = IntegerArgumentType.getInteger(context, "radius_in_chunks");
+
+        source.getServer().getCommandManager().executeWithPrefix(
+                source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16)
+        );
+
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.kgir", Formatting.GOLD + Integer.toString(arg));
         return Command.SINGLE_SUCCESS;
     }
 }
