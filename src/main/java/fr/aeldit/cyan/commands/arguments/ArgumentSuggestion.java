@@ -9,6 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class ArgumentSuggestion
@@ -18,6 +19,12 @@ public final class ArgumentSuggestion
     )
     {
         ArrayList<String> players = new ArrayList<>(source.getServer().getPlayerManager().getPlayerList().size() - 1);
+
+        if (source.getPlayer() == null)
+        {
+            return new CompletableFuture<>();
+        }
+
         String playerName = source.getPlayer().getName().getString();
 
         for (ServerPlayerEntity player : source.getServer().getPlayerManager().getPlayerList())
@@ -34,6 +41,11 @@ public final class ArgumentSuggestion
             @NotNull SuggestionsBuilder builder, @NotNull ServerCommandSource source
     )
     {
-        return CommandSource.suggestMatching(TPa.getRequestingPlayers(source.getName()), builder);
+        List<String> requestingPlayers = TPa.getRequestingPlayers(source.getName());
+        if (requestingPlayers == null)
+        {
+            return new CompletableFuture<>();
+        }
+        return CommandSource.suggestMatching(requestingPlayers, builder);
     }
 }
