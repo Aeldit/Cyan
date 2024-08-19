@@ -103,7 +103,7 @@ public class Locations
             return true;
         }
 
-        if (locationNotFound(location.getName()))
+        if (getLocation(location.getName()) == null)
         {
             locations.add(location);
             write();
@@ -177,21 +177,6 @@ public class Locations
             return CommandSource.suggestMatching(locationsNames, builder);
         }
         return new CompletableFuture<>();
-    }
-
-    public boolean locationNotFound(String locationName)
-    {
-        if (locations != null)
-        {
-            for (Location location : locations)
-            {
-                if (location.getName().equals(locationName))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     public @Nullable Location getLocation(String locationName)
@@ -329,7 +314,7 @@ public class Locations
                 if (!couldWrite)
                 {
                     CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
-                            "being written (for more than 1 sec)");
+                                             "being written (for more than 1 sec)");
                 }
             }
         }
