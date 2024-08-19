@@ -21,8 +21,6 @@ public class CyanServerCore implements DedicatedServerModInitializer
     @Override
     public void onInitializeServer()
     {
-        CYAN_LIB_UTILS.init(MODID, CYAN_OPTS_STORAGE);
-
         LOCATIONS.readServer();
         BACK_TPS.readServer();
 

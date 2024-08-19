@@ -5,7 +5,6 @@ import fr.aeldit.cyan.teleportation.BackTps;
 import fr.aeldit.cyan.teleportation.Locations;
 import fr.aeldit.cyanlib.lib.CyanLib;
 import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
-import fr.aeldit.cyanlib.lib.config.CyanLibOptionsStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +26,8 @@ public class CyanCore
     public static final Locations LOCATIONS = new Locations();
     public static final BackTps BACK_TPS = new BackTps();
 
-    public static CyanLibOptionsStorage CYAN_OPTS_STORAGE = new CyanLibOptionsStorage(MODID, new CyanLibConfigImpl());
-    public static CyanLibLanguageUtils CYAN_LANG_UTILS = new CyanLibLanguageUtils(MODID);
-    public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, CYAN_OPTS_STORAGE, CYAN_LANG_UTILS);
+    public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, new CyanLibConfigImpl());
+    public static CyanLibLanguageUtils CYAN_LANG_UTILS = CYAN_LIB_UTILS.getLanguageUtils();
 
     public static void checkOrCreateModDir(boolean locations)
     {

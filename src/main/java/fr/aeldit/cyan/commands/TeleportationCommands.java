@@ -138,12 +138,13 @@ public class TeleportationCommands
         {
             requiredXpLevel = getRequiredXpLevelsToTp(player, spawnPos, BLOCKS_PER_XP_LEVEL_BED.getValue());
 
-            if (player.experienceLevel < requiredXpLevel)
+            if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
                 CYAN_LANG_UTILS.sendPlayerMessage(
                         player,
                         "error.notEnoughXp",
-                        Formatting.GOLD + String.valueOf(requiredXpLevel)
+                        Formatting.GOLD + String.valueOf(requiredXpLevel),
+                        Formatting.RED + (XP_USE_POINTS.getValue() ? "points" : "levels")
                 );
                 return 0;
             }
@@ -162,7 +163,14 @@ public class TeleportationCommands
         String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.%s".formatted(key));
 
-        player.addExperienceLevels(-1 * requiredXpLevel);
+        if (XP_USE_POINTS.getValue())
+        {
+            player.addExperience(-1 * requiredXpLevel);
+        }
+        else
+        {
+            player.addExperienceLevels(-1 * requiredXpLevel);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -209,12 +217,13 @@ public class TeleportationCommands
                 requiredXpLevel = 1 + coordinatesDistance / BLOCKS_PER_XP_LEVEL_SURFACE.getValue();
             }
 
-            if (player.experienceLevel < requiredXpLevel)
+            if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
                 CYAN_LANG_UTILS.sendPlayerMessage(
                         player,
                         "error.notEnoughXp",
-                        Formatting.GOLD + String.valueOf(requiredXpLevel)
+                        Formatting.GOLD + String.valueOf(requiredXpLevel),
+                        Formatting.RED + (XP_USE_POINTS.getValue() ? "points" : "levels")
                 );
                 return 0;
             }
@@ -232,7 +241,14 @@ public class TeleportationCommands
                 "msg.surface"
         );
 
-        player.addExperienceLevels(-1 * requiredXpLevel);
+        if (XP_USE_POINTS.getValue())
+        {
+            player.addExperience(-1 * requiredXpLevel);
+        }
+        else
+        {
+            player.addExperienceLevels(-1 * requiredXpLevel);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
@@ -328,7 +344,7 @@ public class TeleportationCommands
                     BLOCKS_PER_XP_LEVEL_TPA.getValue()
             );
 
-            if (requestingPlayer.experienceLevel < requiredXpLevel)
+            if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
                 CYAN_LANG_UTILS.sendPlayerMessage(player, "error.notEnoughXpTpa", requestingPlayerName);
                 return 0;
@@ -344,7 +360,16 @@ public class TeleportationCommands
                 //?}
                 player.getX(), player.getY(), player.getZ(), 0, 0
         );
-        requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
+
+        if (XP_USE_POINTS.getValue())
+        {
+            player.addExperience(-1 * requiredXpLevel);
+        }
+        else
+        {
+            player.addExperienceLevels(-1 * requiredXpLevel);
+        }
+
         removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
         CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "msg.tpaSuccessful", player.getName().getString());

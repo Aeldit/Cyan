@@ -29,7 +29,9 @@ public class CyanLibConfigImpl implements ICyanLibConfig
     );
 
     public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption(
-            "useXpToTeleport", true);
+            "useXpToTeleport", true
+    );
+    public static final BooleanOption XP_USE_POINTS = new BooleanOption("xpUsePoints", false);
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_BED = new IntegerOption(
             "blocksPerXpLevelBed", 200,
             RULES.POSITIVE_VALUE
@@ -63,7 +65,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("error.bedNotFound", "§cYou don't have an attributed bed or respawn anchor"),
                 entry("error.playerNotFound", "§cPlayer not found. The player must be online"),
                 entry("error.noPropertiesFiles", "§cNo properties files were found"),
-                entry("error.notEnoughXp", "§cYou don't have enough XP (%s§c levels are required)"),
+                entry("error.notEnoughXp", "§cYou don't have enough XP (%s§c %s§c are required)"),
                 entry("error.notEnoughXpTpa", "You don't have enough XP to be teleported to %s"),
                 entry("error.tpaAlreadyRequested", "§cYou already send a request to this player"),
 
@@ -117,6 +119,10 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry(
                         "cyan.msg.set.blocksPerXpLevelTpa",
                         "§3The number of blocks to consume 1 XP level for /tpa is now %s"
+                ),
+                entry(
+                        "msg.set.xpUsePoints",
+                        "§3Toggled the use of XP points instead of XP levels %s"
                 ),
 
                 // HEADERS
@@ -174,18 +180,23 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 ),
                 entry(
                         "cyan.msg.getDesc.blocksPerXpLevelBed",
-                        "§3The§e blocksPerXpLevelTpa §3option defines the how many blocks will consume 1 level when " +
+                        "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
                                 "using the /bed command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
                         "cyan.msg.getDesc.blocksPerXpLevelSurface",
-                        "§3The§e blocksPerXpLevelTpa §3option defines the how many blocks will consume 1 level when " +
+                        "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
                                 "using the /surface command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
                         "cyan.msg.getDesc.blocksPerXpLevelTpa",
-                        "§3The§e blocksPerXpLevelTpa §3option defines the how many blocks will consume 1 level when " +
+                        "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
                                 "using the /tpa command (iff the§e useXpToTeleport §3options is set to true)"
+                ),
+                entry(
+                        "cyan.msg.getDesc.xpUsePoints",
+                        "§3The§e xpUsePoints §3option defines the whether the necessary XP will be in points or in " +
+                                "levels"
                 ),
 
                 // GET_CFG
@@ -201,6 +212,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.getCfg.minOpLvlEditLocation", "§6- §3Minimum OP level to edit locations: %s"),
                 entry("msg.getCfg.daysToRemoveBackTp", "§6- §3Days to keep the death location: %s"),
                 entry("msg.getCfg.useXpToTeleport", "§6- §3Use XP for teleportation commands: %s"),
+                entry("msg.getCfg.xpUsePoints", "§6- §3Use XP points instead of XP levels : %s"),
                 entry("msg.getCfg.blocksPerXpLevelBed", "§6- §3Blocks per 1 XP level for bed tp: %s"),
                 entry("msg.getCfg.blocksPerXpLevelSurface", "§6- §3Blocks per 1 XP level for surface tp: %s"),
                 entry("msg.getCfg.blocksPerXpLevelTpa", "§6- §3Blocks per 1 XP level for tpa: %s")
