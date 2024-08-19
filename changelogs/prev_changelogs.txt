@@ -71,3 +71,32 @@
 
     - Simplified the code that obtains the dimension in which the player saved the location or died (called by
       the `/set-location` command or the `death event`)
+
+0.10.0 :
+    ✏️ Added :
+
+    - `/tpa` command : Allows players to ask for teleportation to another player
+    - `allowTpa` option : toggles the `/tpa` command
+    - `useXpToTeleport` option : consumes XP when the player uses teleportation commands (`/bed`, `/surface` and `/tpa`)
+        - An option is available for each tp command (`blocksPerXpLevel...`, `...` being the command) to specify the amount
+          of blocks that will consume 1 XP level
+
+    🌈 Changed :
+
+    The custom translations are now handled differently :
+
+    - if you want custom translations, you can simply put a file named `custom_lang.json` inside a folder named `cyan` in
+      the config folder
+    - the way to use another language is also by using this file, but by translating the default translations
+
+    ⚠️ For now, only one language can be used, but support for multiple languages might come at some point
+
+0.10.1 :
+    Use CyanLib 0.4.7 to fix the config not being written when modified from the chat
+
+0.10.3 :
+    Fix multiple translation errors with the cyanlib
+
+0.10.4 :
+    Fix issue [#9](https://github.com/Aeldit/Cyan/issues/9) where the player's XP would be consumed when using the `tpa`
+    command, even if the `UseXpToTeleport` option was set to `false`

@@ -1,2 +1,1 @@
-Fix issue [#9](https://github.com/Aeldit/Cyan/issues/9) where the player's XP would be consumed when using the `tpa`
-command, even if the `UseXpToTeleport` option was set to `false`
+Allow the user to choose whether XP points or XP levels will be used when teleporting
