@@ -22,14 +22,14 @@ public class MiscellaneousCommands
         dispatcher.register(
                 CommandManager.literal("kill-ground-items")
                         .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
-                                      .executes(MiscellaneousCommands::kgir)
+                                      .executes(MiscellaneousCommands::kgiR)
                         )
                         .executes(MiscellaneousCommands::kgi)
         );
         dispatcher.register(
                 CommandManager.literal("kgi")
                         .then(CommandManager.argument("radius_in_chunks", IntegerArgumentType.integer())
-                                      .executes(MiscellaneousCommands::kgir)
+                                      .executes(MiscellaneousCommands::kgiR)
                         )
                         .executes(MiscellaneousCommands::kgi)
         );
@@ -57,7 +57,7 @@ public class MiscellaneousCommands
                         .formatted(DISTANCE_TO_ENTITIES_KGI.getValue() * 16)
         );
 
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.kgi");
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.kgi");
         return Command.SINGLE_SUCCESS;
     }
 
@@ -66,7 +66,7 @@ public class MiscellaneousCommands
      * <p>
      * Kills all the items on the ground in the specified radius
      */
-    public static int kgir(@NotNull CommandContext<ServerCommandSource> context)
+    public static int kgiR(@NotNull CommandContext<ServerCommandSource> context)
     {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
@@ -84,7 +84,7 @@ public class MiscellaneousCommands
                 source, "/kill @e[type=item,distance=..%d]".formatted(arg * 16)
         );
 
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.kgir", Formatting.GOLD + Integer.toString(arg));
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.kgiR", Formatting.GOLD + Integer.toString(arg));
         return Command.SINGLE_SUCCESS;
     }
 }

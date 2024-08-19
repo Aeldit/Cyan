@@ -106,7 +106,7 @@ public class LocationCommands
 
         String locationName = StringArgumentType.getString(context, "name");
 
-        if (LOCATIONS.add(new Locations.Location(
+        if (!LOCATIONS.add(new Locations.Location(
                 locationName,
                 player.getWorld()
                         //? if <1.20.6 {
@@ -120,12 +120,11 @@ public class LocationCommands
                 player.getYaw(), player.getPitch()
         )))
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.setLocation", Formatting.YELLOW + locationName);
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.locationAlreadyExists");
+            return 0;
         }
-        else
-        {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.locationAlreadyExists");
-        }
+
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.setLocation", Formatting.YELLOW + locationName);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -147,14 +146,13 @@ public class LocationCommands
 
         String locationName = StringArgumentType.getString(context, "name");
 
-        if (LOCATIONS.remove(locationName))
+        if (!LOCATIONS.remove(locationName))
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.removeLocation", Formatting.YELLOW + locationName);
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.locationNotFound", Formatting.YELLOW + locationName);
+            return 0;
         }
-        else
-        {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.locationNotFound", Formatting.YELLOW + locationName);
-        }
+
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.removeLocation", Formatting.YELLOW + locationName);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -174,14 +172,13 @@ public class LocationCommands
             return 0;
         }
 
-        if (LOCATIONS.removeAll())
+        if (!LOCATIONS.removeAll())
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.removedAllLocations");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noLocations");
+            return 0;
         }
-        else
-        {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.noLocations");
-        }
+
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.removedAllLocations");
         return Command.SINGLE_SUCCESS;
     }
 
@@ -204,19 +201,18 @@ public class LocationCommands
         String locationName = StringArgumentType.getString(context, "name");
         String newLocationName = StringArgumentType.getString(context, "new_name");
 
-        if (LOCATIONS.rename(locationName, newLocationName))
+        if (!LOCATIONS.rename(locationName, newLocationName))
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(
-                    player,
-                    "cyan.msg.renameLocation",
-                    Formatting.YELLOW + locationName,
-                    Formatting.YELLOW + newLocationName
-            );
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.locationNotFound", locationName);
+            return 0;
         }
-        else
-        {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.locationNotFound", locationName);
-        }
+
+        CYAN_LANG_UTILS.sendPlayerMessage(
+                player,
+                "msg.renameLocation",
+                Formatting.YELLOW + locationName,
+                Formatting.YELLOW + newLocationName
+        );
         return Command.SINGLE_SUCCESS;
     }
 
@@ -239,30 +235,29 @@ public class LocationCommands
         Locations.Location loc = LOCATIONS.getLocation(locationName);
         MinecraftServer server = player.getServer();
 
-        if (loc != null && server != null)
+        if (loc == null || server == null)
         {
-            switch (loc.getDimension())
-            {
-                case "overworld" -> player.teleport(
-                        server.getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                        loc.getPitch()
-                );
-                case "nether" -> player.teleport(
-                        server.getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                        loc.getPitch()
-                );
-                case "end" -> player.teleport(
-                        server.getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(),
-                        loc.getYaw(), loc.getPitch()
-                );
-            }
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.locationNotFound", Formatting.YELLOW + locationName);
+            return 0;
+        }
 
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.goToLocation", Formatting.YELLOW + locationName);
-        }
-        else
+        switch (loc.getDimension())
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.locationNotFound", Formatting.YELLOW + locationName);
+            case "overworld" -> player.teleport(
+                    server.getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
+                    loc.getPitch()
+            );
+            case "nether" -> player.teleport(
+                    server.getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
+                    loc.getPitch()
+            );
+            case "end" -> player.teleport(
+                    server.getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(),
+                    loc.getYaw(), loc.getPitch()
+            );
         }
+
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.goToLocation", Formatting.YELLOW + locationName);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -282,12 +277,12 @@ public class LocationCommands
 
         if (LOCATIONS.isEmpty())
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.noLocations");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noLocations");
             return 0;
         }
 
         player.sendMessage(Text.of("§6------------------------------------"), false);
-        CYAN_LANG_UTILS.sendPlayerMessageActionBar(player, "cyan.msg.listLocations", false);
+        CYAN_LANG_UTILS.sendPlayerMessageActionBar(player, "msg.listLocations", false);
         List<Locations.Location> locations = LOCATIONS.getLocations();
 
         if (locations != null)
@@ -296,7 +291,7 @@ public class LocationCommands
             {
                 CYAN_LANG_UTILS.sendPlayerMessageActionBar(
                         player,
-                        "cyan.msg.getLocation",
+                        "msg.getLocation",
                         false,
                         Formatting.YELLOW + location.getName(),
                         Formatting.DARK_AQUA + location.getDimension()

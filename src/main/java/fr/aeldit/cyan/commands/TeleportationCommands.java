@@ -86,27 +86,26 @@ public class TeleportationCommands
         BackTps.BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
         MinecraftServer server = player.getServer();
 
-        if (backTp != null && server != null)
+        if (backTp == null || server == null)
         {
-            switch (backTp.dimension())
-            {
-                case "overworld" -> player.teleport(
-                        server.getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0
-                );
-                case "nether" -> player.teleport(
-                        server.getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0
-                );
-                case "end" -> player.teleport(
-                        server.getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0
-                );
-            }
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.backTp");
-            BACK_TPS.remove(player.getUuidAsString());
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noLastPos");
+            return 0;
         }
-        else
+
+        switch (backTp.dimension())
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.noLastPos");
+            case "overworld" -> player.teleport(
+                    server.getWorld(World.OVERWORLD), backTp.x(), backTp.y(), backTp.z(), 0, 0
+            );
+            case "nether" -> player.teleport(
+                    server.getWorld(World.NETHER), backTp.x(), backTp.y(), backTp.z(), 0, 0
+            );
+            case "end" -> player.teleport(
+                    server.getWorld(World.END), backTp.x(), backTp.y(), backTp.z(), 0, 0
+            );
         }
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.backTp");
+        BACK_TPS.remove(player.getUuidAsString());
         return Command.SINGLE_SUCCESS;
     }
 
@@ -130,7 +129,7 @@ public class TeleportationCommands
 
         if (spawnPos == null || server == null)
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.bedNotFound");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.bedNotFound");
             return 0;
         }
 
@@ -143,7 +142,7 @@ public class TeleportationCommands
             {
                 CYAN_LANG_UTILS.sendPlayerMessage(
                         player,
-                        "cyan.error.notEnoughXp",
+                        "error.notEnoughXp",
                         Formatting.GOLD + String.valueOf(requiredXpLevel)
                 );
                 return 0;
@@ -161,7 +160,7 @@ public class TeleportationCommands
         );
 
         String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.%s".formatted(key));
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.%s".formatted(key));
 
         player.addExperienceLevels(-1 * requiredXpLevel);
         return Command.SINGLE_SUCCESS;
@@ -214,7 +213,7 @@ public class TeleportationCommands
             {
                 CYAN_LANG_UTILS.sendPlayerMessage(
                         player,
-                        "cyan.error.notEnoughXp",
+                        "error.notEnoughXp",
                         Formatting.GOLD + String.valueOf(requiredXpLevel)
                 );
                 return 0;
@@ -230,7 +229,7 @@ public class TeleportationCommands
         );
         CYAN_LANG_UTILS.sendPlayerMessage(
                 player,
-                "cyan.msg.surface"
+                "msg.surface"
         );
 
         player.addExperienceLevels(-1 * requiredXpLevel);
@@ -253,24 +252,24 @@ public class TeleportationCommands
                 context.getSource().getServer().getPlayerManager().getPlayer(playerName);
         if (playerToSendMessage == null)
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.playerNotFound");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.playerNotFound");
             return 0;
         }
 
         String requestingPlayerName = player.getName().getString();
         if (TPa.isPlayerRequesting(requestingPlayerName, playerName))
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.tpaAlreadyRequested");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.tpaAlreadyRequested");
             return 0;
         }
 
         addPlayerToQueue(requestingPlayerName, playerName);
 
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.tpaRequestSend", requestingPlayerName);
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.tpaRequestSend", requestingPlayerName);
 
         CYAN_LANG_UTILS.sendPlayerMessageActionBar(
                 playerToSendMessage,
-                "cyan.msg.tpaRequested",
+                "msg.tpaRequested",
                 false,
                 requestingPlayerName
         );
@@ -316,7 +315,7 @@ public class TeleportationCommands
                 || !TPa.isPlayerRequesting(requestingPlayerName, player.getName().getString())
         )
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.noRequestingPlayers");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noRequestingPlayers");
             return 0;
         }
 
@@ -331,7 +330,7 @@ public class TeleportationCommands
 
             if (requestingPlayer.experienceLevel < requiredXpLevel)
             {
-                CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.notEnoughXpTpa", requestingPlayerName);
+                CYAN_LANG_UTILS.sendPlayerMessage(player, "error.notEnoughXpTpa", requestingPlayerName);
                 return 0;
             }
         }
@@ -348,8 +347,8 @@ public class TeleportationCommands
         requestingPlayer.addExperienceLevels(-1 * requiredXpLevel);
         removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
-        CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "cyan.msg.tpaSuccessful", player.getName().getString());
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.tpaAcceptedSelf", requestingPlayer.getName().getString());
+        CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "msg.tpaSuccessful", player.getName().getString());
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.tpaAcceptedSelf", requestingPlayer.getName().getString());
         return Command.SINGLE_SUCCESS;
     }
 
@@ -373,14 +372,14 @@ public class TeleportationCommands
         if (requestingPlayer == null || !TPa.isPlayerRequesting(
                 requestingPlayerName, player.getName().getString()))
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.error.noRequestingPlayers");
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noRequestingPlayers");
             return 0;
         }
 
         removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
-        CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "cyan.msg.tpaRefused", player.getName().getString());
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "cyan.msg.tpaRefusedSelf", requestingPlayer.getName().getString());
+        CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "msg.tpaRefused", player.getName().getString());
+        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.tpaRefusedSelf", requestingPlayer.getName().getString());
         return Command.SINGLE_SUCCESS;
     }
 }
