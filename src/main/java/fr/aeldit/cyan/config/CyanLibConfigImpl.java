@@ -103,98 +103,86 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s"),
                 entry("msg.set.minOpLvlKgi", "§3The minimum OP level to execute §d/kgi §3is now %s"),
                 entry("msg.set.minOpLvlEditLocation", "§3The minimum OP level to edit locations is now %s"),
-                entry(
-                        "cyan.msg.set.daysToRemoveBackTp",
-                        "§3The number of days to keep the last death locations is now %s"
-                ),
+                entry("msg.set.daysToRemoveBackTp", "§3The number of days to keep the last death locations is now %s"),
                 entry("msg.set.useXpToTeleport", "§3Toggled the use of XP to teleport %s"),
                 entry(
-                        "cyan.msg.set.blocksPerXpLevelBed",
+                        "msg.set.blocksPerXpLevelBed",
                         "§3The number of blocks to consume 1 XP level for /bed is now %s"
                 ),
                 entry(
-                        "cyan.msg.set.blocksPerXpLevelSurface",
+                        "msg.set.blocksPerXpLevelSurface",
                         "§3The number of blocks to consume 1 XP level for /surface is now %s"
                 ),
                 entry(
-                        "cyan.msg.set.blocksPerXpLevelTpa",
+                        "msg.set.blocksPerXpLevelTpa",
                         "§3The number of blocks to consume 1 XP level for /tpa is now %s"
                 ),
-                entry(
-                        "msg.set.xpUsePoints",
-                        "§3Toggled the use of XP points instead of XP levels %s"
-                ),
+                entry("msg.set.xpUsePoints", "§3Toggled the use of XP points instead of XP levels %s"),
 
                 // HEADERS
                 entry("msg.headerDescCmd", "§6Cyan - DESCRIPTION (commands) :\n"),
                 entry("msg.headerDescOptions", "§6Cyan - DESCRIPTION (options) :\n"),
 
                 // CONFIG
+                entry("msg.getDesc.allowBed", "§3The§e allowBed §3option toggles the use of the §d/bed §3command"),
+                entry("msg.getDesc.allowKgi", "§3The§e allowKgi §3option toggles the use of the §d/kgi §3command"),
                 entry(
-                        "cyan.msg.getDesc.allowBed",
-                        "§3The§e allowBed §3option toggles the use of the §d/bed §3command"
-                ),
-                entry(
-                        "cyan.msg.getDesc.allowKgi",
-                        "§3The§e allowKgi §3option toggles the use of the §d/kgi §3command"
-                ),
-                entry(
-                        "cyan.msg.getDesc.allowSurface",
+                        "msg.getDesc.allowSurface",
                         "§3The§e allowSurface §3option toggles the use of the §d/surface §3command"
                 ),
                 entry(
-                        "cyan.msg.getDesc.allowLocations",
+                        "msg.getDesc.allowLocations",
                         "§3The§e allowLocations §3option toggles the use of the§d location §3commands"
                 ),
                 entry(
-                        "cyan.msg.getDesc.allowBackTp",
+                        "msg.getDesc.allowBackTp",
                         "§3The§e allowBackTp §3option toggles the use of the §d/back §3command"
                 ),
                 entry(
-                        "cyan.msg.getDesc.allowTpa",
+                        "msg.getDesc.allowTpa",
                         "§3The§e allowTpa §3option toggles the use of the §d/tpa §3command"
                 ),
                 entry(
-                        "cyan.msg.getDesc.distanceToEntitiesKgi",
+                        "msg.getDesc.distanceToEntitiesKgi",
                         "§3The§e distanceToEntitiesKgi §3option defines distance (in chunks) in which the ground " +
                                 "items will be removed"
                 ),
                 entry(
-                        "cyan.msg.getDesc.minOpLvlKgi",
+                        "msg.getDesc.minOpLvlKgi",
                         "§3The §eminOpLvlKgi §3option defines the required OP level to use the §d/kgi §3command"
                 ),
                 entry(
-                        "cyan.msg.getDesc.minOpLvlEditLocation",
+                        "msg.getDesc.minOpLvlEditLocation",
                         "§3The §eminOpLvlEditLocation §3determines the " +
                                 "minimum OP level required to edit locations"
                 ),
                 entry(
-                        "cyan.msg.getDesc.daysToRemoveBackTp",
+                        "msg.getDesc.daysToRemoveBackTp",
                         "§3The§e daysToRemoveBackTp §3option defines the " +
                                 "number of days the last death location of a player is kept)"
                 ),
                 entry(
-                        "cyan.msg.getDesc.useXpToTeleport",
+                        "msg.getDesc.useXpToTeleport",
                         "§3The§e useXpToTeleport §3option defines whether XP is " +
                                 "required to use teleportation commands such as /bed, /surface or /tpa"
                 ),
                 entry(
-                        "cyan.msg.getDesc.blocksPerXpLevelBed",
+                        "msg.getDesc.blocksPerXpLevelBed",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
                                 "using the /bed command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
-                        "cyan.msg.getDesc.blocksPerXpLevelSurface",
+                        "msg.getDesc.blocksPerXpLevelSurface",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
                                 "using the /surface command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
-                        "cyan.msg.getDesc.blocksPerXpLevelTpa",
+                        "msg.getDesc.blocksPerXpLevelTpa",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
                                 "using the /tpa command (iff the§e useXpToTeleport §3options is set to true)"
                 ),
                 entry(
-                        "cyan.msg.getDesc.xpUsePoints",
+                        "msg.getDesc.xpUsePoints",
                         "§3The§e xpUsePoints §3option defines the whether the necessary XP will be in points or in " +
                                 "levels"
                 ),
