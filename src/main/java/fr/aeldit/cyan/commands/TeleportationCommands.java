@@ -21,6 +21,8 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
 import static fr.aeldit.cyan.teleportation.TPa.addPlayerToQueue;
@@ -174,6 +176,33 @@ public class TeleportationCommands
         return Command.SINGLE_SUCCESS;
     }
 
+    public static void bedForTargets(@NotNull Collection<ServerPlayerEntity> players)
+    {
+        for (ServerPlayerEntity player : players)
+        {
+            BlockPos spawnPos = player.getSpawnPointPosition();
+            MinecraftServer server = player.getServer();
+
+            if (spawnPos == null || server == null)
+            {
+                return;
+            }
+
+            RegistryKey<World> spawnDim = player.getSpawnPointDimension();
+
+            player.teleport(
+                    server.getWorld(spawnDim),
+                    spawnPos.getX(),
+                    spawnPos.getY(),
+                    spawnPos.getZ(),
+                    player.getYaw(), player.getPitch()
+            );
+
+            String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.%s".formatted(key));
+        }
+    }
+
     /**
      * Called when a player execute the commands {@code /surface} or {@code /s}
      * <p>
@@ -250,6 +279,27 @@ public class TeleportationCommands
             player.addExperienceLevels(-1 * requiredXpLevel);
         }
         return Command.SINGLE_SUCCESS;
+    }
+
+    public static void surfaceForTargets(@NotNull Collection<ServerPlayerEntity> players)
+    {
+        for (ServerPlayerEntity player : players)
+        {
+            BlockPos blockPos = player.getBlockPos();
+            double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
+
+            player.teleport(
+                    player.getServerWorld(),
+                    blockPos.getX(),
+                    topY,
+                    blockPos.getZ(),
+                    player.getYaw(), player.getPitch()
+            );
+            CYAN_LANG_UTILS.sendPlayerMessage(
+                    player,
+                    "msg.surface"
+            );
+        }
     }
 
     public static int tpa(@NotNull CommandContext<ServerCommandSource> context)
