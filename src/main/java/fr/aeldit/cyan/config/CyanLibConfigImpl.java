@@ -22,7 +22,11 @@ public class CyanLibConfigImpl implements ICyanLibConfig
     // Min OP Level
     public static final IntegerOption MIN_OP_LVL_KGI = new IntegerOption("minOpLvlKgi", 4, RULES.OP_LEVELS);
     public static final IntegerOption MIN_OP_LVL_EDIT_LOCATIONS = new IntegerOption(
-            "minOpLvlEditLocation", 4, RULES.OP_LEVELS);
+            "minOpLvlEditLocation", 4, RULES.OP_LEVELS
+    );
+    public static final IntegerOption MIN_OP_LVL_PERM_NODES = new IntegerOption(
+            "minOpLvlPermNodes", 4, RULES.OP_LEVELS
+    );
 
     // Other
     public static final IntegerOption DISTANCE_TO_ENTITIES_KGI = new IntegerOption(

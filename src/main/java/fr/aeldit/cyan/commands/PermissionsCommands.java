@@ -15,6 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
 
+import static fr.aeldit.cyan.CyanCore.CYAN_LIB_UTILS;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.MIN_OP_LVL_PERM_NODES;
+
 public class PermissionsCommands
 {
     private static final List<String> COMMANDS = List.of("bed", "surface");
@@ -42,6 +45,14 @@ public class PermissionsCommands
             @NotNull CommandContext<ServerCommandSource> context
     ) throws CommandSyntaxException
     {
+        ServerPlayerEntity playerSource = context.getSource().getPlayer();
+        // If the command source is the not server's console (playerSource == null)
+        // and the player doesn't have the required permission
+        if (playerSource != null && !CYAN_LIB_UTILS.hasPermission(playerSource, MIN_OP_LVL_PERM_NODES.getValue()))
+        {
+            return 0;
+        }
+
         String command = StringArgumentType.getString(context, "command");
         if (!COMMANDS.contains(command))
         {
