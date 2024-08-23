@@ -5,6 +5,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
+import fr.aeldit.cyan.teleportation.Locations;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -16,11 +18,12 @@ import java.util.Collection;
 import java.util.List;
 
 import static fr.aeldit.cyan.CyanCore.CYAN_LIB_UTILS;
+import static fr.aeldit.cyan.CyanCore.LOCATIONS;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.MIN_OP_LVL_PERM_NODES;
 
 public class PermissionsCommands
 {
-    private static final List<String> COMMANDS = List.of("bed", "surface");
+    private static final List<String> COMMANDS = List.of("bed", "surface", "location");
 
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher)
     {
@@ -32,9 +35,14 @@ public class PermissionsCommands
                                                 COMMANDS, builder
                                         ))
                                         .then(CommandManager.argument("targets", EntityArgumentType.players())
-                                                      .suggests((context, builder) -> CommandSource.suggestMatching(
-                                                              context.getSource().getPlayerNames(), builder
-                                                      )).executes(PermissionsCommands::executeForTargets)
+                                                      .suggests(ArgumentSuggestion::getPlayerTargets)
+                                                      .then(CommandManager.argument(
+                                                                            "location",
+                                                                            StringArgumentType.string()
+                                                                    )
+                                                                    .suggests(ArgumentSuggestion::getLocationsIfLoc)
+                                                                    .executes(PermissionsCommands::executeForTargets)
+                                                      ).executes(PermissionsCommands::executeForTargets)
                                         )
                         )
                 )
@@ -65,12 +73,23 @@ public class PermissionsCommands
             return 0;
         }
 
+        Locations.Location location =
+                command.equals("location")
+                ? LOCATIONS.getLocation(StringArgumentType.getString(context, "location"))
+                : null;
+
         switch (command)
         {
             case "bed" -> players.forEach(Commons::bed);
             case "surface" -> players.forEach(Commons::surface);
+            case "location" ->
+            {
+                if (location != null)
+                {
+                    players.forEach(player -> location.teleport(player, context.getSource().getServer()));
+                }
+            }
         }
-
         return Command.SINGLE_SUCCESS;
     }
 }
