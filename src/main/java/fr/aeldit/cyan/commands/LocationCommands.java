@@ -11,7 +11,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -241,21 +240,7 @@ public class LocationCommands
             return 0;
         }
 
-        switch (loc.getDimension())
-        {
-            case "overworld" -> player.teleport(
-                    server.getWorld(World.OVERWORLD), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                    loc.getPitch()
-            );
-            case "nether" -> player.teleport(
-                    server.getWorld(World.NETHER), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(),
-                    loc.getPitch()
-            );
-            case "end" -> player.teleport(
-                    server.getWorld(World.END), loc.getX(), loc.getY(), loc.getZ(),
-                    loc.getYaw(), loc.getPitch()
-            );
-        }
+        loc.teleport(player, server);
 
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.goToLocation", Formatting.YELLOW + locationName);
         return Command.SINGLE_SUCCESS;
