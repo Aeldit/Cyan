@@ -67,8 +67,8 @@ public class PermissionsCommands
 
         switch (command)
         {
-            case "bed" -> TeleportationCommands.bedForTargets(players);
-            case "surface" -> TeleportationCommands.surfaceForTargets(players);
+            case "bed" -> players.forEach(Commons::bed);
+            case "surface" -> players.forEach(Commons::surface);
         }
 
         return Command.SINGLE_SUCCESS;
