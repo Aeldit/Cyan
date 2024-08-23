@@ -62,8 +62,13 @@ public class Locations
             return dimension;
         }
 
-        public void teleport(ServerPlayerEntity player, MinecraftServer server)
+        public void teleport(ServerPlayerEntity player, @Nullable MinecraftServer server)
         {
+            if (server == null)
+            {
+                return;
+            }
+
             switch (dimension)
             {
                 case "overworld" -> player.teleport(server.getWorld(World.OVERWORLD), x, y, z, yaw, pitch);
