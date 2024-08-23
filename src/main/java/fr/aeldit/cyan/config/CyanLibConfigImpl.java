@@ -11,6 +11,7 @@ import static java.util.Map.entry;
 
 public class CyanLibConfigImpl implements ICyanLibConfig
 {
+    // Allows
     public static final BooleanOption ALLOW_BED = new BooleanOption("allowBed", true);
     public static final BooleanOption ALLOW_KGI = new BooleanOption("allowKgi", true);
     public static final BooleanOption ALLOW_SURFACE = new BooleanOption("allowSurface", true);
@@ -18,9 +19,12 @@ public class CyanLibConfigImpl implements ICyanLibConfig
     public static final BooleanOption ALLOW_BACK_TP = new BooleanOption("allowBackTp", true);
     public static final BooleanOption ALLOW_TPA = new BooleanOption("allowTpa", true);
 
+    // Min OP Level
     public static final IntegerOption MIN_OP_LVL_KGI = new IntegerOption("minOpLvlKgi", 4, RULES.OP_LEVELS);
     public static final IntegerOption MIN_OP_LVL_EDIT_LOCATIONS = new IntegerOption(
             "minOpLvlEditLocation", 4, RULES.OP_LEVELS);
+
+    // Other
     public static final IntegerOption DISTANCE_TO_ENTITIES_KGI = new IntegerOption(
             "distanceToEntitiesKgi", 12, RULES.POSITIVE_VALUE
     );
@@ -28,6 +32,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
             "daysToRemoveBackTp", 180, RULES.POSITIVE_VALUE
     );
 
+    // XP to teleport
     public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption(
             "useXpToTeleport", true
     );
