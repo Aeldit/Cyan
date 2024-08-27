@@ -353,11 +353,11 @@ public class TeleportationCommands
 
         requestingPlayer.teleport(
                 player
-                        //? if <1.20.2 {
+                        //? if =1.19.4 {
                         /*.getWorld(),
-                         *///?} else {
-                        .getServerWorld(),
-                //?}
+                *///?} else {
+                .getServerWorld(),
+                 //?}
                 player.getX(), player.getY(), player.getZ(), 0, 0
         );
 
