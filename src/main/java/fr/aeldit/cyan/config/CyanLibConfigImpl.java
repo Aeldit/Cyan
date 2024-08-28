@@ -11,6 +11,7 @@ import static java.util.Map.entry;
 
 public class CyanLibConfigImpl implements ICyanLibConfig
 {
+    // Allows
     public static final BooleanOption ALLOW_BED = new BooleanOption("allowBed", true);
     public static final BooleanOption ALLOW_KGI = new BooleanOption("allowKgi", true);
     public static final BooleanOption ALLOW_SURFACE = new BooleanOption("allowSurface", true);
@@ -18,9 +19,16 @@ public class CyanLibConfigImpl implements ICyanLibConfig
     public static final BooleanOption ALLOW_BACK_TP = new BooleanOption("allowBackTp", true);
     public static final BooleanOption ALLOW_TPA = new BooleanOption("allowTpa", true);
 
+    // Min OP Level
     public static final IntegerOption MIN_OP_LVL_KGI = new IntegerOption("minOpLvlKgi", 4, RULES.OP_LEVELS);
     public static final IntegerOption MIN_OP_LVL_EDIT_LOCATIONS = new IntegerOption(
-            "minOpLvlEditLocation", 4, RULES.OP_LEVELS);
+            "minOpLvlEditLocation", 4, RULES.OP_LEVELS
+    );
+    public static final IntegerOption MIN_OP_LVL_PERM_NODES = new IntegerOption(
+            "minOpLvlPermNodes", 4, RULES.OP_LEVELS
+    );
+
+    // Other
     public static final IntegerOption DISTANCE_TO_ENTITIES_KGI = new IntegerOption(
             "distanceToEntitiesKgi", 12, RULES.POSITIVE_VALUE
     );
@@ -28,6 +36,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
             "daysToRemoveBackTp", 180, RULES.POSITIVE_VALUE
     );
 
+    // XP to teleport
     public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption(
             "useXpToTeleport", true
     );
@@ -103,6 +112,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.set.distanceToEntitiesKgi", "§3The distance for §d/kgi §3is now %s"),
                 entry("msg.set.minOpLvlKgi", "§3The minimum OP level to execute §d/kgi §3is now %s"),
                 entry("msg.set.minOpLvlEditLocation", "§3The minimum OP level to edit locations is now %s"),
+                entry("msg.set.minOpLvlPermNodes", "§3The minimum OP level to use permission nodes is now %s"),
                 entry("msg.set.daysToRemoveBackTp", "§3The number of days to keep the last death locations is now %s"),
                 entry("msg.set.useXpToTeleport", "§3Toggled the use of XP to teleport %s"),
                 entry(
@@ -157,6 +167,11 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                                 "minimum OP level required to edit locations"
                 ),
                 entry(
+                        "msg.getDesc.minOpLvlPermNodes",
+                        "§3The §eminOpLvlPermNodes §3determines the " +
+                                "minimum OP level required to use the permission nodes"
+                ),
+                entry(
                         "msg.getDesc.daysToRemoveBackTp",
                         "§3The§e daysToRemoveBackTp §3option defines the " +
                                 "number of days the last death location of a player is kept)"
@@ -198,6 +213,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s"),
                 entry("msg.getCfg.minOpLvlKgi", "§6- §3Minimum OP level for §d/kgi §3: %s"),
                 entry("msg.getCfg.minOpLvlEditLocation", "§6- §3Minimum OP level to edit locations: %s"),
+                entry("msg.getCfg.minOpLvlPermNodes", "§6- §3Minimum OP level to use permission nodes: %s"),
                 entry("msg.getCfg.daysToRemoveBackTp", "§6- §3Days to keep the death location: %s"),
                 entry("msg.getCfg.useXpToTeleport", "§6- §3Use XP for teleportation commands: %s"),
                 entry("msg.getCfg.xpUsePoints", "§6- §3Use XP points instead of XP levels : %s"),

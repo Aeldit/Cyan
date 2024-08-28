@@ -2,6 +2,7 @@ package fr.aeldit.cyan;
 
 import fr.aeldit.cyan.commands.LocationCommands;
 import fr.aeldit.cyan.commands.MiscellaneousCommands;
+import fr.aeldit.cyan.commands.PermissionsCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.teleportation.TPa;
 import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
@@ -49,6 +50,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
                     TeleportationCommands.register(dispatcher);
                     MiscellaneousCommands.register(dispatcher);
                     LocationCommands.register(dispatcher);
+                    PermissionsCommands.register(dispatcher);
                 }
         );
         CYAN_LOGGER.info("[Cyan] Successfully initialized");

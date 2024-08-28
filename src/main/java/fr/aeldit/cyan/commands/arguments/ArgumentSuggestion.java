@@ -1,5 +1,6 @@
 package fr.aeldit.cyan.commands.arguments;
 
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import fr.aeldit.cyan.teleportation.TPa;
@@ -9,8 +10,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import static fr.aeldit.cyan.CyanCore.LOCATIONS;
 
 public final class ArgumentSuggestion
 {
@@ -47,5 +51,25 @@ public final class ArgumentSuggestion
             return new CompletableFuture<>();
         }
         return CommandSource.suggestMatching(requestingPlayers, builder);
+    }
+
+    public static CompletableFuture<Suggestions> getPlayerTargets(
+            @NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder
+    )
+    {
+        Collection<String> players = context.getSource().getPlayerNames();
+        ArrayList<String> targets = new ArrayList<>(players.size() + 1);
+        targets.addAll(players);
+        targets.add("@a");
+        return CommandSource.suggestMatching(targets, builder);
+    }
+
+    public static CompletableFuture<Suggestions> getLocationsIfLoc(
+            @NotNull CommandContext<ServerCommandSource> context, @NotNull SuggestionsBuilder builder
+    )
+    {
+        return context.getInput().split(" ")[2].equals("location")
+               ? LOCATIONS.getLocationsNames(builder)
+               : new CompletableFuture<>();
     }
 }

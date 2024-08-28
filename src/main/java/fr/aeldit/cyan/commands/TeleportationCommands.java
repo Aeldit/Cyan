@@ -7,7 +7,6 @@ import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTps;
 import fr.aeldit.cyan.teleportation.TPa;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -17,7 +16,6 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -124,12 +122,9 @@ public class TeleportationCommands
             return 0;
         }
 
-        BlockPos spawnPos = player.getSpawnPointPosition();
-        MinecraftServer server = player.getServer();
-
-        if (spawnPos == null || server == null)
+        BlockPos spawnPos = Commons.bed(player);
+        if (spawnPos == null)
         {
-            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.bedNotFound");
             return 0;
         }
 
@@ -149,19 +144,6 @@ public class TeleportationCommands
                 return 0;
             }
         }
-
-        RegistryKey<World> spawnDim = player.getSpawnPointDimension();
-
-        player.teleport(
-                server.getWorld(spawnDim),
-                spawnPos.getX(),
-                spawnPos.getY(),
-                spawnPos.getZ(),
-                player.getYaw(), player.getPitch()
-        );
-
-        String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
-        CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.%s".formatted(key));
 
         if (XP_USE_POINTS.getValue())
         {
@@ -189,10 +171,9 @@ public class TeleportationCommands
             return 0;
         }
 
-        int requiredXpLevel = 0;
-        BlockPos blockPos = player.getBlockPos();
-        double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
+        double topY = Commons.surface(player);
 
+        int requiredXpLevel = 0;
         if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
         {
             int distanceY = (int) player.getY() - (int) topY;
@@ -228,18 +209,6 @@ public class TeleportationCommands
                 return 0;
             }
         }
-
-        player.teleport(
-                context.getSource().getWorld(),
-                blockPos.getX(),
-                topY,
-                blockPos.getZ(),
-                player.getYaw(), player.getPitch()
-        );
-        CYAN_LANG_UTILS.sendPlayerMessage(
-                player,
-                "msg.surface"
-        );
 
         if (XP_USE_POINTS.getValue())
         {

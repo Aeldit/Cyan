@@ -7,6 +7,9 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandSource;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,29 +62,19 @@ public class Locations
             return dimension;
         }
 
-        public double getX()
+        public void teleport(ServerPlayerEntity player, @Nullable MinecraftServer server)
         {
-            return x;
-        }
+            if (server == null)
+            {
+                return;
+            }
 
-        public double getY()
-        {
-            return y;
-        }
-
-        public double getZ()
-        {
-            return z;
-        }
-
-        public float getYaw()
-        {
-            return yaw;
-        }
-
-        public float getPitch()
-        {
-            return pitch;
+            switch (dimension)
+            {
+                case "overworld" -> player.teleport(server.getWorld(World.OVERWORLD), x, y, z, yaw, pitch);
+                case "nether" -> player.teleport(server.getWorld(World.NETHER), x, y, z, yaw, pitch);
+                case "end" -> player.teleport(server.getWorld(World.END), x, y, z, yaw, pitch);
+            }
         }
     }
 
