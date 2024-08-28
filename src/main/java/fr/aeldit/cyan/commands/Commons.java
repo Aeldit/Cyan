@@ -44,7 +44,12 @@ public class Commons
         double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
 
         player.teleport(
-                player.getServerWorld(),
+                player
+                        //? if =1.19.4 {
+                        /*.getWorld(),
+                *///?} else {
+                .getServerWorld(),
+                 //?}
                 blockPos.getX(),
                 topY,
                 blockPos.getZ(),

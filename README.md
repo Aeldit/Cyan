@@ -14,10 +14,10 @@ or
 |   1.17.x - 1.18.x    |     ❌      |    0.9.3     |
 |    1.19 - 1.19.2     |     ❌      |    0.9.13    |
 |        1.19.3        |     ❌      |    0.9.7     |
+|         1.20         |     ❌      |    0.9.16    |
 |        1.19.4        |     ✅      |    latest    |
-|    1.20 - 1.20.1     |     ❌      |    0.9.16    |
-|   1.20.2 - 1.20.5    |     ✅      |    latest    |
-|         1.21         |     ✅      |    latest    |
+|   1.20.1 - 1.20.6    |     ✅      |    latest    |
+|    1.21 - 1.21.1     |     ✅      |    latest    |
 
 </details>
 
@@ -43,32 +43,36 @@ or
 
 7. Consume XP when the player uses a teleportation command (`/bed`, `/surface`, `/tpa`)
 
+8. Execute a command for all targets of a given selector (ex: `/cyan execute bed @a`)
+
 <details>
 <summary>✅ List of commands (and their aliases)</summary>
 
-|               Command                |                            Description                             |         Alias         |
-|:------------------------------------:|:------------------------------------------------------------------:|:---------------------:|
-|                `/bed`                |            Teleports you to your bed or respawn anchor             |         `/b`          |
-|          `/killgrounditems`          |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
-|              `/surface`              |                    Teleports you to the surface                    |         `/s`          |
-|                                      |                                                                    |                       |
-|   `/set-location <location_name>`    |              Saves the current position as a location              | `/sl <location_name>` |
-|  `/remove-location <location_name>`  |                     Removes the given location                     | `/rl <location_name>` |
-|       `/remove-all-locations`        |                     Removes the given location                     |           ❌           |
-|     `/location <location_name>`      |                Teleports you to the given location                 | `/l <location_name>`  |
-|           `/get-locations`           |                  Displays all the saved locations                  |         `/gl`         |
-| `/rename-location <name> <new_name>` |            Renames the given location to the given name            |           ❌           |
-|                                      |                                                                    |                       |
-|               `/back`                |              Teleports you to the last place you died              |           ❌           |
-|                                      |                                                                    |                       |
-|     `/cyan reload-translations`      |     Reloads the custom translations (useful when editing them)     |           ❌           |
-|   `/cyan remove-properties-files`    |  Transfers the properties files to json files, then deletes them   |           ❌           |
-|                                      |                                                                    |                       |
-|          `/cyan get-config`          | Displays in the player's chat the current value of all the options |           ❌           |
-|                                      |                                                                    |                       |
-|         `/tpa <player_name>`         |         Sends a teleportation request to the given player          |           ❌           |
-|      `/tpaAccept <player_name>`      |      Accepts the teleportation request from the given player       |           ❌           |
-|      `/tpaRefuse <player_name>`      |      Refuses the teleportation request from the given player       |           ❌           |
+|                Command                |                            Description                             |         Alias         |
+|:-------------------------------------:|:------------------------------------------------------------------:|:---------------------:|
+|                `/bed`                 |            Teleports you to your bed or respawn anchor             |         `/b`          |
+|          `/killgrounditems`           |      Kills a items floating on the ground in a certain radius      |        `/kgi`         |
+|              `/surface`               |                    Teleports you to the surface                    |         `/s`          |
+|                                       |                                                                    |                       |
+|    `/set-location <location_name>`    |              Saves the current position as a location              | `/sl <location_name>` |
+|  `/remove-location <location_name>`   |                     Removes the given location                     | `/rl <location_name>` |
+|        `/remove-all-locations`        |                     Removes the given location                     |           ❌           |
+|      `/location <location_name>`      |                Teleports you to the given location                 | `/l <location_name>`  |
+|           `/get-locations`            |                  Displays all the saved locations                  |         `/gl`         |
+| `/rename-location <name> <new_name>`  |            Renames the given location to the given name            |           ❌           |
+|                                       |                                                                    |                       |
+|                `/back`                |              Teleports you to the last place you died              |           ❌           |
+|                                       |                                                                    |                       |
+|      `/cyan reload-translations`      |     Reloads the custom translations (useful when editing them)     |           ❌           |
+|    `/cyan remove-properties-files`    |  Transfers the properties files to json files, then deletes them   |           ❌           |
+|                                       |                                                                    |                       |
+|          `/cyan get-config`           | Displays in the player's chat the current value of all the options |           ❌           |
+|                                       |                                                                    |                       |
+|         `/tpa <player_name>`          |         Sends a teleportation request to the given player          |           ❌           |
+|      `/tpaAccept <player_name>`       |      Accepts the teleportation request from the given player       |           ❌           |
+|      `/tpaRefuse <player_name>`       |      Refuses the teleportation request from the given player       |           ❌           |
+|                                       |                                                                    |                       |
+| `/cyan execute <command> <target(s)>` |           Executes the given command for all the targets           |           ❌           |
 
 </details>
 

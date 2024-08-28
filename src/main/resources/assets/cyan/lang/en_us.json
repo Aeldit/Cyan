@@ -13,6 +13,7 @@
   "cyanlib.config.option.allowTpa": "AllowTpa",
   "cyanlib.config.option.minOpLvlKgi": "MinOpLvlKgi",
   "cyanlib.config.option.minOpLvlEditLocation": "MinOpLvlEditLocation",
+  "cyanlib.config.option.minOpLvlPermNodes": "MinOpLvlPermNodes",
   "cyanlib.config.option.distanceToEntitiesKgi": "DistanceToEntitiesKgi",
   "cyanlib.config.option.daysToRemoveBackTp": "DaysToRemoveBackTp",
   "cyanlib.config.option.useCustomTranslations": "UseCustomTranslations",
