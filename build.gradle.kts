@@ -26,9 +26,11 @@ class ModData {
 
     val mcVersion = property("minecraft_version").toString()
     val rangedName = if (hasVersionRange) property("range_name").toString() else mcVersion
-    val min = if (hasVersionRange) property("min").toString() else mcVersion
-    val max = if (hasVersionRange) property("max").toString() else mcVersion
-    val fabricRange = if (hasVersionRange) property("fabric_range") else mcVersion
+
+    private val modrinthVersions = if (hasVersionRange) property("modrinth_versions") else mcVersion
+    val versionsList = modrinthVersions.toString().split(" ")
+    val min = if (hasVersionRange) versionsList[0] else mcVersion
+    val max = if (hasVersionRange) versionsList[versionsList.size - 1] else mcVersion
 
     val fabricVersion = property("fabric_version").toString()
     val modmenuVersion = property("modmenu_version").toString()
@@ -42,6 +44,7 @@ class ModData {
 }
 
 val mod = ModData()
+
 
 // Sets the name of the output jar files
 base {
@@ -149,13 +152,17 @@ publishMods {
         accessToken = System.getenv("MODRINTH_TOKEN")
 
         projectId = "zGxxQr33"
-        displayName = "[${mod.mcVersion}] Cyan ${Constants.MOD_VERSION}"
+        displayName = "[${mod.rangedName}] Cyan ${Constants.MOD_VERSION}"
         version = mod.fullVersion
         type = STABLE
 
         file = tasks.remapJar.get().archiveFile
 
-        minecraftVersions.add(mod.mcVersion)
+        if (mod.hasVersionRange) {
+            minecraftVersions.addAll(mod.versionsList)
+        } else {
+            minecraftVersions.add(mod.mcVersion)
+        }
         modLoaders.add("fabric")
 
         requires("fabric-api", "modmenu")
@@ -166,7 +173,7 @@ publishMods {
             ?.readText()
             ?: "No changelog provided."
 
-        dryRun = false
+        dryRun = true
     }
 }
 
