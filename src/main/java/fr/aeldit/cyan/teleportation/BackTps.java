@@ -25,10 +25,6 @@ import static fr.aeldit.cyan.CyanCore.*;
 
 public class BackTps
 {
-    public record BackTp(String playerUUID, String dimension, double x, double y, double z, String date)
-    {
-    }
-
     private List<BackTp> backTps = null;
     private final TypeToken<List<BackTp>> backTpType = new TypeToken<>()
     {
@@ -72,8 +68,9 @@ public class BackTps
 
                 for (BackTp backTp : backTps)
                 {
-                    long days = TimeUnit.DAYS.convert(Math.abs(new Date().getTime()
-                                    - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
+                    long days = TimeUnit.DAYS.convert(
+                            Math.abs(new Date().getTime()
+                                     - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
                             TimeUnit.MILLISECONDS
                     );
 
@@ -243,7 +240,7 @@ public class BackTps
                 if (!couldWrite)
                 {
                     CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written" +
-                            " (for more than 1 sec)");
+                                     " (for more than 1 sec)");
                 }
             }
         }

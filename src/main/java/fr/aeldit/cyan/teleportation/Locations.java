@@ -7,10 +7,6 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandSource;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,56 +24,6 @@ import static fr.aeldit.cyan.CyanCore.*;
 
 public class Locations
 {
-    public static class Location
-    {
-        private String name;
-        private final String dimension;
-        private final double x, y, z;
-        private final float yaw, pitch;
-
-        @Contract(pure = true)
-        public Location(String name, String dimension, double x, double y, double z, float yaw, float pitch)
-        {
-            this.name = name;
-            this.dimension = dimension;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.yaw = yaw;
-            this.pitch = pitch;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public String getDimension()
-        {
-            return dimension;
-        }
-
-        public void teleport(ServerPlayerEntity player, @Nullable MinecraftServer server)
-        {
-            if (server == null)
-            {
-                return;
-            }
-
-            switch (dimension)
-            {
-                case "overworld" -> player.teleport(server.getWorld(World.OVERWORLD), x, y, z, yaw, pitch);
-                case "nether" -> player.teleport(server.getWorld(World.NETHER), x, y, z, yaw, pitch);
-                case "end" -> player.teleport(server.getWorld(World.END), x, y, z, yaw, pitch);
-            }
-        }
-    }
-
     private List<Location> locations = null;
     private final TypeToken<List<Location>> locationsType = new TypeToken<>()
     {
@@ -96,7 +42,7 @@ public class Locations
             return true;
         }
 
-        if (getLocation(location.getName()) == null)
+        if (getLocation(location.name()) == null)
         {
             locations.add(location);
             write();
@@ -140,7 +86,8 @@ public class Locations
         Location location = getLocation(locationName);
         if (location != null)
         {
-            location.setName(newLocationName);
+            locations.remove(location);
+            locations.add(location.getRenamed(newLocationName));
             write();
 
             return true;
@@ -165,7 +112,7 @@ public class Locations
             ArrayList<String> locationsNames = new ArrayList<>(locations.size());
             for (Location location : locations)
             {
-                locationsNames.add(location.getName());
+                locationsNames.add(location.name());
             }
             return CommandSource.suggestMatching(locationsNames, builder);
         }
@@ -178,7 +125,7 @@ public class Locations
         {
             for (Location location : locations)
             {
-                if (location.getName().equals(locationName))
+                if (location.name().equals(locationName))
                 {
                     return location;
                 }
@@ -307,7 +254,7 @@ public class Locations
                 if (!couldWrite)
                 {
                     CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
-                                             "being written (for more than 1 sec)");
+                                     "being written (for more than 1 sec)");
                 }
             }
         }

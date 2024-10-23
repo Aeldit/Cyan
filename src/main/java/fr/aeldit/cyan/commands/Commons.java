@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+
 import static fr.aeldit.cyan.CyanCore.CYAN_LANG_UTILS;
 
 public class Commons
@@ -25,13 +27,25 @@ public class Commons
 
         RegistryKey<World> spawnDim = player.getSpawnPointDimension();
 
+        //? if >=1.21.2 {
         player.teleport(
+                server.getWorld(spawnDim),
+                spawnPos.getX(),
+                spawnPos.getY(),
+                spawnPos.getZ(),
+                new HashSet<>(),
+                player.getYaw(), player.getPitch(),
+                false
+        );
+        //?} else {
+        /*player.teleport(
                 server.getWorld(spawnDim),
                 spawnPos.getX(),
                 spawnPos.getY(),
                 spawnPos.getZ(),
                 player.getYaw(), player.getPitch()
         );
+        *///?}
 
         String key = spawnDim == World.OVERWORLD ? "bed" : "respawnAnchor";
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.%s".formatted(key));
@@ -43,18 +57,33 @@ public class Commons
         BlockPos blockPos = player.getBlockPos();
         double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
 
+        //? if >=1.21.2 {
         player.teleport(
-                player
-                        //? if =1.19.4 {
-                        /*.getWorld(),
-                *///?} else {
-                .getServerWorld(),
-                 //?}
+                player.getServerWorld(),
+                blockPos.getX(),
+                topY,
+                blockPos.getZ(),
+                new HashSet<>(),
+                player.getYaw(), player.getPitch(),
+                false
+        );
+        //?} elif >1.19.4 {
+        /*player.teleport(
+                player.getServerWorld(),
                 blockPos.getX(),
                 topY,
                 blockPos.getZ(),
                 player.getYaw(), player.getPitch()
         );
+        *///?} else {
+        /*player.teleport(
+                player.getWorld(),
+                blockPos.getX(),
+                topY,
+                blockPos.getZ(),
+                player.getYaw(), player.getPitch()
+        );
+        *///?}
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.surface");
         return topY;
     }

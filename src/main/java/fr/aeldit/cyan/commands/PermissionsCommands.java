@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
-import fr.aeldit.cyan.teleportation.Locations;
+import fr.aeldit.cyan.teleportation.Location;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -31,19 +31,21 @@ public class PermissionsCommands
                 CommandManager.literal("cyan").then(
                         CommandManager.literal("execute").then(
                                 CommandManager.argument("command", StringArgumentType.string())
-                                        .suggests((context, builder) -> CommandSource.suggestMatching(
-                                                COMMANDS, builder
-                                        ))
-                                        .then(CommandManager.argument("targets", EntityArgumentType.players())
-                                                      .suggests(ArgumentSuggestion::getPlayerTargets)
-                                                      .then(CommandManager.argument(
-                                                                            "location",
-                                                                            StringArgumentType.string()
-                                                                    )
-                                                                    .suggests(ArgumentSuggestion::getLocationsIfLoc)
-                                                                    .executes(PermissionsCommands::executeForTargets)
-                                                      ).executes(PermissionsCommands::executeForTargets)
-                                        )
+                                              .suggests((context, builder) -> CommandSource.suggestMatching(
+                                                      COMMANDS, builder
+                                              ))
+                                              .then(CommandManager.argument("targets", EntityArgumentType.players())
+                                                                  .suggests(ArgumentSuggestion::getPlayerTargets)
+                                                                  .then(CommandManager.argument(
+                                                                                              "location",
+                                                                                              StringArgumentType.string()
+                                                                                      )
+                                                                                      .suggests(
+                                                                                              ArgumentSuggestion::getLocationsIfLoc)
+                                                                                      .executes(
+                                                                                              PermissionsCommands::executeForTargets)
+                                                                  ).executes(PermissionsCommands::executeForTargets)
+                                              )
                         )
                 )
         );
@@ -73,7 +75,7 @@ public class PermissionsCommands
             return 0;
         }
 
-        Locations.Location location =
+        Location location =
                 command.equals("location")
                 ? LOCATIONS.getLocation(StringArgumentType.getString(context, "location"))
                 : null;
@@ -86,7 +88,7 @@ public class PermissionsCommands
             {
                 if (location != null)
                 {
-                    players.forEach(player -> location.teleport(player, context.getSource().getServer()));
+                    players.forEach(player -> location.teleport(context.getSource().getServer(), player));
                 }
             }
         }
