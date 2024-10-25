@@ -13,21 +13,20 @@ public record BackTp(String playerUUID, String dimension, double x, double y, do
     {
         if (player != null)
         {
-            //? if >=1.21.2 {
+            //? if >=1.21.2-1.21.3 {
             switch (dimension)
             {
                 case "overworld" ->
-                        player.teleport(server.getWorld(World.OVERWORLD), x(), y(), z(), new HashSet<>(), 0, 0, false);
-                case "nether" ->
-                        player.teleport(server.getWorld(World.NETHER), x(), y(), z(), new HashSet<>(), 0, 0, false);
-                case "end" -> player.teleport(server.getWorld(World.END), x(), y(), z(), new HashSet<>(), 0, 0, false);
+                        player.teleport(server.getWorld(World.OVERWORLD), x, y, z, new HashSet<>(), 0, 0, false);
+                case "nether" -> player.teleport(server.getWorld(World.NETHER), x, y, z, new HashSet<>(), 0, 0, false);
+                case "end" -> player.teleport(server.getWorld(World.END), x, y, z, new HashSet<>(), 0, 0, false);
             }
             //?} else {
             /*switch (dimension)
             {
-                case "overworld" -> player.teleport(server.getWorld(World.OVERWORLD), x(), y(), z(), 0, 0);
-                case "nether" -> player.teleport(server.getWorld(World.NETHER), x(), y(), z(), 0, 0);
-                case "end" -> player.teleport(server.getWorld(World.END), x(), y(), z(), 0, 0);
+                case "overworld" -> player.teleport(server.getWorld(World.OVERWORLD), x, y, z, 0, 0);
+                case "nether" -> player.teleport(server.getWorld(World.NETHER), x, y, z, 0, 0);
+                case "end" -> player.teleport(server.getWorld(World.END), x, y, z, 0, 0);
             }
             *///?}
         }

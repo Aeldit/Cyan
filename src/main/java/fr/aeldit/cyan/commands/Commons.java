@@ -27,7 +27,7 @@ public class Commons
 
         RegistryKey<World> spawnDim = player.getSpawnPointDimension();
 
-        //? if >=1.21.2 {
+        //? if >=1.21.2-1.21.3 {
         player.teleport(
                 server.getWorld(spawnDim),
                 spawnPos.getX(),
@@ -57,7 +57,7 @@ public class Commons
         BlockPos blockPos = player.getBlockPos();
         double topY = player.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, blockPos.getX(), blockPos.getZ());
 
-        //? if >=1.21.2 {
+        //? if >=1.21.2-1.21.3 {
         player.teleport(
                 player.getServerWorld(),
                 blockPos.getX(),

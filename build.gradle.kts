@@ -23,6 +23,7 @@ object Constants {
 
 class ModData {
     val hasVersionRange = properties.containsKey("range_name")
+    val hasCLVersion = properties.containsKey("cyanlib_version")
 
     val mcVersion = property("minecraft_version").toString()
     val rangedName = if (hasVersionRange) property("range_name").toString() else mcVersion
@@ -34,7 +35,8 @@ class ModData {
 
     val fabricVersion = property("fabric_version").toString()
     val modmenuVersion = property("modmenu_version").toString()
-    val cyanlibVersion = "${Constants.CYANLIB_VERSION}+${rangedName}"
+    val cyanlibVersion =
+        if (hasCLVersion) property("cyanlib_version").toString() else "${Constants.CYANLIB_VERSION}+${rangedName}"
 
     val fullVersion = "${Constants.MOD_VERSION}+${rangedName}"
 
@@ -80,7 +82,7 @@ dependencies {
     // CyanLib
     val debug = false
     if (debug) {
-        modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-0.4.15-beta2+1.21.jar")))
+        modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-0.5.1+1.21.x.jar")))
     } else {
         modImplementation("maven.modrinth:cyanlib:${mod.cyanlibVersion}")
         include("maven.modrinth:cyanlib:${mod.cyanlibVersion}")

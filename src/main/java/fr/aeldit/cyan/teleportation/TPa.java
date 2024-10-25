@@ -49,6 +49,7 @@ public class TPa
 
     public static @Nullable List<String> getRequestingPlayers(String requestedPlayer)
     {
+        // TODO -> Remove manual check as the get function already does it
         if (PLAYERS_TPA_QUEUES.containsKey(requestedPlayer))
         {
             return PLAYERS_TPA_QUEUES.get(requestedPlayer);

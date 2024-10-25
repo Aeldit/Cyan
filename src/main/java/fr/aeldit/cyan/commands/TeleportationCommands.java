@@ -310,7 +310,7 @@ public class TeleportationCommands
             }
         }
 
-        //? if >=1.21.2 {
+        //? if >=1.21.2-1.21.3 {
         requestingPlayer.teleport(
                 player.getServerWorld(), player.getX(), player.getY(), player.getZ(), new HashSet<>(), 0, 0, false
         );
