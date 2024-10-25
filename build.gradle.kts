@@ -16,14 +16,13 @@ repositories {
 }
 
 object Constants {
-    const val MOD_VERSION: String = "0.11.1"
+    const val MOD_VERSION: String = "0.11.2"
     const val LOADER_VERSION: String = "0.16.7"
-    const val CYANLIB_VERSION: String = "0.5.1"
+    const val CYANLIB_VERSION: String = "0.5.2"
 }
 
 class ModData {
     val hasVersionRange = properties.containsKey("range_name")
-    val hasCLVersion = properties.containsKey("cyanlib_version")
 
     val mcVersion = property("minecraft_version").toString()
     val rangedName = if (hasVersionRange) property("range_name").toString() else mcVersion
@@ -36,7 +35,8 @@ class ModData {
     val fabricVersion = property("fabric_version").toString()
     val modmenuVersion = property("modmenu_version").toString()
     val cyanlibVersion =
-        if (hasCLVersion) property("cyanlib_version").toString() else "${Constants.CYANLIB_VERSION}+${rangedName}"
+        if (properties.containsKey("cyanlib_version")) property("cyanlib_version").toString()
+        else "${Constants.CYANLIB_VERSION}+${rangedName}"
 
     val fullVersion = "${Constants.MOD_VERSION}+${rangedName}"
 
