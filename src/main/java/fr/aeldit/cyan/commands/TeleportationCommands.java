@@ -305,7 +305,7 @@ public class TeleportationCommands
 
             if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
-                CYAN_LANG_UTILS.sendPlayerMessage(player, "error.notEnoughXpTpa", requestingPlayerName);
+                CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "error.notEnoughXpTpa", requestingPlayerName);
                 return 0;
             }
         }
