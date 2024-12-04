@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 import static fr.aeldit.cyan.CyanCore.CYAN_LANG_UTILS;
 
-public class Commons
+public abstract class Commons
 {
     public static @Nullable BlockPos bed(@NotNull ServerPlayerEntity player)
     {
