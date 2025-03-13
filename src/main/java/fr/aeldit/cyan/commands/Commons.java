@@ -17,15 +17,31 @@ public abstract class Commons
 {
     public static @Nullable BlockPos bed(@NotNull ServerPlayerEntity player)
     {
-        BlockPos spawnPos = player.getSpawnPointPosition();
+
+        //? if =1.21.5 {
+        ServerPlayerEntity.Respawn respawn = player.getRespawn();
+        if (respawn == null)
+        {
+            return null;
+        }
+        BlockPos spawnPos = respawn.pos();
+        RegistryKey<World> spawnDim = respawn.dimension();
+         //?} else {
+        /*BlockPos spawnPos = player.getSpawnPointPosition();
+        if (spawnPos == null)
+        {
+            return null;
+        }
+        RegistryKey<World> spawnDim = player.getSpawnPointDimension();
+        *///?}
+
         MinecraftServer server = player.getServer();
-        if (spawnPos == null || server == null)
+        if (server == null)
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.bedNotFound");
             return null;
         }
 
-        RegistryKey<World> spawnDim = player.getSpawnPointDimension();
 
         //? if >=1.21.2-1.21.3 {
         player.teleport(

@@ -7,11 +7,11 @@ import com.mojang.brigadier.context.CommandContext;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTp;
 import fr.aeldit.cyan.teleportation.TPa;
+import fr.aeldit.cyan.util.VersionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -252,18 +252,11 @@ public class TeleportationCommands
         playerToSendMessage.sendMessage(
                 Text.literal(Formatting.GREEN + "[Accept]")
                     .setStyle(Style.EMPTY.withClickEvent(
-                            new ClickEvent(
-                                    ClickEvent.Action.RUN_COMMAND,
-                                    "/tpaAccept %s".formatted(requestingPlayerName)
-                            )))
-                    .append(Text.literal(Formatting.RED + "    [Refuse]")
-                                .setStyle(Style.EMPTY.withClickEvent(
-                                        new ClickEvent(
-                                                ClickEvent.Action.RUN_COMMAND,
-                                                "/tpaRefuse %s".formatted(requestingPlayerName)
-                                        ))
-                                )
-                    )
+                            VersionUtils.getClickEvent("/tpaAccept %s".formatted(requestingPlayerName))
+                    ))
+                    .append(Text.literal(Formatting.RED + "    [Refuse]").setStyle(Style.EMPTY.withClickEvent(
+                            VersionUtils.getClickEvent("/tpaRefuse %s".formatted(requestingPlayerName))
+                    )))
         );
         return Command.SINGLE_SUCCESS;
     }

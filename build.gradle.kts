@@ -45,7 +45,6 @@ class ModData {
 
 val mod = ModData()
 
-
 // Sets the name of the output jar files
 base {
     archivesName = "${rootProject.name}-${mod.fullVersion}"
@@ -58,20 +57,18 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${Constants.LOADER_VERSION}")
 
     // Fabric API
-    for (name in listOf(
+    setOf(
         // ModMenu dependencies
         "fabric-resource-loader-v0",
         "fabric-key-binding-api-v1",
-        // CyanLib dependencies
-        "fabric-command-api-v2",
-        "fabric-lifecycle-events-v1",
         "fabric-screen-api-v1",
+        "fabric-lifecycle-events-v1",
         // Cyan dependencies
+        "fabric-command-api-v2",
         "fabric-networking-api-v1",
         "fabric-entity-events-v1"
-    )) {
-        val module = fabricApi.module(name, mod.fabricVersion)
-        modImplementation(module)
+    ).forEach {
+        modImplementation(fabricApi.module(it, mod.fabricVersion))
     }
 
     modImplementation("com.terraformersmc:modmenu:${mod.modmenuVersion}")
@@ -79,13 +76,11 @@ dependencies {
     val debug = false
     if (debug) {
         modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-1.0.0+1.21.2-1.21.4.jar")))
-        include(files(projectDir.resolve("../../run/mods/cyanlib-1.0.0+1.21.2-1.21.4.jar")))
     } else {
         modImplementation("maven.modrinth:cyanlib:${mod.cyanlibVersion}")
-        include("maven.modrinth:cyanlib:${mod.cyanlibVersion}")
     }
 
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.12.1")
 }
 
 loom {
@@ -121,6 +116,7 @@ tasks {
         inputs.property("min", mod.min)
         inputs.property("max", mod.max)
         inputs.property("java_version", mod.javaVersion)
+        inputs.property("modmenu_version", mod.modmenuVersion)
 
         filesMatching("fabric.mod.json") {
             expand(
@@ -129,7 +125,8 @@ tasks {
                     "loader_version" to Constants.LOADER_VERSION,
                     "min" to mod.min,
                     "max" to mod.max,
-                    "java_version" to mod.javaVersion
+                    "java_version" to mod.javaVersion,
+                    "modmenu_version" to mod.modmenuVersion
                 )
             )
         }
