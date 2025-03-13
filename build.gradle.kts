@@ -160,8 +160,7 @@ publishMods {
         }
         modLoaders.add("fabric")
 
-        requires("fabric-api", "modmenu")
-        embeds("cyanlib")
+        requires("fabric-api", "cyanlib", "modmenu")
 
         changelog = rootProject.file("changelogs/latest.md")
             .takeIf { it.exists() }
