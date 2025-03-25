@@ -16,9 +16,9 @@ repositories {
 }
 
 object Constants {
-    const val MOD_VERSION: String = "1.0.0"
+    const val MOD_VERSION: String = "1.0.1"
     const val LOADER_VERSION: String = "0.16.10"
-    const val CYANLIB_VERSION: String = "1.0.0"
+    const val CYANLIB_VERSION: String = "1.0.1"
 }
 
 class ModData {
@@ -38,7 +38,7 @@ class ModData {
 
     val fullVersion = "${Constants.MOD_VERSION}+${rangedName}"
 
-    val isj21 = mcVersion !in listOf("1.19.4", "1.20.1", "1.20.2", "1.20.4")
+    val isj21 = mcVersion !in setOf("1.19.4", "1.20.1", "1.20.2", "1.20.4")
 
     val javaVersion = if (isj21) "21" else "17"
 }
@@ -75,7 +75,7 @@ dependencies {
 
     val debug = false
     if (debug) {
-        modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-1.0.0+1.21.2-1.21.4.jar")))
+        modImplementation(files(projectDir.resolve("../../run/mods/cyanlib-1.0.0+1.21.4.jar")))
     } else {
         modImplementation("maven.modrinth:cyanlib:${mod.cyanlibVersion}")
     }

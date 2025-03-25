@@ -11,11 +11,10 @@ public class VersionUtils
     {
         //? if =1.21.5 {
         return new ClickEvent.RunCommand(command);
-         //?} else {
+        //?} else {
         /*return new ClickEvent(
                 ClickEvent.Action.RUN_COMMAND,
-                command
-        );
+                command);
         *///?}
     }
 }
