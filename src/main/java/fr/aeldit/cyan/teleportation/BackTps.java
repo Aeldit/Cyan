@@ -25,24 +25,16 @@ import static fr.aeldit.cyan.CyanCore.*;
 
 public class BackTps
 {
-    private List<BackTp> backTps = null;
+    private final List<BackTp> backTps = Collections.synchronizedList(new ArrayList<>());
     private final TypeToken<List<BackTp>> backTpType = new TypeToken<>()
     {
     };
-    private boolean isEditingFile = false;
     public static Path BACK_TP_PATH =
             FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/back.json".formatted(MODID)));
 
     public void add(@NotNull BackTp backTp)
     {
-        if (backTps == null)
-        {
-            backTps = Collections.synchronizedList(new ArrayList<>());
-        }
-        else
-        {
-            backTps.remove(backTp); // Makes sure there is only one backTp at a time per player
-        }
+        backTps.remove(backTp); // Makes sure there is only one backTp at a time per player
         backTps.add(backTp);
         write();
     }
@@ -50,7 +42,7 @@ public class BackTps
     public void remove(String playerUUID)
     {
         BackTp backTp = getBackTp(playerUUID);
-        if (backTp != null && backTps != null)
+        if (backTp != null)
         {
             backTps.remove(backTp);
             write();
@@ -59,80 +51,50 @@ public class BackTps
 
     public void removeAllOutdated()
     {
-        if (backTps != null)
+        try
         {
-            try
-            {
-                ArrayList<BackTp> tmp = new ArrayList<>();
-                int maxTime = CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue();
+            ArrayList<BackTp> tmp = new ArrayList<>();
+            int maxTime = CyanLibConfigImpl.DAYS_TO_REMOVE_BACK_TP.getValue();
 
-                for (BackTp backTp : backTps)
+            for (BackTp backTp : backTps)
+            {
+                long days = TimeUnit.DAYS.convert(
+                        Math.abs(new Date().getTime()
+                                 - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
+                        TimeUnit.MILLISECONDS
+                );
+
+                if (days >= maxTime)
                 {
-                    long days = TimeUnit.DAYS.convert(
-                            Math.abs(new Date().getTime()
-                                     - new SimpleDateFormat("dd/MM/yyyy").parse(backTp.date()).getTime()),
-                            TimeUnit.MILLISECONDS
-                    );
-
-                    if (days >= maxTime)
-                    {
-                        tmp.add(backTp);
-                    }
+                    tmp.add(backTp);
                 }
-                backTps.removeAll(tmp);
-                write();
             }
-            catch (ParseException e)
-            {
-                throw new RuntimeException(e);
-            }
+            backTps.removeAll(tmp);
+            write();
+        }
+        catch (ParseException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
     public @Nullable BackTp getBackTp(String playerUUID)
     {
-        if (backTps != null)
-        {
-            for (BackTp backTp : backTps)
-            {
-                if (backTp.playerUUID().equals(playerUUID))
-                {
-                    return backTp;
-                }
-            }
-        }
-        return null;
+        return backTps.stream().filter(backTp -> backTp.playerUUID().equals(playerUUID)).findFirst().orElse(null);
     }
 
     public boolean backTpExists(String playerUUID)
     {
-        if (backTps != null)
-        {
-            for (BackTp backTp : backTps)
-            {
-                if (backTp.playerUUID().equals(playerUUID))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return backTps.stream().anyMatch(backTp -> backTp.playerUUID().equals(playerUUID));
     }
 
     public void readServer()
     {
         if (Files.exists(BACK_TP_PATH))
         {
-            try
+            try (Reader reader = Files.newBufferedReader(BACK_TP_PATH))
             {
-                Gson gsonReader = new Gson();
-                Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                if (backTps == null)
-                {
-                    backTps = Collections.synchronizedList(new ArrayList<>());
-                }
-                backTps.addAll(gsonReader.fromJson(reader, backTpType));
-                reader.close();
+                backTps.addAll(new Gson().fromJson(reader, backTpType));
             }
             catch (IOException e)
             {
@@ -149,16 +111,9 @@ public class BackTps
 
         if (Files.exists(BACK_TP_PATH))
         {
-            try
+            try (Reader reader = Files.newBufferedReader(BACK_TP_PATH))
             {
-                Gson gsonReader = new Gson();
-                Reader reader = Files.newBufferedReader(BACK_TP_PATH);
-                if (backTps == null)
-                {
-                    backTps = Collections.synchronizedList(new ArrayList<>());
-                }
-                backTps.addAll(gsonReader.fromJson(reader, backTpType));
-                reader.close();
+                backTps.addAll(new Gson().fromJson(reader, backTpType));
             }
             catch (IOException e)
             {
@@ -188,59 +143,13 @@ public class BackTps
         }
         else
         {
-            // Checks if the file is already being written, and waits 1 second before writing if so
-            if (!isEditingFile)
+            try (Writer writer = Files.newBufferedWriter(BACK_TP_PATH))
             {
-                try
-                {
-                    isEditingFile = true;
-
-                    Gson gsonWriter = new GsonBuilder().create();
-                    Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
-                    gsonWriter.toJson(backTps, writer);
-                    writer.close();
-
-                    isEditingFile = false;
-                }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                new GsonBuilder().create().toJson(backTps, writer);
             }
-            else
+            catch (IOException e)
             {
-                long end = System.currentTimeMillis() + 1000; // 1 s
-                boolean couldWrite = false;
-
-                while (System.currentTimeMillis() < end)
-                {
-                    if (!isEditingFile)
-                    {
-                        try
-                        {
-                            isEditingFile = true;
-
-                            Gson gsonWriter = new GsonBuilder().create();
-                            Writer writer = Files.newBufferedWriter(BACK_TP_PATH);
-                            gsonWriter.toJson(backTps, writer);
-                            writer.close();
-
-                            couldWrite    = true;
-                            isEditingFile = false;
-                        }
-                        catch (IOException e)
-                        {
-                            throw new RuntimeException(e);
-                        }
-                        break;
-                    }
-                }
-
-                if (!couldWrite)
-                {
-                    CYAN_LOGGER.info("[Cyan] Could not write the backTps file because it is already being written" +
-                                     " (for more than 1 sec)");
-                }
+                throw new RuntimeException(e);
             }
         }
     }
