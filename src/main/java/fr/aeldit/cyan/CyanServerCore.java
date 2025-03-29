@@ -9,6 +9,7 @@ import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import java.nio.file.Files;
@@ -32,7 +33,7 @@ public class CyanServerCore implements DedicatedServerModInitializer
             }
         });
 
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+        ServerLifecycleEvents.AFTER_SAVE.register((handler, sender, server) -> {
             if (Files.exists(BACK_TP_PATH))
             {
                 BACK_TPS.removeAllOutdated();
