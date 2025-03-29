@@ -146,7 +146,6 @@ public class BackTps
         BACK_TP_PATH = FabricLoader.getInstance().getConfigDir().resolve(
                 Path.of("%s/%s/back.json".formatted(MODID, saveName))
         );
-        checkOrCreateModDir(false);
 
         if (Files.exists(BACK_TP_PATH))
         {
@@ -226,7 +225,7 @@ public class BackTps
                             gsonWriter.toJson(backTps, writer);
                             writer.close();
 
-                            couldWrite = true;
+                            couldWrite    = true;
                             isEditingFile = false;
                         }
                         catch (IOException e)

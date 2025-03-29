@@ -24,24 +24,15 @@ import static fr.aeldit.cyan.CyanCore.*;
 
 public class Locations
 {
-    private List<Location> locations = null;
+    private final List<Location> locations = Collections.synchronizedList(new ArrayList<>());
     private final TypeToken<List<Location>> locationsType = new TypeToken<>()
     {
     };
-    private boolean isEditingFile = false;
     public static Path LOCATIONS_PATH =
             FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/locations.json".formatted(MODID)));
 
     public boolean add(@NotNull Location location)
     {
-        if (locations == null)
-        {
-            locations = Collections.synchronizedList(new ArrayList<>());
-            locations.add(location);
-            write();
-            return true;
-        }
-
         if (getLocation(location.name()) == null)
         {
             locations.add(location);
@@ -54,15 +45,10 @@ public class Locations
     public boolean remove(String locationName)
     {
         Location location = getLocation(locationName);
-        if (location != null && locations != null)
+        if (location != null)
         {
             locations.remove(location);
-            if (locations.isEmpty())
-            {
-                locations = null;
-            }
             write();
-
             return true;
         }
         return false;
@@ -73,9 +59,7 @@ public class Locations
         if (!locations.isEmpty())
         {
             locations.clear();
-            locations = null;
             write();
-
             return true;
         }
         return false;
@@ -89,7 +73,6 @@ public class Locations
             locations.remove(location);
             locations.add(location.getRenamed(newLocationName));
             write();
-
             return true;
         }
         return false;
@@ -97,7 +80,7 @@ public class Locations
 
     public boolean isEmpty()
     {
-        return locations == null || locations.isEmpty();
+        return locations.isEmpty();
     }
 
     public @Nullable List<Location> getLocations()
@@ -107,47 +90,24 @@ public class Locations
 
     public CompletableFuture<Suggestions> getLocationsNames(@NotNull SuggestionsBuilder builder)
     {
-        if (locations != null)
-        {
-            ArrayList<String> locationsNames = new ArrayList<>(locations.size());
-            for (Location location : locations)
-            {
-                locationsNames.add(location.name());
-            }
-            return CommandSource.suggestMatching(locationsNames, builder);
-        }
-        return new CompletableFuture<>();
+        return CommandSource.suggestMatching(locations.stream().map(Location::name).toList(), builder);
     }
 
     public @Nullable Location getLocation(String locationName)
     {
-        if (locations != null)
-        {
-            for (Location location : locations)
-            {
-                if (location.name().equals(locationName))
-                {
-                    return location;
-                }
-            }
-        }
-        return null;
+        return locations.stream()
+                        .filter(location -> location.name().equals(locationName))
+                        .findFirst()
+                        .orElse(null);
     }
 
     public void readServer()
     {
         if (Files.exists(LOCATIONS_PATH))
         {
-            try
+            try (Reader reader = Files.newBufferedReader(LOCATIONS_PATH))
             {
-                Gson gsonReader = new Gson();
-                Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                if (locations == null)
-                {
-                    locations = Collections.synchronizedList(new ArrayList<>());
-                }
-                locations.addAll(gsonReader.fromJson(reader, locationsType));
-                reader.close();
+                locations.addAll(new Gson().fromJson(reader, locationsType));
             }
             catch (IOException e)
             {
@@ -161,20 +121,12 @@ public class Locations
         LOCATIONS_PATH = FabricLoader.getInstance().getConfigDir().resolve(
                 Path.of("%s/%s/locations.json".formatted(MODID, saveName))
         );
-        checkOrCreateModDir(true);
 
         if (Files.exists(LOCATIONS_PATH))
         {
-            try
+            try (Reader reader = Files.newBufferedReader(LOCATIONS_PATH))
             {
-                Gson gsonReader = new Gson();
-                Reader reader = Files.newBufferedReader(LOCATIONS_PATH);
-                if (locations == null)
-                {
-                    locations = Collections.synchronizedList(new ArrayList<>());
-                }
-                locations.addAll(gsonReader.fromJson(reader, locationsType));
-                reader.close();
+                locations.addAll(new Gson().fromJson(reader, locationsType));
             }
             catch (IOException e)
             {
@@ -187,7 +139,7 @@ public class Locations
     {
         checkOrCreateModDir(true);
 
-        if (locations == null || locations.isEmpty())
+        if (locations.isEmpty())
         {
             if (Files.exists(LOCATIONS_PATH))
             {
@@ -204,58 +156,13 @@ public class Locations
         }
         else
         {
-            if (!isEditingFile)
+            try (Writer writer = Files.newBufferedWriter(LOCATIONS_PATH))
             {
-                try
-                {
-                    isEditingFile = true;
-
-                    Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
-                    Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
-                    gsonWriter.toJson(locations, writer);
-                    writer.close();
-
-                    isEditingFile = false;
-                }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                new GsonBuilder().setPrettyPrinting().create().toJson(locations, writer);
             }
-            else
+            catch (IOException e)
             {
-                long end = System.currentTimeMillis() + 1000; // 1 s
-                boolean couldWrite = false;
-
-                try
-                {
-                    while (System.currentTimeMillis() < end)
-                    {
-                        if (!isEditingFile)
-                        {
-                            isEditingFile = true;
-
-                            Gson gsonWriter = new GsonBuilder().setPrettyPrinting().create();
-                            Writer writer = Files.newBufferedWriter(LOCATIONS_PATH);
-                            gsonWriter.toJson(locations, writer);
-                            writer.close();
-
-                            couldWrite = true;
-                            isEditingFile = false;
-                            break;
-                        }
-                    }
-                }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
-
-                if (!couldWrite)
-                {
-                    CYAN_LOGGER.info("[CyanSetHome] Could not write the locations file because it is already " +
-                                     "being written (for more than 1 sec)");
-                }
+                throw new RuntimeException(e);
             }
         }
     }
