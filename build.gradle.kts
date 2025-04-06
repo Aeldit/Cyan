@@ -81,6 +81,12 @@ dependencies {
     }
 
     implementation("com.google.code.gson:gson:2.12.1")
+
+    testImplementation("net.fabricmc:fabric-loader-junit:${Constants.LOADER_VERSION}")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 loom {
