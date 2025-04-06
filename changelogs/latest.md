@@ -1,3 +1,1 @@
-- Add 1.21.5 support
-- CyanLib is no longer embedded in the jar
-- Update to CyanLib 1.0.1
+Add the possibility to use a fixed amount of XP when teleporting
