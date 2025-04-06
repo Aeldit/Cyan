@@ -11,13 +11,14 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static fr.aeldit.cyan.CyanCore.*;
-import static fr.aeldit.cyan.config.CyanLibConfigImpl.ALLOW_LOCATIONS;
-import static fr.aeldit.cyan.config.CyanLibConfigImpl.MIN_OP_LVL_EDIT_LOCATIONS;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
+import static fr.aeldit.cyanlib.lib.utils.TPUtils.getRequiredXpLevelsToTp;
 
 public class LocationCommands
 {
@@ -240,7 +241,40 @@ public class LocationCommands
             return 0;
         }
 
+        int requiredXpLevel = 0;
+        if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
+        {
+            requiredXpLevel = XP_USE_FIXED_AMOUNT.getValue()
+                              ? XP_AMOUNT.getValue()
+                              : getRequiredXpLevelsToTp(
+                                      player,
+                                      new BlockPos((int) loc.x(), (int) loc.y(), (int) loc.z()),
+                                      BLOCKS_PER_XP_LEVEL_LOCATION.getValue()
+                              );
+
+            if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
+            {
+                CYAN_LANG_UTILS.sendPlayerMessage(
+                        player,
+                        "error.notEnoughXp",
+                        Formatting.GOLD + String.valueOf(requiredXpLevel),
+                        Formatting.RED + (XP_USE_POINTS.getValue() ? "points" : "levels")
+                );
+                return 0;
+            }
+        }
+
         loc.teleport(server, player);
+
+        if (XP_USE_POINTS.getValue())
+        {
+            player.addExperience(-1 * requiredXpLevel);
+        }
+        else
+        {
+            player.addExperienceLevels(-1 * requiredXpLevel);
+        }
+
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.goToLocation", Formatting.YELLOW + locationName);
         return Command.SINGLE_SUCCESS;
     }

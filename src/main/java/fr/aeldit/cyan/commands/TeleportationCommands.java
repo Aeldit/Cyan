@@ -121,7 +121,13 @@ public class TeleportationCommands
         int requiredXpLevel = 0;
         if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
         {
-            requiredXpLevel = getRequiredXpLevelsToTp(player, spawnPos, BLOCKS_PER_XP_LEVEL_BED.getValue());
+            requiredXpLevel = XP_USE_FIXED_AMOUNT.getValue()
+                              ? XP_AMOUNT.getValue()
+                              : getRequiredXpLevelsToTp(
+                                      player,
+                                      spawnPos,
+                                      BLOCKS_PER_XP_LEVEL_BED.getValue()
+                              );
 
             if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
@@ -179,7 +185,11 @@ public class TeleportationCommands
 
             int coordinatesDistance = distanceY;
 
-            if (coordinatesDistance < BLOCKS_PER_XP_LEVEL_SURFACE.getValue())
+            if (XP_USE_FIXED_AMOUNT.getValue())
+            {
+                requiredXpLevel = XP_AMOUNT.getValue();
+            }
+            else if (coordinatesDistance < BLOCKS_PER_XP_LEVEL_SURFACE.getValue())
             {
                 requiredXpLevel = 1;
             }
@@ -291,10 +301,12 @@ public class TeleportationCommands
 
         if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
         {
-            requiredXpLevel = getRequiredXpLevelsToTp(
-                    requestingPlayer, player.getBlockPos(),
-                    BLOCKS_PER_XP_LEVEL_TPA.getValue()
-            );
+            requiredXpLevel = XP_USE_FIXED_AMOUNT.getValue()
+                              ? XP_AMOUNT.getValue()
+                              : getRequiredXpLevelsToTp(
+                                      requestingPlayer, player.getBlockPos(),
+                                      BLOCKS_PER_XP_LEVEL_TPA.getValue()
+                              );
 
             if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {

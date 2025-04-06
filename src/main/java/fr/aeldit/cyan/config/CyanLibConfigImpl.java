@@ -37,21 +37,22 @@ public class CyanLibConfigImpl implements ICyanLibConfig
     );
 
     // XP to teleport
-    public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption(
-            "useXpToTeleport", true
-    );
+    public static final BooleanOption USE_XP_TO_TELEPORT = new BooleanOption("useXpToTeleport", true);
     public static final BooleanOption XP_USE_POINTS = new BooleanOption("xpUsePoints", false);
+    public static final BooleanOption XP_USE_FIXED_AMOUNT = new BooleanOption("xpUseFixedAmount", false);
+    public static final IntegerOption XP_AMOUNT = new IntegerOption("xpAmount", 1, RULES.POSITIVE_VALUE);
+
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_BED = new IntegerOption(
-            "blocksPerXpLevelBed", 200,
-            RULES.POSITIVE_VALUE
+            "blocksPerXpLevelBed", 200, RULES.POSITIVE_VALUE
     );
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_SURFACE = new IntegerOption(
-            "blocksPerXpLevelSurface", 50,
-            RULES.POSITIVE_VALUE
+            "blocksPerXpLevelSurface", 50, RULES.POSITIVE_VALUE
+    );
+    public static final IntegerOption BLOCKS_PER_XP_LEVEL_LOCATION = new IntegerOption(
+            "blocksPerXpLevelLocation", 200, RULES.POSITIVE_VALUE
     );
     public static final IntegerOption BLOCKS_PER_XP_LEVEL_TPA = new IntegerOption(
-            "blocksPerXpLevelTpa", 200,
-            RULES.POSITIVE_VALUE
+            "blocksPerXpLevelTpa", 200, RULES.POSITIVE_VALUE
     );
 
     @Override
@@ -124,10 +125,16 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                         "§3The number of blocks to consume 1 XP level for /surface is now %s"
                 ),
                 entry(
+                        "msg.set.blocksPerXpLevelLocation",
+                        "§3The number of blocks to consume 1 XP level for /location is now %s"
+                ),
+                entry(
                         "msg.set.blocksPerXpLevelTpa",
                         "§3The number of blocks to consume 1 XP level for /tpa is now %s"
                 ),
                 entry("msg.set.xpUsePoints", "§3Toggled the use of XP points instead of XP levels %s"),
+                entry("msg.set.xpUseFixedAmount", "§3Toggled the use of a fixed XP amount %s"),
+                entry("msg.set.xpAmount", "§3The fixed XP amount to use when teleporting is now %s"),
 
                 // HEADERS
                 entry("msg.headerDescCmd", "§6Cyan - DESCRIPTION (commands) :\n"),
@@ -155,7 +162,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry(
                         "msg.getDesc.distanceToEntitiesKgi",
                         "§3The§e distanceToEntitiesKgi §3option defines distance (in chunks) in which the ground " +
-                                "items will be removed"
+                        "items will be removed"
                 ),
                 entry(
                         "msg.getDesc.minOpLvlKgi",
@@ -164,62 +171,80 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry(
                         "msg.getDesc.minOpLvlEditLocation",
                         "§3The §eminOpLvlEditLocation §3determines the " +
-                                "minimum OP level required to edit locations"
+                        "minimum OP level required to edit locations"
                 ),
                 entry(
                         "msg.getDesc.minOpLvlPermNodes",
                         "§3The §eminOpLvlPermNodes §3determines the " +
-                                "minimum OP level required to use the permission nodes"
+                        "minimum OP level required to use the permission nodes"
                 ),
                 entry(
                         "msg.getDesc.daysToRemoveBackTp",
                         "§3The§e daysToRemoveBackTp §3option defines the " +
-                                "number of days the last death location of a player is kept)"
+                        "number of days the last death location of a player is kept)"
                 ),
                 entry(
                         "msg.getDesc.useXpToTeleport",
                         "§3The§e useXpToTeleport §3option defines whether XP is " +
-                                "required to use teleportation commands such as /bed, /surface or /tpa"
+                        "required to use teleportation commands such as /bed, /surface or /tpa"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelBed",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
-                                "using the /bed command (iff the§e useXpToTeleport §3option is set to true)"
+                        "using the /bed command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelSurface",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
-                                "using the /surface command (iff the§e useXpToTeleport §3option is set to true)"
+                        "using the /surface command (iff the§e useXpToTeleport §3option is set to true)"
+                ),
+                entry(
+                        "msg.getDesc.blocksPerXpLevelLocation",
+                        "§3The§e blocksPerXpLevelLocation §3option defines how many blocks will consume 1 level when " +
+                        "using the /location command (iff the§e useXpToTeleport §3options is set to true)"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelTpa",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
-                                "using the /tpa command (iff the§e useXpToTeleport §3options is set to true)"
+                        "using the /tpa command (iff the§e useXpToTeleport §3options is set to true)"
                 ),
                 entry(
                         "msg.getDesc.xpUsePoints",
                         "§3The§e xpUsePoints §3option defines the whether the necessary XP will be in points or in " +
-                                "levels"
+                        "levels"
+                ),
+                entry(
+                        "msg.getDesc.xpUseFixedAmount",
+                        "§3The§e xpUseFixedAmount §3option defines the whether the necessary XP to teleport will be a"
+                        + " fixed amount or will depend on the distance"
+                ),
+                entry(
+                        "msg.getDesc.xpAmount",
+                        "§3The§e xpAmount §3option defines the fixed amount of XP used when the xpUseFixedAmount "
+                        + "option is ON"
                 ),
 
                 // GET_CFG
-                entry("msg.getCfg.header", "§6Cyan - OPTIONS :\n"),
+                entry("msg.getCfg.header", "§6Cyan - OPTIONS:\n"),
                 entry("msg.getCfg.allowBed", "§6- §d/bed §3: %s"),
                 entry("msg.getCfg.allowKgi", "§6- §d/kgi §3: %s"),
                 entry("msg.getCfg.allowSurface", "§6- §d/surface §3: %s"),
-                entry("msg.getCfg.allowLocations", "§6- §3Location commands : %s"),
+                entry("msg.getCfg.allowLocations", "§6- §3Location commands: %s"),
                 entry("msg.getCfg.allowBackTp", "§6- §d/back §3: %s"),
                 entry("msg.getCfg.allowTpa", "§6- §d/tpa §3: %s"),
-                entry("msg.getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks) : %s"),
+                entry("msg.getCfg.distanceToEntitiesKgi", "§6- §d/kgi §3distance (in chunks): %s"),
                 entry("msg.getCfg.minOpLvlKgi", "§6- §3Minimum OP level for §d/kgi §3: %s"),
                 entry("msg.getCfg.minOpLvlEditLocation", "§6- §3Minimum OP level to edit locations: %s"),
                 entry("msg.getCfg.minOpLvlPermNodes", "§6- §3Minimum OP level to use permission nodes: %s"),
                 entry("msg.getCfg.daysToRemoveBackTp", "§6- §3Days to keep the death location: %s"),
                 entry("msg.getCfg.useXpToTeleport", "§6- §3Use XP for teleportation commands: %s"),
-                entry("msg.getCfg.xpUsePoints", "§6- §3Use XP points instead of XP levels : %s"),
+                entry("msg.getCfg.xpUsePoints", "§6- §3Use XP points instead of XP levels: %s"),
                 entry("msg.getCfg.blocksPerXpLevelBed", "§6- §3Blocks per 1 XP level for bed tp: %s"),
                 entry("msg.getCfg.blocksPerXpLevelSurface", "§6- §3Blocks per 1 XP level for surface tp: %s"),
-                entry("msg.getCfg.blocksPerXpLevelTpa", "§6- §3Blocks per 1 XP level for tpa: %s")
+                entry("msg.getCfg.blocksPerXpLevelLocation", "§6- §3Blocks per 1 XP level for location: %s"),
+                entry("msg.getCfg.blocksPerXpLevelTpa", "§6- §3Blocks per 1 XP level for tpa: %s"),
+                entry("msg.getCfg.xpUseFixedAmount", "§6- §3Use fixed amount of XP for TPs: %s"),
+                entry("msg.getCfg.xpAmount", "§6- §3Fixed XP amount: %s")
         );
     }
 }
