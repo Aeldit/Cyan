@@ -16,9 +16,9 @@ repositories {
 }
 
 object Constants {
-    const val MOD_VERSION: String = "1.1.1"
+    const val MOD_VERSION: String = "1.1.2"
     const val LOADER_VERSION: String = "0.16.10"
-    const val CYANLIB_VERSION: String = "1.0.1"
+    const val CYANLIB_VERSION: String = "1.0.2"
 }
 
 class ModData {
@@ -122,7 +122,6 @@ tasks {
         inputs.property("min", mod.min)
         inputs.property("max", mod.max)
         inputs.property("java_version", mod.javaVersion)
-        inputs.property("modmenu_version", mod.modmenuVersion)
 
         filesMatching("fabric.mod.json") {
             expand(
@@ -132,7 +131,6 @@ tasks {
                     "min" to mod.min,
                     "max" to mod.max,
                     "java_version" to mod.javaVersion,
-                    "modmenu_version" to mod.modmenuVersion
                 )
             )
         }
@@ -166,7 +164,8 @@ publishMods {
         }
         modLoaders.add("fabric")
 
-        requires("fabric-api", "cyanlib", "modmenu")
+        requires("fabric-api", "cyanlib")
+        optional("modmenu")
 
         changelog = rootProject.file("changelogs/latest.md")
             .takeIf { it.exists() }
