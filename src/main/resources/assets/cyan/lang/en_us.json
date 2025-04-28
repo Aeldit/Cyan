@@ -19,6 +19,8 @@
   "cyanlib.config.option.useCustomTranslations": "UseCustomTranslations",
   "cyanlib.config.option.useXpToTeleport": "UseXpToTeleport",
   "cyanlib.config.option.xpUsePoints": "XpUsePoints",
+  "cyanlib.config.option.xpUseFixedAmount": "XpUseFixedAmount",
+  "cyanlib.config.option.xpAmount": "XpAmount",
   "cyanlib.config.option.blocksPerXpLevelBed": "BlocksPerXpLevelBed",
   "cyanlib.config.option.blocksPerXpLevelSurface": "BlocksPerXpLevelSurface",
   "cyanlib.config.option.blocksPerXpLevelTpa": "BlocksPerXpLevelTpa"
