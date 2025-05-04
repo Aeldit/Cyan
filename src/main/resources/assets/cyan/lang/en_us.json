@@ -23,5 +23,7 @@
   "cyanlib.config.option.xpAmount": "XpAmount",
   "cyanlib.config.option.blocksPerXpLevelBed": "BlocksPerXpLevelBed",
   "cyanlib.config.option.blocksPerXpLevelSurface": "BlocksPerXpLevelSurface",
-  "cyanlib.config.option.blocksPerXpLevelTpa": "BlocksPerXpLevelTpa"
+  "cyanlib.config.option.blocksPerXpLevelTpa": "BlocksPerXpLevelTpa",
+  "cyanlib.config.option.tpInCombat": "TpInCombat",
+  "cyanlib.config.option.combatTimeoutSeconds": "CombatTimeoutSeconds"
 }

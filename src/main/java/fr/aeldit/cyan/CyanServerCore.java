@@ -10,6 +10,7 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.entity.Entity;
 
 import java.nio.file.Files;
 
@@ -42,6 +43,32 @@ public class CyanServerCore implements DedicatedServerModInitializer
         ServerPlayConnectionEvents.DISCONNECT.register(
                 (handler, server) -> TPa.removePlayerOnQuit(handler.getPlayer().getName().getString())
         );
+
+        //? if >1.20.6 {
+        ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
+            if (entity.isPlayer())
+            {
+                CombatTracking.addEntry(entity.getName().getString(), System.currentTimeMillis());
+                Entity attacker = source.getAttacker();
+                if (attacker != null)
+                {
+                    CombatTracking.addEntry(attacker.getName().getString(), System.currentTimeMillis());
+                }
+            }
+        });
+        //?} else {
+        /*MissingLivingEntityEvent.AFTER_DAMAGE.register((entity, source, amount) -> {
+            if (entity.isPlayer())
+            {
+                CombatTracking.addEntry(entity.getName().getString(), System.currentTimeMillis());
+                Entity attacker = source.getAttacker();
+                if (attacker != null)
+                {
+                    CombatTracking.addEntry(attacker.getName().getString(), System.currentTimeMillis());
+                }
+            }
+        });
+        *///?}
 
         // Register all the commands
         CommandRegistrationCallback.EVENT.register(

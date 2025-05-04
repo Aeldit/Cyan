@@ -55,6 +55,11 @@ public class CyanLibConfigImpl implements ICyanLibConfig
             "blocksPerXpLevelTpa", 200, RULES.POSITIVE_VALUE
     );
 
+    public static final BooleanOption TP_IN_COMBAT = new BooleanOption("tpInCombat", true);
+    public static final IntegerOption COMBAT_TIMEOUT_SECONDS = new IntegerOption(
+            "combatTimeoutSeconds", 30, RULES.POSITIVE_VALUE
+    );
+
     @Override
     public Map<String, String> getDefaultTranslations()
     {
@@ -78,6 +83,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("error.notEnoughXp", "§cYou don't have enough XP (%s§c %s§c are required)"),
                 entry("error.notEnoughXpTpa", "You don't have enough XP to be teleported to %s"),
                 entry("error.tpaAlreadyRequested", "§cYou already send a request to this player"),
+                entry("error.noTpWhileInCombat", "§cYou cannot teleport while in combat"),
 
                 // MESSAGES
                 entry("msg.bed", "§3You have been teleported to your bed"),
@@ -135,6 +141,8 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.set.xpUsePoints", "§3Toggled the use of XP points instead of XP levels %s"),
                 entry("msg.set.xpUseFixedAmount", "§3Toggled the use of a fixed XP amount %s"),
                 entry("msg.set.xpAmount", "§3The fixed XP amount to use when teleporting is now %s"),
+                entry("msg.set.tpInCombat", "§3Toggled teleportation while in combat %s"),
+                entry("msg.set.combatTimeoutSeconds", "§3The combat timeout is now %s second(s)"),
 
                 // HEADERS
                 entry("msg.headerDescCmd", "§6Cyan - DESCRIPTION (commands) :\n"),
@@ -223,6 +231,16 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                         "§3The§e xpAmount §3option defines the fixed amount of XP used when the xpUseFixedAmount "
                         + "option is ON"
                 ),
+                entry(
+                        "msg.getDesc.tpInCombat",
+                        "§3The§e tpInCombat §3option defines whether players can teleport to homes after taking "
+                        + "damage by a mod or a player"
+                ),
+                entry(
+                        "msg.getDesc.combatTimeoutSeconds",
+                        "§3The§e combatTimeoutSeconds §3option defines the amount of time in seconds a player stays "
+                        + "in combat mode after taking damage"
+                ),
 
                 // GET_CFG
                 entry("msg.getCfg.header", "§6Cyan - OPTIONS:\n"),
@@ -244,7 +262,9 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.getCfg.blocksPerXpLevelLocation", "§6- §3Blocks per 1 XP level for location: %s"),
                 entry("msg.getCfg.blocksPerXpLevelTpa", "§6- §3Blocks per 1 XP level for tpa: %s"),
                 entry("msg.getCfg.xpUseFixedAmount", "§6- §3Use fixed amount of XP for TPs: %s"),
-                entry("msg.getCfg.xpAmount", "§6- §3Fixed XP amount: %s")
+                entry("msg.getCfg.xpAmount", "§6- §3Fixed XP amount: %s"),
+                entry("msg.getCfg.tpInCombat", "§6- §3TP while in combat: %s"),
+                entry("msg.getCfg.combatTimeoutSeconds", "§6- §3Combat timeout: %s §3second(s)")
         );
     }
 }

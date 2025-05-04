@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fr.aeldit.cyan.CombatTracking;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTp;
 import fr.aeldit.cyan.teleportation.TPa;
@@ -82,6 +83,12 @@ public class TeleportationCommands
             return 0;
         }
 
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        {
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
+            return 0;
+        }
+
         BackTp backTp = BACK_TPS.getBackTp(player.getUuidAsString());
         MinecraftServer server = player.getServer();
 
@@ -109,6 +116,12 @@ public class TeleportationCommands
             || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BED.getValue(), "bedDisabled")
         )
         {
+            return 0;
+        }
+
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        {
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
         }
 
@@ -164,6 +177,12 @@ public class TeleportationCommands
             || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_SURFACE.getValue(), "surfaceDisabled")
         )
         {
+            return 0;
+        }
+
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        {
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
         }
 
@@ -228,6 +247,12 @@ public class TeleportationCommands
             || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
         )
         {
+            return 0;
+        }
+
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        {
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
         }
 
