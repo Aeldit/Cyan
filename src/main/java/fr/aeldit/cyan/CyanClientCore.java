@@ -6,7 +6,7 @@ import fr.aeldit.cyan.commands.PermissionsCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.teleportation.TPa;
 import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
-import fr.aeldit.cyanlib.lib.events.MissingLivingEntityEvent;
+import fr.aeldit.cyanlib.events.MissingLivingEntityEvent;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
