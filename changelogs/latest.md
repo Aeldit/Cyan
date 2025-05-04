@@ -1,1 +1,1 @@
-Add the possibility to disable teleportation when in combat
+Add the tpInCombat option check in the location command
