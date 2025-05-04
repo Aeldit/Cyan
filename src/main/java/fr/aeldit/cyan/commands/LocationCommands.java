@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fr.aeldit.cyan.CombatTracking;
 import fr.aeldit.cyan.teleportation.Location;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -228,6 +229,12 @@ public class LocationCommands
             || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
         )
         {
+            return 0;
+        }
+
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        {
+            CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
         }
 
