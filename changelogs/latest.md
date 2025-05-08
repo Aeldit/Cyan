@@ -1,1 +1,1 @@
-Add the tpInCombat option check in the location command
+Fix missing translation for `error.noRequestingPlayers` (it was stored as `msg.noRequestingPlayers`)
