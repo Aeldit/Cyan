@@ -73,7 +73,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("error.locationsDisabled", "§cThe locations commands are disabled"),
                 entry("error.noLocations", "§cThere is no saved locations"),
                 entry(
-                        "cyan.error.locationNotFound",
+                        "error.locationNotFound",
                         "§cThe location %s§c doesn't exist (check if you spelled it correctly)"
                 ),
                 entry("error.noLastPos", "§cYour last death location was not saved"),
@@ -84,6 +84,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("error.notEnoughXpTpa", "You don't have enough XP to be teleported to %s"),
                 entry("error.tpaAlreadyRequested", "§cYou already send a request to this player"),
                 entry("error.noTpWhileInCombat", "§cYou cannot teleport while in combat"),
+                entry("error.noRequestingPlayers", "No player requested to teleport to you"),
 
                 // MESSAGES
                 entry("msg.bed", "§3You have been teleported to your bed"),
@@ -102,7 +103,6 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.backTp", "§3You have been teleported to the place you died"),
                 entry("msg.tpaRequestSend", "Your tpa request have been send"),
                 entry("msg.listRequestingPlayers", "The players that requested to teleport to you are :"),
-                entry("msg.noRequestingPlayers", "No player requested to teleport to you"),
                 entry("msg.tpaSuccessful", "§6%s§r accepted your tpa request"),
                 entry("msg.tpaRefused", "§6%s§c refused your teleportation request"),
                 entry("msg.tpaAcceptedSelf", "You accepted §6%s§r's tpa request"),
@@ -170,7 +170,7 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry(
                         "msg.getDesc.distanceToEntitiesKgi",
                         "§3The§e distanceToEntitiesKgi §3option defines distance (in chunks) in which the ground " +
-                        "items will be removed"
+                                "items will be removed"
                 ),
                 entry(
                         "msg.getDesc.minOpLvlKgi",
@@ -179,67 +179,67 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry(
                         "msg.getDesc.minOpLvlEditLocation",
                         "§3The §eminOpLvlEditLocation §3determines the " +
-                        "minimum OP level required to edit locations"
+                                "minimum OP level required to edit locations"
                 ),
                 entry(
                         "msg.getDesc.minOpLvlPermNodes",
                         "§3The §eminOpLvlPermNodes §3determines the " +
-                        "minimum OP level required to use the permission nodes"
+                                "minimum OP level required to use the permission nodes"
                 ),
                 entry(
                         "msg.getDesc.daysToRemoveBackTp",
                         "§3The§e daysToRemoveBackTp §3option defines the " +
-                        "number of days the last death location of a player is kept)"
+                                "number of days the last death location of a player is kept)"
                 ),
                 entry(
                         "msg.getDesc.useXpToTeleport",
                         "§3The§e useXpToTeleport §3option defines whether XP is " +
-                        "required to use teleportation commands such as /bed, /surface or /tpa"
+                                "required to use teleportation commands such as /bed, /surface or /tpa"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelBed",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
-                        "using the /bed command (iff the§e useXpToTeleport §3option is set to true)"
+                                "using the /bed command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelSurface",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
-                        "using the /surface command (iff the§e useXpToTeleport §3option is set to true)"
+                                "using the /surface command (iff the§e useXpToTeleport §3option is set to true)"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelLocation",
                         "§3The§e blocksPerXpLevelLocation §3option defines how many blocks will consume 1 level when " +
-                        "using the /location command (iff the§e useXpToTeleport §3options is set to true)"
+                                "using the /location command (iff the§e useXpToTeleport §3options is set to true)"
                 ),
                 entry(
                         "msg.getDesc.blocksPerXpLevelTpa",
                         "§3The§e blocksPerXpLevelTpa §3option defines how many blocks will consume 1 level when " +
-                        "using the /tpa command (iff the§e useXpToTeleport §3options is set to true)"
+                                "using the /tpa command (iff the§e useXpToTeleport §3options is set to true)"
                 ),
                 entry(
                         "msg.getDesc.xpUsePoints",
                         "§3The§e xpUsePoints §3option defines the whether the necessary XP will be in points or in " +
-                        "levels"
+                                "levels"
                 ),
                 entry(
                         "msg.getDesc.xpUseFixedAmount",
                         "§3The§e xpUseFixedAmount §3option defines the whether the necessary XP to teleport will be a"
-                        + " fixed amount or will depend on the distance"
+                                + " fixed amount or will depend on the distance"
                 ),
                 entry(
                         "msg.getDesc.xpAmount",
                         "§3The§e xpAmount §3option defines the fixed amount of XP used when the xpUseFixedAmount "
-                        + "option is ON"
+                                + "option is ON"
                 ),
                 entry(
                         "msg.getDesc.tpInCombat",
                         "§3The§e tpInCombat §3option defines whether players can teleport to homes after taking "
-                        + "damage by a mod or a player"
+                                + "damage by a mod or a player"
                 ),
                 entry(
                         "msg.getDesc.combatTimeoutSeconds",
                         "§3The§e combatTimeoutSeconds §3option defines the amount of time in seconds a player stays "
-                        + "in combat mode after taking damage"
+                                + "in combat mode after taking damage"
                 ),
 
                 // GET_CFG
