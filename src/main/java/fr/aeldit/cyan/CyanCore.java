@@ -28,8 +28,8 @@ public class CyanCore
     public static final BackTps BACK_TPS = new BackTps();
     public static final TPa TPAS = new TPa();
 
-    public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, new CyanLibConfigImpl());
-    public static CyanLibLanguageUtils CYAN_LANG_UTILS = CYAN_LIB_UTILS.getLanguageUtils();
+    public static final CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, new CyanLibConfigImpl());
+    public static final CyanLibLanguageUtils CYAN_LANG_UTILS = CYAN_LIB_UTILS.getLanguageUtils();
 
     public static void checkOrCreateModDir(boolean locations)
     {

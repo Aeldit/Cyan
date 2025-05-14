@@ -83,11 +83,9 @@ public class CyanServerCore implements DedicatedServerModInitializer
                 CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.goToLocation", Formatting.YELLOW + t.loc().name());
             });
 
-            TPAsCooldowns.getCanceledCooldowns().forEach(player -> {
-                CYAN_LANG_UTILS.sendPlayerMessage(
-                        player, "error.movedWhileWaitingForTp"
-                );
-            });
+            TPAsCooldowns.getCanceledCooldowns().forEach(player -> CYAN_LANG_UTILS.sendPlayerMessage(
+                    player, "error.movedWhileWaitingForTp")
+            );
             TPAsCooldowns.clearCanceledCooldowns();
             TPAsCooldowns.getPlayersCompletedCooldowns().forEach((requestingPlayer, t) -> {
                 TPAS.endTpRequest(requestingPlayer.getName().getString());
