@@ -16,11 +16,14 @@
   "icon": "assets/cyan/icon.png",
   "environment": "*",
   "entrypoints": {
-    "server": [
-      "fr.aeldit.cyan.CyanServerCore"
+    "main": [
+      "fr.aeldit.cyan.CyanCore"
     ],
     "client": [
       "fr.aeldit.cyan.CyanClientCore"
+    ],
+    "server": [
+      "fr.aeldit.cyan.CyanServerCore"
     ],
     "modmenu": [
       "fr.aeldit.cyan.config.ModMenuApiImpl"
