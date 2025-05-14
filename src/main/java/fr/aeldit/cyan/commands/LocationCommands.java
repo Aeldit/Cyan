@@ -4,8 +4,9 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.CombatTracking;
+import fr.aeldit.cyan.LocationsCooldowns;
 import fr.aeldit.cyan.teleportation.Location;
+import fr.aeldit.cyanlib.lib.CombatTracking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static fr.aeldit.cyan.LocationsCooldowns.addPlayerCooldown;
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
 import static fr.aeldit.cyanlib.lib.utils.TPUtils.getRequiredXpLevelsToTp;
@@ -98,8 +100,8 @@ public class LocationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
+                || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
         )
         {
             return 0;
@@ -138,8 +140,8 @@ public class LocationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
+                || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
         )
         {
             return 0;
@@ -166,8 +168,8 @@ public class LocationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
+                || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
         )
         {
             return 0;
@@ -192,8 +194,8 @@ public class LocationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
+                || !CYAN_LIB_UTILS.hasPermission(player, MIN_OP_LVL_EDIT_LOCATIONS.getValue())
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
         )
         {
             return 0;
@@ -226,13 +228,14 @@ public class LocationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled")
         )
         {
             return 0;
         }
 
-        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        if (!TP_IN_COMBAT.getValue()
+                && CombatTracking.isPlayerInCombat(player.getName().getString(), COMBAT_TIMEOUT_SECONDS))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
@@ -252,12 +255,12 @@ public class LocationCommands
         if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
         {
             requiredXpLevel = XP_USE_FIXED_AMOUNT.getValue()
-                              ? XP_AMOUNT.getValue()
-                              : getRequiredXpLevelsToTp(
-                                      player,
-                                      new BlockPos((int) loc.x(), (int) loc.y(), (int) loc.z()),
-                                      BLOCKS_PER_XP_LEVEL_LOCATION.getValue()
-                              );
+                    ? XP_AMOUNT.getValue()
+                    : getRequiredXpLevelsToTp(
+                    player,
+                    new BlockPos((int) loc.x(), (int) loc.y(), (int) loc.z()),
+                    BLOCKS_PER_XP_LEVEL_LOCATION.getValue()
+            );
 
             if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
@@ -269,6 +272,21 @@ public class LocationCommands
                 );
                 return 0;
             }
+        }
+
+        if (TP_COOLDOWN.getValue())
+        {
+            String playerName = player.getName().getString();
+            LOCATIONS.requestTp(playerName);
+            LocationsCooldowns.addPlayerCooldown(
+                    player, TP_COOLDOWN_SECONDS.getValue() * 1000, System.currentTimeMillis(), loc, requiredXpLevel,
+                    server
+            );
+            CYAN_LANG_UTILS.sendPlayerMessage(
+                    player, "msg.waitingXSeconds", Formatting.GOLD + String.valueOf(TP_COOLDOWN_SECONDS.getValue())
+            );
+            // Teleportation will be executed in the CyanSHClientCore and CyanSHServerCore classes
+            return Command.SINGLE_SUCCESS;
         }
 
         loc.teleport(server, player);
@@ -295,7 +313,7 @@ public class LocationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_LOCATIONS.getValue(), "locationsDisabled"))
         {
             return 0;
         }

@@ -13,9 +13,9 @@ repositories {
 }
 
 object C {
-    const val MOD_VERSION: String = "1.1.6"
+    const val MOD_VERSION: String = "1.1.7"
     const val LOADER_VERSION: String = "0.16.13"
-    const val CYANLIB_VERSION: String = "1.0.5"
+    const val CYANLIB_VERSION: String = "1.0.6"
     val YARN_MAPPINGS: HashMap<String, String> = hashMapOf(
         "1.19.4" to "1.19.4+build.2",
         "1.20.1" to "1.20.1+build.10",
@@ -189,7 +189,7 @@ publishMods {
         requires("fabric-api", "cyanlib")
         optional("modmenu")
 
-        changelog = rootProject.file("changelogs/latest.md")
+        changelog = rootProject.file("changelog.md")
             .takeIf { it.exists() }
             ?.readText()
             ?: "No changelog provided."

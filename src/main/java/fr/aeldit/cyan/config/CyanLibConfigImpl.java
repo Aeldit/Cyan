@@ -60,6 +60,11 @@ public class CyanLibConfigImpl implements ICyanLibConfig
             "combatTimeoutSeconds", 30, RULES.POSITIVE_VALUE
     );
 
+    public static final BooleanOption TP_COOLDOWN = new BooleanOption("tpCooldown", false);
+    public static final IntegerOption TP_COOLDOWN_SECONDS = new IntegerOption(
+            "tpCooldownSeconds", 5, RULES.POSITIVE_VALUE
+    );
+
     @Override
     public Map<String, String> getDefaultTranslations()
     {
@@ -83,8 +88,9 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("error.notEnoughXp", "§cYou don't have enough XP (%s§c %s§c are required)"),
                 entry("error.notEnoughXpTpa", "You don't have enough XP to be teleported to %s"),
                 entry("error.tpaAlreadyRequested", "§cYou already send a request to this player"),
-                entry("error.noTpWhileInCombat", "§cYou cannot teleport while in combat"),
                 entry("error.noRequestingPlayers", "No player requested to teleport to you"),
+                entry("error.noTpWhileInCombat", "§cYou cannot teleport while in combat"),
+                entry("error.movedWhileWaitingForTp", "§cYou moved, teleportation aborted"),
 
                 // MESSAGES
                 entry("msg.bed", "§3You have been teleported to your bed"),
@@ -105,9 +111,10 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.listRequestingPlayers", "The players that requested to teleport to you are :"),
                 entry("msg.tpaSuccessful", "§6%s§r accepted your tpa request"),
                 entry("msg.tpaRefused", "§6%s§c refused your teleportation request"),
-                entry("msg.tpaAcceptedSelf", "You accepted §6%s§r's tpa request"),
-                entry("msg.tpaRefusedSelf", "You refuse §6%s§r's tpa request"),
+                entry("msg.tpaAcceptedSelf", "You accepted §6%s§f's tpa request"),
+                entry("msg.tpaRefusedSelf", "You refuse §6%s§f's tpa request"),
                 entry("msg.tpaRequested", "%s§r wants to teleport to you"),
+                entry("msg.waitingXSeconds", "§3Waiting %s §3seconds before teleportation"),
 
                 // SETS
                 entry("msg.set.allowBed", "§3Toggled §d/bed §3command %s"),
@@ -143,6 +150,8 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.set.xpAmount", "§3The fixed XP amount to use when teleporting is now %s"),
                 entry("msg.set.tpInCombat", "§3Toggled teleportation while in combat %s"),
                 entry("msg.set.combatTimeoutSeconds", "§3The combat timeout is now %s second(s)"),
+                entry("msg.set.tpCooldown", "§3Toggled cooldown for teleportation %s"),
+                entry("msg.set.tpCooldownSeconds", "§3The TP cooldown is now %s second(s)"),
 
                 // HEADERS
                 entry("msg.headerDescCmd", "§6Cyan - DESCRIPTION (commands) :\n"),
@@ -241,6 +250,15 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                         "§3The§e combatTimeoutSeconds §3option defines the amount of time in seconds a player stays "
                                 + "in combat mode after taking damage"
                 ),
+                entry(
+                        "msg.getDesc.tpCooldown",
+                        "§3The§e tpCooldown §3option defines whether players will have a cooldown before teleporting"
+                ),
+                entry(
+                        "msg.getDesc.tpCooldownSeconds",
+                        "§3The§e tpCooldownSeconds §3option defines the amount of time in seconds a player will wait " +
+                                "before teleporting"
+                ),
 
                 // GET_CFG
                 entry("msg.getCfg.header", "§6Cyan - OPTIONS:\n"),
@@ -264,7 +282,9 @@ public class CyanLibConfigImpl implements ICyanLibConfig
                 entry("msg.getCfg.xpUseFixedAmount", "§6- §3Use fixed amount of XP for TPs: %s"),
                 entry("msg.getCfg.xpAmount", "§6- §3Fixed XP amount: %s"),
                 entry("msg.getCfg.tpInCombat", "§6- §3TP while in combat: %s"),
-                entry("msg.getCfg.combatTimeoutSeconds", "§6- §3Combat timeout: %s §3second(s)")
+                entry("msg.getCfg.combatTimeoutSeconds", "§6- §3Combat timeout: %s §3second(s)"),
+                entry("msg.getCfg.tpCooldown", "§6- §3TP cooldown: %s"),
+                entry("msg.getCfg.tpCooldownSeconds", "§6- §3TP cooldown: %s §3second(s)")
         );
     }
 }

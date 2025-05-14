@@ -5,17 +5,23 @@ import fr.aeldit.cyan.commands.MiscellaneousCommands;
 import fr.aeldit.cyan.commands.PermissionsCommands;
 import fr.aeldit.cyan.commands.TeleportationCommands;
 import fr.aeldit.cyan.teleportation.TPa;
+import fr.aeldit.cyan.util.VersionUtils;
+import fr.aeldit.cyanlib.events.PlayerMovedEvent;
+import fr.aeldit.cyanlib.lib.CombatTracking;
 import fr.aeldit.cyanlib.lib.commands.CyanLibConfigCommands;
 import fr.aeldit.cyanlib.events.MissingLivingEntityEvent;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Formatting;
 
 import java.nio.file.Files;
 
 import static fr.aeldit.cyan.CyanCore.*;
+import static fr.aeldit.cyan.config.CyanLibConfigImpl.XP_USE_POINTS;
 import static fr.aeldit.cyan.teleportation.BackTps.BACK_TP_PATH;
 import static fr.aeldit.cyan.util.EventUtils.saveDeadPlayersPos;
 
@@ -42,8 +48,66 @@ public class CyanServerCore implements DedicatedServerModInitializer
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register(
-                (handler, server) -> TPa.removePlayerOnQuit(handler.getPlayer().getName().getString())
+                (handler, server) -> TPAS.removePlayerOnQuit(handler.getPlayer().getName().getString())
         );
+
+        PlayerMovedEvent.AFTER_MOVE.register((player) -> {
+            if (LOCATIONS.playerRequestedTp(player.getName().getString()))
+            {
+                LocationsCooldowns.cancelCooldown(player);
+                LOCATIONS.endTpRequest(player.getName().getString());
+            }
+            if (TPAS.playerRequestedTp(player.getName().getString()))
+            {
+                TPAsCooldowns.cancelCooldown(player);
+                TPAS.endTpRequest(player.getName().getString());
+            }
+        });
+
+        ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
+            LocationsCooldowns.getCanceledCooldowns().forEach(player -> CYAN_LANG_UTILS.sendPlayerMessage(
+                    player, "error.movedWhileWaitingForTp"
+            ));
+            LocationsCooldowns.clearCanceledCooldowns();
+            LocationsCooldowns.getPlayersCompletedCooldowns().forEach((player, t) -> {
+                LOCATIONS.endTpRequest(player.getName().getString());
+                t.loc().teleport(t.server(), player);
+                if (XP_USE_POINTS.getValue())
+                {
+                    player.addExperience(-1 * t.requiredXpLevel());
+                }
+                else
+                {
+                    player.addExperienceLevels(-1 * t.requiredXpLevel());
+                }
+                CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.goToLocation", Formatting.YELLOW + t.loc().name());
+            });
+
+            TPAsCooldowns.getCanceledCooldowns().forEach(player -> {
+                CYAN_LANG_UTILS.sendPlayerMessage(
+                        player, "error.movedWhileWaitingForTp"
+                );
+            });
+            TPAsCooldowns.clearCanceledCooldowns();
+            TPAsCooldowns.getPlayersCompletedCooldowns().forEach((requestingPlayer, t) -> {
+                TPAS.endTpRequest(requestingPlayer.getName().getString());
+                VersionUtils.tp(requestingPlayer, t.requestedPlayer());
+                if (XP_USE_POINTS.getValue())
+                {
+                    requestingPlayer.addExperience(-1 * t.requiredXpLevel());
+                }
+                else
+                {
+                    requestingPlayer.addExperienceLevels(-1 * t.requiredXpLevel());
+                }
+                TPAS.removePlayerFromQueue(
+                        requestingPlayer.getName().getString(), t.requestedPlayer().getName().getString());
+                CYAN_LANG_UTILS.sendPlayerMessage(
+                        requestingPlayer, "msg.tpaSuccessful", t.requestedPlayer().getName().getString());
+                CYAN_LANG_UTILS.sendPlayerMessage(
+                        t.requestedPlayer(), "msg.tpaAcceptedSelf", requestingPlayer.getName().getString());
+            });
+        });
 
         //? if >1.20.6 {
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {

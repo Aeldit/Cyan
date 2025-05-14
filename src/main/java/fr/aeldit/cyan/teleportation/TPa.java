@@ -7,9 +7,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class TPa
+public class TPa
 {
-    private static final ConcurrentHashMap<String, List<String>> PLAYERS_TPA_QUEUES = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, List<String>> PLAYERS_TPA_QUEUES = new ConcurrentHashMap<>();
+    private final List<String> tpRequests = Collections.synchronizedList(new ArrayList<>());
+
+    public void requestTp(String playerName)
+    {
+        tpRequests.add(playerName);
+    }
+
+    public boolean playerRequestedTp(String playerName)
+    {
+        return tpRequests.contains(playerName);
+    }
+
+    public synchronized void endTpRequest(String playerName)
+    {
+        tpRequests.remove(playerName);
+    }
 
     /**
      * Adds {@code playerToAdd} to the list of players that requested to tp to {@code destinationPlayerName}
@@ -17,7 +33,7 @@ public abstract class TPa
      * @param playerToAdd           The player that requested the teleportation
      * @param destinationPlayerName The destination player
      */
-    public static void addPlayerToQueue(String playerToAdd, String destinationPlayerName)
+    public void addPlayerToQueue(String playerToAdd, String destinationPlayerName)
     {
         if (!PLAYERS_TPA_QUEUES.containsKey(destinationPlayerName))
         {
@@ -30,7 +46,7 @@ public abstract class TPa
         }
     }
 
-    public static void removePlayerFromQueue(String playerToRemove, String destinationPlayerQueue)
+    public void removePlayerFromQueue(String playerToRemove, String destinationPlayerQueue)
     {
         if (PLAYERS_TPA_QUEUES.containsKey(destinationPlayerQueue))
         {
@@ -38,7 +54,7 @@ public abstract class TPa
         }
     }
 
-    public static boolean isPlayerRequesting(String requestingPlayerName, String requestedPlayerName)
+    public boolean isPlayerRequesting(String requestingPlayerName, String requestedPlayerName)
     {
         if (PLAYERS_TPA_QUEUES.containsKey(requestedPlayerName))
         {
@@ -47,12 +63,12 @@ public abstract class TPa
         return false;
     }
 
-    public static @Nullable List<String> getRequestingPlayers(String requestedPlayer)
+    public @Nullable List<String> getRequestingPlayers(String requestedPlayer)
     {
         return PLAYERS_TPA_QUEUES.get(requestedPlayer);
     }
 
-    public static void removePlayerOnQuit(String playerName)
+    public void removePlayerOnQuit(String playerName)
     {
         for (List<String> queue : PLAYERS_TPA_QUEUES.values())
         {

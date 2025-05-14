@@ -30,6 +30,22 @@ public class Locations
     };
     public static Path LOCATIONS_PATH =
             FabricLoader.getInstance().getConfigDir().resolve(Path.of("%s/locations.json".formatted(MODID)));
+    private final List<String> tpRequests = Collections.synchronizedList(new ArrayList<>());
+
+    public void requestTp(String playerName)
+    {
+        tpRequests.add(playerName);
+    }
+
+    public boolean playerRequestedTp(String playerName)
+    {
+        return tpRequests.contains(playerName);
+    }
+
+    public synchronized void endTpRequest(String playerName)
+    {
+        tpRequests.remove(playerName);
+    }
 
     public boolean add(@NotNull Location location)
     {

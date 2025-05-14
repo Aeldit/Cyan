@@ -3,6 +3,7 @@ package fr.aeldit.cyan;
 import fr.aeldit.cyan.config.CyanLibConfigImpl;
 import fr.aeldit.cyan.teleportation.BackTps;
 import fr.aeldit.cyan.teleportation.Locations;
+import fr.aeldit.cyan.teleportation.TPa;
 import fr.aeldit.cyanlib.lib.CyanLib;
 import fr.aeldit.cyanlib.lib.CyanLibLanguageUtils;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,6 +26,7 @@ public class CyanCore
 
     public static final Locations LOCATIONS = new Locations();
     public static final BackTps BACK_TPS = new BackTps();
+    public static final TPa TPAS = new TPa();
 
     public static CyanLib CYAN_LIB_UTILS = new CyanLib(MODID, new CyanLibConfigImpl());
     public static CyanLibLanguageUtils CYAN_LANG_UTILS = CYAN_LIB_UTILS.getLanguageUtils();

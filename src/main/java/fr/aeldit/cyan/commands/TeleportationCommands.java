@@ -4,11 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fr.aeldit.cyan.CombatTracking;
+import fr.aeldit.cyan.TPAsCooldowns;
 import fr.aeldit.cyan.commands.arguments.ArgumentSuggestion;
 import fr.aeldit.cyan.teleportation.BackTp;
-import fr.aeldit.cyan.teleportation.TPa;
 import fr.aeldit.cyan.util.VersionUtils;
+import fr.aeldit.cyanlib.lib.CombatTracking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -19,12 +19,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-
 import static fr.aeldit.cyan.CyanCore.*;
 import static fr.aeldit.cyan.config.CyanLibConfigImpl.*;
-import static fr.aeldit.cyan.teleportation.TPa.addPlayerToQueue;
-import static fr.aeldit.cyan.teleportation.TPa.removePlayerFromQueue;
 import static fr.aeldit.cyanlib.lib.utils.TPUtils.getRequiredXpLevelsToTp;
 
 public class TeleportationCommands
@@ -77,13 +73,14 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BACK_TP.getValue(), "backTpDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BACK_TP.getValue(), "backTpDisabled")
         )
         {
             return 0;
         }
 
-        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(
+                player.getName().getString(), COMBAT_TIMEOUT_SECONDS))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
@@ -113,13 +110,14 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BED.getValue(), "bedDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_BED.getValue(), "bedDisabled")
         )
         {
             return 0;
         }
 
-        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(
+                player.getName().getString(), COMBAT_TIMEOUT_SECONDS))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
@@ -135,12 +133,12 @@ public class TeleportationCommands
         if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
         {
             requiredXpLevel = XP_USE_FIXED_AMOUNT.getValue()
-                              ? XP_AMOUNT.getValue()
-                              : getRequiredXpLevelsToTp(
-                                      player,
-                                      spawnPos,
-                                      BLOCKS_PER_XP_LEVEL_BED.getValue()
-                              );
+                    ? XP_AMOUNT.getValue()
+                    : getRequiredXpLevelsToTp(
+                    player,
+                    spawnPos,
+                    BLOCKS_PER_XP_LEVEL_BED.getValue()
+            );
 
             if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
@@ -174,13 +172,14 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_SURFACE.getValue(), "surfaceDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_SURFACE.getValue(), "surfaceDisabled")
         )
         {
             return 0;
         }
 
-        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(
+                player.getName().getString(), COMBAT_TIMEOUT_SECONDS))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
@@ -244,13 +243,14 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
         )
         {
             return 0;
         }
 
-        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(player.getName().getString()))
+        if (!TP_IN_COMBAT.getValue() && CombatTracking.isPlayerInCombat(
+                player.getName().getString(), COMBAT_TIMEOUT_SECONDS))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noTpWhileInCombat");
             return 0;
@@ -267,13 +267,13 @@ public class TeleportationCommands
         }
 
         String requestingPlayerName = player.getName().getString();
-        if (TPa.isPlayerRequesting(requestingPlayerName, playerName))
+        if (TPAS.isPlayerRequesting(requestingPlayerName, playerName))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.tpaAlreadyRequested");
             return 0;
         }
 
-        addPlayerToQueue(requestingPlayerName, playerName);
+        TPAS.addPlayerToQueue(requestingPlayerName, playerName);
 
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.tpaRequestSend", requestingPlayerName);
 
@@ -300,7 +300,7 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
         )
         {
             return 0;
@@ -315,7 +315,7 @@ public class TeleportationCommands
         // or
         // If the player has not requested a teleportation to the player running the command
         if (requestingPlayer == null
-            || !TPa.isPlayerRequesting(requestingPlayerName, player.getName().getString())
+                || !TPAS.isPlayerRequesting(requestingPlayerName, player.getName().getString())
         )
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noRequestingPlayers");
@@ -327,11 +327,11 @@ public class TeleportationCommands
         if (USE_XP_TO_TELEPORT.getValue() && !player.isCreative())
         {
             requiredXpLevel = XP_USE_FIXED_AMOUNT.getValue()
-                              ? XP_AMOUNT.getValue()
-                              : getRequiredXpLevelsToTp(
-                                      requestingPlayer, player.getBlockPos(),
-                                      BLOCKS_PER_XP_LEVEL_TPA.getValue()
-                              );
+                    ? XP_AMOUNT.getValue()
+                    : getRequiredXpLevelsToTp(
+                    requestingPlayer, player.getBlockPos(),
+                    BLOCKS_PER_XP_LEVEL_TPA.getValue()
+            );
 
             if ((XP_USE_POINTS.getValue() ? player.totalExperience : player.experienceLevel) < requiredXpLevel)
             {
@@ -340,15 +340,21 @@ public class TeleportationCommands
             }
         }
 
-        //? if >=1.21.2-1.21.3 {
-        requestingPlayer.teleport(
-                player.getServerWorld(), player.getX(), player.getY(), player.getZ(), new HashSet<>(), 0, 0, false
-        );
-        //?} elif >1.19.4 {
-        /*requestingPlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
-         *///?} else {
-        /*requestingPlayer.teleport(player.getWorld(), player.getX(), player.getY(), player.getZ(), 0, 0);
-         *///?}
+        if (TP_COOLDOWN.getValue())
+        {
+            TPAS.requestTp(requestingPlayerName);
+            TPAsCooldowns.addPlayerCooldown(
+                    requestingPlayer, TP_COOLDOWN_SECONDS.getValue() * 1000, System.currentTimeMillis(),
+                    requiredXpLevel, player
+            );
+            CYAN_LANG_UTILS.sendPlayerMessage(
+                    player, "msg.waitingXSeconds", Formatting.GOLD + String.valueOf(TP_COOLDOWN_SECONDS.getValue())
+            );
+            // Teleportation will be executed in the CyanSHClientCore and CyanSHServerCore classes
+            return Command.SINGLE_SUCCESS;
+        }
+
+        VersionUtils.tp(requestingPlayer, player);
 
         if (XP_USE_POINTS.getValue())
         {
@@ -359,7 +365,7 @@ public class TeleportationCommands
             player.addExperienceLevels(-1 * requiredXpLevel);
         }
 
-        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+        TPAS.removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
         CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "msg.tpaSuccessful", player.getName().getString());
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.tpaAcceptedSelf", requestingPlayer.getName().getString());
@@ -370,7 +376,7 @@ public class TeleportationCommands
     {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null
-            || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
+                || !CYAN_LIB_UTILS.isOptionEnabled(player, ALLOW_TPA.getValue(), "tpaDisabled")
         )
         {
             return 0;
@@ -383,14 +389,14 @@ public class TeleportationCommands
         // If the player is not online
         // or
         // If the player has not requested a teleportation to the player running the command
-        if (requestingPlayer == null || !TPa.isPlayerRequesting(
+        if (requestingPlayer == null || !TPAS.isPlayerRequesting(
                 requestingPlayerName, player.getName().getString()))
         {
             CYAN_LANG_UTILS.sendPlayerMessage(player, "error.noRequestingPlayers");
             return 0;
         }
 
-        removePlayerFromQueue(requestingPlayerName, player.getName().getString());
+        TPAS.removePlayerFromQueue(requestingPlayerName, player.getName().getString());
 
         CYAN_LANG_UTILS.sendPlayerMessage(requestingPlayer, "msg.tpaRefused", player.getName().getString());
         CYAN_LANG_UTILS.sendPlayerMessage(player, "msg.tpaRefusedSelf", requestingPlayer.getName().getString());

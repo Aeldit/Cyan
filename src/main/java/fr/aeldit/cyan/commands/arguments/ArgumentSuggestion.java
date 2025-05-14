@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static fr.aeldit.cyan.CyanCore.LOCATIONS;
+import static fr.aeldit.cyan.CyanCore.TPAS;
 
 public final class ArgumentSuggestion
 {
@@ -45,7 +46,7 @@ public final class ArgumentSuggestion
             @NotNull SuggestionsBuilder builder, @NotNull ServerCommandSource source
     )
     {
-        List<String> requestingPlayers = TPa.getRequestingPlayers(source.getName());
+        List<String> requestingPlayers = TPAS.getRequestingPlayers(source.getName());
         if (requestingPlayers == null)
         {
             return new CompletableFuture<>();
@@ -69,7 +70,7 @@ public final class ArgumentSuggestion
     )
     {
         return context.getInput().split(" ")[2].equals("location")
-               ? LOCATIONS.getLocationsNames(builder)
-               : new CompletableFuture<>();
+                ? LOCATIONS.getLocationsNames(builder)
+                : new CompletableFuture<>();
     }
 }
